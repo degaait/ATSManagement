@@ -1,0 +1,132 @@
+﻿@model ATSManagement.Models.TblAssignedYearlyPlan
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Assigned inispection plans
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">plans</h4>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-2">
+                                    <label asp-for="AssignedBy" class="col-form-label-lg">Assigned by</label>
+                                   
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.AssignedBy)
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="AssignedDate" class="col-form-label-lg">Assigned Date</label>
+
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.AssignedDate)
+                                </dd>
+                                <dt class="col-sm-2">                            
+                                    <label asp-for="AssignedDate" class="col-form-label-lg">Due Date</label>
+
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.DueDate)
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="EvaluationCheckLists" class="col-form-label-lg">Check lists</label>
+
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.Raw(Model.EvaluationCheckLists)
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="EngagementLetter" class="col-form-label-lg">Engagement letter</label>
+
+                                </dt>
+                                <dd class="col-sm-10">
+                                    <a class="btn btn-primary" asp-action="DownloadFile" asp-route-path="@Model.EngagementLetter">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <path d="M12 17v-6"></path>
+                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                        </svg>
+                                        Download
+                                    </a>
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="EngagementLetter" class="col-form-label-lg">Meeting letter</label>
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.MeetingLetter)
+                                    <a class="btn btn-primary" asp-action="DownloadFile" asp-route-path="@Model.MeetingLetter">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <path d="M12 17v-6"></path>
+                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                        </svg>
+                                        Download
+                                    </a>
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="Remark" class="col-form-label-lg">Remark</label>
+
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.Remark)
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="ProgressStatus" class="col-form-label-lg">Progress status</label>
+                                   
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.ProgressStatus)
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="Remark" class="col-form-label-lg">Assigned to</label>
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.AssignedToNavigation.FirstName)
+                                    @Html.DisplayFor(model => model.AssignedToNavigation.MidleName)
+                                    @Html.DisplayFor(model => model.AssignedToNavigation.LastName)
+                                </dd>
+                                <dt class="col-sm-2">
+                                    <label asp-for="Remark" class="col-form-label-lg">Plan title</label>
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.Plan.PlanTitle)
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="card-footer text-end">
+                            <div class="d-flex">
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

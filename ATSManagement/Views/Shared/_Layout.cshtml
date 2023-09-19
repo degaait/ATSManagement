@@ -1,0 +1,382 @@
+﻿@using Newtonsoft.Json;
+@using ATSManagement.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor _context;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ATSManagement</title>
+    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" asp-append-version="true" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+          <link rel="stylesheet" href="~/ATSManagement.styles.css" asp-append-version="true" />*@
+    <link href="~/dist/css/tabler.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/dist/css/tabler-flags.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/dist/css/tabler-payments.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/dist/css/tabler-vendors.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/dist/css/demo.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <style>
+        @@import url('https://rsms.me/inter/inter.css');
+
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+
+        .navbar-brand-image {
+            height: 4rem !important;
+            object-fit: cover !important;
+            width: 27rem !important;
+        }
+    </style>
+    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
+</head>
+<body class="layout-fluid">
+    <script src="~/dist/js/demo-theme.min.js?1684106062" type="text/javascript" asp-append-version="true"></script>
+
+    <div class="page">
+        <!-- Navbar -->
+        <div class="sticky-top">
+            <header class="navbar navbar-expand-md sticky-top d-print-none">
+                <div class="container-xl">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                        <a asp-action="Index" asp-controller="Home">
+                            <img src="~/dist/img/main_logo.png" alt="Tabler" class="navbar-brand-image">
+                        </a>
+                    </h1>
+                    <div class="navbar-nav flex-row order-md-last">
+                        <div class="d-none d-md-flex">
+                            <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+                            </a>
+                            <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+                            </a>
+                            <div class="nav-item dropdown d-none d-md-flex me-3">
+                                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                                    <span class="badge bg-red"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Last updates</h3>
+                                        </div>
+                                        <div class="list-group list-group-flush list-group-hoverable">
+                                            <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
+                                                    <div class="col text-truncate">
+                                                        <a href="#" class="text-body d-block">Example 1</a>
+                                                        <div class="d-block text-muted text-truncate mt-n1">
+                                                            Change deprecated html tags to text decoration classes (#29604)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a href="#" class="list-group-item-actions">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><span class="status-dot d-block"></span></div>
+                                                    <div class="col text-truncate">
+                                                        <a href="#" class="text-body d-block">Example 2</a>
+                                                        <div class="d-block text-muted text-truncate mt-n1">
+                                                            justify-content:between ⇒ justify-content:space-between (#29734)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a href="#" class="list-group-item-actions show">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><span class="status-dot d-block"></span></div>
+                                                    <div class="col text-truncate">
+                                                        <a href="#" class="text-body d-block">Example 3</a>
+                                                        <div class="d-block text-muted text-truncate mt-n1">
+                                                            Update change-version.js (#29736)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a href="#" class="list-group-item-actions">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
+                                                    <div class="col text-truncate">
+                                                        <a href="#" class="text-body d-block">Example 4</a>
+                                                        <div class="d-block text-muted text-truncate mt-n1">
+                                                            Regenerate package-lock.json (#29730)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a href="#" class="list-group-item-actions">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                                <span class="avatar avatar-sm" style="background-image:url('/dist/img/user_icon.png');"></span>
+                                <div class="d-none d-xl-block ps-2">
+                                    @if (_context.HttpContext.Session.GetString("UserFullname") != null)
+                                    {
+                                        <div>@_context.HttpContext.Session.GetString("UserFullname")</div>
+                                        <div class="mt-1 small text-muted">
+                                            @_context.HttpContext.Session.GetString("DepName")
+                                        </div>
+                                    }
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <a asp-action="AccountStatus" asp-controller="Account" class="dropdown-item">Status</a>
+                                <a asp-action="Profile" asp-controller="Account" class="dropdown-item">Profile</a>
+                                <a asp-action="FeedBack" asp-controller="Account" class="dropdown-item">Feedback</a>
+                                <div class="dropdown-divider"></div>
+                                <a asp-action="ChangePassword" asp-controller="Account" class="dropdown-item">Change password</a>
+                                <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <header class="navbar-expand-md">
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <div class="navbar">
+                        <div class="container-xl">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-action="Index" asp-controller="Home">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Home
+                                        </span>
+                                    </a>
+                                </li>
+                                @if (_context.HttpContext.Session.GetString("MenuMaster") != null)
+                                {
+                                    var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(_context.HttpContext.Session.GetString("MenuMaster"));
+                                    var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
+                                    foreach (var MenuList in groupByMenu)
+                                    {
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                </span>
+                                                <span class="nav-link-title">
+                                                    @MenuList.Key
+                                                </span>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-menu-columns">
+                                                    <div class="dropdown-menu-column">
+                                                        @foreach (var SubMenuList in MenuList)
+                                                        {
+                                                            <a class="dropdown-item" asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName" asp-route-id="" asp-route-message="null" asp->
+                                                                @SubMenuList.SubMenuName
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/lifebuoy -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M15 15l3.35 3.35" /><path d="M9 15l-3.35 3.35" /><path d="M5.65 5.65l3.35 3.35" /><path d="M18.35 5.65l-3.35 3.35" /></svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Help
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-action="Documentation" asp-controller="Help" target="_blank" rel="noopener">
+                                            Documentation
+                                        </a>
+                                        <a class="dropdown-item" asp-action="FAQ" asp-controller="Help">
+                                            FAQ
+                                        </a>
+                                        <a class="dropdown-item" asp-action="UaerManual" asp-controller="Help" target="_blank" rel="noopener">
+                                            User manual
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                                <form action="./" method="get" autocomplete="off" novalidate>
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                                        </span>
+                                        <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="page-wrapper">
+
+            @RenderBody()
+
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl">
+                    <div class="row text-center align-items-center flex-row-reverse">
+                        <div class="col-lg-auto ms-lg-auto">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank" class="link-secondary" rel="noopener">Designed and Developed by MG-Solutions</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item">
+                                    Copyright &copy; 2023
+                                    <a href="." class="link-secondary">Justice Minister</a>.
+                                    All rights reserved.
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="./changelog.html" class="link-secondary" rel="noopener">
+                                        v1.0.0-beta19
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+    <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-success"></div>
+                <div class="modal-body text-center py-4">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
+                    <h3>Payment succedeed</h3>
+                    <div class="text-muted">Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Go to dashboard
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
+                                    View invoice
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove 84 files? What you've done cannot be undone.</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Cancel
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                    Delete 84 items
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script src="~/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer asp-append-version="true"></script>
+    <script src="~/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1684106062" defer asp-append-version="true"></script>
+    <script src="~/dist/libs/jsvectormap/dist/maps/world.js?1684106062" defer asp-append-version="true"></script>
+    <script src="~/dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062" defer asp-append-version="true"></script>
+
+    <script src="~/dist/js/tabler.min.js?1684106062" defer asp-append-version="true"></script>
+    <script src="~/dist/js/demo.min.js?1684106062" defer asp-append-version="true"></script>
+    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/dist/libs/nouislider/dist/nouislider.min.js?1684106062" defer></script>
+    <script src="~/dist/libs/litepicker/dist/litepicker.js?1684106062" defer></script>
+    <script src="~/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062" defer></script>
+    <script src="~/dist/libs/tinymce/tinymce.min.js?1684106062" defer></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+﻿@model ATSManagement.Models.TblSubmenu
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Sub Menus
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create</h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Submenu" class="col-3 col-form-label">Title</label>
+                                            <div class="col">
+                                                <input asp-for="Submenu" class="form-control" />
+                                                <span asp-validation-for="Submenu" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Controller" class="col-3 col-form-label">Controller</label>
+                                            <div class="col">
+                                                <input asp-for="Controller" class="form-control" />
+                                                <span asp-validation-for="Controller" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Action" class="col-3 col-form-label">Action</label>
+                                            <div class="col">
+                                                <input asp-for="Action" class="form-control" />
+                                                <span asp-validation-for="Action" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="MenuId" class="col-3 col-form-label">Main Menus</label>
+                                            <div class="col">
+                                                <select asp-for="MenuId" class="form-select" asp-items="ViewBag.MenuId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="IsActive" class="col-3 col-form-label">IsActive?</label>
+                                            <div class="col">
+                                                <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
+                                                <span asp-validation-for="IsActive" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="DepId" class="col-3 col-form-label">Department</label>
+                                            <div class="col">
+                                                <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+}

@@ -1,0 +1,51 @@
+﻿@model ATSManagement.Models.TblDepartment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Department
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-2">
+                                    <label asp-for="DepName" class="col-form-label-lg">Name</label>
+                                </dt>
+                                <dd class="col-sm-10">
+                                    @Html.DisplayFor(model => model.DepName)
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="card-footer text-end">
+                            <div class="d-flex">
+                                <a asp-action="Edit" asp-route-id="@Model?.DepId">Edit</a> |
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

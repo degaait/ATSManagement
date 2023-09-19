@@ -1,0 +1,75 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+
+@{
+    ViewData["Title"] = "Updated task progress status";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Uppload final report
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Uppload</h4>
+                        </div>
+                        <form asp-action="AddFinalReport" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="Id" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Title</label>
+                                            <div class="col">
+                                                @Html.DisplayFor(model => model.PlanTitle)
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Evaluation Criteria</label>
+                                            <div class="col">
+                                                @Html.Raw(Model.EvaluationCheckLists)
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="StatusID" class="col-3 col-form-label">Assign</label>
+                                            <div class="col">
+                                                @Html.DropDownList("StatusId", null, htmlAttributes: new { @class = "form-select" })
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Engagement Letter</label>
+                                            <div class="col">
+                                                <input asp-for="EngagementLetter" type="file" class="form-file-button" />
+                                                <span asp-validation-for="EngagementLetter" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Update" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,150 @@
+﻿@model ATSManagement.ViewModels.UserModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Internal Users
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create</h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="FirstName" class="col-3 col-form-label">First name</label>
+                                            <div class="col">
+                                                <input asp-for="FirstName" class="form-control" />
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="MiddleName" class="col-3 col-form-label">Middle name</label>
+                                            <div class="col">
+                                                <input asp-for="MiddleName" class="form-control" />
+                                                <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="LastName" class="col-3 col-form-label">Last name</label>
+                                            <div class="col">
+                                                <input asp-for="LastName" class="form-control" />
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="EmailAddress" class="col-3 col-form-label">Email address</label>
+                                            <div class="col">
+                                                <input asp-for="EmailAddress" class="form-control" />
+                                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label asp-for="DepId" class="col-3 col-form-label">Department</label>
+                                            <div class="col">
+                                                <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="PhoneNumber" class="col-3 col-form-label">Phone number</label>
+                                            <div class="col">
+                                                <input asp-for="PhoneNumber" class="form-control" />
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="UserName" class="col-3 col-form-label">User name</label>
+                                            <div class="col">
+                                                <input asp-for="UserName" class="form-control" />
+                                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label asp-for="IsActive" class="col-3 col-form-label">IsActive?</label>
+                                            <div class="col">
+                                                <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
+                                                <span asp-validation-for="IsActive" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="specialRoles" class="col-3 col-form-label">Special Roles</label>
+                                            <div class="col">
+                                                <label class="form-check">
+                                                    <input asp-for="specialRoles" type="radio" value="IsDeputy" class="form-check-input" />
+                                                    <span class="form-check-label">Is Deputy?</span>
+                                                </label>
+                                                <label class="form-check">
+                                                    <input asp-for="specialRoles" type="radio" checked value="IsDepartmentHead" class="form-check-input" />
+                                                    <span class="form-check-label">Is Department head?</span>
+                                                </label>
+                                                <label class="form-check">
+                                                    <input asp-for="specialRoles" type="radio" value="IsTeamLeader" class="form-check-input" />
+                                                    <span class="form-check-label">Is Team leader?</span>
+                                                </label>
+                                                <span asp-validation-for="specialRoles" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="IsSuperAdmin" class="col-3 col-form-label">Is Superadmin?</label>
+                                            <div class="col">
+                                                <input asp-for="IsSuperAdmin" type="checkbox" class="form-check-input m-0" />
+                                                <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Password" class="col-3 col-form-label">Password</label>
+                                            <div class="col">
+                                                <input asp-for="Password" class="form-control" />
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="ConfirmPassword" class="col-3 col-form-label">Configrm Password</label>
+                                            <div class="col">
+                                                <input asp-for="ConfirmPassword" class="form-control" />
+                                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+}

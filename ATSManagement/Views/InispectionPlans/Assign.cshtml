@@ -1,0 +1,119 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Assign Inispection plans
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Assign</h4>
+                        </div>
+                        <form asp-action="Assign">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="PlanId" />
+                                        <input type="hidden" asp-for="AssignedBy" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Title</label>
+                                            <div class="col">
+                                                <input asp-for="PlanTitle" class="form-control" />
+                                                <span asp-validation-for="PlanTitle" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="UserId" class="col-3 col-form-label">Assign</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="StatusID" class="col-3 col-form-label">Status</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.StatusID, new SelectList(Model.status, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Assigning date</label>
+                                            <div class="col">
+                                                <input asp-for="AssignedDate" class="form-control" readonly />
+                                                <span asp-validation-for="AssignedDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Due date</label>
+                                            <div class="col">
+                                                <input asp-for="DueDate" id="inpic" class="form-control" />
+                                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Remark</label>
+                                            <div class="col">
+                                                @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+                                                <span asp-validation-for="Remark" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Assign" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var el;
+            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
+                copyClassesToDropdown: false,
+                dropdownParent: 'body',
+                controlInput: '<input>',
+                render: {
+                    item: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                    option: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                },
+            }));
+        });
+    </script>
+}
