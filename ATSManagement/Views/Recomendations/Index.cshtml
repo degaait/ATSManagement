@@ -86,16 +86,17 @@
                                     {
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Recomendation)
+                                                @Html.Raw( item.Recomendation)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Recostatus.Status)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.EvaluationYear)
+                                                @Html.DisplayFor(modelItem => item.EvaluationYear.Value.Year)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedBy)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CreatinDate)

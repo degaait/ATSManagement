@@ -1,8 +1,8 @@
 ﻿using ATSManagement.Models;
-using Microsoft.AspNetCore.Mvc;
 using ATSManagement.ViewModels;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -19,7 +19,7 @@ namespace ATSManagement.Controllers
         // GET: Recomendations
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblRecomendations.Include(t => t.Inist);
+            var atsdbContext = _context.TblRecomendations.Include(t => t.Inist).Include(s => s.CreatedByNavigation).Include(s => s.Recostatus);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -49,17 +49,16 @@ namespace ATSManagement.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
             {
-                Text=t.Name,
-                Value=t.InistId.ToString(),
+                Text = t.Name,
+                Value = t.InistId.ToString(),
             }).ToList();
-            model.Status=_context.TblRecomendationStatuses.Select(t=> new SelectListItem
+            model.Status = _context.TblRecomendationStatuses.Select(t => new SelectListItem
             {
                 Text = t.Status,
                 Value = t.RecostatusId.ToString(),
             }).ToList();
             model.CreatedBy = userId;
             model.IsActive = false;
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "Name");
             return View(model);
         }
 
@@ -70,22 +69,25 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RecomendationModel model)
         {
-            TblRecomendation tblRecomendation= new TblRecomendation();
+
+            TblRecomendation tblRecomendation = new TblRecomendation();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             if (ModelState.IsValid)
             {
                 tblRecomendation.RecoId = Guid.NewGuid();
-                tblRecomendation.Recomendation=model.Recomendation;
+                tblRecomendation.Recomendation = model.Recomendation;
                 tblRecomendation.RecostatusId = model.RecostatusID;
                 tblRecomendation.CreatinDate = DateTime.Now;
-                tblRecomendation.CreatedBy = model.CreatedBy;
+                tblRecomendation.CreatedBy = userId;
                 tblRecomendation.EvaluationYear = model.EvaluationYear;
-                tblRecomendation.IsActive=model.IsActive;
+                tblRecomendation.IsActive = model.IsActive;
+                tblRecomendation.InistId = model.InistId;
+
                 _context.TblRecomendations.Add(tblRecomendation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            model.Inistitutions=_context.TblInistitutions.Select(t=> new SelectListItem
+            model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
             {
                 Text = t.Name,
                 Value = t.InistId.ToString(),
@@ -96,7 +98,7 @@ namespace ATSManagement.Controllers
                 Text = t.Status,
                 Value = t.RecostatusId.ToString(),
             }).ToList();
-            model.RecostatusID=model.RecostatusID;
+            model.RecostatusID = model.RecostatusID;
             return View(model);
         }
 
@@ -111,12 +113,10 @@ namespace ATSManagement.Controllers
 
             var tblRecomendation = await _context.TblRecomendations.FindAsync(id);
             model.RecoId = tblRecomendation.RecoId;
-            model.CreatedBy = tblRecomendation.CreatedBy;
             model.EvaluationYear = tblRecomendation.EvaluationYear;
             model.Recomendation = tblRecomendation.Recomendation;
-            model.CreatinDate= tblRecomendation.CreatinDate;
-            model.EvaluationYear=tblRecomendation.EvaluationYear;
-            model.ModifyDate = tblRecomendation.ModifyDate;
+            model.CreatedBy = tblRecomendation.CreatedBy;
+            model.IsActive = tblRecomendation.IsActive;
             model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
             {
                 Text = t.Name,
@@ -133,7 +133,7 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-           return View(model);
+            return View(model);
         }
 
         // POST: Recomendations/Edit/5
@@ -144,7 +144,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> Edit(RecomendationModel model)
         {
             TblRecomendation tblRecomendation = await _context.TblRecomendations.FindAsync(model.RecoId);
-            if (model.RecoId==null)
+            if (model.RecoId == null)
             {
                 return NotFound();
             }
@@ -152,15 +152,33 @@ namespace ATSManagement.Controllers
             {
                 try
                 {
-                    tblRecomendation.CreatinDate = model.CreatinDate;
                     tblRecomendation.ModifyDate = DateTime.Now;
                     tblRecomendation.Recomendation = model.Recomendation;
                     tblRecomendation.RecostatusId = model.RecostatusID;
-                    tblRecomendation.InistId=model.InistId;
-                    tblRecomendation.EvaluationYear=model.EvaluationYear;
-                    tblRecomendation.IsActive= model.IsActive;
-                    _context.Update(model);
-                    await _context.SaveChangesAsync();
+                    tblRecomendation.InistId = model.InistId;
+                    tblRecomendation.EvaluationYear = model.EvaluationYear;
+                    tblRecomendation.IsActive = model.IsActive;
+                    int updated = await _context.SaveChangesAsync();
+                    if (updated > 0)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                        {
+                            Text = t.Name,
+                            Value = t.InistId.ToString(),
+                        }).ToList();
+                        model.InistId = tblRecomendation.InistId;
+                        model.Status = _context.TblRecomendationStatuses.Select(t => new SelectListItem
+                        {
+                            Text = t.Status,
+                            Value = t.RecostatusId.ToString(),
+                        }).ToList();
+                        model.RecostatusID = tblRecomendation.RecostatusId;
+                        return View(model);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -173,9 +191,23 @@ namespace ATSManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-          return View(model);
+            else
+            {
+                model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                {
+                    Text = t.Name,
+                    Value = t.InistId.ToString(),
+                }).ToList();
+                model.InistId = tblRecomendation.InistId;
+                model.Status = _context.TblRecomendationStatuses.Select(t => new SelectListItem
+                {
+                    Text = t.Status,
+                    Value = t.RecostatusId.ToString(),
+                }).ToList();
+                model.RecostatusID = tblRecomendation.RecostatusId;
+                return View(model);
+            }
         }
 
         // GET: Recomendations/Delete/5

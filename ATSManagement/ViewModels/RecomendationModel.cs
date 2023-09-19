@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
@@ -20,14 +19,14 @@ namespace ATSManagement.ViewModels
         public Guid? InistId { get; set; }
 
         [Display(Name = "Status")]
-      
+
         public List<SelectListItem>? Status { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? RecostatusID { get; set; }
 
         [Display(Name = "Evaluation year")]
         [Required(ErrorMessage = "*")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MMM}")]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime? EvaluationYear { get; set; }
 
@@ -36,11 +35,9 @@ namespace ATSManagement.ViewModels
         public Guid? CreatedBy { get; set; }
 
         [Display(Name = "Creation date")]
-        [Required(ErrorMessage = "*")]
         public DateTime? CreatinDate { get; set; }
 
         [Display(Name = "Modification date")]
-        [Required(ErrorMessage = "*")]
         public DateTime? ModifyDate { get; set; }
 
         [Display(Name = "IsActive?")]
