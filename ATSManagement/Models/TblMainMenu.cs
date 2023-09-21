@@ -11,5 +11,9 @@ public partial class TblMainMenu
 
     public string? MenuDescription { get; set; }
 
+    public int? DisplayOrder { get; set; }
+
+    public string? ClassSvg { get; set; }
+
     public virtual ICollection<TblSubmenu> TblSubmenus { get; set; } = new List<TblSubmenu>();
 }

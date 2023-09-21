@@ -1,4 +1,6 @@
+using ATSManagement.IModels;
 using ATSManagement.Models;
+using ATSManagement.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,7 @@ builder.Services.AddDbContext<AtsdbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(5),
                 errorNumbersToAdd: null);
         });
-    
+
 });
 // Add services to the container.
 builder.Services.AddServerSideBlazor(); // Add support for Blazor
@@ -26,6 +28,9 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+builder.Services.AddTransient<IMailService, MailService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

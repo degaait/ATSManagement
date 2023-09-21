@@ -33,12 +33,14 @@ namespace ATSManagement.Controllers
         public IActionResult Login(LoginModels collection)
         {
             bool isExist = false;
+            List<MenuModels> _menus = new List<MenuModels>();
             if (collection.Password != null && collection.UserName != null)
             {
                 string realPas = PawwordEncryption.DecryptPasswordBase64String("MTIzNDU2");
                 string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
-                isExist = _context.TblInternalUsers.Where(a => a.UserName == collection.UserName && a.Password == password).Any();
-                if (isExist)
+                TblInternalUser userinfo = (from items in _context.TblInternalUsers where items.UserName == collection.UserName && items.Password == password select items).FirstOrDefault();
+
+                if (userinfo != null)
                 {
                     LoginModels _loginCredentials = _context.TblInternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password).Select(x => new LoginModels
                     {
@@ -48,18 +50,40 @@ namespace ATSManagement.Controllers
                         UserId = x.UserId,
                         UserFullName = x.FirstName + " " + x.MidleName + " " + x.LastName,
 
-                    }).FirstOrDefault();  // Get the login user details and bind it to LoginModels class  
-                    List<MenuModels> _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                    }).FirstOrDefault();
+                    if (userinfo.IsSuperAdmin == true)
                     {
-                        MainMenuId = x.Menu.MenuId,
-                        MainMenuName = x.Menu.MenuName,
-                        SubMenuId = x.Id,
-                        SubMenuName = x.Submenu,
-                        ControllerName = x.Controller,
-                        ActionName = x.Action,
-                        DepId = x.RoleId,
-                        DepName = x.Dep.DepName
-                    }).ToList();
+                        _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                        {
+                            MainMenuId = x.Menu.MenuId,
+                            MainMenuName = x.Menu.MenuName,
+                            SubMenuId = x.Id,
+                            SubMenuName = x.Submenu,
+                            ControllerName = x.Controller,
+                            ActionName = x.Action,
+                            DepId = x.RoleId,
+                            DepName = x.Dep.DepName,
+                            DisplayOrder = x.Menu.DisplayOrder,
+                            Class_SVC = x.Menu.ClassSvg
+                        }).OrderBy(p => p.DisplayOrder).ToList();
+                    }
+                    else
+                    {
+                        // Get the login user details and bind it to LoginModels class  
+                        _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                        {
+                            MainMenuId = x.Menu.MenuId,
+                            MainMenuName = x.Menu.MenuName,
+                            SubMenuId = x.Id,
+                            SubMenuName = x.Submenu,
+                            ControllerName = x.Controller,
+                            ActionName = x.Action,
+                            DepId = x.RoleId,
+                            DepName = x.Dep.DepName,
+                            DisplayOrder = x.Menu.DisplayOrder,
+                            Class_SVC = x.Menu.ClassSvg
+                        }).OrderBy(p => p.DisplayOrder).ToList();
+                    }
                     //Get the Menu details from entity and bind it in MenuModels list.  
                     //SetAuthCookie(_loginCredentials.UserName, false); // set the formauthentication cookie  
                     string menusString = JsonSerializer.Serialize(_menus);

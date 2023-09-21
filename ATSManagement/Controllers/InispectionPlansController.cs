@@ -1,4 +1,5 @@
-﻿using ATSManagement.Models;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor)
+        private readonly IMailService _mail;
+        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _mail = mail;
         }
 
         // GET: InispectionPlans

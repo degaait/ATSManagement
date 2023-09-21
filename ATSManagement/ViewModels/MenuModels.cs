@@ -10,5 +10,7 @@
         public string? ActionName { get; set; }
         public Guid? DepId { get; set; }
         public string? DepName { get; set; }
+        public int? DisplayOrder { get; set; }
+        public string? Class_SVC { get; set; }
     }
 }

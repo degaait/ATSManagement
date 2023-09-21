@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
+
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -40,7 +41,6 @@ public partial class AtsdbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-
         var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         var configSection = configBuilder.GetSection("ConnectionStrings");
         var connectionString = configSection["ATSDB"] ?? null;
@@ -48,6 +48,8 @@ public partial class AtsdbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Latin1_General_CI_AS");
+
         modelBuilder.Entity<TblAssignedYearlyPlan>(entity =>
         {
             entity.ToTable("tbl_AssignedYearlyPlans");
@@ -170,6 +172,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.MenuId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("MenuID");
+            entity.Property(e => e.ClassSvg).HasColumnName("Class_svg");
             entity.Property(e => e.MenuDescription).HasMaxLength(250);
             entity.Property(e => e.MenuName).HasMaxLength(250);
         });
