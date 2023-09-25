@@ -1,9 +1,9 @@
-﻿using ATSManagement.Models;
+﻿using System.Text.Json;
+using ATSManagement.Models;
 using ATSManagement.Security;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace ATSManagement.Controllers
 {

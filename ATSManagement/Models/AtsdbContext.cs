@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
-
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -122,9 +121,7 @@ public partial class AtsdbContext : DbContext
         modelBuilder.Entity<TblInspectionPlan>(entity =>
         {
             entity.HasKey(e => e.InspectionPlanId);
-
             entity.ToTable("tbl_InspectionPlans");
-
             entity.Property(e => e.InspectionPlanId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreationDate).HasColumnType("datetime");
             entity.Property(e => e.InspectionYear).HasColumnType("date");
