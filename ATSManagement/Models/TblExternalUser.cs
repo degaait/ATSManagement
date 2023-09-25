@@ -26,4 +26,6 @@ public partial class TblExternalUser
     public bool? IsActive { get; set; }
 
     public virtual TblInistitution? Inist { get; set; }
+
+    public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 }

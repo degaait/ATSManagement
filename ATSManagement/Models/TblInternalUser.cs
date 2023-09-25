@@ -1,4 +1,7 @@
-﻿namespace ATSManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
 
 public partial class TblInternalUser
 {
@@ -34,7 +37,11 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 
+    public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
+
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();
 
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
+
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 }

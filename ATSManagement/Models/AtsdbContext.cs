@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
+
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -20,7 +21,11 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblInistitution> TblInistitutions { get; set; }
 
+    public virtual DbSet<TblInspectionInstitution> TblInspectionInstitutions { get; set; }
+
     public virtual DbSet<TblInspectionPlan> TblInspectionPlans { get; set; }
+
+    public virtual DbSet<TblInspectionStatus> TblInspectionStatuses { get; set; }
 
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
 
@@ -33,6 +38,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblRecomendationStatus> TblRecomendationStatuses { get; set; }
 
     public virtual DbSet<TblRole> TblRoles { get; set; }
+
+    public virtual DbSet<TblSpecificPlan> TblSpecificPlans { get; set; }
 
     public virtual DbSet<TblStatus> TblStatuses { get; set; }
 
@@ -118,10 +125,37 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(250);
         });
 
+        modelBuilder.Entity<TblInspectionInstitution>(entity =>
+        {
+            entity.HasKey(e => e.SubMissionId);
+
+            entity.ToTable("tbl_Inspection_Institutions");
+
+            entity.Property(e => e.SubMissionId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ExpectedResponseDate).HasColumnType("datetime");
+            entity.Property(e => e.RequestStatus).HasMaxLength(350);
+            entity.Property(e => e.RequestedDate).HasColumnType("datetime");
+            entity.Property(e => e.ResponseStatus).HasMaxLength(150);
+
+            entity.HasOne(d => d.Institution).WithMany(p => p.TblInspectionInstitutions)
+                .HasForeignKey(d => d.InstitutionId)
+                .HasConstraintName("FK_tbl_Inspection_Institutions_tbl_Inistitutions");
+
+            entity.HasOne(d => d.ReturnedByNavigation).WithMany(p => p.TblInspectionInstitutions)
+                .HasForeignKey(d => d.ReturnedBy)
+                .HasConstraintName("FK_tbl_Inspection_Institutions_tbl_ExternalUser");
+
+            entity.HasOne(d => d.SubmittedByNavigation).WithMany(p => p.TblInspectionInstitutions)
+                .HasForeignKey(d => d.SubmittedBy)
+                .HasConstraintName("FK_tbl_Inspection_Institutions_tbl_InternalUsers");
+        });
+
         modelBuilder.Entity<TblInspectionPlan>(entity =>
         {
             entity.HasKey(e => e.InspectionPlanId);
+
             entity.ToTable("tbl_InspectionPlans");
+
             entity.Property(e => e.InspectionPlanId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreationDate).HasColumnType("datetime");
             entity.Property(e => e.InspectionYear).HasColumnType("date");
@@ -136,6 +170,15 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.TblInspectionPlans)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_tbl_InspectionPlans_tbl_InternalUsers");
+        });
+
+        modelBuilder.Entity<TblInspectionStatus>(entity =>
+        {
+            entity.HasKey(e => e.ProId);
+
+            entity.ToTable("tbl_InspectionStatus");
+
+            entity.Property(e => e.ProId).HasDefaultValueSql("(newid())");
         });
 
         modelBuilder.Entity<TblInternalUser>(entity =>
@@ -238,6 +281,25 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.RoleId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("RoleID");
+        });
+
+        modelBuilder.Entity<TblSpecificPlan>(entity =>
+        {
+            entity.HasKey(e => e.SpecificPlanId);
+
+            entity.ToTable("tbl_SpecificPlans");
+
+            entity.Property(e => e.SpecificPlanId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModificationDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_InternalUsers");
+
+            entity.HasOne(d => d.InspectionPlan).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.InspectionPlanId)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_InspectionPlans");
         });
 
         modelBuilder.Entity<TblStatus>(entity =>

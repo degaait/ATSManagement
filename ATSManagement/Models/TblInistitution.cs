@@ -13,6 +13,8 @@ public partial class TblInistitution
 
     public virtual ICollection<TblExternalUser> TblExternalUsers { get; set; } = new List<TblExternalUser>();
 
+    public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
+
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
 
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();

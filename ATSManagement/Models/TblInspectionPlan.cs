@@ -29,5 +29,7 @@ public partial class TblInspectionPlan
 
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
 
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
+
     public virtual TblInternalUser? User { get; set; }
 }
