@@ -1,8 +1,9 @@
-﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
-@inject AtsdbContext ats;
+﻿@model IEnumerable<ATSManagement.Models.TblInspectionInstitution>
+
 @{
     ViewData["Title"] = "Index";
 }
+
 <style type="text/css">
     .table thead th {
         text-transform: capitalize !important;
@@ -17,7 +18,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Yearly Inispection plans
+                    Recomendations
                 </h2>
             </div>
             <!-- Page title actions -->
@@ -27,10 +28,6 @@
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                         Create new
-                    </a>
-                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                     </a>
                 </div>
             </div>
@@ -45,7 +42,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Plans</h4>
+                        <h4 class="card-title">@ViewBag.Inistitutions</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -53,28 +50,34 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Title
+                                            @Html.DisplayNameFor(model => model.RequestStatus)
                                         </th>
                                         <th>
-                                            Description
+                                            @Html.DisplayNameFor(model => model.RecomendationDetail)
                                         </th>
                                         <th>
-                                            Creation date
+                                            @Html.DisplayNameFor(model => model.RecomendationFeedBack)
                                         </th>
                                         <th>
-                                            Targeted Inistitutions
+                                            @Html.DisplayNameFor(model => model.RequestedDate)
                                         </th>
                                         <th>
-                                            Modification date
+                                            @Html.DisplayNameFor(model => model.ExpectedResponseDate)
                                         </th>
                                         <th>
-                                            Inpection year
+                                            @Html.DisplayNameFor(model => model.ResponseStatus)
                                         </th>
                                         <th>
-                                            Created by
+                                            @Html.DisplayNameFor(model => model.ReComendationFile)
                                         </th>
                                         <th>
-                                            Task status
+                                            @Html.DisplayNameFor(model => model.Institution)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ReturnedByNavigation)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.SubmittedByNavigation)
                                         </th>
                                         <th></th>
                                     </tr>
@@ -82,40 +85,36 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        var instr = (from ints in ats.TblPlanInistitutions
-                                                     join related in ats.TblInistitutions on ints.InistId equals related.InistId
-                                                     where ints.PlanId == item.InspectionPlanId
-                                                     select new
-                                                     {
-                                                         Name = related.Name
-                                                     }).ToList();
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.PlanTitle)
+                                                @Html.DisplayFor(modelItem => item.RequestStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.PlanDescription)
+                                                @Html.DisplayFor(modelItem => item.RecomendationDetail)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CreationDate)
+                                                @Html.DisplayFor(modelItem => item.RecomendationFeedBack)
                                             </td>
                                             <td>
-                                                @foreach (var items in instr)
-                                                {
-                                                    @Html.DisplayFor(modelItem => items.Name) <br />
-                                                }
+                                                @Html.DisplayFor(modelItem => item.RequestedDate)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ModificationDate)
+                                                @Html.DisplayFor(modelItem => item.ExpectedResponseDate)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.InspectionYear.Value.Year)
+                                                @Html.DisplayFor(modelItem => item.ResponseStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.User.FirstName)
+                                                @Html.DisplayFor(modelItem => item.ReComendationFile)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Status.Status)
+                                                @Html.DisplayFor(modelItem => item.Institution.InistId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ReturnedByNavigation.ExterUserId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SubmittedByNavigation.UserId)
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
@@ -124,31 +123,16 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" asp-action="Index" asp-controller="InspectionInstitutions" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" fill-rule="evenodd"><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8" /></g></svg>&nbsp;
-                                                                Send to Institutions
-                                                            </a>
-                                                            <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-                                                                Specific plans
-                                                            </a>
-                                                            <a class="dropdown-item" asp-action="Assign" asp-route-id="@item.InspectionPlanId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
-                                                                </svg>&nbsp;
-                                                                Assign task to user
-                                                            </a>
-                                                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
+                                                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SubMissionId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
                                                                     <path d="M13.5 6.5l4 4"></path>
                                                                     <path d="M16 19h6"></path>
                                                                     <path d="M19 16v6"></path>
-                                                                </svg>&nbsp; Edit
+                                                                </svg>&nbsp;  Edit
                                                             </a>
-                                                            <a class="dropdown-item" asp-action="Details" asp-route-id="@item.InspectionPlanId">
+                                                            <a class="dropdown-item" asp-action="Details" asp-route-id="@item.SubMissionId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M13 5h8"></path>
@@ -157,14 +141,14 @@
                                                                     <path d="M13 19h5"></path>
                                                                     <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                     <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                </svg> &nbsp; Detail
+                                                                </svg> &nbsp;Detail
                                                             </a>
-                                                            <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.InspectionPlanId">
+                                                            <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SubMissionId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
                                                                     <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor"></path>
-                                                                </svg>&nbsp; Delete
+                                                                </svg>&nbsp;  Delete
                                                             </a>
                                                         </div>
                                                     </div>
@@ -182,25 +166,3 @@
     </div>
 </div>
 
-@section scripts{
-
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
-    <script type="text/javascript">
-        new DataTable('#role', {
-            deferRender: true,
-            scrollCollapse: true,
-            scroller: true,
-        });
-    </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
-        });
-    </script>
-}

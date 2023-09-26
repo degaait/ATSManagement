@@ -1,5 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblSpecificPlan>
-
+﻿@model IEnumerable<ATSManagement.Models.TblSpecificPlan>   
 @{
     ViewData["Title"] = "Index";
 }
@@ -82,7 +81,7 @@
                                                 @Html.DisplayFor(modelItem => item.Title)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Description)
+                                                @Html.Raw( item.Description)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CreatedDate)

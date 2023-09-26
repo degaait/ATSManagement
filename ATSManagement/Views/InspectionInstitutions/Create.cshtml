@@ -1,0 +1,75 @@
+﻿@model ATSManagement.Models.TblInspectionInstitution
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TblInspectionInstitution</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RequestStatus" class="control-label"></label>
+                <input asp-for="RequestStatus" class="form-control" />
+                <span asp-validation-for="RequestStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecomendationDetail" class="control-label"></label>
+                <input asp-for="RecomendationDetail" class="form-control" />
+                <span asp-validation-for="RecomendationDetail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecomendationFeedBack" class="control-label"></label>
+                <input asp-for="RecomendationFeedBack" class="form-control" />
+                <span asp-validation-for="RecomendationFeedBack" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestedDate" class="control-label"></label>
+                <input asp-for="RequestedDate" class="form-control" />
+                <span asp-validation-for="RequestedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpectedResponseDate" class="control-label"></label>
+                <input asp-for="ExpectedResponseDate" class="form-control" />
+                <span asp-validation-for="ExpectedResponseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstitutionId" class="control-label"></label>
+                <select asp-for="InstitutionId" class ="form-control" asp-items="ViewBag.InstitutionId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResponseStatus" class="control-label"></label>
+                <input asp-for="ResponseStatus" class="form-control" />
+                <span asp-validation-for="ResponseStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReComendationFile" class="control-label"></label>
+                <input asp-for="ReComendationFile" class="form-control" />
+                <span asp-validation-for="ReComendationFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmittedBy" class="control-label"></label>
+                <select asp-for="SubmittedBy" class ="form-control" asp-items="ViewBag.SubmittedBy"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReturnedBy" class="control-label"></label>
+                <select asp-for="ReturnedBy" class ="form-control" asp-items="ViewBag.ReturnedBy"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
