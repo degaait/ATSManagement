@@ -15,6 +15,7 @@ namespace ATSManagement.ViewModels
         public string? Description { get; set; }
         [Display(Name = "Created date")]
         [Required(ErrorMessage = "*")]
+        [DataType(DataType.DateTime)]
         public DateTime? CreatedDate { get; set; }
         [Display(Name = "Modification date")]
         [Required(ErrorMessage = "*")]

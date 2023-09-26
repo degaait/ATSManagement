@@ -99,13 +99,13 @@ namespace ATSManagement.Controllers
         }
 
         // GET: InispectionPlans/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public Task<IActionResult> Edit(Guid? id)
         {
             InispectionPlan inispection = new InispectionPlan();
             List<Guid> InistId = new List<Guid>();
             if (id == null || _context.TblInspectionPlans == null)
             {
-                return NotFound();
+                return Task.FromResult<IActionResult>(NotFound());
             }
 
             var tblInspectionPlan = _context.TblInspectionPlans.Include("TblPlanInistitutions").FirstOrDefault(a => a.InspectionPlanId == id.Value);
@@ -125,10 +125,10 @@ namespace ATSManagement.Controllers
             inispection.InistId = InistId.ToArray();
             if (tblInspectionPlan == null)
             {
-                return NotFound();
+                return Task.FromResult<IActionResult>(NotFound());
             }
             ViewData["UserId"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblInspectionPlan.UserId);
-            return View(inispection);
+            return Task.FromResult<IActionResult>(View(inispection));
         }
 
         // POST: InispectionPlans/Edit/5
