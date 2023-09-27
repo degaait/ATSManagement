@@ -1,4 +1,7 @@
-﻿namespace ATSManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
 
 public partial class TblRecomendation
 {
@@ -18,7 +21,7 @@ public partial class TblRecomendation
 
     public DateTime? ModifyDate { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 

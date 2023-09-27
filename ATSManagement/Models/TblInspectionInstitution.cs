@@ -19,7 +19,7 @@ public partial class TblInspectionInstitution
 
     public Guid? InstitutionId { get; set; }
 
-    public string? ResponseStatus { get; set; }
+    public Guid? ResponseStatusId { get; set; }
 
     public string? ReComendationFile { get; set; }
 
@@ -28,6 +28,8 @@ public partial class TblInspectionInstitution
     public Guid? ReturnedBy { get; set; }
 
     public virtual TblInistitution? Institution { get; set; }
+
+    public virtual TblReponseStatus? ResponseStatus { get; set; }
 
     public virtual TblExternalUser? ReturnedByNavigation { get; set; }
 

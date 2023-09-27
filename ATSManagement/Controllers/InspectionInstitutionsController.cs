@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
+using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATSManagement.Models;
 
 namespace ATSManagement.Controllers
 {
@@ -49,10 +46,13 @@ namespace ATSManagement.Controllers
         // GET: InspectionInstitutions/Create
         public IActionResult Create()
         {
-            ViewData["InstitutionId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId");
-            ViewData["ReturnedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId");
-            ViewData["SubmittedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
-            return View();
+            RecomendationModel model = new RecomendationModel();
+            model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+            {
+                Text = t.Name,
+                Value = t.InistId.ToString(),
+            }).ToList();
+            return View(model);
         }
 
         // POST: InspectionInstitutions/Create
@@ -60,19 +60,27 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SubMissionId,RequestStatus,RecomendationDetail,RecomendationFeedBack,RequestedDate,ExpectedResponseDate,InstitutionId,ResponseStatus,ReComendationFile,SubmittedBy,ReturnedBy")] TblInspectionInstitution tblInspectionInstitution)
+        public async Task<IActionResult> Create(RecomendationModel model)
         {
-            if (ModelState.IsValid)
+            model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
             {
-                tblInspectionInstitution.SubMissionId = Guid.NewGuid();
-                _context.Add(tblInspectionInstitution);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Text = t.Name,
+                Value = t.InistId.ToString(),
+            }).ToList();
+            try
+            {
+                TblInspectionInstitution tblInspectionInstitution = new TblInspectionInstitution();
+                tblInspectionInstitution.RecomendationDetail = model.Recomendation;
+                // tblInspectionInstitution.RequestStatus = model.r;
+
             }
-            ViewData["InstitutionId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblInspectionInstitution.InstitutionId);
-            ViewData["ReturnedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblInspectionInstitution.ReturnedBy);
-            ViewData["SubmittedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblInspectionInstitution.SubmittedBy);
-            return View(tblInspectionInstitution);
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+            return View(model);
         }
 
         // GET: InspectionInstitutions/Edit/5
@@ -167,14 +175,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblInspectionInstitutions.Remove(tblInspectionInstitution);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblInspectionInstitutionExists(Guid id)
         {
-          return (_context.TblInspectionInstitutions?.Any(e => e.SubMissionId == id)).GetValueOrDefault();
+            return (_context.TblInspectionInstitutions?.Any(e => e.SubMissionId == id)).GetValueOrDefault();
         }
     }
 }

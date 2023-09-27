@@ -37,6 +37,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblRecomendationStatus> TblRecomendationStatuses { get; set; }
 
+    public virtual DbSet<TblReponseStatus> TblReponseStatuses { get; set; }
+
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
     public virtual DbSet<TblSpecificPlan> TblSpecificPlans { get; set; }
@@ -135,11 +137,14 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.ExpectedResponseDate).HasColumnType("datetime");
             entity.Property(e => e.RequestStatus).HasMaxLength(350);
             entity.Property(e => e.RequestedDate).HasColumnType("datetime");
-            entity.Property(e => e.ResponseStatus).HasMaxLength(150);
 
             entity.HasOne(d => d.Institution).WithMany(p => p.TblInspectionInstitutions)
                 .HasForeignKey(d => d.InstitutionId)
                 .HasConstraintName("FK_tbl_Inspection_Institutions_tbl_Inistitutions");
+
+            entity.HasOne(d => d.ResponseStatus).WithMany(p => p.TblInspectionInstitutions)
+                .HasForeignKey(d => d.ResponseStatusId)
+                .HasConstraintName("FK_tbl_Inspection_Institutions_tbl_ReponseStatus");
 
             entity.HasOne(d => d.ReturnedByNavigation).WithMany(p => p.TblInspectionInstitutions)
                 .HasForeignKey(d => d.ReturnedBy)
@@ -270,6 +275,16 @@ public partial class AtsdbContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("RecostatusID");
             entity.Property(e => e.Status).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<TblReponseStatus>(entity =>
+        {
+            entity.HasKey(e => e.ResponseStatusId);
+
+            entity.ToTable("tbl_ReponseStatus");
+
+            entity.Property(e => e.ResponseStatusId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.StatusName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<TblRole>(entity =>

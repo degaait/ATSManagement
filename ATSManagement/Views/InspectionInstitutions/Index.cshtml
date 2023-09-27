@@ -50,34 +50,34 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.RequestStatus)
+                                           Final status
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.RecomendationDetail)
+                                           Detail
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.RecomendationFeedBack)
+                                            Response
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.RequestedDate)
+                                           Requested Date
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ExpectedResponseDate)
+                                          Expected feedback Date
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ResponseStatus)
+                                            Decission
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ReComendationFile)
+                                           Report file
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Institution)
+                                           Institutions
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ReturnedByNavigation)
+                                           Responded by
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.SubmittedByNavigation)
+                                            Submitted by
                                         </th>
                                         <th></th>
                                     </tr>
@@ -90,10 +90,10 @@
                                                 @Html.DisplayFor(modelItem => item.RequestStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.RecomendationDetail)
+                                                @Html.Raw(item.RecomendationDetail)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.RecomendationFeedBack)
+                                                @Html.Raw(item.RecomendationFeedBack)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.RequestedDate)
@@ -108,13 +108,15 @@
                                                 @Html.DisplayFor(modelItem => item.ReComendationFile)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Institution.InistId)
+                                                @Html.DisplayFor(modelItem => item.Institution.Name)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ReturnedByNavigation.ExterUserId)
+                                                @Html.DisplayFor(modelItem => item.ReturnedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.ReturnedByNavigation.LastName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.SubmittedByNavigation.UserId)
+                                                @Html.DisplayFor(modelItem => item.SubmittedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.SubmittedByNavigation.MidleName)
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
