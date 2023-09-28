@@ -21,7 +21,7 @@ public partial class TblRecomendation
 
     public DateTime? ModifyDate { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 

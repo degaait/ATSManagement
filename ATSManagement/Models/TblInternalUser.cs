@@ -37,6 +37,10 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 
+    public virtual ICollection<TblCivilJustice> TblCivilJusticeAssignedByNavigations { get; set; } = new List<TblCivilJustice>();
+
+    public virtual ICollection<TblCivilJustice> TblCivilJusticeAssignedToNavigations { get; set; } = new List<TblCivilJustice>();
+
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();

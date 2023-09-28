@@ -11,6 +11,10 @@ public partial class TblInistitution
 
     public string? Description { get; set; }
 
+    public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
+
+    public virtual ICollection<TblExternalRequest> TblExternalRequests { get; set; } = new List<TblExternalRequest>();
+
     public virtual ICollection<TblExternalUser> TblExternalUsers { get; set; } = new List<TblExternalUser>();
 
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();

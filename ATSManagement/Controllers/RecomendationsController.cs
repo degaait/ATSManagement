@@ -110,7 +110,6 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-
             var tblRecomendation = await _context.TblRecomendations.FindAsync(id);
             model.RecoId = tblRecomendation.RecoId;
             model.EvaluationYear = tblRecomendation.EvaluationYear;

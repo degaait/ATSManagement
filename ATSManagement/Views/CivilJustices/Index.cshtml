@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ATSManagement.Models.TblCivilJustice>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RequestDetail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssignedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssingmentRemark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProgressStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsUpprovedByUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsUprovedByTeam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsUprovedByDeputy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TopStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssignedByNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssignedToNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CaseType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dep)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inist)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequestedByNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestDetail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssingmentRemark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProgressStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsUpprovedByUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsUprovedByTeam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsUprovedByDeputy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TopStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedByNavigation.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedToNavigation.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseType.CaseTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dep.DepId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Inist.InistId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestedByNavigation.ExterUserId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RequestId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RequestId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

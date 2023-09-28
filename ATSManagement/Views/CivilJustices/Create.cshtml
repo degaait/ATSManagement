@@ -1,0 +1,103 @@
+﻿@model ATSManagement.Models.TblCivilJustice
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TblCivilJustice</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RequestDetail" class="control-label"></label>
+                <input asp-for="RequestDetail" class="form-control" />
+                <span asp-validation-for="RequestDetail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestedBy" class="control-label"></label>
+                <select asp-for="RequestedBy" class ="form-control" asp-items="ViewBag.RequestedBy"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepId" class="control-label"></label>
+                <select asp-for="DepId" class ="form-control" asp-items="ViewBag.DepId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CaseTypeId" class="control-label"></label>
+                <select asp-for="CaseTypeId" class ="form-control" asp-items="ViewBag.CaseTypeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedBy" class="control-label"></label>
+                <select asp-for="AssignedBy" class ="form-control" asp-items="ViewBag.AssignedBy"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedDate" class="control-label"></label>
+                <input asp-for="AssignedDate" class="form-control" />
+                <span asp-validation-for="AssignedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DueDate" class="control-label"></label>
+                <input asp-for="DueDate" class="form-control" />
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssingmentRemark" class="control-label"></label>
+                <input asp-for="AssingmentRemark" class="form-control" />
+                <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedTo" class="control-label"></label>
+                <select asp-for="AssignedTo" class ="form-control" asp-items="ViewBag.AssignedTo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProgressStatus" class="control-label"></label>
+                <input asp-for="ProgressStatus" class="form-control" />
+                <span asp-validation-for="ProgressStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsUpprovedByUser" class="control-label"></label>
+                <input asp-for="IsUpprovedByUser" class="form-control" />
+                <span asp-validation-for="IsUpprovedByUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsUprovedByTeam" class="control-label"></label>
+                <input asp-for="IsUprovedByTeam" class="form-control" />
+                <span asp-validation-for="IsUprovedByTeam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsUprovedByDeputy" class="control-label"></label>
+                <input asp-for="IsUprovedByDeputy" class="form-control" />
+                <span asp-validation-for="IsUprovedByDeputy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TopStatus" class="control-label"></label>
+                <input asp-for="TopStatus" class="form-control" />
+                <span asp-validation-for="TopStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

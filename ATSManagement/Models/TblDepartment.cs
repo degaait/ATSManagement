@@ -9,6 +9,8 @@ public partial class TblDepartment
 
     public string? DepName { get; set; }
 
+    public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
+
     public virtual ICollection<TblInternalUser> TblInternalUsers { get; set; } = new List<TblInternalUser>();
 
     public virtual ICollection<TblSubmenu> TblSubmenus { get; set; } = new List<TblSubmenu>();

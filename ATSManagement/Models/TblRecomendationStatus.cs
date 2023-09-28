@@ -9,5 +9,7 @@ public partial class TblRecomendationStatus
 
     public string? Status { get; set; }
 
+    public string? StatusColour { get; set; }
+
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
 }

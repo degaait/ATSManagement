@@ -15,7 +15,13 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; }
 
+    public virtual DbSet<TblCivilJustice> TblCivilJustices { get; set; }
+
+    public virtual DbSet<TblCivilJusticeCaseType> TblCivilJusticeCaseTypes { get; set; }
+
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
+
+    public virtual DbSet<TblExternalRequest> TblExternalRequests { get; set; }
 
     public virtual DbSet<TblExternalUser> TblExternalUsers { get; set; }
 
@@ -33,6 +39,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblPlanInistitution> TblPlanInistitutions { get; set; }
 
+    public virtual DbSet<TblPriority> TblPriorities { get; set; }
+
     public virtual DbSet<TblRecomendation> TblRecomendations { get; set; }
 
     public virtual DbSet<TblRecomendationStatus> TblRecomendationStatuses { get; set; }
@@ -48,12 +56,9 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblSubmenu> TblSubmenus { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        var configSection = configBuilder.GetSection("ConnectionStrings");
-        var connectionString = configSection["ATSDB"] ?? null;
-        optionsBuilder.UseSqlServer(connectionString);
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CI_AS");
@@ -84,6 +89,64 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_AssignedYearlyPlans_tbl_Status");
         });
 
+        modelBuilder.Entity<TblCivilJustice>(entity =>
+        {
+            entity.HasKey(e => e.RequestId);
+
+            entity.ToTable("tbl_CivilJustice");
+
+            entity.Property(e => e.RequestId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("RequestID");
+            entity.Property(e => e.AssignedDate).HasColumnType("datetime");
+            entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.InistId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ProgressStatus).HasMaxLength(250);
+            entity.Property(e => e.TopStatus).HasMaxLength(250);
+
+            entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblCivilJusticeAssignedByNavigations)
+                .HasForeignKey(d => d.AssignedBy)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_InternalUsers1");
+
+            entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.TblCivilJusticeAssignedToNavigations)
+                .HasForeignKey(d => d.AssignedTo)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_InternalUsers");
+
+            entity.HasOne(d => d.CaseType).WithMany(p => p.TblCivilJustices)
+                .HasForeignKey(d => d.CaseTypeId)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_CivilJusticeCaseType");
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblCivilJustices)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_Department");
+
+            entity.HasOne(d => d.Inist).WithMany(p => p.TblCivilJustices)
+                .HasForeignKey(d => d.InistId)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_Inistitutions");
+
+            entity.HasOne(d => d.Priority).WithMany(p => p.TblCivilJustices)
+                .HasForeignKey(d => d.PriorityId)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_Priority");
+
+            entity.HasOne(d => d.RequestedByNavigation).WithMany(p => p.TblCivilJustices)
+                .HasForeignKey(d => d.RequestedBy)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_ExternalUser");
+        });
+
+        modelBuilder.Entity<TblCivilJusticeCaseType>(entity =>
+        {
+            entity.HasKey(e => e.CaseTypeId);
+
+            entity.ToTable("tbl_CivilJusticeCaseType");
+
+            entity.Property(e => e.CaseTypeId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("CaseTypeID");
+            entity.Property(e => e.CaseTypeName).HasMaxLength(250);
+        });
+
         modelBuilder.Entity<TblDepartment>(entity =>
         {
             entity.HasKey(e => e.DepId);
@@ -92,6 +155,26 @@ public partial class AtsdbContext : DbContext
 
             entity.Property(e => e.DepId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.DepName).HasMaxLength(300);
+        });
+
+        modelBuilder.Entity<TblExternalRequest>(entity =>
+        {
+            entity.HasKey(e => e.RequestId);
+
+            entity.ToTable("tbl_ExternalRequests");
+
+            entity.Property(e => e.RequestId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ExterUserId).HasColumnName("ExterUserID");
+            entity.Property(e => e.IntId).HasColumnName("IntID");
+            entity.Property(e => e.RequestedDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.ExterUser).WithMany(p => p.TblExternalRequests)
+                .HasForeignKey(d => d.ExterUserId)
+                .HasConstraintName("FK_tbl_ExternalRequests_tbl_ExternalUser");
+
+            entity.HasOne(d => d.Int).WithMany(p => p.TblExternalRequests)
+                .HasForeignKey(d => d.IntId)
+                .HasConstraintName("FK_tbl_ExternalRequests_tbl_Inistitutions");
         });
 
         modelBuilder.Entity<TblExternalUser>(entity =>
@@ -240,6 +323,16 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_Plan_Inistitution_tbl_YearlyPlans");
         });
 
+        modelBuilder.Entity<TblPriority>(entity =>
+        {
+            entity.HasKey(e => e.PriorityId);
+
+            entity.ToTable("tbl_Priority");
+
+            entity.Property(e => e.PriorityId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.PriorityName).HasMaxLength(250);
+        });
+
         modelBuilder.Entity<TblRecomendation>(entity =>
         {
             entity.HasKey(e => e.RecoId);
@@ -326,7 +419,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.StatusId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("StatusID");
-            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.Status).HasMaxLength(300);
         });
 
         modelBuilder.Entity<TblSubmenu>(entity =>
