@@ -1,4 +1,5 @@
 ﻿using ATSManagement.Models;
+using ATSManagement.Security;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -44,8 +45,13 @@ namespace ATSManagement.Controllers
         // GET: ExternalUsers/Create
         public IActionResult Create()
         {
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "Name");
-            return View();
+            ExternalUser model = new ExternalUser();
+            model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+            {
+                Text = t.Name,
+                Value = t.InistId.ToString(),
+            }).ToList();
+            return View(model);
         }
 
         // POST: ExternalUsers/Create
@@ -53,17 +59,45 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExterUserId,FirstName,MiddleName,LastName,Email,PhoneNumber,UserName,Password,InistId")] TblExternalUser tblExternalUser)
+        public async Task<IActionResult> Create(ExternalUser model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                tblExternalUser.ExterUserId = Guid.NewGuid();
+                TblExternalUser tblExternalUser = new TblExternalUser();
+                tblExternalUser.InistId = model.InistId;
+                tblExternalUser.FirstName = model.FirstName;
+                tblExternalUser.LastName = model.LastName;
+                tblExternalUser.MiddleName = model.MiddleName;
+                tblExternalUser.UserName = model.UserName;
+                tblExternalUser.Email = model.EmailAddress;
+                tblExternalUser.PhoneNumber = model.PhoneNumber;
+                tblExternalUser.IsActive = model.IsActive;
+                tblExternalUser.Password = PawwordEncryption.EncryptPasswordBase64Strig(model.Password);
                 _context.Add(tblExternalUser);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                    {
+                        Text = t.Name,
+                        Value = t.InistId.ToString(),
+                    }).ToList();
+                    return View(model);
+                }
             }
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblExternalUser.InistId);
-            return View(tblExternalUser);
+            catch (Exception)
+            {
+                model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                {
+                    Text = t.Name,
+                    Value = t.InistId.ToString(),
+                }).ToList();
+                return View(model);
+            }
         }
 
         // GET: ExternalUsers/Edit/5
@@ -81,6 +115,12 @@ namespace ATSManagement.Controllers
             externalUser.MiddleName = tblExternalUser.MiddleName;
             externalUser.LastName = tblExternalUser.LastName;
             externalUser.PhoneNumber = tblExternalUser.PhoneNumber;
+            externalUser.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+            {
+                Text = t.Name,
+                Value = t.InistId.ToString(),
+            }).ToList();
+            externalUser.InistId = tblExternalUser.InistId;
             if (tblExternalUser.IsActive == true)
             {
                 externalUser.IsActive = true;
@@ -94,7 +134,6 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "Name", tblExternalUser.InistId);
             return View(externalUser);
         }
 
@@ -103,34 +142,52 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ExterUserId,FirstName,MiddleName,LastName,Email,PhoneNumber,UserName,Password,InistId")] TblExternalUser tblExternalUser)
+        public async Task<IActionResult> Edit(ExternalUser model)
         {
-            if (id != tblExternalUser.ExterUserId)
+            if (!TblExternalUserExists(model.ExterUserId))
             {
                 return NotFound();
             }
-            if (ModelState.IsValid)
+            try
             {
-                try
+                TblExternalUser tblExternalUser = await _context.TblExternalUsers.FindAsync(model.ExterUserId);
+                tblExternalUser.Email = model.EmailAddress;
+                tblExternalUser.FirstName = model.FirstName;
+                tblExternalUser.LastName = model.LastName;
+                tblExternalUser.MiddleName = model.MiddleName;
+                tblExternalUser.PhoneNumber = model.PhoneNumber;
+                tblExternalUser.UserName = model.UserName;
+                tblExternalUser.IsActive = model.IsActive;
+                tblExternalUser.InistId = model.InistId;
+                tblExternalUser.Password = PawwordEncryption.EncryptPasswordBase64Strig(model.Password);
+                int saved = _context.SaveChanges();
+                if (saved > 0)
                 {
-                    _context.Update(tblExternalUser);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!TblExternalUserExists(tblExternalUser.ExterUserId))
+                    model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                        Text = t.Name,
+                        Value = t.InistId.ToString(),
+                    }).ToList();
+                    return View(model);
+
+
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "Name", tblExternalUser.InistId);
-            return View(tblExternalUser);
+            catch (Exception)
+            {
+
+                model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                {
+                    Text = t.Name,
+                    Value = t.InistId.ToString(),
+                }).ToList();
+                return View(model);
+            }
+
         }
 
         // GET: ExternalUsers/Delete/5

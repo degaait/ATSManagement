@@ -23,6 +23,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblExternalRequest> TblExternalRequests { get; set; }
 
+    public virtual DbSet<TblExternalRequestStatus> TblExternalRequestStatuses { get; set; }
+
     public virtual DbSet<TblExternalUser> TblExternalUsers { get; set; }
 
     public virtual DbSet<TblInistitution> TblInistitutions { get; set; }
@@ -165,6 +167,7 @@ public partial class AtsdbContext : DbContext
 
             entity.Property(e => e.RequestId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.ExterUserId).HasColumnName("ExterUserID");
+            entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.IntId).HasColumnName("IntID");
             entity.Property(e => e.RequestedDate).HasColumnType("datetime");
 
@@ -172,9 +175,25 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.ExterUserId)
                 .HasConstraintName("FK_tbl_ExternalRequests_tbl_ExternalUser");
 
+            entity.HasOne(d => d.ExternalRequestStatus).WithMany(p => p.TblExternalRequests)
+                .HasForeignKey(d => d.ExternalRequestStatusId)
+                .HasConstraintName("FK_tbl_ExternalRequests_tbl_ExternalRequestStatus");
+
             entity.HasOne(d => d.Int).WithMany(p => p.TblExternalRequests)
                 .HasForeignKey(d => d.IntId)
                 .HasConstraintName("FK_tbl_ExternalRequests_tbl_Inistitutions");
+        });
+
+        modelBuilder.Entity<TblExternalRequestStatus>(entity =>
+        {
+            entity.HasKey(e => e.ExternalRequestStatusId);
+
+            entity.ToTable("tbl_ExternalRequestStatus");
+
+            entity.Property(e => e.ExternalRequestStatusId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ExternalRequestStatusID");
+            entity.Property(e => e.StatusName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblExternalUser>(entity =>

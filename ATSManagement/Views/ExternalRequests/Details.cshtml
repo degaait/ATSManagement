@@ -4,39 +4,69 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Your Requests
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <dl class="row">
+                                    <dt class="col-sm-2">
+                                        Details
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.RequestDetail)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                       Requested date
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.RequestedDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                       Requested by
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.ExterUser.FirstName)
+                                        @Html.DisplayFor(model => model.ExterUser.MiddleName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        Inistitutions
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.Int.Name)
+                                    </dd>
+                                </dl>
+                            </div>
+                            </div>
+                        <div class="card-footer text-end">
+                            <div class="d-flex">
+                                <a asp-action="Edit" asp-route-id="@Model?.RequestId">Edit</a> |
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h4>TblExternalRequest</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestDetail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestDetail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExterUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExterUser.ExterUserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Int)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Int.InistId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.RequestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>

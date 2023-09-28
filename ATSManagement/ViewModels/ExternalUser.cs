@@ -1,4 +1,4 @@
-﻿using ATSManagement.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
@@ -42,6 +42,6 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Inistitution")]
         public Guid? InistId { get; set; }
-        public IEnumerable<TblInistitution>? Inistitutions { get; set; }
+        public List<SelectListItem>? Inistitutions { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿using ATSManagement.Models;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
+using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
@@ -8,16 +9,19 @@ namespace ATSManagement.Controllers
     public class ExternalRequestsController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public ExternalRequestsController(AtsdbContext context)
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IMailService _mail;
+        public ExternalRequestsController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail)
         {
             _context = context;
+            _contextAccessor = contextAccessor;
+            _mail = mail;
         }
 
         // GET: ExternalRequests
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int);
+            var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -44,9 +48,14 @@ namespace ATSManagement.Controllers
         // GET: ExternalRequests/Create
         public IActionResult Create()
         {
-            ViewData["ExterUserId"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId");
-            ViewData["IntId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId");
-            return View();
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            model.RequestedDate = DateTime.Now;
+            model.ExterUserId = userId;
+            model.IntId = instName.InistId;
+
+            return View(model);
         }
 
         // POST: ExternalRequests/Create
@@ -54,23 +63,42 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,RequestDetail,RequestedDate,IntId,ExterUserId")] TblExternalRequest tblExternalRequest)
+        public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                tblExternalRequest.RequestId = Guid.NewGuid();
-                _context.Add(tblExternalRequest);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
+                TblExternalRequest requests = new TblExternalRequest();
+                requests.RequestDetail = model.RequestDetail;
+                requests.ExterUserId = model.ExterUserId;
+                requests.IntId = model.IntId;
+                requests.RequestedDate = DateTime.Now;
+                requests.ExternalRequestStatusId = status.ExternalRequestStatusId;
+                _context.TblExternalRequests.Add(requests);
+
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 1)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View(model);
+                }
             }
-            ViewData["ExterUserId"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblExternalRequest.ExterUserId);
-            ViewData["IntId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblExternalRequest.IntId);
-            return View(tblExternalRequest);
+            catch (Exception ex)
+            {
+
+                return View(model);
+            }
+
         }
 
         // GET: ExternalRequests/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
             if (id == null || _context.TblExternalRequests == null)
             {
                 return NotFound();
@@ -81,9 +109,14 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["ExterUserId"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblExternalRequest.ExterUserId);
-            ViewData["IntId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblExternalRequest.IntId);
-            return View(tblExternalRequest);
+            model.ExterUserId = tblExternalRequest.ExterUserId;
+            model.IntId = tblExternalRequest.IntId;
+            model.RequestedDate = tblExternalRequest.RequestedDate;
+            model.RequestId = tblExternalRequest.RequestId;
+            model.RequestDetail = tblExternalRequest.RequestDetail;
+
+
+            return View(model);
         }
 
         // POST: ExternalRequests/Edit/5
@@ -91,36 +124,38 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("RequestId,RequestDetail,RequestedDate,IntId,ExterUserId")] TblExternalRequest tblExternalRequest)
+        public async Task<IActionResult> Edit(CivilJusticeExternalRequestModel model)
         {
-            if (id != tblExternalRequest.RequestId)
+            try
             {
-                return NotFound();
-            }
+                TblExternalRequest tblExternalRequest = await _context.TblExternalRequests.FindAsync(model.RequestId);
+                if (tblExternalRequest == null)
+                {
+                    return NotFound();
+                }
+                tblExternalRequest.RequestDetail = model.RequestDetail;
 
-            if (ModelState.IsValid)
-            {
-                try
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
                 {
-                    _context.Update(tblExternalRequest);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!TblExternalRequestExists(tblExternalRequest.RequestId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return View(model);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["ExterUserId"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblExternalRequest.ExterUserId);
-            ViewData["IntId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblExternalRequest.IntId);
-            return View(tblExternalRequest);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TblExternalRequestExists(model.RequestId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
         }
 
         // GET: ExternalRequests/Delete/5
