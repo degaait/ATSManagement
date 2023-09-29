@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
 
@@ -36,6 +38,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblInspectionStatus> TblInspectionStatuses { get; set; }
 
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
+
+    public virtual DbSet<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; }
 
     public virtual DbSet<TblMainMenu> TblMainMenus { get; set; }
 
@@ -156,6 +160,7 @@ public partial class AtsdbContext : DbContext
             entity.ToTable("tbl_Department");
 
             entity.Property(e => e.DepId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.DepCode).HasMaxLength(50);
             entity.Property(e => e.DepName).HasMaxLength(300);
         });
 
@@ -308,6 +313,51 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Dep).WithMany(p => p.TblInternalUsers)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tbl_InternalUsers_tbl_Department");
+        });
+
+        modelBuilder.Entity<TblLegalStudiesDrafting>(entity =>
+        {
+            entity.HasKey(e => e.RequestId);
+
+            entity.ToTable("tbl_LegalStudiesDrafting");
+
+            entity.Property(e => e.RequestId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("RequestID");
+            entity.Property(e => e.AssignedDate).HasColumnType("datetime");
+            entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.ProgressStatus).HasMaxLength(250);
+            entity.Property(e => e.TopStatus).HasMaxLength(250);
+
+            entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblLegalStudiesDraftingAssignedByNavigations)
+                .HasForeignKey(d => d.AssignedBy)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_InternalUsers1");
+
+            entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.TblLegalStudiesDraftingAssignedToNavigations)
+                .HasForeignKey(d => d.AssignedTo)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_InternalUsers");
+
+            entity.HasOne(d => d.CaseType).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.CaseTypeId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_CivilJusticeCaseType");
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_Department");
+
+            entity.HasOne(d => d.Inist).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.InistId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_Inistitutions");
+
+            entity.HasOne(d => d.Priority).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.PriorityId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_Priority");
+
+            entity.HasOne(d => d.RequestedByNavigation).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.RequestedBy)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_ExternalUser");
         });
 
         modelBuilder.Entity<TblMainMenu>(entity =>

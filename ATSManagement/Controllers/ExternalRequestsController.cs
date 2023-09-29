@@ -201,5 +201,17 @@ namespace ATSManagement.Controllers
         {
             return (_context.TblExternalRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
+        public IActionResult AssignToDepartment(Guid id)
+        {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            model.RequestedDate = DateTime.Now;
+            model.ExterUserId = userId;
+            model.IntId = instName.InistId;
+
+            return View(model);
+        }
+
     }
 }

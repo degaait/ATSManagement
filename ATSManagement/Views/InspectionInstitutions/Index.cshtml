@@ -50,31 +50,31 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                           Final status
+                                            Final status
                                         </th>
                                         <th>
-                                           Detail
+                                            Detail
                                         </th>
                                         <th>
                                             Response
                                         </th>
                                         <th>
-                                           Requested Date
+                                            Requested Date
                                         </th>
                                         <th>
-                                          Expected feedback Date
+                                            Expected feedback Date
                                         </th>
                                         <th>
                                             Decission
                                         </th>
                                         <th>
-                                           Report file
+                                            Report file
                                         </th>
                                         <th>
-                                           Institutions
+                                            Institutions
                                         </th>
                                         <th>
-                                           Responded by
+                                            Responded by
                                         </th>
                                         <th>
                                             Submitted by
@@ -168,3 +168,25 @@
     </div>
 </div>
 
+@section scripts{
+
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script type="text/javascript">
+        var dp = $("#Date").datepicker({
+            format: "dd/mm/yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true
+        });
+        dp.on('changeDate', function (e) {
+            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
+        });
+    </script>
+}

@@ -12,4 +12,6 @@ public partial class TblPriority
     public string? PriorityNameWithColor { get; set; }
 
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
+
+    public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
 }
