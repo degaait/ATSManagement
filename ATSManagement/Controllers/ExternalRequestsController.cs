@@ -53,7 +53,7 @@ namespace ATSManagement.Controllers
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
             model.RequestedDate = DateTime.Now;
             model.ExterUserId = userId;
-            model.IntId = instName.InistId;
+            model.InistId = instName.InistId;
 
             return View(model);
         }
@@ -72,7 +72,7 @@ namespace ATSManagement.Controllers
                 TblExternalRequest requests = new TblExternalRequest();
                 requests.RequestDetail = model.RequestDetail;
                 requests.ExterUserId = model.ExterUserId;
-                requests.IntId = model.IntId;
+                requests.IntId = model.InistId;
                 requests.RequestedDate = DateTime.Now;
                 requests.ExternalRequestStatusId = status.ExternalRequestStatusId;
                 _context.TblExternalRequests.Add(requests);
@@ -110,7 +110,7 @@ namespace ATSManagement.Controllers
                 return NotFound();
             }
             model.ExterUserId = tblExternalRequest.ExterUserId;
-            model.IntId = tblExternalRequest.IntId;
+            model.InistId = tblExternalRequest.IntId;
             model.RequestedDate = tblExternalRequest.RequestedDate;
             model.RequestId = tblExternalRequest.RequestId;
             model.RequestDetail = tblExternalRequest.RequestDetail;
@@ -208,7 +208,7 @@ namespace ATSManagement.Controllers
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
             model.RequestedDate = DateTime.Now;
             model.ExterUserId = userId;
-            model.IntId = instName.InistId;
+            model.InistId = instName.InistId;
 
             return View(model);
         }

@@ -17,11 +17,11 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         public Guid? InistId { get; set; }
         [Display(Name = "Institutions")]
-        public IEnumerable<SelectListItem>? Intitutions { get; set; }
+        public List<SelectListItem>? Intitutions { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? ExterUserId { get; set; }
         [Display(Name = "Requested by")]
-        public IEnumerable<SelectListItem>? RequestedBys { get; set; }
+        public List<SelectListItem>? RequestedBys { get; set; }
         [Display(Name = "Created By")]
         public Guid? CreatedBy { get; set; }
         [Required(ErrorMessage = "*")]
@@ -32,7 +32,7 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         public Guid? AssignedBy { get; set; }
         [Display(Name = "Assigned by")]
-        public IEnumerable<SelectListItem>? AssignedBys { get; set; }
+        public List<SelectListItem>? AssignedBys { get; set; }
 
         public DateTime? AssignedDate { get; set; }
 
@@ -45,7 +45,7 @@ namespace ATSManagement.ViewModels
         public Guid? AssignedTo { get; set; }
 
         [Display(Name = "Assigned to")]
-        public IEnumerable<SelectListItem>? AssignedTos { get; set; }
+        public List<SelectListItem>? AssignedTos { get; set; }
 
         public string? ProgressStatus { get; set; }
         [Display(Name = "Is Upproved by User")]
@@ -61,12 +61,12 @@ namespace ATSManagement.ViewModels
 
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
-        public IEnumerable<SelectListItem>? Priorities { get; set; }
+        public List<SelectListItem>? Priorities { get; set; }
 
         [Display(Name = "Case types")]
-        public IEnumerable<SelectListItem>? CaseTypes { get; set; }
+        public List<SelectListItem>? CaseTypes { get; set; }
         [Display(Name = "Departments")]
-        public IEnumerable<SelectListItem>? Deparments { get; set; }
+        public List<SelectListItem>? Deparments { get; set; }
 
         [Display(Name = "Requested Date")]
         public DateTime? RequestedDate { get; set; }

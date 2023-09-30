@@ -1,4 +1,4 @@
-﻿@model ATSManagement.Models.TblCivilJustice
+﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -32,6 +32,7 @@
                                     <div class="col-md-8">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="RequestId" />
+                                        <input asp-for="CreatedBy" type="hidden" class="form-control" />
 
                                         <div class="mb-3 row">
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail Detail</label>
@@ -43,111 +44,31 @@
                                         <div class="mb-3 row">
                                             <label asp-for="InistId" class=" col-2 col-form-label">Institution</label>
                                             <div class="col">
-                                                <select asp-for="InistId" class="form-control" asp-items="ViewBag.InistId"></select>
+                                                @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+
                                                 <span asp-validation-for="InistId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="RequestedBy" class=" col-2 col-form-label">Requested by</label>
+                                            <label asp-for="RequestedDate" class=" col-2 col-form-label">Creation Date</label>
                                             <div class="col">
-                                                <select asp-for="RequestedBy" class="form-control" asp-items="ViewBag.RequestedBy"></select>
-                                                <span asp-validation-for="RequestedBy" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="CreatedDate" class=" col-2 col-form-label">Creation Date</label>
-                                            <div class="col">
-                                                <input asp-for="CreatedDate" class="form-control" />
+                                                <input asp-for="CreatedDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="CreatedBy" class=" col-2 col-form-label">Created by</label>
-                                            <div class="col">
-                                                <input asp-for="CreatedBy" class="form-control" />
-                                                <span asp-validation-for="CreatedBy" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label asp-for="DepId" class=" col-2 col-form-label">Responsible Department</label>
                                             <div class="col">
-                                                <select asp-for="DepId" class="form-control" asp-items="ViewBag.DepId"></select>
+                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+
                                                 <span asp-validation-for="DepId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
                                             <div class="col">
-                                                <select asp-for="CaseTypeId" class="form-control" asp-items="ViewBag.CaseTypeId"></select>
+                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="CaseTypeId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="AssignedBy" class=" col-2 col-form-label">Assigned by</label>
-                                            <div class="col">
-                                                <select asp-for="AssignedBy" class="form-control" asp-items="ViewBag.AssignedBy"></select>
-                                                <span asp-validation-for="AssignedBy" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="AssignedDate" class=" col-2 col-form-label">Assignation date</label>
-                                            <div class="col">
-                                                <input asp-for="AssignedDate" class="form-control" />
-                                                <span asp-validation-for="AssignedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="DueDate" class=" col-2 col-form-label">Due date</label>
-                                            <div class="col">
-                                                <input asp-for="DueDate" class="form-control" />
-                                                <span asp-validation-for="DueDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="AssingmentRemark" class=" col-2 col-form-label">Assignment Remark </label>
-                                            <div class="col">
-                                                <input asp-for="AssingmentRemark" class="form-control" />
-                                                <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="AssignedTo" class=" col-2 col-form-label">Assigned to</label>
-                                            <select asp-for="AssignedTo" class="form-control" asp-items="ViewBag.AssignedTo"></select>
-                                            <span asp-validation-for="AssignedTo" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="ProgressStatus" class=" col-2 col-form-label">Progress statu</label>
-                                            <div class="col">
-                                                <input asp-for="ProgressStatus" class="form-control" />
-                                                <span asp-validation-for="ProgressStatus" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsUpprovedByUser" class=" col-2 col-form-label">Is Uproved by user </label>
-                                            <div class="col">
-                                                <input asp-for="IsUpprovedByUser" class="form-control" />
-                                                <span asp-validation-for="IsUpprovedByUser" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsUprovedByTeam" class=" col-2 col-form-label">Is Uproved by team</label>
-                                            <div class="col">
-                                                <input asp-for="IsUprovedByTeam" class="form-control" />
-                                                <span asp-validation-for="IsUprovedByTeam" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsUprovedByDeputy" class=" col-2 col-form-label">Is Uproved by Deputy</label>
-                                            <div class="col">
-                                                <input asp-for="IsUprovedByDeputy" class="form-control" />
-                                                <span asp-validation-for="IsUprovedByDeputy" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="TopStatus" class=" col-2 col-form-label">Final status</label>
-                                            <div class="col">
-                                                <input asp-for="TopStatus" class="form-control" />
-                                                <span asp-validation-for="TopStatus" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
