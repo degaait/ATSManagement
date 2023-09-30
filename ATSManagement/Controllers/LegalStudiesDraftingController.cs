@@ -1,4 +1,5 @@
 ﻿using ATSManagement.Models;
+using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -50,13 +51,32 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices/Create
         public IActionResult Create()
         {
-            ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
-            ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
-            ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId");
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId");
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId");
-            ViewData["RequestedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId");
-            return View();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            LegalStudiesDraftingModel model = new LegalStudiesDraftingModel();
+            model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+            {
+                Value = x.InistId.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            {
+                Value = x.DepId.ToString(),
+                Text = x.DepName
+            }).ToList();
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Text = x.PriorityName,
+                Value = x.PriorityId.ToString()
+            }).ToList();
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Value = x.CaseTypeId.ToString(),
+                Text = x.CaseTypeName
+            }).ToList();
+            model.CreatedDate = DateTime.Now;
+            model.CreatedBy = userId;
+
+            return View(model);
         }
 
         // POST: CivilJustices/Create
@@ -64,22 +84,75 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblLegalStudiesDrafting tblCivilJustice)
+        public async Task<IActionResult> Create(LegalStudiesDraftingModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                tblCivilJustice.RequestId = Guid.NewGuid();
-                _context.Add(tblCivilJustice);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TblLegalStudiesDrafting draftings = new TblLegalStudiesDrafting();
+
+                draftings.RequestDetail = model.RequestDetail;
+                draftings.CreatedBy = model.CreatedBy;
+                draftings.CreatedDate = model.CreatedDate;
+                draftings.CaseTypeId = model.CaseTypeId;
+                draftings.InistId = model.InistId;
+                draftings.PriorityId = model.PriorityId;
+                draftings.DepId = model.DepId;
+                _context.TblLegalStudiesDraftings.Add(draftings);
+                int saved = _context.SaveChanges();
+                if (saved > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                    {
+                        Value = x.InistId.ToString(),
+                        Text = x.Name
+                    }).ToList();
+                    model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                    {
+                        Value = x.DepId.ToString(),
+                        Text = x.DepName
+                    }).ToList();
+                    model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                    {
+                        Text = x.PriorityName,
+                        Value = x.PriorityId.ToString()
+                    }).ToList();
+                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    {
+                        Value = x.CaseTypeId.ToString(),
+                        Text = x.CaseTypeName
+                    }).ToList();
+                    return View(model);
+                }
+
             }
-            ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedBy);
-            ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedTo);
-            ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblCivilJustice.CaseTypeId);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblCivilJustice.DepId);
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblCivilJustice.InistId);
-            ViewData["RequestedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblCivilJustice.RequestedBy);
-            return View(tblCivilJustice);
+            catch (Exception ex)
+            {
+                model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                {
+                    Value = x.InistId.ToString(),
+                    Text = x.Name
+                }).ToList();
+                model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                {
+                    Value = x.DepId.ToString(),
+                    Text = x.DepName
+                }).ToList();
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Text = x.PriorityName,
+                    Value = x.PriorityId.ToString()
+                }).ToList();
+                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                {
+                    Value = x.CaseTypeId.ToString(),
+                    Text = x.CaseTypeName
+                }).ToList();
+                return View(model);
+            }
         }
 
         // GET: CivilJustices/Edit/5

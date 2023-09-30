@@ -76,7 +76,7 @@ namespace ATSManagement.Controllers
             model.CreatedDate = DateTime.Now;
             model.CreatedBy = userId;
 
-            return View();
+            return View(model);
         }
 
         // POST: CivilJustices/Create

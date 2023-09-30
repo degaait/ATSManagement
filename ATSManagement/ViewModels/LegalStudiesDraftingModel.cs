@@ -1,4 +1,4 @@
-﻿using ATSManagement.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
@@ -18,11 +18,11 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         public Guid? InistId { get; set; }
         [Display(Name = "Institutions")]
-        public IEnumerable<TblInistitution>? Intitutions { get; set; }
+        public List<SelectListItem>? Intitutions { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? ExterUserId { get; set; }
         [Display(Name = "Requested by")]
-        public IEnumerable<TblExternalUser>? RequestedBys { get; set; }
+        public List<SelectListItem>? RequestedBys { get; set; }
         [Display(Name = "Created By")]
         public Guid? CreatedBy { get; set; }
         [Required(ErrorMessage = "*")]
@@ -33,7 +33,7 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         public Guid? AssignedBy { get; set; }
         [Display(Name = "Assigned by")]
-        public IEnumerable<TblInternalUser>? AssignedBys { get; set; }
+        public List<SelectListItem>? AssignedBys { get; set; }
 
         public DateTime? AssignedDate { get; set; }
 
@@ -46,7 +46,7 @@ namespace ATSManagement.ViewModels
         public Guid? AssignedTo { get; set; }
 
         [Display(Name = "Assigned to")]
-        public IEnumerable<TblInternalUser>? AssignedTos { get; set; }
+        public List<SelectListItem>? AssignedTos { get; set; }
 
         public string? ProgressStatus { get; set; }
         [Display(Name = "Is Upproved by User")]
@@ -62,12 +62,12 @@ namespace ATSManagement.ViewModels
 
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
-        public IEnumerable<TblPriority>? Priorities { get; set; }
+        public List<SelectListItem>? Priorities { get; set; }
 
         [Display(Name = "Case types")]
-        public IEnumerable<TblCivilJusticeCaseType>? CaseTypes { get; set; }
+        public List<SelectListItem>? CaseTypes { get; set; }
         [Display(Name = "Departments")]
-        public IEnumerable<TblDepartment>? Deparments { get; set; }
+        public List<SelectListItem>? Deparments { get; set; }
 
         [Display(Name = "Requested Date")]
         public DateTime? RequestedDate { get; set; }
