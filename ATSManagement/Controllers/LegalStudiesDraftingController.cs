@@ -19,19 +19,19 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblCivilJustices.Include(t => t.AssignedByNavigation).Include(t => t.AssignedToNavigation).Include(t => t.CaseType).Include(t => t.Dep).Include(t => t.Inist).Include(t => t.RequestedByNavigation);
+            var atsdbContext = _context.TblLegalStudiesDraftings.Include(t => t.AssignedByNavigation).Include(t => t.AssignedToNavigation).Include(t => t.CaseType).Include(t => t.Dep).Include(t => t.Inist).Include(t => t.RequestedByNavigation);
             return View(await atsdbContext.ToListAsync());
         }
 
         // GET: CivilJustices/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.TblCivilJustices == null)
+            if (id == null || _context.TblLegalStudiesDraftings == null)
             {
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblCivilJustices
+            var tblCivilJustice = await _context.TblLegalStudiesDraftings
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.AssignedToNavigation)
                 .Include(t => t.CaseType)
@@ -64,7 +64,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblCivilJustice tblCivilJustice)
+        public async Task<IActionResult> Create([Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblLegalStudiesDrafting tblCivilJustice)
         {
             if (ModelState.IsValid)
             {
@@ -85,12 +85,12 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.TblCivilJustices == null)
+            if (id == null || _context.TblLegalStudiesDraftings == null)
             {
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            var tblCivilJustice = await _context.TblLegalStudiesDraftings.FindAsync(id);
             if (tblCivilJustice == null)
             {
                 return NotFound();
@@ -109,7 +109,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblCivilJustice tblCivilJustice)
+        public async Task<IActionResult> Edit(Guid id, [Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblLegalStudiesDrafting tblCivilJustice)
         {
             if (id != tblCivilJustice.RequestId)
             {
@@ -148,12 +148,12 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.TblCivilJustices == null)
+            if (id == null || _context.TblLegalStudiesDraftings == null)
             {
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblCivilJustices
+            var tblCivilJustice = await _context.TblLegalStudiesDraftings
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.AssignedToNavigation)
                 .Include(t => t.CaseType)
@@ -174,14 +174,14 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.TblCivilJustices == null)
+            if (_context.TblLegalStudiesDraftings == null)
             {
                 return Problem("Entity set 'AtsdbContext.TblCivilJustices'  is null.");
             }
-            var tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            var tblCivilJustice = await _context.TblLegalStudiesDraftings.FindAsync(id);
             if (tblCivilJustice != null)
             {
-                _context.TblCivilJustices.Remove(tblCivilJustice);
+                _context.TblLegalStudiesDraftings.Remove(tblCivilJustice);
             }
 
             await _context.SaveChangesAsync();
@@ -190,7 +190,7 @@ namespace ATSManagement.Controllers
 
         private bool TblCivilJusticeExists(Guid id)
         {
-            return (_context.TblCivilJustices?.Any(e => e.RequestId == id)).GetValueOrDefault();
+            return (_context.TblLegalStudiesDraftings?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
     }
 }

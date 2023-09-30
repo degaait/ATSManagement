@@ -31,15 +31,15 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
-                                        <div class="mb-md-6 row">
-                                            <label asp-for="RequestDetail" class="control-label">Request Detail</label>
+                                        <div class="mb-3 row">
+                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-md-6 row">
-                                            <label asp-for="RequestedDate" class="control-label"> Request Date</label>
+                                        <div class="mb-3 row">
+                                            <label asp-for="RequestedDate" class=" col-2 col-form-label"> Request Date</label>
                                             <div class="col">
                                                 <input asp-for="RequestedDate" class="form-control" readonly />
                                                 <span asp-validation-for="RequestedDate" class="text-danger"></span>
