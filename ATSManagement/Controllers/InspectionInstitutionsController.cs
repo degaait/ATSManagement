@@ -1,8 +1,8 @@
 ﻿using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
@@ -39,7 +39,6 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-
             return View(tblInspectionInstitution);
         }
 
