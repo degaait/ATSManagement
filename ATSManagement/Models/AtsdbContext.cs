@@ -177,10 +177,15 @@ public partial class AtsdbContext : DbContext
             entity.ToTable("tbl_ExternalRequests");
 
             entity.Property(e => e.RequestId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.DepId).HasColumnName("DepID");
             entity.Property(e => e.ExterUserId).HasColumnName("ExterUserID");
             entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.IntId).HasColumnName("IntID");
             entity.Property(e => e.RequestedDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblExternalRequests)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_tbl_ExternalRequests_tbl_Department");
 
             entity.HasOne(d => d.ExterUser).WithMany(p => p.TblExternalRequests)
                 .HasForeignKey(d => d.ExterUserId)

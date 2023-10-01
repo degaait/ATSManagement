@@ -27,7 +27,8 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
-                .Include(x => x.ExternalRequestStatus);
+                .Include(x => x.ExternalRequestStatus)
+                .Include(t => t.Priority);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -100,7 +101,7 @@ namespace ATSManagement.Controllers
 
                 draftings.RequestDetail = model.RequestDetail;
                 draftings.CreatedBy = model.CreatedBy;
-                draftings.CreatedDate = model.CreatedDate;
+                draftings.CreatedDate = DateTime.Now;
                 draftings.CaseTypeId = model.CaseTypeId;
                 draftings.InistId = model.InistId;
                 draftings.PriorityId = model.PriorityId;
@@ -207,6 +208,7 @@ namespace ATSManagement.Controllers
             model.CaseTypeId = legalDraftig.CaseTypeId;
             model.RequestDetail = legalDraftig.RequestDetail;
             model.RequestId = legalDraftig.RequestId;
+            model.RequestedDate = legalDraftig.CreatedDate;
             return View(model);
 
 

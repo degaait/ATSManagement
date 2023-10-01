@@ -28,7 +28,8 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
-                                                        .Include(x => x.ExternalRequestStatus);
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority);
 
             return View(await atsdbContext.ToListAsync());
         }
@@ -101,7 +102,7 @@ namespace ATSManagement.Controllers
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.CreatedBy = model.CreatedBy;
-                tblCivilJustice.CreatedDate = model.CreatedDate;
+                tblCivilJustice.CreatedDate = DateTime.Now;
                 tblCivilJustice.CaseTypeId = model.CaseTypeId;
                 tblCivilJustice.InistId = model.InistId;
                 tblCivilJustice.PriorityId = model.PriorityId;

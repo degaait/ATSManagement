@@ -21,7 +21,7 @@ namespace ATSManagement.Controllers
         // GET: ExternalRequests
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus);
+            var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus).Where(x => x.DepId == null);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -65,7 +65,6 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
         {
-
             try
             {
                 TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();

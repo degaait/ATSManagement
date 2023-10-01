@@ -17,6 +17,10 @@ public partial class TblExternalRequest
 
     public Guid? ExternalRequestStatusId { get; set; }
 
+    public Guid? DepId { get; set; }
+
+    public virtual TblDepartment? Dep { get; set; }
+
     public virtual TblExternalUser? ExterUser { get; set; }
 
     public virtual TblExternalRequestStatus? ExternalRequestStatus { get; set; }

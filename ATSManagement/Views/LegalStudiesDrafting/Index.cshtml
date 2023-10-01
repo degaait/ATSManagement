@@ -76,6 +76,9 @@
                                             Progress status
                                         </th>
                                         <th>
+                                            Priority
+                                        </th>
+                                        <th>
                                             User upproved
                                         </th>
                                         <th>
@@ -133,6 +136,9 @@
                                             </td>
                                             <td>
                                                 @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.Priority.PriorityNameWithColor)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.IsUpprovedByUser)

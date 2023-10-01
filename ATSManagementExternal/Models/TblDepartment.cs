@@ -13,6 +13,8 @@ public partial class TblDepartment
 
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
 
+    public virtual ICollection<TblExternalRequest> TblExternalRequests { get; set; } = new List<TblExternalRequest>();
+
     public virtual ICollection<TblInternalUser> TblInternalUsers { get; set; } = new List<TblInternalUser>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
