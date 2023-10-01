@@ -119,7 +119,8 @@
                                                 @Html.DisplayFor(modelItem => item.CreatedDate)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedBy)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedDate)
@@ -131,7 +132,7 @@
                                                 @Html.DisplayFor(modelItem => item.AssingmentRemark)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.ProgressStatus)
+                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.IsUpprovedByUser)

@@ -20,7 +20,16 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblCivilJustices.Include(t => t.AssignedByNavigation).Include(t => t.AssignedToNavigation).Include(t => t.CaseType).Include(t => t.Dep).Include(t => t.Inist).Include(t => t.RequestedByNavigation);
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus);
+
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -89,6 +98,7 @@ namespace ATSManagement.Controllers
             try
             {
                 TblCivilJustice tblCivilJustice = new TblCivilJustice();
+                Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.CreatedBy = model.CreatedBy;
                 tblCivilJustice.CreatedDate = model.CreatedDate;
@@ -96,6 +106,11 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.InistId = model.InistId;
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepId = model.DepId;
+                tblCivilJustice.IsUpprovedByUser = false;
+                tblCivilJustice.IsUprovedByDeputy = false;
+                tblCivilJustice.IsUprovedByTeam = false;
+                tblCivilJustice.IsUprovedbyDepartment = false;
+                tblCivilJustice.ExternalRequestStatusId = statusiD;
                 _context.TblCivilJustices.Add(tblCivilJustice);
                 int saved = _context.SaveChanges();
                 if (saved > 0)
@@ -159,6 +174,7 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
             if (id == null || _context.TblCivilJustices == null)
             {
                 return NotFound();
@@ -169,13 +185,34 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedBy);
-            ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedTo);
-            ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblCivilJustice.CaseTypeId);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblCivilJustice.DepId);
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblCivilJustice.InistId);
-            ViewData["RequestedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblCivilJustice.RequestedBy);
-            return View(tblCivilJustice);
+            model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+            {
+                Value = x.InistId.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.InistId = tblCivilJustice.InistId;
+            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            {
+                Value = x.DepId.ToString(),
+                Text = x.DepName
+            }).ToList();
+            model.DepId = tblCivilJustice.DepId;
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Text = x.PriorityName,
+                Value = x.PriorityId.ToString()
+            }).ToList();
+            model.PriorityId = tblCivilJustice.PriorityId;
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Value = x.CaseTypeId.ToString(),
+                Text = x.CaseTypeName
+            }).ToList();
+            model.CaseTypeId = tblCivilJustice.CaseTypeId;
+            model.RequestDetail = tblCivilJustice.RequestDetail;
+            model.RequestId = tblCivilJustice.RequestId;
+            model.CreatedDate = tblCivilJustice.CreatedDate;
+            return View(model);
         }
 
         // POST: CivilJustices/Edit/5
@@ -183,40 +220,82 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblCivilJustice tblCivilJustice)
+        public async Task<IActionResult> Edit(CivilJusticeExternalRequestModel model)
         {
-            if (id != tblCivilJustice.RequestId)
+            try
             {
-                return NotFound();
+                if (model.RequestId == Guid.Empty)
+                {
+                    return NotFound();
+                }
+                if (!TblCivilJusticeExists(model.RequestId))
+                {
+                    return NotFound();
+                }
+                TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+                tblCivilJustice.RequestDetail = model.RequestDetail;
+                tblCivilJustice.PriorityId = model.PriorityId;
+                tblCivilJustice.DepId = model.DepId;
+                tblCivilJustice.CaseTypeId = model.CaseTypeId;
+                tblCivilJustice.InistId = model.InistId;
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
+                {
+                    return RedirectToAction("Index");
+
+                }
+                else
+                {
+                    model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                    {
+                        Value = x.InistId.ToString(),
+                        Text = x.Name
+                    }).ToList();
+                    model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                    {
+                        Value = x.DepId.ToString(),
+                        Text = x.DepName
+                    }).ToList();
+                    model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                    {
+                        Text = x.PriorityName,
+                        Value = x.PriorityId.ToString()
+                    }).ToList();
+                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    {
+                        Value = x.CaseTypeId.ToString(),
+                        Text = x.CaseTypeName
+                    }).ToList();
+                    return View(model);
+
+                }
+            }
+            catch (Exception EX)
+            {
+
+                model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                {
+                    Value = x.InistId.ToString(),
+                    Text = x.Name
+                }).ToList();
+                model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                {
+                    Value = x.DepId.ToString(),
+                    Text = x.DepName
+                }).ToList();
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Text = x.PriorityName,
+                    Value = x.PriorityId.ToString()
+                }).ToList();
+                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                {
+                    Value = x.CaseTypeId.ToString(),
+                    Text = x.CaseTypeName
+                }).ToList();
+                return View(model);
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(tblCivilJustice);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblCivilJusticeExists(tblCivilJustice.RequestId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedBy);
-            ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedTo);
-            ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblCivilJustice.CaseTypeId);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblCivilJustice.DepId);
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblCivilJustice.InistId);
-            ViewData["RequestedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblCivilJustice.RequestedBy);
-            return View(tblCivilJustice);
         }
 
         // GET: CivilJustices/Delete/5

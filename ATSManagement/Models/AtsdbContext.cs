@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
 
@@ -108,8 +106,8 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.InistId).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.ProgressStatus).HasMaxLength(250);
             entity.Property(e => e.TopStatus).HasMaxLength(250);
 
             entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblCivilJusticeAssignedByNavigations)
@@ -124,9 +122,17 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.CaseTypeId)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_CivilJusticeCaseType");
 
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblCivilJusticeCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_InternalUsers2");
+
             entity.HasOne(d => d.Dep).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_Department");
+
+            entity.HasOne(d => d.ExternalRequestStatus).WithMany(p => p.TblCivilJustices)
+                .HasForeignKey(d => d.ExternalRequestStatusId)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_ExternalRequestStatus");
 
             entity.HasOne(d => d.Inist).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.InistId)
@@ -328,7 +334,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
-            entity.Property(e => e.ProgressStatus).HasMaxLength(250);
+            entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.TopStatus).HasMaxLength(250);
 
             entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblLegalStudiesDraftingAssignedByNavigations)
@@ -343,9 +349,17 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.CaseTypeId)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_CivilJusticeCaseType");
 
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblLegalStudiesDraftingCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_InternalUsers2");
+
             entity.HasOne(d => d.Dep).WithMany(p => p.TblLegalStudiesDraftings)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_Department");
+
+            entity.HasOne(d => d.ExternalRequestStatus).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.ExternalRequestStatusId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_ExternalRequestStatus");
 
             entity.HasOne(d => d.Inist).WithMany(p => p.TblLegalStudiesDraftings)
                 .HasForeignKey(d => d.InistId)

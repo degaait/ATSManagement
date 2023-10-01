@@ -4,117 +4,154 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Requests
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title btn-danger">Detail Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <dl class="row">
+                                    <dt class="col-sm-2">
+                                        <label asp-for="RequestDetail" class="col-form-label-lg">Request detail</label>
 
-<div>
-    <h4>TblCivilJustice</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestDetail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestDetail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DueDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssingmentRemark)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssingmentRemark)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProgressStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProgressStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsUpprovedByUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsUpprovedByUser)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsUprovedByTeam)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsUprovedByTeam)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsUprovedByDeputy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsUprovedByDeputy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TopStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TopStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedByNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedByNavigation.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedToNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedToNavigation.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaseType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaseType.CaseTypeId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dep)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dep.DepId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Inist)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Inist.InistId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestedByNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestedByNavigation.ExterUserId)
-        </dd>
-    </dl>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.Raw(Model.RequestDetail)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="CreatedDate" class="col-form-label-lg">Request Date</label>
+
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.CreatedDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="CreatedBy" class="col-form-label-lg">User</label>
+
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedDate" class="col-form-label-lg">When did assigned to user</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssignedDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DueDate" class="col-form-label-m">Due date</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.DueDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DueDate" class="col-form-label-m">Assignment Remark</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssingmentRemark)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DueDate" class="col-form-label-m">Progress status</label>
+
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.Raw(Model.ExternalRequestStatus.StatusWithColor)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="IsUpprovedByUser" class="col-form-label-m">IsUserUpproved?</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.IsUpprovedByUser)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="IsUprovedByTeam" class="col-form-label-m">IsTeamUpproved?</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.IsUprovedByTeam)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="IsUprovedByDeputy" class="col-form-label-m">IsDeputyUpproved?</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.IsUprovedByDeputy)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="TopStatus" class="col-form-label-m">Final Status?</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.TopStatus)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedBy" class="col-form-label-m">Assigned by</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssignedByNavigation.FirstName)
+                                        @Html.DisplayFor(model => model.AssignedByNavigation.MidleName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedTo" class="col-form-label-m">Assigned to</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssignedToNavigation.FirstName)
+                                        @Html.DisplayFor(model => model.AssignedToNavigation.MidleName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.CaseType)
+                                        <label asp-for="AssignedTo" class="col-form-label-m">Case type</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.CaseType.CaseTypeName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DepId" class="col-form-label-m">Department</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.Dep.DepName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DepId" class="col-form-label-m">Inistitution</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.Inist.Name)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="RequestedBy" class="col-form-label-m">Focal Person</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
+                                        @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <div class="d-flex">
+                                <a asp-action="Edit" asp-route-id="@Model?.RequestId">Edit</a> |
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.RequestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

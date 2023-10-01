@@ -20,7 +20,14 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblLegalStudiesDraftings.Include(t => t.AssignedByNavigation).Include(t => t.AssignedToNavigation).Include(t => t.CaseType).Include(t => t.Dep).Include(t => t.Inist).Include(t => t.RequestedByNavigation);
+            var atsdbContext = _context.TblLegalStudiesDraftings
+                .Include(t => t.AssignedByNavigation)
+                .Include(t => t.AssignedToNavigation)
+                .Include(t => t.CaseType)
+                .Include(t => t.Dep)
+                .Include(t => t.Inist)
+                .Include(t => t.RequestedByNavigation)
+                .Include(x => x.ExternalRequestStatus);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -89,6 +96,7 @@ namespace ATSManagement.Controllers
             try
             {
                 TblLegalStudiesDrafting draftings = new TblLegalStudiesDrafting();
+                Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
 
                 draftings.RequestDetail = model.RequestDetail;
                 draftings.CreatedBy = model.CreatedBy;
@@ -97,6 +105,11 @@ namespace ATSManagement.Controllers
                 draftings.InistId = model.InistId;
                 draftings.PriorityId = model.PriorityId;
                 draftings.DepId = model.DepId;
+                draftings.IsUprovedbyDepartment = false;
+                draftings.IsUpprovedByUser = false;
+                draftings.IsUprovedByDeputy = false;
+                draftings.IsUprovedByTeam = false;
+                draftings.ExternalRequestStatusId = statusiD;
                 _context.TblLegalStudiesDraftings.Add(draftings);
                 int saved = _context.SaveChanges();
                 if (saved > 0)
@@ -127,7 +140,6 @@ namespace ATSManagement.Controllers
                     }).ToList();
                     return View(model);
                 }
-
             }
             catch (Exception ex)
             {
@@ -163,18 +175,41 @@ namespace ATSManagement.Controllers
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblLegalStudiesDraftings.FindAsync(id);
-            if (tblCivilJustice == null)
+            var legalDraftig = await _context.TblLegalStudiesDraftings.FindAsync(id);
+            if (legalDraftig == null)
             {
                 return NotFound();
             }
-            ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedBy);
-            ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedTo);
-            ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblCivilJustice.CaseTypeId);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblCivilJustice.DepId);
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblCivilJustice.InistId);
-            ViewData["RequestedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblCivilJustice.RequestedBy);
-            return View(tblCivilJustice);
+            LegalStudiesDraftingModel model = new LegalStudiesDraftingModel();
+            model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+            {
+                Value = x.InistId.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.InistId = legalDraftig.InistId;
+            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            {
+                Value = x.DepId.ToString(),
+                Text = x.DepName
+            }).ToList();
+            model.DepId = legalDraftig.DepId;
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Text = x.PriorityName,
+                Value = x.PriorityId.ToString()
+            }).ToList();
+            model.PriorityId = legalDraftig.PriorityId;
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Value = x.CaseTypeId.ToString(),
+                Text = x.CaseTypeName
+            }).ToList();
+            model.CaseTypeId = legalDraftig.CaseTypeId;
+            model.RequestDetail = legalDraftig.RequestDetail;
+            model.RequestId = legalDraftig.RequestId;
+            return View(model);
+
+
         }
 
         // POST: CivilJustices/Edit/5
@@ -182,40 +217,82 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ProgressStatus,IsUpprovedByUser,IsUprovedByTeam,IsUprovedByDeputy,TopStatus")] TblLegalStudiesDrafting tblCivilJustice)
+        public async Task<IActionResult> Edit(LegalStudiesDraftingModel model)
         {
-            if (id != tblCivilJustice.RequestId)
+            if (model.RequestId == Guid.Empty)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            if (!TblCivilJusticeExists(model.RequestId))
             {
-                try
-                {
-                    _context.Update(tblCivilJustice);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblCivilJusticeExists(tblCivilJustice.RequestId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedBy);
-            ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblCivilJustice.AssignedTo);
-            ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblCivilJustice.CaseTypeId);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblCivilJustice.DepId);
-            ViewData["InistId"] = new SelectList(_context.TblInistitutions, "InistId", "InistId", tblCivilJustice.InistId);
-            ViewData["RequestedBy"] = new SelectList(_context.TblExternalUsers, "ExterUserId", "ExterUserId", tblCivilJustice.RequestedBy);
-            return View(tblCivilJustice);
+            try
+            {
+                TblLegalStudiesDrafting draftings = await _context.TblLegalStudiesDraftings.FindAsync(model.RequestId);
+                draftings.RequestDetail = model.RequestDetail;
+                draftings.CaseTypeId = model.CaseTypeId;
+                draftings.InistId = model.InistId;
+                draftings.PriorityId = model.PriorityId;
+                draftings.DepId = model.DepId;
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                    {
+                        Value = x.InistId.ToString(),
+                        Text = x.Name
+                    }).ToList();
+                    model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                    {
+                        Value = x.DepId.ToString(),
+                        Text = x.DepName
+                    }).ToList();
+                    model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                    {
+                        Text = x.PriorityName,
+                        Value = x.PriorityId.ToString()
+                    }).ToList();
+                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    {
+                        Value = x.CaseTypeId.ToString(),
+                        Text = x.CaseTypeName
+                    }).ToList();
+                    return View(model);
+
+                }
+
+            }
+            catch (Exception)
+            {
+                model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                {
+                    Value = x.InistId.ToString(),
+                    Text = x.Name
+                }).ToList();
+                model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                {
+                    Value = x.DepId.ToString(),
+                    Text = x.DepName
+                }).ToList();
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Text = x.PriorityName,
+                    Value = x.PriorityId.ToString()
+                }).ToList();
+                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                {
+                    Value = x.CaseTypeId.ToString(),
+                    Text = x.CaseTypeName
+                }).ToList();
+                return View(model);
+
+            }
+
         }
 
         // GET: CivilJustices/Delete/5
