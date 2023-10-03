@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace ATSManagementExternal.Models;
+
 public partial class TblExternalRequest
 {
     public Guid RequestId { get; set; }
