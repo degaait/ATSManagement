@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
 
@@ -18,6 +20,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblCivilJustice> TblCivilJustices { get; set; }
 
     public virtual DbSet<TblCivilJusticeCaseType> TblCivilJusticeCaseTypes { get; set; }
+
+    public virtual DbSet<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; }
 
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
 
@@ -157,6 +161,19 @@ public partial class AtsdbContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("CaseTypeID");
             entity.Property(e => e.CaseTypeName).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<TblCivilJusticeRequestActivity>(entity =>
+        {
+            entity.HasKey(e => e.ActivityId);
+
+            entity.ToTable("tbl_CivilJusticeRequestActivity");
+
+            entity.Property(e => e.ActivityId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ActivityID");
+            entity.Property(e => e.AddedDate).HasColumnType("datetime");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
         });
 
         modelBuilder.Entity<TblDepartment>(entity =>
