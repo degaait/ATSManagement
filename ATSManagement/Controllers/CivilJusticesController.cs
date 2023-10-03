@@ -1,8 +1,9 @@
 ﻿using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
@@ -345,6 +346,143 @@ namespace ATSManagement.Controllers
         private bool TblCivilJusticeExists(Guid id)
         {
             return (_context.TblCivilJustices?.Any(e => e.RequestId == id)).GetValueOrDefault();
+        }
+
+
+        public async Task<IActionResult> AssignToUser(Guid id)
+        {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            TblLegalStudiesDrafting drafting = await _context.TblLegalStudiesDraftings.FindAsync(id);
+            model.RequestDetail = drafting.RequestDetail;
+            model.RequestId = id;
+            model.AssignedDate = DateTime.Now;
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Text = x.CaseTypeName,
+                Value = x.CaseTypeId.ToString()
+
+            }).ToList();
+            model.CaseTypeId = drafting.CaseTypeId;
+            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            {
+                Value = x.DepId.ToString(),
+                Text = x.DepName
+
+            }).ToList();
+            model.DepId = drafting.DepId;
+            model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+            {
+                Value = x.UserId.ToString(),
+                Text = x.FirstName.ToString() + " " + x.MidleName
+
+            }).ToList();
+            model.DueDate = DateTime.Now.AddDays(10);
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Value = x.PriorityId.ToString(),
+                Text = x.PriorityName.ToString()
+
+            }).ToList();
+            model.PriorityId = drafting.PriorityId;
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignToUser(CivilJusticeExternalRequestModel model)
+        {
+            if (model.RequestId != null)
+            {
+                return NotFound();
+            }
+            TblLegalStudiesDrafting drafting = await _context.TblLegalStudiesDraftings.FindAsync(model.RequestId);
+            if (drafting == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                drafting.DueDate = model.DueDate;
+                drafting.AssignedDate = model.AssignedDate;
+                drafting.PriorityId = model.PriorityId;
+                drafting.AssignedTo = model.AssignedTo;
+                drafting.AssignedBy = model.AssignedBy;
+                drafting.AssingmentRemark = model.AssingmentRemark;
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    {
+                        Text = x.CaseTypeName,
+                        Value = x.CaseTypeId.ToString()
+
+                    }).ToList();
+                    model.CaseTypeId = drafting.CaseTypeId;
+                    model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                    {
+                        Value = x.DepId.ToString(),
+                        Text = x.DepName
+
+                    }).ToList();
+                    model.DepId = drafting.DepId;
+                    model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+                    {
+                        Value = x.UserId.ToString(),
+                        Text = x.FirstName.ToString() + " " + x.MidleName
+
+                    }).ToList();
+                    model.DueDate = DateTime.Now.AddDays(10);
+                    model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                    {
+                        Value = x.PriorityId.ToString(),
+                        Text = x.PriorityName.ToString()
+
+                    }).ToList();
+                    model.PriorityId = drafting.PriorityId;
+                    return View(model);
+
+                }
+
+            }
+            catch (Exception)
+            {
+                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                {
+                    Text = x.CaseTypeName,
+                    Value = x.CaseTypeId.ToString()
+
+                }).ToList();
+                model.CaseTypeId = drafting.CaseTypeId;
+                model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                {
+                    Value = x.DepId.ToString(),
+                    Text = x.DepName
+
+                }).ToList();
+                model.DepId = drafting.DepId;
+                model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+                {
+                    Value = x.UserId.ToString(),
+                    Text = x.FirstName.ToString() + " " + x.MidleName
+
+                }).ToList();
+                model.DueDate = DateTime.Now.AddDays(10);
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Value = x.PriorityId.ToString(),
+                    Text = x.PriorityName.ToString()
+
+                }).ToList();
+                model.PriorityId = drafting.PriorityId;
+                return View(model);
+            }
+
+
+
         }
     }
 }

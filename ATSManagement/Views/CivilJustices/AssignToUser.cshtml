@@ -1,0 +1,135 @@
+﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        UnAssigned Request
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Assign</h4>
+                        </div>
+                        <form asp-action="Edit">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="RequestId" />
+                                        <div class="mb-3 row">
+                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
+                                            <div class="col">
+                                                @Html.Raw(Model.RequestDetail)
+                                                <span asp-validation-for="RequestDetail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="AssignedDate" class=" col-2 col-form-label">Assignment Date</label>
+                                            <div class="col">
+                                                <input asp-for="AssignedDate" class="form-control" readonly />
+                                                <span asp-validation-for="AssignedDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="DueDate" class=" col-2 col-form-label">Due Date</label>
+                                            <div class="col">
+                                                <input asp-for="DueDate" class="form-control" />
+                                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="AssignedTo" class=" col-2 col-form-label">Responsible User</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.AssignedTo, new SelectList(Model.AssignedTos, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="AssignedTo" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="DepId" class=" col-2 col-form-label">Responsible Department</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="DepId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="CaseTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Priorities" class=" col-2 col-form-label">Priority</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="PriorityId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="AssingmentRemark" class=" col-2 col-form-label">Assignment Date</label>
+                                            <div class="col">
+                                                <input asp-for="AssingmentRemark" class="form-control" readonly />
+                                                <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Submit" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#RequestDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

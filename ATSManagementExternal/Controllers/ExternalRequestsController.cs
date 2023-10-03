@@ -1,8 +1,9 @@
-﻿using ATSManagementExternal.IModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
-using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+using ATSManagementExternal.IModels;
 using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -106,6 +107,12 @@ namespace ATSManagementExternal.Controllers
             model.RequestedDate = DateTime.Now;
             model.ExterUserId = userId;
             model.IntId = instName.InistId;
+            model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+            {
+                Text=a.DepName,
+                Value=a.DepId.ToString()
+
+            }).ToList();
             return View(model);
         }
 
@@ -116,14 +123,56 @@ namespace ATSManagementExternal.Controllers
 
             try
             {
+                Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+
                 TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
+                Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
+
                 TblExternalRequest requests = new TblExternalRequest();
-                requests.RequestDetail = model.RequestDetail;
-                requests.ExterUserId = model.ExterUserId;
-                requests.IntId = model.IntId;
-                requests.RequestedDate = DateTime.Now;
-                requests.ExternalRequestStatusId = status.ExternalRequestStatusId;
-                _context.TblExternalRequests.Add(requests);
+                TblCivilJustice tblCivilJustice= new TblCivilJustice();
+                TblLegalStudiesDrafting drafting= new TblLegalStudiesDrafting();
+                TblDepartment department = _context.TblDepartments.FindAsync(model.DepId).Result;
+                if (department.DepCode== "CVA")
+                {
+                    tblCivilJustice.DepId = model.DepId;
+                    tblCivilJustice.RequestDetail = model.RequestDetail;
+                    tblCivilJustice.InistId = model.IntId;
+                    tblCivilJustice.IsUpprovedByUser = false;
+                    tblCivilJustice.IsUprovedbyDepartment=false;
+                    tblCivilJustice.IsUprovedByDeputy=false;
+                    tblCivilJustice.CreatedDate = DateTime.Now;
+                    tblCivilJustice.IsUprovedByTeam=false;
+                    tblCivilJustice.RequestedBy = userId;
+                    tblCivilJustice.CreatedBy = userId;
+                    tblCivilJustice.ExternalRequestStatusId = statusiD;
+                    _context.TblCivilJustices.Add(tblCivilJustice);
+
+                }
+                else if (department.DepCode == "LSDC")
+                {
+                    drafting.DepId = model.DepId;
+                    drafting.CreatedDate = DateTime.Now;
+                    drafting.RequestedBy = userId;
+                    drafting.RequestDetail = model.RequestDetail;
+                    drafting.DepId= model.DepId;
+                    drafting.CreatedBy = userId;
+                    drafting.RequestedBy= userId;
+                    drafting.InistId = model.IntId;
+                    drafting.ExternalRequestStatusId= statusiD;
+                    tblCivilJustice.IsUpprovedByUser = false;
+                    tblCivilJustice.IsUprovedbyDepartment = false;
+                    tblCivilJustice.IsUprovedByDeputy = false;
+                    tblCivilJustice.IsUprovedByTeam = false;
+                    _context.TblCivilJustices.Add(tblCivilJustice);
+
+
+                }
+                else if (department.DepCode == "FLIM")
+                {
+
+                }
+
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {

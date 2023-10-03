@@ -34,7 +34,6 @@ namespace ATSManagement.ViewModels
         public Guid? AssignedBy { get; set; }
         [Display(Name = "Assigned by")]
         public List<SelectListItem>? AssignedBys { get; set; }
-
         public DateTime? AssignedDate { get; set; }
 
         public DateTime? DueDate { get; set; }

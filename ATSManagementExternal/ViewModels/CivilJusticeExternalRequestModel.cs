@@ -1,4 +1,5 @@
 ﻿using ATSManagementExternal.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagementExternal.ViewModels
@@ -28,5 +29,10 @@ namespace ATSManagementExternal.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Detail")]
         public IEnumerable<TblInistitution>? Intitutions { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? DepId { get; set; }
+
+        [Display(Name = "Departments")]
+        public List<SelectListItem>? Deparments { get; set; }
     }
 }
