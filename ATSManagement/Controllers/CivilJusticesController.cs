@@ -1,9 +1,9 @@
 ﻿using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -31,10 +31,8 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
                                                         .Include(t => t.Priority);
-
             return View(await atsdbContext.ToListAsync());
         }
-
         // GET: CivilJustices/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -50,6 +48,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
+                .Include(t => t.ExternalRequestStatus)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (tblCivilJustice == null)
             {
@@ -315,6 +314,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
+                .Include(t => t.ExternalRequestStatus)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (tblCivilJustice == null)
             {
@@ -351,11 +351,15 @@ namespace ATSManagement.Controllers
 
         public async Task<IActionResult> AssignToUser(Guid id)
         {
+
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            TblLegalStudiesDrafting drafting = await _context.TblLegalStudiesDraftings.FindAsync(id);
+            TblCivilJustice drafting = await _context.TblCivilJustices.FindAsync(id);
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             model.RequestDetail = drafting.RequestDetail;
             model.RequestId = id;
+            model.AssignedBy = userId;
             model.AssignedDate = DateTime.Now;
+            model.CreatedBy = drafting.CreatedBy;
             model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
             {
                 Text = x.CaseTypeName,
@@ -391,11 +395,12 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignToUser(CivilJusticeExternalRequestModel model)
         {
-            if (model.RequestId != null)
+            TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "In Progress" select items).FirstOrDefault();
+            if (model.RequestId == null)
             {
                 return NotFound();
             }
-            TblLegalStudiesDrafting drafting = await _context.TblLegalStudiesDraftings.FindAsync(model.RequestId);
+            TblCivilJustice drafting = await _context.TblCivilJustices.FindAsync(model.RequestId);
             if (drafting == null)
             {
                 return NotFound();
@@ -408,6 +413,9 @@ namespace ATSManagement.Controllers
                 drafting.AssignedTo = model.AssignedTo;
                 drafting.AssignedBy = model.AssignedBy;
                 drafting.AssingmentRemark = model.AssingmentRemark;
+                drafting.CreatedBy = model.CreatedBy;
+                drafting.CaseTypeId = model.CaseTypeId;
+                drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
                 {

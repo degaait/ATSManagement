@@ -30,28 +30,28 @@
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="RequestDetail" class="col-form-label-lg">Request detail</label>
+                                        <label asp-for="RequestDetail" class="col-form-label-m">Request detail</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.RequestDetail)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedDate" class="col-form-label-lg">Request Date</label>
+                                        <label asp-for="CreatedDate" class="col-form-label-m">Request Date</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedBy" class="col-form-label-lg">User</label>
+                                        <label asp-for="CreatedBy" class="col-form-label-m">User</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedDate" class="col-form-label-lg">When did assigned to user</label>
+                                        <label asp-for="AssignedDate" class="col-form-label-m">When did assigned to user</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssignedDate)
@@ -73,7 +73,12 @@
 
                                     </dt>
                                     <dd class="col-sm-10">
-                                        @Html.Raw(Model.ExternalRequestStatus.StatusWithColor)
+                                        <div class="col-sm-2">
+                                            @if (Model.ExternalRequestStatusId != null)
+                                            {
+                                                @Html.Raw(Model.ExternalRequestStatus.StatusWithColor)
+                                            }
+                                        </div>
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="IsUpprovedByUser" class="col-form-label-m">IsUserUpproved?</label>

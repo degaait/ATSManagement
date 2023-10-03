@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ATSManagementExternal.IModels;
 using ATSManagementExternal.Models;
-using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -76,7 +76,7 @@ namespace ATSManagementExternal.Controllers
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
-                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.Inist.Name == instName.Inist.Name);
+                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA");
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -109,8 +109,8 @@ namespace ATSManagementExternal.Controllers
             model.IntId = instName.InistId;
             model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
             {
-                Text=a.DepName,
-                Value=a.DepId.ToString()
+                Text = a.DepName,
+                Value = a.DepId.ToString()
 
             }).ToList();
             return View(model);
@@ -124,30 +124,41 @@ namespace ATSManagementExternal.Controllers
             try
             {
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-
-
                 TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
-
                 TblExternalRequest requests = new TblExternalRequest();
-                TblCivilJustice tblCivilJustice= new TblCivilJustice();
-                TblLegalStudiesDrafting drafting= new TblLegalStudiesDrafting();
+                TblCivilJustice tblCivilJustice = new TblCivilJustice();
+                TblLegalStudiesDrafting drafting = new TblLegalStudiesDrafting();
                 TblDepartment department = _context.TblDepartments.FindAsync(model.DepId).Result;
-                if (department.DepCode== "CVA")
+                if (department.DepCode == "CVA")
                 {
                     tblCivilJustice.DepId = model.DepId;
                     tblCivilJustice.RequestDetail = model.RequestDetail;
                     tblCivilJustice.InistId = model.IntId;
                     tblCivilJustice.IsUpprovedByUser = false;
-                    tblCivilJustice.IsUprovedbyDepartment=false;
-                    tblCivilJustice.IsUprovedByDeputy=false;
+                    tblCivilJustice.IsUprovedbyDepartment = false;
+                    tblCivilJustice.IsUprovedByDeputy = false;
                     tblCivilJustice.CreatedDate = DateTime.Now;
-                    tblCivilJustice.IsUprovedByTeam=false;
+                    tblCivilJustice.IsUprovedByTeam = false;
                     tblCivilJustice.RequestedBy = userId;
-                    tblCivilJustice.CreatedBy = userId;
                     tblCivilJustice.ExternalRequestStatusId = statusiD;
                     _context.TblCivilJustices.Add(tblCivilJustice);
+                    int saved = await _context.SaveChangesAsync();
+                    if (saved > 0)
+                    {
+                        return RedirectToAction(nameof(CivilJustice));
+                    }
+                    else
+                    {
 
+                        model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+                        {
+                            Text = a.DepName,
+                            Value = a.DepId.ToString()
+
+                        }).ToList();
+                        return View(model);
+                    }
                 }
                 else if (department.DepCode == "LSDC")
                 {
@@ -155,37 +166,61 @@ namespace ATSManagementExternal.Controllers
                     drafting.CreatedDate = DateTime.Now;
                     drafting.RequestedBy = userId;
                     drafting.RequestDetail = model.RequestDetail;
-                    drafting.DepId= model.DepId;
-                    drafting.CreatedBy = userId;
-                    drafting.RequestedBy= userId;
+                    drafting.DepId = model.DepId;
+                    drafting.RequestedBy = userId;
                     drafting.InistId = model.IntId;
-                    drafting.ExternalRequestStatusId= statusiD;
+                    drafting.ExternalRequestStatusId = statusiD;
                     tblCivilJustice.IsUpprovedByUser = false;
                     tblCivilJustice.IsUprovedbyDepartment = false;
                     tblCivilJustice.IsUprovedByDeputy = false;
                     tblCivilJustice.IsUprovedByTeam = false;
                     _context.TblCivilJustices.Add(tblCivilJustice);
+                    int saved = await _context.SaveChangesAsync();
+                    if (saved > 0)
+                    {
+                        return RedirectToAction(nameof(LegalStudies));
+                    }
+                    else
+                    {
+                        model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+                        {
+                            Text = a.DepName,
+                            Value = a.DepId.ToString()
 
-
+                        }).ToList();
+                        return View(model);
+                    }
                 }
                 else if (department.DepCode == "FLIM")
                 {
+                    model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+                    {
+                        Text = a.DepName,
+                        Value = a.DepId.ToString()
 
-                }
-
-                int saved = await _context.SaveChangesAsync();
-                if (saved > 0)
-                {
-                    return RedirectToAction(nameof(Index));
+                    }).ToList();
+                    return View(model);
                 }
                 else
                 {
+                    model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+                    {
+                        Text = a.DepName,
+                        Value = a.DepId.ToString()
+
+                    }).ToList();
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
 
+                model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+                {
+                    Text = a.DepName,
+                    Value = a.DepId.ToString()
+
+                }).ToList();
                 return View(model);
             }
 

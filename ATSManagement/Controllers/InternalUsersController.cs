@@ -79,6 +79,7 @@ namespace ATSManagement.Controllers
                 }
                 else
                 {
+                    tblInternalUser.IsDepartmentHead = false;
                 }
                 if (userModel.specialRoles.ToString() == "IsTeamLeader")
                 {

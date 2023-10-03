@@ -1,9 +1,9 @@
 ﻿using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -48,6 +48,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
+                .Include(x => x.ExternalRequestStatus)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (tblCivilJustice == null)
             {
@@ -313,6 +314,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
+                .Include(x => x.ExternalRequestStatus)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (tblCivilJustice == null)
             {
@@ -350,7 +352,7 @@ namespace ATSManagement.Controllers
         {
             LegalStudiesDraftingModel model = new LegalStudiesDraftingModel();
             TblLegalStudiesDrafting drafting = await _context.TblLegalStudiesDraftings.FindAsync(id);
-            model.RequestDetail=drafting.RequestDetail;
+            model.RequestDetail = drafting.RequestDetail;
             model.RequestId = id;
             model.AssignedDate = DateTime.Now;
             model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
@@ -388,12 +390,14 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignToUser(LegalStudiesDraftingModel model)
         {
-            if (model.RequestId!=null)
+            TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "In Progress" select items).FirstOrDefault();
+
+            if (model.RequestId != null)
             {
                 return NotFound();
             }
             TblLegalStudiesDrafting drafting = await _context.TblLegalStudiesDraftings.FindAsync(model.RequestId);
-            if (drafting==null)
+            if (drafting == null)
             {
                 return NotFound();
             }
@@ -401,12 +405,12 @@ namespace ATSManagement.Controllers
             {
                 drafting.DueDate = model.DueDate;
                 drafting.AssignedDate = model.AssignedDate;
-                drafting.PriorityId=model.PriorityId;
-                drafting.AssignedTo= model.AssignedTo;
-                drafting.AssignedBy= model.AssignedBy;
+                drafting.PriorityId = model.PriorityId;
+                drafting.AssignedTo = model.AssignedTo;
+                drafting.AssignedBy = model.AssignedBy;
                 drafting.AssingmentRemark = model.AssingmentRemark;
-                int updated=await _context.SaveChangesAsync();
-                if (updated>0)
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }

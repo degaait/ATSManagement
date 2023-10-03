@@ -25,12 +25,14 @@
                         <div class="card-header">
                             <h4 class="card-title">Assign</h4>
                         </div>
-                        <form asp-action="Edit">
+                        <form asp-action="AssignToUser">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="RequestId" />
+                                        <input type="hidden" asp-for="AssignedBy" />
+                                        <input type="hidden" asp-for="CreatedBy" />
                                         <div class="mb-3 row">
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
@@ -81,13 +83,13 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AssingmentRemark" class=" col-2 col-form-label">Assignment Date</label>
+                                            <label asp-for="AssingmentRemark" class="col-2 col-form-label">Remark</label>
                                             <div class="col">
-                                                <input asp-for="AssingmentRemark" class="form-control" readonly />
+                                                @Html.EditorFor(model => model.AssingmentRemark, new { htmlAttributes = new { @class = "form-control" } })
+
                                                 <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

@@ -58,7 +58,7 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Assigned to")]
 
         public string? TopStatus { get; set; }
-
+        [Required(ErrorMessage = "*")]
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
         public List<SelectListItem>? Priorities { get; set; }
