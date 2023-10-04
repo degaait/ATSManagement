@@ -12,4 +12,10 @@ public partial class TblCivilJusticeRequestActivity
     public DateTime? AddedDate { get; set; }
 
     public Guid? RequestId { get; set; }
+
+    public Guid? CreatedBy { get; set; }
+
+    public virtual TblInternalUser? CreatedByNavigation { get; set; }
+
+    public virtual TblCivilJustice? Request { get; set; }
 }

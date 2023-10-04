@@ -23,11 +23,17 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; }
 
+    public virtual DbSet<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplys { get; set; }
+
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
+
+    public virtual DbSet<TblExternalMainMenu> TblExternalMainMenus { get; set; }
 
     public virtual DbSet<TblExternalRequest> TblExternalRequests { get; set; }
 
     public virtual DbSet<TblExternalRequestStatus> TblExternalRequestStatuses { get; set; }
+
+    public virtual DbSet<TblExternalSubmenu> TblExternalSubmenus { get; set; }
 
     public virtual DbSet<TblExternalUser> TblExternalUsers { get; set; }
 
@@ -41,7 +47,11 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
 
+    public virtual DbSet<TblLegalStudiesActivity> TblLegalStudiesActivities { get; set; }
+
     public virtual DbSet<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; }
+
+    public virtual DbSet<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; }
 
     public virtual DbSet<TblMainMenu> TblMainMenus { get; set; }
 
@@ -174,6 +184,36 @@ public partial class AtsdbContext : DbContext
                 .HasColumnName("ActivityID");
             entity.Property(e => e.AddedDate).HasColumnType("datetime");
             entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblCivilJusticeRequestActivities)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_CivilJusticeRequestActivity_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblCivilJusticeRequestActivities)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_CivilJusticeRequestActivity_tbl_CivilJustice");
+        });
+
+        modelBuilder.Entity<TblCivilJusticeRequestReply>(entity =>
+        {
+            entity.HasKey(e => e.ReplyId);
+
+            entity.ToTable("tbl_CivilJusticeRequestReplys");
+
+            entity.Property(e => e.ReplyId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ReplyDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.ExternalReplayedByNavigation).WithMany(p => p.TblCivilJusticeRequestReplies)
+                .HasForeignKey(d => d.ExternalReplayedBy)
+                .HasConstraintName("FK_tbl_CivilJusticeRequestReplys_tbl_ExternalUser");
+
+            entity.HasOne(d => d.InternalReplayedByNavigation).WithMany(p => p.TblCivilJusticeRequestReplies)
+                .HasForeignKey(d => d.InternalReplayedBy)
+                .HasConstraintName("FK_tbl_CivilJusticeRequestReplys_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblCivilJusticeRequestReplies)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_CivilJusticeRequestReplys_tbl_CivilJustice");
         });
 
         modelBuilder.Entity<TblDepartment>(entity =>
@@ -185,6 +225,20 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.DepId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.DepCode).HasMaxLength(50);
             entity.Property(e => e.DepName).HasMaxLength(300);
+        });
+
+        modelBuilder.Entity<TblExternalMainMenu>(entity =>
+        {
+            entity.HasKey(e => e.MenuId);
+
+            entity.ToTable("tbl_ExternalMainMenus");
+
+            entity.Property(e => e.MenuId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("MenuID");
+            entity.Property(e => e.ClassSvg).HasColumnName("Class_svg");
+            entity.Property(e => e.MenuDescription).HasMaxLength(250);
+            entity.Property(e => e.MenuName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblExternalRequest>(entity =>
@@ -227,6 +281,24 @@ public partial class AtsdbContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.StatusName).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<TblExternalSubmenu>(entity =>
+        {
+            entity.ToTable("tbl_ExternalSubmenu");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+            entity.Property(e => e.MenuId).HasColumnName("MenuID");
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblExternalSubmenus)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_tbl_ExternalSubmenu_tbl_Department");
+
+            entity.HasOne(d => d.Menu).WithMany(p => p.TblExternalSubmenus)
+                .HasForeignKey(d => d.MenuId)
+                .HasConstraintName("FK_tbl_ExternalSubmenu_tbl_ExternalMainMenus");
         });
 
         modelBuilder.Entity<TblExternalUser>(entity =>
@@ -343,6 +415,27 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_InternalUsers_tbl_Department");
         });
 
+        modelBuilder.Entity<TblLegalStudiesActivity>(entity =>
+        {
+            entity.HasKey(e => e.ActivityId);
+
+            entity.ToTable("tbl_LegalStudiesActivity");
+
+            entity.Property(e => e.ActivityId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ActivityID");
+            entity.Property(e => e.AddedDate).HasColumnType("datetime");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblLegalStudiesActivities)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_LegalStudiesActivity_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblLegalStudiesActivities)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_LegalStudiesActivity_tbl_LegalStudiesDrafting");
+        });
+
         modelBuilder.Entity<TblLegalStudiesDrafting>(entity =>
         {
             entity.HasKey(e => e.RequestId);
@@ -394,6 +487,28 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.RequestedByNavigation).WithMany(p => p.TblLegalStudiesDraftings)
                 .HasForeignKey(d => d.RequestedBy)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_ExternalUser");
+        });
+
+        modelBuilder.Entity<TblLegalStudiesReplay>(entity =>
+        {
+            entity.HasKey(e => e.ReplyId);
+
+            entity.ToTable("tbl_LegalStudiesReplays");
+
+            entity.Property(e => e.ReplyId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ReplyDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.ExternalReplayedByNavigation).WithMany(p => p.TblLegalStudiesReplays)
+                .HasForeignKey(d => d.ExternalReplayedBy)
+                .HasConstraintName("FK_tbl_LegalStudiesReplays_tbl_ExternalUser");
+
+            entity.HasOne(d => d.ExternalReplayedBy1).WithMany(p => p.TblLegalStudiesReplays)
+                .HasForeignKey(d => d.ExternalReplayedBy)
+                .HasConstraintName("FK_tbl_LegalStudiesReplays_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblLegalStudiesReplays)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_LegalStudiesReplays_tbl_LegalStudiesDrafting");
         });
 
         modelBuilder.Entity<TblMainMenu>(entity =>

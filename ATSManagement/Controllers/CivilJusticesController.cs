@@ -1,4 +1,5 @@
-﻿using ATSManagement.Models;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,13 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IMailService _mail;
 
-        public CivilJusticesController(AtsdbContext context, IHttpContextAccessor contextAccessor)
+        public CivilJusticesController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mailService)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _mail = mailService;
         }
 
         // GET: CivilJustices
@@ -395,6 +398,7 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignToUser(CivilJusticeExternalRequestModel model)
         {
+            var userEmails = (from user in _context.TblInternalUsers where user.UserId == model.AssignedTo select user.EmailAddress).ToList();
             TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "In Progress" select items).FirstOrDefault();
             if (model.RequestId == null)
             {
@@ -419,6 +423,7 @@ namespace ATSManagement.Controllers
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
                 {
+                    await SendMail(userEmails, "Task is assign notification", "<h3>Some tasks are assigned to you via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -488,9 +493,61 @@ namespace ATSManagement.Controllers
                 model.PriorityId = drafting.PriorityId;
                 return View(model);
             }
+        }
+
+        public async Task<IActionResult> Replies(Guid? id)
+        {
+            Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var replays = await _context.TblCivilJusticeRequestReplys.Where(a => a.RequestId == id).ToListAsync();
+            RepliesModel model = new RepliesModel
+            {
+                RequestId = id,
+                ReplyDate = DateTime.Now,
+                InternalReplayedBy = userId,
+            };
+            ViewData["Replies"] = _context.TblCivilJusticeRequestReplys
+                .Include(x => x.InternalReplayedByNavigation)
+                .Include(x => x.ExternalReplayedByNavigation)
+                .Include(x => x.Request)
+                .Where(_context => _context.RequestId == id).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Replies(RepliesModel model)
+        {
+            try
+            {
+                TblCivilJusticeRequestReply replay = new TblCivilJusticeRequestReply();
+                replay.ReplyDate = DateTime.Now;
+                replay.InternalReplayedBy = model.InternalReplayedBy;
+                replay.RequestId = model.RequestId;
+                replay.ReplayDetail = model.ReplayDetail;
+                _context.TblCivilJusticeRequestReplys.Add(replay);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    return RedirectToAction("Replies", new { id = model.RequestId });
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return View(model);
+            }
+
+        }
 
 
-
+        private async Task SendMail(List<string> to, string subject, string body)
+        {
+            MailData data = new MailData(to, subject, body, "degaait@gmail.com");
+            bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
     }
 }

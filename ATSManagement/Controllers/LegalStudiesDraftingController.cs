@@ -1,4 +1,5 @@
-﻿using ATSManagement.Models;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,13 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IMailService _mail;
 
-        public LegalStudiesDraftingController(AtsdbContext context, IHttpContextAccessor contextAccessor)
+        public LegalStudiesDraftingController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mailService)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _mail = mailService;
         }
 
         // GET: CivilJustices
@@ -390,6 +393,8 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignToUser(LegalStudiesDraftingModel model)
         {
+            var userEmails = (from user in _context.TblInternalUsers where user.UserId == model.AssignedTo select user.EmailAddress).ToList();
+
             TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "In Progress" select items).FirstOrDefault();
 
             if (model.RequestId != null)
@@ -412,6 +417,8 @@ namespace ATSManagement.Controllers
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
                 {
+                    await SendMail(userEmails, "Task is assign notification", "<h3>Some tasks are assigned to you via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
+
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -484,6 +491,11 @@ namespace ATSManagement.Controllers
 
 
 
+        }
+        private async Task SendMail(List<string> to, string subject, string body)
+        {
+            MailData data = new MailData(to, subject, body, "degaait@gmail.com");
+            bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
     }
 }

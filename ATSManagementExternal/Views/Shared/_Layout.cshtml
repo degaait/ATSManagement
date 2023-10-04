@@ -192,7 +192,7 @@
                                     </a>
                                 </li>
                                 @if (_context.HttpContext.Session.GetString("MenuMaster") != null)
-                                {
+                                 {
                                     var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(_context.HttpContext.Session.GetString("MenuMaster"));
                                     var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
                                     foreach (var MenuList in groupByMenu)

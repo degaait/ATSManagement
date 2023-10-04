@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ATSManagementExternal.Models;
 
-public partial class TblCivilJusticeRequestActivity
+public partial class TblLegalStudiesActivity
 {
     public Guid ActivityId { get; set; }
 
@@ -17,5 +17,5 @@ public partial class TblCivilJusticeRequestActivity
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
-    public virtual TblCivilJustice? Request { get; set; }
+    public virtual TblLegalStudiesDrafting? Request { get; set; }
 }

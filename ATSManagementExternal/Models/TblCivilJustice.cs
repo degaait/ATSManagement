@@ -62,4 +62,8 @@ public partial class TblCivilJustice
     public virtual TblPriority? Priority { get; set; }
 
     public virtual TblExternalUser? RequestedByNavigation { get; set; }
+
+    public virtual ICollection<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; } = new List<TblCivilJusticeRequestActivity>();
+
+    public virtual ICollection<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplies { get; set; } = new List<TblCivilJusticeRequestReply>();
 }

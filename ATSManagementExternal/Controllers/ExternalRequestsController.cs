@@ -1,6 +1,7 @@
 ﻿using ATSManagementExternal.IModels;
 using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +28,6 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus).Where(x => x.DepId == null);
             return View(await atsdbContext.ToListAsync());
         }
-
-
         public async Task<IActionResult> AssignedRequests()
         {
 
@@ -60,8 +59,6 @@ namespace ATSManagementExternal.Controllers
                .Include(x => x.ExternalRequestStatus)
                .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.Inist.Name == instName.Inist.Name);
             return View(await atsdbContext.ToListAsync());
-
-
         }
         public async Task<IActionResult> CivilJustice()
         {
@@ -123,6 +120,8 @@ namespace ATSManagementExternal.Controllers
 
             try
             {
+                var institutionName = (from items in _context.TblInistitutions where items.InistId == model.IntId select items.Name).FirstOrDefault();
+                var users = (from user in _context.TblInternalUsers where (user.IsDepartmentHead == true || user.IsDeputy == true) && user.DepId == model.DepId select user.EmailAddress).ToList();
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
                 TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
@@ -146,6 +145,8 @@ namespace ATSManagementExternal.Controllers
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {
+                        await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+
                         return RedirectToAction(nameof(CivilJustice));
                     }
                     else
@@ -178,6 +179,8 @@ namespace ATSManagementExternal.Controllers
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {
+                        await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+
                         return RedirectToAction(nameof(LegalStudies));
                     }
                     else
@@ -332,5 +335,62 @@ namespace ATSManagementExternal.Controllers
         {
             return (_context.TblExternalRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
+
+
+        private async Task SendMail(List<string> to, string subject, string body)
+        {
+            MailData data = new MailData(to, subject, body, "degaait@gmail.com");
+            bool sentResult = await _mail.SendAsync(data, new CancellationToken());
+        }
+
+        public async Task<IActionResult> Replies(Guid? id)
+        {
+            Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var replays = await _context.TblCivilJusticeRequestReplys.Where(a => a.RequestId == id).ToListAsync();
+            RepliesModel model = new RepliesModel
+            {
+                RequestId = id,
+                ReplyDate = DateTime.Now,
+                ExternalReplayedBy = userId,
+            };
+            ViewData["Replies"] = _context.TblCivilJusticeRequestReplys
+                .Include(x => x.InternalReplayedByNavigation)
+                .Include(x => x.ExternalReplayedByNavigation)
+                .Include(x => x.Request)
+                .Where(_context => _context.RequestId == id).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Replies(RepliesModel model)
+        {
+            try
+            {
+                TblCivilJusticeRequestReply replay = new TblCivilJusticeRequestReply();
+                replay.ReplyDate = DateTime.Now;
+                replay.ExternalReplayedBy = model.ExternalReplayedBy;
+                replay.RequestId = model.RequestId;
+                replay.ReplayDetail = model.ReplayDetail;
+                _context.TblCivilJusticeRequestReplys.Add(replay);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    return RedirectToAction("Replies", new { id = model.RequestId });
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return View(model);
+            }
+
+        }
+
+
     }
 }

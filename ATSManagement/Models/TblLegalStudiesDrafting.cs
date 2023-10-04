@@ -62,4 +62,8 @@ public partial class TblLegalStudiesDrafting
     public virtual TblPriority? Priority { get; set; }
 
     public virtual TblExternalUser? RequestedByNavigation { get; set; }
+
+    public virtual ICollection<TblLegalStudiesActivity> TblLegalStudiesActivities { get; set; } = new List<TblLegalStudiesActivity>();
+
+    public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
 }

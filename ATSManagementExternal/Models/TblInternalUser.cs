@@ -43,15 +43,23 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblCivilJustice> TblCivilJusticeCreatedByNavigations { get; set; } = new List<TblCivilJustice>();
 
+    public virtual ICollection<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; } = new List<TblCivilJusticeRequestActivity>();
+
+    public virtual ICollection<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplies { get; set; } = new List<TblCivilJusticeRequestReply>();
+
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();
+
+    public virtual ICollection<TblLegalStudiesActivity> TblLegalStudiesActivities { get; set; } = new List<TblLegalStudiesActivity>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingAssignedByNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingAssignedToNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingCreatedByNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
+
+    public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
 
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
 
