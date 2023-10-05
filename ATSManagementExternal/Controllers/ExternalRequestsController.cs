@@ -1,10 +1,10 @@
-﻿using ATSManagementExternal.IModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -57,7 +57,55 @@ namespace ATSManagementExternal.Controllers
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
                .Include(x => x.ExternalRequestStatus)
-               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.Inist.Name == instName.Inist.Name);
+               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> NewLegalRequest()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+
+            var atsdbContext = _context.TblLegalStudiesDraftings
+               .Include(t => t.AssignedByNavigation)
+               .Include(t => t.AssignedToNavigation)
+               .Include(t => t.CaseType)
+               .Include(t => t.Dep)
+               .Include(t => t.Inist)
+               .Include(t => t.RequestedByNavigation)
+               .Include(x => x.ExternalRequestStatus)
+               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC" && x.ExternalRequestStatus.StatusName== "New");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> CompletedLegalRequest()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+
+            var atsdbContext = _context.TblLegalStudiesDraftings
+               .Include(t => t.AssignedByNavigation)
+               .Include(t => t.AssignedToNavigation)
+               .Include(t => t.CaseType)
+               .Include(t => t.Dep)
+               .Include(t => t.Inist)
+               .Include(t => t.RequestedByNavigation)
+               .Include(x => x.ExternalRequestStatus)
+               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC" && x.ExternalRequestStatus.StatusName == "Completed");
+            return View(await atsdbContext.ToListAsync());
+        }
+         public async Task<IActionResult> PendingLegalStudies()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+
+            var atsdbContext = _context.TblLegalStudiesDraftings
+               .Include(t => t.AssignedByNavigation)
+               .Include(t => t.AssignedToNavigation)
+               .Include(t => t.CaseType)
+               .Include(t => t.Dep)
+               .Include(t => t.Inist)
+               .Include(t => t.RequestedByNavigation)
+               .Include(x => x.ExternalRequestStatus)
+               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC" && x.ExternalRequestStatus.StatusName == "In Progress");
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> CivilJustice()
@@ -76,7 +124,54 @@ namespace ATSManagementExternal.Controllers
                                                         .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA");
             return View(await atsdbContext.ToListAsync());
         }
-
+        public async Task<IActionResult> PendingCivilJustice()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "In Progress");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> CompletedCivilJustice()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "Completed");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> NewCivilJustice()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "New");
+            return View(await atsdbContext.ToListAsync());
+        }
         // GET: ExternalRequests/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

@@ -1,8 +1,9 @@
-﻿using ATSManagement.IModels;
-using ATSManagement.Models;
+﻿using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
@@ -18,14 +19,21 @@ namespace ATSManagement.Controllers
             _mail = mail;
         }
 
-        // GET: ExternalRequests
         public async Task<IActionResult> Index()
         {
             var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus).Where(x => x.DepId == null);
             return View(await atsdbContext.ToListAsync());
         }
+        public async Task<IActionResult> AssignedRequests()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var atsdbContext = _context.TblExternalRequests
+                .Include(t => t.ExterUser)
+                .Include(t => t.Int)
+                .Include(s => s.ExternalRequestStatus).Where(x => x.DepId == null);
+            return View(await atsdbContext.ToListAsync());
+        }
 
-        // GET: ExternalRequests/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblExternalRequests == null)
@@ -45,56 +53,117 @@ namespace ATSManagement.Controllers
             return View(tblExternalRequest);
         }
 
-        // GET: ExternalRequests/Create
         public IActionResult Create()
         {
-            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            model.RequestedDate = DateTime.Now;
-            model.ExterUserId = userId;
-            model.InistId = instName.InistId;
+            LegalStudiesDraftingModel model = new LegalStudiesDraftingModel();
+            model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+            {
+                Value = x.InistId.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            {
+                Value = x.DepId.ToString(),
+                Text = x.DepName
+            }).ToList();
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Text = x.PriorityName,
+                Value = x.PriorityId.ToString()
+            }).ToList();
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Value = x.CaseTypeId.ToString(),
+                Text = x.CaseTypeName
+            }).ToList();
+            model.CreatedDate = DateTime.Now;
+            model.CreatedBy = userId;
 
             return View(model);
         }
 
-        // POST: ExternalRequests/Create
+        // POST: CivilJustices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
+        public async Task<IActionResult> Create(LegalStudiesDraftingModel model)
         {
             try
             {
-                TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
-                TblExternalRequest requests = new TblExternalRequest();
-                requests.RequestDetail = model.RequestDetail;
-                requests.ExterUserId = model.ExterUserId;
-                requests.IntId = model.InistId;
-                requests.RequestedDate = DateTime.Now;
-                requests.ExternalRequestStatusId = status.ExternalRequestStatusId;
-                _context.TblExternalRequests.Add(requests);
+                TblLegalStudiesDrafting draftings = new TblLegalStudiesDrafting();
+                Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
 
-                int saved = await _context.SaveChangesAsync();
-                if (saved > 1)
+                draftings.RequestDetail = model.RequestDetail;
+                draftings.CreatedBy = model.CreatedBy;
+                draftings.CreatedDate = DateTime.Now;
+                draftings.CaseTypeId = model.CaseTypeId;
+                draftings.InistId = model.InistId;
+                draftings.PriorityId = model.PriorityId;
+                draftings.DepId = model.DepId;
+                draftings.IsUprovedbyDepartment = false;
+                draftings.IsUpprovedByUser = false;
+                draftings.IsUprovedByDeputy = false;
+                draftings.IsUprovedByTeam = false;
+                draftings.ExternalRequestStatusId = statusiD;
+                _context.TblLegalStudiesDraftings.Add(draftings);
+                int saved = _context.SaveChanges();
+                if (saved > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
+                    model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                    {
+                        Value = x.InistId.ToString(),
+                        Text = x.Name
+                    }).ToList();
+                    model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                    {
+                        Value = x.DepId.ToString(),
+                        Text = x.DepName
+                    }).ToList();
+                    model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                    {
+                        Text = x.PriorityName,
+                        Value = x.PriorityId.ToString()
+                    }).ToList();
+                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    {
+                        Value = x.CaseTypeId.ToString(),
+                        Text = x.CaseTypeName
+                    }).ToList();
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
-
+                model.Intitutions = _context.TblInistitutions.Select(x => new SelectListItem
+                {
+                    Value = x.InistId.ToString(),
+                    Text = x.Name
+                }).ToList();
+                model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                {
+                    Value = x.DepId.ToString(),
+                    Text = x.DepName
+                }).ToList();
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Text = x.PriorityName,
+                    Value = x.PriorityId.ToString()
+                }).ToList();
+                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                {
+                    Value = x.CaseTypeId.ToString(),
+                    Text = x.CaseTypeName
+                }).ToList();
                 return View(model);
             }
-
         }
 
-        // GET: ExternalRequests/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
@@ -118,9 +187,6 @@ namespace ATSManagement.Controllers
             return View(model);
         }
 
-        // POST: ExternalRequests/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CivilJusticeExternalRequestModel model)
@@ -157,7 +223,6 @@ namespace ATSManagement.Controllers
             }
         }
 
-        // GET: ExternalRequests/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblExternalRequests == null)
@@ -177,7 +242,6 @@ namespace ATSManagement.Controllers
             return View(tblExternalRequest);
         }
 
-        // POST: ExternalRequests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

@@ -1,10 +1,11 @@
-﻿using ATSManagement.IModels;
-using ATSManagement.Models;
+﻿using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace ATSManagement.Controllers
 {
@@ -36,7 +37,58 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.Priority);
             return View(await atsdbContext.ToListAsync());
         }
-        // GET: CivilJustices/Details/5
+       
+        public async Task<IActionResult> AddActivity(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            ActivityModel model = new ActivityModel();
+            model.RequestId = id;
+            model.AddedDate = DateTime.Now;
+            model.CreatedBy = userId;
+            ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
+                 .Include(x => x.Request)
+                 .Include(x => x.CreatedByNavigation)
+                 .Where(x => x.RequestId == model.RequestId).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddActivity(ActivityModel model)
+        {
+            List<string> assignedBody=new List<string>();
+            var request=_context.TblCivilJustices.Where(x=>x.RequestId==model.RequestId).FirstOrDefault();
+            assignedBody=(from items in _context.TblInternalUsers where items.UserId==request.AssignedBy select items.EmailAddress).ToList();
+            TblCivilJusticeRequestActivity activity = new TblCivilJusticeRequestActivity();
+            activity.RequestId = model.RequestId;
+            activity.AddedDate = DateTime.Now;
+            activity.ActivityDetail= model.ActivityDetail;
+            activity.CreatedBy = model.CreatedBy;
+            _context.Add(activity);
+            int saved=await _context.SaveChangesAsync();
+            if (saved>0)
+            {
+                model.ActivityDetail = null;
+                SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
+                ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
+                    .Include(x=>x.Request)
+                    .Include(x=>x.CreatedByNavigation)
+                    .Where(x => x.RequestId == model.RequestId).ToList();
+
+                return View(model);
+            }
+            else
+            {
+                ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
+                    .Include(x => x.Request)
+                    .Include(x => x.CreatedByNavigation)
+                    .Where(x => x.RequestId == model.RequestId).ToList();
+
+                return View(model);
+            }
+
+        }
+
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblCivilJustices == null)
@@ -61,7 +113,6 @@ namespace ATSManagement.Controllers
             return View(tblCivilJustice);
         }
 
-        // GET: CivilJustices/Create
         public IActionResult Create()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -92,9 +143,6 @@ namespace ATSManagement.Controllers
             return View(model);
         }
 
-        // POST: CivilJustices/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
@@ -175,7 +223,6 @@ namespace ATSManagement.Controllers
 
         }
 
-        // GET: CivilJustices/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
@@ -219,9 +266,6 @@ namespace ATSManagement.Controllers
             return View(model);
         }
 
-        // POST: CivilJustices/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CivilJusticeExternalRequestModel model)
@@ -302,7 +346,6 @@ namespace ATSManagement.Controllers
 
         }
 
-        // GET: CivilJustices/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblCivilJustices == null)
@@ -327,7 +370,6 @@ namespace ATSManagement.Controllers
             return View(tblCivilJustice);
         }
 
-        // POST: CivilJustices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -350,7 +392,6 @@ namespace ATSManagement.Controllers
         {
             return (_context.TblCivilJustices?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
-
 
         public async Task<IActionResult> AssignToUser(Guid id)
         {
@@ -543,11 +584,56 @@ namespace ATSManagement.Controllers
 
         }
 
-
         private async Task SendMail(List<string> to, string subject, string body)
         {
             MailData data = new MailData(to, subject, body, "degaait@gmail.com");
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
+
+        public async Task<IActionResult> CompletedRequests()
+        {
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x=>x.ExternalRequestStatus.StatusName== "Completed");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> PendingRequests()
+        {
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x=>x.ExternalRequestStatus.StatusName== "In Progress");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> AssignedRequests()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+            var atsdbContext = _context.TblCivilJustices
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(a => a.AssignedTo == userId);
+            return View(await atsdbContext.ToListAsync());
+        }
+
     }
 }

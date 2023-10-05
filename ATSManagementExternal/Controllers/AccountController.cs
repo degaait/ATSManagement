@@ -1,9 +1,9 @@
-﻿using ATSManagementExternal.Models;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using ATSManagementExternal.Models;
+using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.Security;
 using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -47,7 +47,7 @@ namespace ATSManagementExternal.Controllers
                     }).FirstOrDefault();
 
                     // Get the login user details and bind it to LoginModels class  
-                    _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false && x.Dep.DepName == "External").Select(x => new MenuModels
+                    _menus = _context.TblExternalSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
                     {
                         MainMenuId = x.Menu.MenuId,
                         MainMenuName = x.Menu.MenuName,
@@ -55,7 +55,7 @@ namespace ATSManagementExternal.Controllers
                         SubMenuName = x.Submenu,
                         ControllerName = x.Controller,
                         ActionName = x.Action,
-                        DepId = x.RoleId,
+                        DepId = x.DepId,
                         DepName = x.Dep.DepName,
                         DisplayOrder = x.Menu.DisplayOrder,
                         Class_SVC = x.Menu.ClassSvg

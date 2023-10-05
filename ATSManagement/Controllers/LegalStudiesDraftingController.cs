@@ -1,10 +1,10 @@
-﻿using ATSManagement.IModels;
-using ATSManagement.Models;
+﻿using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
@@ -496,6 +496,51 @@ namespace ATSManagement.Controllers
         {
             MailData data = new MailData(to, subject, body, "degaait@gmail.com");
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
+        }
+
+        public async Task<IActionResult> CompletedRequests()
+        {
+            var atsdbContext = _context.TblLegalStudiesDraftings
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "Completed");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> PendingRequests()
+        {
+            var atsdbContext = _context.TblLegalStudiesDraftings
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress");
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> AssignedRequests()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+            var atsdbContext = _context.TblLegalStudiesDraftings
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.AssignedToNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Dep)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(t => t.Priority).Where(a => a.AssignedTo == userId);
+            return View(await atsdbContext.ToListAsync());
         }
     }
 }
