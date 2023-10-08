@@ -150,6 +150,8 @@ namespace ATSManagement.Controllers
             try
             {
                 TblCivilJustice tblCivilJustice = new TblCivilJustice();
+                var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
+
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.CreatedBy = model.CreatedBy;
@@ -158,10 +160,10 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.InistId = model.InistId;
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepId = model.DepId;
-                tblCivilJustice.IsUpprovedByUser = false;
-                tblCivilJustice.IsUprovedByDeputy = false;
-                tblCivilJustice.IsUprovedByTeam = false;
-                tblCivilJustice.IsUprovedbyDepartment = false;
+                tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
+                tblCivilJustice.TeamUpprovalStatus=decision.DesStatusId;
+                tblCivilJustice.DeputyUprovalStatus = decision.DesStatusId;
+                tblCivilJustice.UserUpprovalStatus=decision.DesStatusId;
                 tblCivilJustice.ExternalRequestStatusId = statusiD;
                 _context.TblCivilJustices.Add(tblCivilJustice);
                 int saved = _context.SaveChanges();
@@ -222,7 +224,6 @@ namespace ATSManagement.Controllers
             }
 
         }
-
         public async Task<IActionResult> Edit(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
@@ -633,6 +634,114 @@ namespace ATSManagement.Controllers
                                                         .Include(x => x.ExternalRequestStatus)
                                                         .Include(t => t.Priority).Where(a => a.AssignedTo == userId);
             return View(await atsdbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> UpploadFinalReport(Guid id)
+        {
+            CivilJusticeExternalRequestModel model= new CivilJusticeExternalRequestModel();
+            var detail=_context.TblExternalRequests.FindAsync(id).Result;
+            model.RequestId = id;
+            model.CreatedDate=DateTime.UtcNow;
+            model.RequestDetail = detail.RequestDetail;
+            
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpploadFinalReport(CivilJusticeExternalRequestModel model)
+        {
+            TblCivilJustice civilJustice=await _context.TblCivilJustices.FindAsync(model.RequestId);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+
+            //create folder if not exist
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            //get file extension
+            FileInfo fileInfo = new FileInfo(model.finalReport.FileName);
+            string fileName = Guid.NewGuid().ToString() + model.finalReport.FileName;
+            string fileNameWithPath = Path.Combine(path, fileName);
+            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                model.finalReport.CopyTo(stream);
+            }
+            string dbPath = "/Files/" + fileName;
+            civilJustice.FinalReport = dbPath;
+            int updated = _context.SaveChanges();
+            if (updated > 0)
+            {
+                return RedirectToAction(nameof(AssignedRequests));
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> AddAdjornyDates(Guid? id)
+        {
+            ViewData["Adjornies"] = _context.TblAdjornments.ToList();
+            AjornyDateModel model = new AjornyDateModel();
+            model.RequestId = id;
+            model.CreatedDate=DateTime.UtcNow;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddAdjornyDates(AjornyDateModel ajornyDateModel)
+        {
+            TblAdjornment tblAdjornment = new TblAdjornment();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            tblAdjornment.AdjorneyDate=ajornyDateModel.AdjorneyDate;
+            tblAdjornment.RequestId= ajornyDateModel.RequestId;
+            tblAdjornment.CreatedDate=DateTime.UtcNow;
+            tblAdjornment.WhatIsDone = ajornyDateModel.WhatIsDone;
+            tblAdjornment.CreatedBy= userId;
+            _context.TblAdjornments.Add(tblAdjornment);
+            int saved=_context.SaveChanges();
+            ViewData["Adjornies"]=_context.TblAdjornments.ToList();
+            if (saved>0)
+            {
+                return View(ajornyDateModel);
+            }
+            return View(ajornyDateModel);
+        }
+
+        public async Task<IActionResult> AddEvidencesAndWitnesses(Guid? id)
+        {
+            WitnessEvidenceModel model=new WitnessEvidenceModel();
+            model.RequestId= id;
+            model.CreatedDate= DateTime.UtcNow;
+            ViewData["evidences"]=_context.TblWitnessEvidences.ToList();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddEvidencesAndWitnesses(WitnessEvidenceModel evidenceModel)
+        {
+            TblWitnessEvidence evidence = new TblWitnessEvidence();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            evidence.RequestId=evidenceModel.RequestId;
+            evidence.CreatedDate= DateTime.UtcNow;
+            evidence.CreatedBy = userId;
+            _context.TblWitnessEvidences.Add(evidence);
+            int saved=_context.SaveChanges();
+            ViewData["evidences"] = _context.TblWitnessEvidences.ToList();
+            if (saved>0)
+            {
+                return View(evidenceModel);
+            }
+            else
+            {
+                return View(evidenceModel);
+            }
         }
 
     }

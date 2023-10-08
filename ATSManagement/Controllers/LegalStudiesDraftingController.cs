@@ -27,7 +27,8 @@ namespace ATSManagement.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.AssignedToNavigation)
-                .Include(t => t.CaseType)
+                .Include(t => t.Doc)
+                .Include(x=>x.QuestType)
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
@@ -47,7 +48,8 @@ namespace ATSManagement.Controllers
             var tblCivilJustice = await _context.TblLegalStudiesDraftings
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.AssignedToNavigation)
-                .Include(t => t.CaseType)
+                .Include(t => t.Doc)
+                .Include(x=>x.QuestType)
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
@@ -103,6 +105,7 @@ namespace ATSManagement.Controllers
             {
                 TblLegalStudiesDrafting draftings = new TblLegalStudiesDrafting();
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
+                var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
 
                 draftings.RequestDetail = model.RequestDetail;
                 draftings.CreatedBy = model.CreatedBy;
@@ -110,11 +113,11 @@ namespace ATSManagement.Controllers
                 draftings.CaseTypeId = model.CaseTypeId;
                 draftings.InistId = model.InistId;
                 draftings.PriorityId = model.PriorityId;
+                draftings.DepartmentUpprovalStatus = decision.DesStatusId;
+                draftings.TeamUpprovalStatus = decision.DesStatusId;
+                draftings.DeputyUprovalStatus = decision.DesStatusId;
+                draftings.UserUpprovalStatus = decision.DesStatusId;
                 draftings.DepId = model.DepId;
-                draftings.IsUprovedbyDepartment = false;
-                draftings.IsUpprovedByUser = false;
-                draftings.IsUprovedByDeputy = false;
-                draftings.IsUprovedByTeam = false;
                 draftings.ExternalRequestStatusId = statusiD;
                 _context.TblLegalStudiesDraftings.Add(draftings);
                 int saved = _context.SaveChanges();
@@ -313,7 +316,8 @@ namespace ATSManagement.Controllers
             var tblCivilJustice = await _context.TblLegalStudiesDraftings
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.AssignedToNavigation)
-                .Include(t => t.CaseType)
+                .Include(t => t.Doc)
+                .Include(x=>x.QuestType)
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
@@ -503,7 +507,8 @@ namespace ATSManagement.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.AssignedToNavigation)
-                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Doc)
+                                                        .Include(x=>x.QuestType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
@@ -517,7 +522,8 @@ namespace ATSManagement.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.AssignedToNavigation)
-                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Doc)
+                                                        .Include(x=>x.QuestType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
@@ -533,7 +539,8 @@ namespace ATSManagement.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.AssignedToNavigation)
-                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Doc)
+                                                        .Include(x=>x.QuestType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)

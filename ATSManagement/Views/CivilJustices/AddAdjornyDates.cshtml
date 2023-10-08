@@ -1,0 +1,153 @@
+﻿@model ATSManagement.ViewModels.AjornyDateModel
+@inject AtsdbContext _context;
+@{
+    ViewData["Title"] = "Updated task progress status";
+    IEnumerable<TblAdjornment> activities = ViewData["Adjornies"] as IEnumerable<TblAdjornment>;
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Uppload final report
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Uppload</h4>
+                        </div>
+                        <form asp-action="AddAdjornyDates" method="post">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="RequestId" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Adjorny Date</label>
+                                            <div class="col">
+                                                <input asp-for="AdjorneyDate" class="form-file-button" />
+                                                <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">What is done</label>
+                                            <div class="col">
+                                                <input asp-for="WhatIsDone" class="form-file-button" />
+                                                <span asp-validation-for="WhatIsDone" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Update" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Activities List</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <table class="table table-bordered" id="role">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Activities Done
+                                            </th>
+                                            <th>
+                                                Adjornment Date
+                                                
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in activities)
+                                        {
+
+                                            <tr>
+                                              
+                                                <td>
+                                                    @Html.Raw(item.WhatIsDone)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AdjorneyDate)
+                                                </td>
+                                                <td>
+                                                    <a asp-action="Edit" asp-route-id="@item.AdjoryId">Edit</a> |
+                                                    <a asp-action="Details" asp-route-id="@item.AdjoryId">Details</a> |
+                                                    <a asp-action="Delete" asp-route-id="@item.AdjoryId">Delete</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ActivityDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

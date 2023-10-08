@@ -34,5 +34,19 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Departments")]
         public List<SelectListItem>? Deparments { get; set; }
+
+        public Guid? DocId { get; set; }
+        public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
+        [Display(Name = "Question type")]
+
+        public Guid? QuestTypeId { get; set; }
+        public List<SelectListItem>? LegalStadiesQuestiontypes { get; set; }
+
+        public Guid? CaseTypeId { get; set; }
+
+        [Display(Name = "Case types")]
+        public List<SelectListItem>? CaseTypes { get; set; }
+
+        public DateTime? CreatedDate { get; set; }= DateTime.Now;
     }
 }

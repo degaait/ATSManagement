@@ -15,6 +15,8 @@ public partial class AtsdbContext : DbContext
     {
     }
 
+    public virtual DbSet<TblAdjornment> TblAdjornments { get; set; }
+
     public virtual DbSet<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; }
 
     public virtual DbSet<TblCivilJustice> TblCivilJustices { get; set; }
@@ -24,6 +26,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; }
 
     public virtual DbSet<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplys { get; set; }
+
+    public virtual DbSet<TblDecisionStatus> TblDecisionStatuses { get; set; }
 
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
 
@@ -46,6 +50,10 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblInspectionStatus> TblInspectionStatuses { get; set; }
 
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
+
+    public virtual DbSet<TblLegalDraftingDocType> TblLegalDraftingDocTypes { get; set; }
+
+    public virtual DbSet<TblLegalDraftingQuestionType> TblLegalDraftingQuestionTypes { get; set; }
 
     public virtual DbSet<TblLegalStudiesActivity> TblLegalStudiesActivities { get; set; }
 
@@ -73,12 +81,34 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblSubmenu> TblSubmenus { get; set; }
 
+    public virtual DbSet<TblWitnessEvidence> TblWitnessEvidences { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TblAdjornment>(entity =>
+        {
+            entity.HasKey(e => e.AdjoryId);
+
+            entity.ToTable("tbl_Adjornments");
+
+            entity.Property(e => e.AdjoryId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.AdjorneyDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblAdjornments)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_Adjornments_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblAdjornments)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_Adjornments_tbl_CivilJustice");
+        });
+
         modelBuilder.Entity<TblAssignedYearlyPlan>(entity =>
         {
             entity.ToTable("tbl_AssignedYearlyPlans");
@@ -128,10 +158,12 @@ public partial class AtsdbContext : DbContext
 
             entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.TblCivilJusticeAssignedToNavigations)
                 .HasForeignKey(d => d.AssignedTo)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_InternalUsers");
 
             entity.HasOne(d => d.CaseType).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.CaseTypeId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_CivilJusticeCaseType");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblCivilJusticeCreatedByNavigations)
@@ -140,23 +172,48 @@ public partial class AtsdbContext : DbContext
 
             entity.HasOne(d => d.Dep).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.DepId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_Department");
+
+            entity.HasOne(d => d.DepartmentUpprovalStatusNavigation).WithMany(p => p.TblCivilJusticeDepartmentUpprovalStatusNavigations)
+                .HasForeignKey(d => d.DepartmentUpprovalStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_DecisionStatus");
+
+            entity.HasOne(d => d.DeputyUprovalStatusNavigation).WithMany(p => p.TblCivilJusticeDeputyUprovalStatusNavigations)
+                .HasForeignKey(d => d.DeputyUprovalStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_DecisionStatus2");
 
             entity.HasOne(d => d.ExternalRequestStatus).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.ExternalRequestStatusId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_ExternalRequestStatus");
 
             entity.HasOne(d => d.Inist).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.InistId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_Inistitutions");
 
             entity.HasOne(d => d.Priority).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.PriorityId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_Priority");
 
             entity.HasOne(d => d.RequestedByNavigation).WithMany(p => p.TblCivilJustices)
                 .HasForeignKey(d => d.RequestedBy)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJustice_tbl_ExternalUser");
+
+            entity.HasOne(d => d.TeamUpprovalStatusNavigation).WithMany(p => p.TblCivilJusticeTeamUpprovalStatusNavigations)
+                .HasForeignKey(d => d.TeamUpprovalStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_DecisionStatus1");
+
+            entity.HasOne(d => d.UserUpprovalStatusNavigation).WithMany(p => p.TblCivilJusticeUserUpprovalStatusNavigations)
+                .HasForeignKey(d => d.UserUpprovalStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tbl_CivilJustice_tbl_DecisionStatus3");
         });
 
         modelBuilder.Entity<TblCivilJusticeCaseType>(entity =>
@@ -189,6 +246,7 @@ public partial class AtsdbContext : DbContext
 
             entity.HasOne(d => d.Request).WithMany(p => p.TblCivilJusticeRequestActivities)
                 .HasForeignKey(d => d.RequestId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJusticeRequestActivity_tbl_CivilJustice");
         });
 
@@ -211,7 +269,19 @@ public partial class AtsdbContext : DbContext
 
             entity.HasOne(d => d.Request).WithMany(p => p.TblCivilJusticeRequestReplies)
                 .HasForeignKey(d => d.RequestId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJusticeRequestReplys_tbl_CivilJustice");
+        });
+
+        modelBuilder.Entity<TblDecisionStatus>(entity =>
+        {
+            entity.HasKey(e => e.DesStatusId);
+
+            entity.ToTable("tbl_DecisionStatus");
+
+            entity.Property(e => e.DesStatusId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.StatusDescription).HasMaxLength(350);
+            entity.Property(e => e.StatusName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblDepartment>(entity =>
@@ -413,6 +483,31 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_InternalUsers_tbl_Department");
         });
 
+        modelBuilder.Entity<TblLegalDraftingDocType>(entity =>
+        {
+            entity.HasKey(e => e.DocId);
+
+            entity.ToTable("tbl_LegalDraftingDocType");
+
+            entity.Property(e => e.DocId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("DocID");
+            entity.Property(e => e.DocName).HasMaxLength(300);
+        });
+
+        modelBuilder.Entity<TblLegalDraftingQuestionType>(entity =>
+        {
+            entity.HasKey(e => e.QuestTypeId);
+
+            entity.ToTable("tbl_LegalDraftingQuestionType");
+
+            entity.Property(e => e.QuestTypeId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("QuestTypeID");
+            entity.Property(e => e.QuestTypeDescription).HasMaxLength(350);
+            entity.Property(e => e.QuestTypeName).HasMaxLength(250);
+        });
+
         modelBuilder.Entity<TblLegalStudiesActivity>(entity =>
         {
             entity.HasKey(e => e.ActivityId);
@@ -446,8 +541,10 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.AssignedDate).HasColumnType("datetime");
             entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.DocId).HasColumnName("DocID");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
+            entity.Property(e => e.QuestTypeId).HasColumnName("QuestTypeID");
             entity.Property(e => e.TopStatus).HasMaxLength(250);
 
             entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblLegalStudiesDraftingAssignedByNavigations)
@@ -458,10 +555,6 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.AssignedTo)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_InternalUsers");
 
-            entity.HasOne(d => d.CaseType).WithMany(p => p.TblLegalStudiesDraftings)
-                .HasForeignKey(d => d.CaseTypeId)
-                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_CivilJusticeCaseType");
-
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblLegalStudiesDraftingCreatedByNavigations)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_InternalUsers2");
@@ -469,6 +562,14 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Dep).WithMany(p => p.TblLegalStudiesDraftings)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_Department");
+
+            entity.HasOne(d => d.DeputyUprovalStatusNavigation).WithMany(p => p.TblLegalStudiesDraftingDeputyUprovalStatusNavigations)
+                .HasForeignKey(d => d.DeputyUprovalStatus)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_DecisionStatus2");
+
+            entity.HasOne(d => d.Doc).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.DocId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_LegalDraftingDocType");
 
             entity.HasOne(d => d.ExternalRequestStatus).WithMany(p => p.TblLegalStudiesDraftings)
                 .HasForeignKey(d => d.ExternalRequestStatusId)
@@ -482,9 +583,21 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.PriorityId)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_Priority");
 
+            entity.HasOne(d => d.QuestType).WithMany(p => p.TblLegalStudiesDraftings)
+                .HasForeignKey(d => d.QuestTypeId)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_LegalDraftingQuestionType");
+
             entity.HasOne(d => d.RequestedByNavigation).WithMany(p => p.TblLegalStudiesDraftings)
                 .HasForeignKey(d => d.RequestedBy)
                 .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_ExternalUser");
+
+            entity.HasOne(d => d.TeamUpprovalStatusNavigation).WithMany(p => p.TblLegalStudiesDraftingTeamUpprovalStatusNavigations)
+                .HasForeignKey(d => d.TeamUpprovalStatus)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_DecisionStatus");
+
+            entity.HasOne(d => d.UserUpprovalStatusNavigation).WithMany(p => p.TblLegalStudiesDraftingUserUpprovalStatusNavigations)
+                .HasForeignKey(d => d.UserUpprovalStatus)
+                .HasConstraintName("FK_tbl_LegalStudiesDrafting_tbl_DecisionStatus1");
         });
 
         modelBuilder.Entity<TblLegalStudiesReplay>(entity =>
@@ -661,6 +774,27 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.TblSubmenus)
                 .HasForeignKey(d => d.RoleId)
                 .HasConstraintName("FK_tbl_Submenu_tbl_Roles");
+        });
+
+        modelBuilder.Entity<TblWitnessEvidence>(entity =>
+        {
+            entity.HasKey(e => e.WitnessId);
+
+            entity.ToTable("tbl_Witness_Evidences");
+
+            entity.Property(e => e.WitnessId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("WitnessID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblWitnessEvidences)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_Witness_Evidences_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblWitnessEvidences)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_Witness_Evidences_tbl_CivilJustice");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -141,13 +141,13 @@
                                                 @Html.Raw(item.Priority.PriorityNameWithColor)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsUpprovedByUser)
+                                                @Html.Raw(item.UserUpprovalStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsUprovedByTeam)
+                                                @Html.Raw(item.DepartmentUpprovalStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsUprovedByDeputy)
+                                                @Html.Raw(item.DeputyUprovalStatus)
                                             </td>
                                             <td>
                                                 @Html.Raw(item.TopStatus)
@@ -161,7 +161,7 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedToNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
+                                                @Html.DisplayFor(modelItem => item.Doc.DocName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Dep.DepName)

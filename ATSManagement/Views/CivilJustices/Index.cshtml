@@ -150,13 +150,13 @@
 
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsUpprovedByUser)
+                                                @Html.Raw(item.UserUpprovalStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsUprovedByTeam)
+                                                @Html.Raw(item.DepartmentUpprovalStatus)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsUprovedByDeputy)
+                                                @Html.Raw(item.DeputyUprovalStatus)
                                             </td>
                                             <td>
                                                 @Html.Raw(item.TopStatus)

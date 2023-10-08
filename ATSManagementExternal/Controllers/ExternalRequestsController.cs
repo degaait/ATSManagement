@@ -52,7 +52,8 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.AssignedToNavigation)
-               .Include(t => t.CaseType)
+               .Include(t => t.Doc)
+               .Include(x=>x.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
@@ -68,7 +69,8 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.AssignedToNavigation)
-               .Include(t => t.CaseType)
+               .Include(t => t.Doc)
+               .Include(x=>x.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
@@ -84,7 +86,8 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.AssignedToNavigation)
-               .Include(t => t.CaseType)
+               .Include(t => t.Doc)
+               .Include(s=>s.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
@@ -100,7 +103,8 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblLegalStudiesDraftings
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.AssignedToNavigation)
-               .Include(t => t.CaseType)
+               .Include(t => t.Doc)
+               .Include(s=>s.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
@@ -205,6 +209,21 @@ namespace ATSManagementExternal.Controllers
                 Value = a.DepId.ToString()
 
             }).ToList();
+            model.LegalStadiesCasetypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
+            {
+                Value = s.DocId.ToString(),
+                Text = s.DocName.ToString()
+            }).ToList();
+            model.LegalStadiesQuestiontypes = _context.TblLegalDraftingQuestionTypes.Select(x => new SelectListItem
+            {
+                Value = x.QuestTypeId.ToString(),
+                Text = x.QuestTypeId.ToString()
+            }).ToList();
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Value = x.CaseTypeId.ToString(),
+                Text = x.CaseTypeName.ToString()
+            }).ToList();
             return View(model);
         }
 
@@ -220,6 +239,8 @@ namespace ATSManagementExternal.Controllers
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
                 TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
+                var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
+
                 TblExternalRequest requests = new TblExternalRequest();
                 TblCivilJustice tblCivilJustice = new TblCivilJustice();
                 TblLegalStudiesDrafting drafting = new TblLegalStudiesDrafting();
@@ -229,13 +250,12 @@ namespace ATSManagementExternal.Controllers
                     tblCivilJustice.DepId = model.DepId;
                     tblCivilJustice.RequestDetail = model.RequestDetail;
                     tblCivilJustice.InistId = model.IntId;
-                    tblCivilJustice.IsUpprovedByUser = false;
-                    tblCivilJustice.IsUprovedbyDepartment = false;
-                    tblCivilJustice.IsUprovedByDeputy = false;
-                    tblCivilJustice.CreatedDate = DateTime.Now;
-                    tblCivilJustice.IsUprovedByTeam = false;
                     tblCivilJustice.RequestedBy = userId;
                     tblCivilJustice.ExternalRequestStatusId = statusiD;
+                    tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
+                    tblCivilJustice.TeamUpprovalStatus = decision.DesStatusId;
+                    tblCivilJustice.DeputyUprovalStatus = decision.DesStatusId;
+                    tblCivilJustice.UserUpprovalStatus = decision.DesStatusId;
                     _context.TblCivilJustices.Add(tblCivilJustice);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
@@ -265,12 +285,12 @@ namespace ATSManagementExternal.Controllers
                     drafting.DepId = model.DepId;
                     drafting.RequestedBy = userId;
                     drafting.InistId = model.IntId;
+                    drafting.DepartmentUpprovalStatus = decision.DesStatusId;
+                    drafting.TeamUpprovalStatus = decision.DesStatusId;
+                    drafting.DeputyUprovalStatus = decision.DesStatusId;
+                    drafting.UserUpprovalStatus = decision.DesStatusId;
                     drafting.ExternalRequestStatusId = statusiD;
-                    tblCivilJustice.IsUpprovedByUser = false;
-                    tblCivilJustice.IsUprovedbyDepartment = false;
-                    tblCivilJustice.IsUprovedByDeputy = false;
-                    tblCivilJustice.IsUprovedByTeam = false;
-                    _context.TblCivilJustices.Add(tblCivilJustice);
+                    _context.TblLegalStudiesDraftings.Add(drafting);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {

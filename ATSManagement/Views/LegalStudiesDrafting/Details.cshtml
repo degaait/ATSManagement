@@ -75,24 +75,7 @@
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.ExternalRequestStatus.StatusWithColor)
                                     </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="IsUpprovedByUser" class="col-form-label-m">IsUserUpproved?</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.IsUpprovedByUser)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="IsUprovedByTeam" class="col-form-label-m">IsTeamUpproved?</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.IsUprovedByTeam)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="IsUprovedByDeputy" class="col-form-label-m">IsDeputyUpproved?</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.IsUprovedByDeputy)
-                                    </dd>
+
                                     <dt class="col-sm-2">
                                         <label asp-for="TopStatus" class="col-form-label-m">Final Status?</label>
                                     </dt>
@@ -114,11 +97,16 @@
                                         @Html.DisplayFor(model => model.AssignedToNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.CaseType)
-                                        <label asp-for="AssignedTo" class="col-form-label-m">Case type</label>
+                                        <label asp-for="AssignedTo" class="col-form-label-m">Document type</label>
                                     </dt>
                                     <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.CaseType.CaseTypeName)
+                                        @Html.DisplayFor(model => model.Doc.DocName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedTo" class="col-form-label-m">Question type</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.QuestType.QuestTypeName)
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="DepId" class="col-form-label-m">Department</label>

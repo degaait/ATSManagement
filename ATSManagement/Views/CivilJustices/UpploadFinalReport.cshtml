@@ -1,0 +1,63 @@
+﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
+
+@{
+    ViewData["Title"] = "Add final report";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Add final report
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Upload</h4>
+                        </div>
+                        <form asp-action="AddMeetingLetter" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="RequestId" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Title</label>
+                                            <div class="col">
+                                                @Html.Raw(Model.RequestDetail)
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Report file</label>
+                                            <div class="col">
+                                                <input asp-for="finalReport" type="file" class="form-file-button" />
+                                                <span asp-validation-for="finalReport" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Upload" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
