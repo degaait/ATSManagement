@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Models;
 
@@ -47,6 +45,10 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
 
+    public virtual DbSet<TblLegalDraftingDocType> TblLegalDraftingDocTypes { get; set; }
+
+    public virtual DbSet<TblLegalDraftingQuestionType> TblLegalDraftingQuestionTypes { get; set; }
+
     public virtual DbSet<TblLegalStudiesActivity> TblLegalStudiesActivities { get; set; }
 
     public virtual DbSet<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; }
@@ -75,10 +77,12 @@ public partial class AtsdbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Latin1_General_CI_AS");
+
         modelBuilder.Entity<TblAssignedYearlyPlan>(entity =>
         {
             entity.ToTable("tbl_AssignedYearlyPlans");
@@ -411,6 +415,31 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Dep).WithMany(p => p.TblInternalUsers)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tbl_InternalUsers_tbl_Department");
+        });
+
+        modelBuilder.Entity<TblLegalDraftingDocType>(entity =>
+        {
+            entity.HasKey(e => e.DocId);
+
+            entity.ToTable("tbl_LegalDraftingDocType");
+
+            entity.Property(e => e.DocId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("DocID");
+            entity.Property(e => e.DocName).HasMaxLength(300);
+        });
+
+        modelBuilder.Entity<TblLegalDraftingQuestionType>(entity =>
+        {
+            entity.HasKey(e => e.QuestTypeId);
+
+            entity.ToTable("tbl_LegalDraftingQuestionType");
+
+            entity.Property(e => e.QuestTypeId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("QuestTypeID");
+            entity.Property(e => e.QuestTypeDescription).HasMaxLength(350);
+            entity.Property(e => e.QuestTypeName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblLegalStudiesActivity>(entity =>
