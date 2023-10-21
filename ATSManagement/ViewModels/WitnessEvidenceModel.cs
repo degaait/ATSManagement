@@ -6,9 +6,9 @@
 
         public string? WitnessesName { get; set; }
 
-        public string? EvidenceFiles { get; set; }
+        public IFormFile? EvidenceFiles { get; set; }
 
-        public string? EvidenceVideos { get; set; }
+        public IFormFile? EvidenceVideos { get; set; }
 
         public Guid? RequestId { get; set; }
 

@@ -1,7 +1,7 @@
-using ATSManagementExternal.IModels;
 using ATSManagementExternal.Models;
-using ATSManagementExternal.Services;
+using ATSManagementExternal.IModels;
 using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -10,7 +10,7 @@ builder.Services.AddDbContext<AtsdbContext>(options =>
         sqlServerOptionsAction: sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 10,
+                maxRetryCount: 200,
                 maxRetryDelay: TimeSpan.FromSeconds(5),
                 errorNumbersToAdd: null);
         });
@@ -24,7 +24,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(6000);
+    options.IdleTimeout = TimeSpan.FromSeconds(60000);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

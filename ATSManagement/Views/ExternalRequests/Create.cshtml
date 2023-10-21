@@ -57,26 +57,26 @@
                                         <div class="mb-3 row">
                                             <label asp-for="DepId" class=" col-2 col-form-label">Responsible Department</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "department" })
 
                                                 <span asp-validation-for="DepId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-3 row" id="divCaseType" style="display:none">
                                             <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpCasetypes" })
                                                 <span asp-validation-for="CaseTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Document type</label>
+                                        <div class="mb-3 row" id="divDoctype" style="display:none">
+                                            <label asp-for="DocId" class=" col-2 col-form-label">Document type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "lsCaseType" })
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-3 row" id="divQuestionType" style="display:none">
                                             <label asp-for="CaseTypeId" class=" col-2 col-form-label">Question type</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
@@ -108,6 +108,37 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#department').change(function () {
+                var selectedProfesso = $(this).val();
+                if (selectedProfesso == "50e0aed7-3164-4645-ad54-194afbc32244") {
+                    $('#divCaseType').show();
+                }
+                else {
+                    $('#divCaseType').hide();
+                }
+                if (selectedProfesso == "159f57e9-bc26-4b6e-859e-c577ce8a86a8") {
+                    $('#divDoctype').hide();
+                    $('#divQuestionType').hide();
+
+                }
+                else {
+                    $("#divDoctype").hide();
+                    $("#divQuestionType").hide();
+                }
+            })
+            $("#drpCasetypes").change(function () {
+                var selectedProfesso = $(this).val();
+                if (selectedProfesso == "Other") {
+                    $("#enumOtherProfession").show();
+                }
+                else {
+                    $("#enumOtherProfession").hide();
+                }
+            })
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

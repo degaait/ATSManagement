@@ -70,5 +70,16 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Requested Date")]
         public DateTime? RequestedDate { get; set; }
+
+        public Guid? DocId { get; set; }
+        public List<SelectListItem>? LegalStadiesDocumenttypes { get; set; }
+        [Display(Name = "Question type")]
+
+        public Guid? QuestTypeId { get; set; }
+        public List<SelectListItem>? LegalStadiesQuestiontypes { get; set; }
+
+        [Display(Name = "Document File")]
+        public IFormFile DocumentFile { get; set; }
+
     }
 }

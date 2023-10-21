@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Create</h4>
                         </div>
-                        <form asp-action="Create">
+                        <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
@@ -63,10 +63,24 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
+                                            <label asp-for="DocId" class=" col-2 col-form-label">Document type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="CaseTypeId" class="text-danger"></span>
+                                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="DocId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question type</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="QuestTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Document file</label>
+                                            <div class="col">
+                                                <input asp-for="DocumentFile" type="file" class="form-file-button" />
+                                                <span asp-validation-for="DocumentFile" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">

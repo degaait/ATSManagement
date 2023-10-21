@@ -27,6 +27,8 @@ public partial class TblExternalUser
 
     public virtual TblInistitution? Inist { get; set; }
 
+    public virtual ICollection<TblAppointment> TblAppointments { get; set; } = new List<TblAppointment>();
+
     public virtual ICollection<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplies { get; set; } = new List<TblCivilJusticeRequestReply>();
 
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
@@ -38,4 +40,8 @@ public partial class TblExternalUser
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
+
+    public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
+
+    public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 }

@@ -12,4 +12,6 @@ public partial class TblLegalDraftingQuestionType
     public string? QuestTypeDescription { get; set; }
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
+
+    public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 }

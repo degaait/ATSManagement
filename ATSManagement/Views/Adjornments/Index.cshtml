@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ATSManagement.Models.TblAdjornment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AdjorneyDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhatIsDone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedByNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdjorneyDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhatIsDone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedByNavigation.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Request.RequestId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AdjoryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AdjoryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AdjoryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

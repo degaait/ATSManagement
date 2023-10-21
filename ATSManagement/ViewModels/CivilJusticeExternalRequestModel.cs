@@ -26,7 +26,7 @@ namespace ATSManagement.ViewModels
         public Guid? CreatedBy { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? DepId { get; set; }
-      
+
 
         [Required(ErrorMessage = "*")]
         public Guid? AssignedBy { get; set; }
@@ -46,9 +46,7 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Assigned to")]
         public List<SelectListItem>? AssignedTos { get; set; }
 
-        public string? ProgressStatus { get; set; }
         [Display(Name = "Is Upproved by User")]
-
         public bool? IsUpprovedByUser { get; set; }
         [Display(Name = "Is Upproved by Team")]
         public bool? IsUprovedByTeam { get; set; }
@@ -61,7 +59,7 @@ namespace ATSManagement.ViewModels
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
         public List<SelectListItem>? Priorities { get; set; }
-        
+
         public Guid? CaseTypeId { get; set; }
 
         [Display(Name = "Case types")]
@@ -71,22 +69,31 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Requested Date")]
         public DateTime? RequestedDate { get; set; }
-        [Display(Name ="Document type")]
+        [Display(Name = "Document type")]
         public Guid? DocId { get; set; }
-        public List<SelectListItem>? LegalStadiesCasetypes { get;  set; }
-        [Display(Name ="Question type")]
+        public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
+        [Display(Name = "Question type")]
 
         public Guid? QuestTypeId { get; set; }
         public List<SelectListItem>? LegalStadiesQuestiontypes { get; set; }
-        [Display(Name ="Final Report")]
+        [Display(Name = "Final Report")]
         public IFormFile finalReport { get; set; }
         [Display(Name = "Request letter")]
         public IFormFile RequestLetter { get; set; }
         [Display(Name = "Adjorney Date")]
         [DataType(DataType.DateTime)]
-        public DateTime? AdjorneyDate { get; set; } 
-       
+        public DateTime? AdjorneyDate { get; set; }
+        [Display(Name = "Status")]
+        [Required(ErrorMessage = "*")]
+        public Guid? ExternalRequestStatusID { get; set; }
+        [Required(ErrorMessage = "*")]
+        public List<SelectListItem>? ExternalStatus { get; set; }
 
+        [Display(Name = "Desicion status")]
+        [Required(ErrorMessage = "*")]
+        public Guid DesStatusId { get; set; }
+        [Required(ErrorMessage = "*")]
+        public List<SelectListItem>? DesicionStatus { get; set; }
 
 
     }

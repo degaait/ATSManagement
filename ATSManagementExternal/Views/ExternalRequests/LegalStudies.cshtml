@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ATSManagementExternal.Models.TblLegalStudiesDrafting>
-
+@inject AtsdbContext _context;
 @{
     ViewData["Title"] = "Requests";
 }
@@ -19,7 +19,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                   All Requests
+                    All Requests
                 </h2>
             </div>
             <!-- Page title actions -->
@@ -114,6 +114,7 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        var replies = (from replys in _context.TblCivilJusticeRequestReplys where item.RequestId == replys.RequestId select replys).FirstOrDefault();
                                         <tr>
                                             <td>
                                                 @Html.Raw(item.RequestDetail)
@@ -145,13 +146,13 @@
 
                                             </td>
                                             <td>
-                                                @Html.Raw(item.UserUpprovalStatus)
+                                                @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.DepartmentUpprovalStatus)
+                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.DeputyUprovalStatus)
+                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
                                                 @Html.Raw(item.TopStatus)
@@ -184,6 +185,13 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
+                                                            @if (replies != null)
+                                                            {
+                                                                <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
+                                                                    Replies
+                                                                </a>
+                                                            }
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

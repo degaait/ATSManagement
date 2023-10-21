@@ -19,5 +19,5 @@ public partial class TblAdjornment
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
-    public virtual TblCivilJustice? Request { get; set; }
+    public virtual TblRequest? Request { get; set; }
 }

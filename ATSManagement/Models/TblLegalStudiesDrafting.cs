@@ -49,6 +49,10 @@ public partial class TblLegalStudiesDrafting
 
     public Guid? QuestTypeId { get; set; }
 
+    public string? FinalReport { get; set; }
+
+    public string? DocumentFile { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
     public virtual TblInternalUser? AssignedToNavigation { get; set; }
@@ -56,6 +60,8 @@ public partial class TblLegalStudiesDrafting
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblDepartment? Dep { get; set; }
+
+    public virtual TblDecisionStatus? DepartmentUpprovalStatusNavigation { get; set; }
 
     public virtual TblDecisionStatus? DeputyUprovalStatusNavigation { get; set; }
 

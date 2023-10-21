@@ -115,10 +115,8 @@
                                                 <td>
                                                     @Html.Raw(requestName.RequestDetail)
                                                 </td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.ActivityId">Edit</a> |
-                                                    <a asp-action="Details" asp-route-id="@item.ActivityId">Details</a> |
-                                                    <a asp-action="Delete" asp-route-id="@item.ActivityId">Delete</a>
+                                                <td>                                                       
+                                                    <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId">Delete</a>
                                                 </td>
                                             </tr>
                                         }

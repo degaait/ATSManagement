@@ -31,11 +31,25 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail Detail</label>
+                                        <div class="mb-3 row" id="divServiceType">
+                                            <label asp-for="TypeID" class=" col-2 col-form-label">Responsible Department</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.TypeID, new SelectList(Model.RequestTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="TypeID" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divRequestDetail">
+                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">Appointment Detail</label>
+                                            <div class="col">
+                                                <input asp-for="AppointmentDetail" class="form-control" />
+                                                <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -45,30 +59,29 @@
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="DepId" class=" col-2 col-form-label">Responsible Department</label>
+                                        <div class="mb-3 row" id="divServiceType">
+                                            <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Responsible Department</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-
-                                                <span asp-validation-for="DepId" class="text-danger"></span>
+                                                @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-3 row" id="divCasetype">
                                             <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="CaseTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Document type</label>
+                                        <div class="mb-3 row" id="divDocType">
+                                            <label asp-for="DocId" class=" col-2 col-form-label">Document type</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Question type</label>
+                                        <div class="mb-3 row" id="divQuestType">
+                                            <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question type</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="QuestTypeId" class="text-danger"></span>

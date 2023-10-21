@@ -11,6 +11,8 @@ public partial class TblInistitution
 
     public string? Description { get; set; }
 
+    public virtual ICollection<TblAppointment> TblAppointments { get; set; } = new List<TblAppointment>();
+
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
 
     public virtual ICollection<TblExternalRequest> TblExternalRequests { get; set; } = new List<TblExternalRequest>();
@@ -24,4 +26,6 @@ public partial class TblInistitution
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
 
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
+
+    public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 }

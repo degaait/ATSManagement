@@ -11,11 +11,25 @@ namespace ATSManagementExternal.ViewModels
         [DisplayFormat(ApplyFormatInEditMode = true)]
         [Display(Name = "Request Detail")]
         public string? RequestDetail { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true)]
+        [Display(Name = "Request Detail")]
+        public string? AppointmentDetail { get; set; }
+
+        public Guid? TypeID { get; set; }
+
+        [Display(Name = "Request types")]
+        public List<SelectListItem>? RequestTypes { get; set; }
+
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Date")]
         [DataType(DataType.DateTime)]
 
         public DateTime? RequestedDate { get; set; }
+
+        [Display(Name = "Request Date")]
+        [DataType(DataType.DateTime)]
+
+        public DateTime? AppointmentDate { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Detail")]
@@ -38,15 +52,17 @@ namespace ATSManagementExternal.ViewModels
         public Guid? DocId { get; set; }
         public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
         [Display(Name = "Question type")]
-
         public Guid? QuestTypeId { get; set; }
         public List<SelectListItem>? LegalStadiesQuestiontypes { get; set; }
-
         public Guid? CaseTypeId { get; set; }
 
         [Display(Name = "Case types")]
         public List<SelectListItem>? CaseTypes { get; set; }
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
 
-        public DateTime? CreatedDate { get; set; }= DateTime.Now;
+        public Guid? ServiceTypeID { get; set; }
+
+        [Display(Name = "Service types")]
+        public List<SelectListItem>? ServiceTypes { get; set; }
     }
 }

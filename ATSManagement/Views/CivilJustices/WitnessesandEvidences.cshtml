@@ -1,0 +1,146 @@
+﻿@model IEnumerable<ATSManagement.Models.TblWitnessEvidence>
+
+@{
+    ViewData["Title"] = "Evidences and Witnesses";
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Witnesses and Evidences 
+                </h2>
+            </div>
+            <!-- Page title actions -->
+        
+        </div>
+    </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <table class="table table-bordered" id="role">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Witnesses name
+                                        </th>
+                                        <th>
+                                            Files
+                                        </th>
+                                        <th>
+                                            Videos
+                                        </th>
+                                        <th>
+                                            Created Date
+                                        </th>
+                                        <th>
+                                            Created by
+                                        </th>
+                                        <th>
+                                            Request detail
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.WitnessesName)
+                                            </td>
+                                            <td>
+                                                @if (item.EvidenceFiles != null)
+                                                {
+                                                    <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.EvidenceFiles">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                            <path d="M12 17v-6"></path>
+                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                        </svg>
+                                                        Download
+                                                    </a>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.EvidenceVideos != null)
+                                                {
+                                                    <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.EvidenceVideos">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                            <path d="M12 17v-6"></path>
+                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                        </svg>
+                                                        Download
+                                                    </a>
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.Request.RequestDetail)
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script type="text/javascript">
+        var dp = $("#Date").datepicker({
+            format: "dd/mm/yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true
+        });
+        dp.on('changeDate', function (e) {
+            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
+        });
+    </script>
+}

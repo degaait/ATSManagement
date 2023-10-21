@@ -21,9 +21,19 @@ public partial class TblDecisionStatus
 
     public virtual ICollection<TblCivilJustice> TblCivilJusticeUserUpprovalStatusNavigations { get; set; } = new List<TblCivilJustice>();
 
+    public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingDepartmentUpprovalStatusNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
+
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingDeputyUprovalStatusNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingTeamUpprovalStatusNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingUserUpprovalStatusNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
+
+    public virtual ICollection<TblRequest> TblRequestDepartmentUpprovalStatusNavigations { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblRequest> TblRequestDeputyUprovalStatusNavigations { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblRequest> TblRequestTeamUpprovalStatusNavigations { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblRequest> TblRequestUserUpprovalStatusNavigations { get; set; } = new List<TblRequest>();
 }

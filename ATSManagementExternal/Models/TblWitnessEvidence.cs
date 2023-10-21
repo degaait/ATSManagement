@@ -21,5 +21,5 @@ public partial class TblWitnessEvidence
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
-    public virtual TblCivilJustice? Request { get; set; }
+    public virtual TblRequest? Request { get; set; }
 }

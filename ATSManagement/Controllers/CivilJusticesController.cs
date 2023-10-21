@@ -3,9 +3,9 @@ using ATSManagement.IModels;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace ATSManagement.Controllers
 {
@@ -21,7 +21,6 @@ namespace ATSManagement.Controllers
             _contextAccessor = contextAccessor;
             _mail = mailService;
         }
-
         // GET: CivilJustices
         public async Task<IActionResult> Index()
         {
@@ -34,10 +33,12 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
+                                                        .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                        .Include(x => x.DeputyUprovalStatusNavigation)
+                                                        .Include(y => y.TeamUpprovalStatusNavigation)
                                                         .Include(t => t.Priority);
             return View(await atsdbContext.ToListAsync());
         }
-       
         public async Task<IActionResult> AddActivity(Guid? id)
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -56,23 +57,23 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddActivity(ActivityModel model)
         {
-            List<string> assignedBody=new List<string>();
-            var request=_context.TblCivilJustices.Where(x=>x.RequestId==model.RequestId).FirstOrDefault();
-            assignedBody=(from items in _context.TblInternalUsers where items.UserId==request.AssignedBy select items.EmailAddress).ToList();
+            List<string> assignedBody = new List<string>();
+            var request = _context.TblCivilJustices.Where(x => x.RequestId == model.RequestId).FirstOrDefault();
+            assignedBody = (from items in _context.TblInternalUsers where items.UserId == request.AssignedBy select items.EmailAddress).ToList();
             TblCivilJusticeRequestActivity activity = new TblCivilJusticeRequestActivity();
             activity.RequestId = model.RequestId;
             activity.AddedDate = DateTime.Now;
-            activity.ActivityDetail= model.ActivityDetail;
+            activity.ActivityDetail = model.ActivityDetail;
             activity.CreatedBy = model.CreatedBy;
             _context.Add(activity);
-            int saved=await _context.SaveChangesAsync();
-            if (saved>0)
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
             {
                 model.ActivityDetail = null;
                 SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
                 ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
-                    .Include(x=>x.Request)
-                    .Include(x=>x.CreatedByNavigation)
+                    .Include(x => x.Request)
+                    .Include(x => x.CreatedByNavigation)
                     .Where(x => x.RequestId == model.RequestId).ToList();
 
                 return View(model);
@@ -88,7 +89,6 @@ namespace ATSManagement.Controllers
             }
 
         }
-
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblCivilJustices == null)
@@ -104,6 +104,9 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ExternalRequestStatus)
+                .Include(x => x.DepartmentUpprovalStatusNavigation)
+                .Include(x => x.DeputyUprovalStatusNavigation)
+                .Include(y => y.TeamUpprovalStatusNavigation)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (tblCivilJustice == null)
             {
@@ -112,7 +115,6 @@ namespace ATSManagement.Controllers
 
             return View(tblCivilJustice);
         }
-
         public IActionResult Create()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -142,7 +144,6 @@ namespace ATSManagement.Controllers
 
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
@@ -161,9 +162,9 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepId = model.DepId;
                 tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
-                tblCivilJustice.TeamUpprovalStatus=decision.DesStatusId;
+                tblCivilJustice.TeamUpprovalStatus = decision.DesStatusId;
                 tblCivilJustice.DeputyUprovalStatus = decision.DesStatusId;
-                tblCivilJustice.UserUpprovalStatus=decision.DesStatusId;
+                tblCivilJustice.UserUpprovalStatus = decision.DesStatusId;
                 tblCivilJustice.ExternalRequestStatusId = statusiD;
                 _context.TblCivilJustices.Add(tblCivilJustice);
                 int saved = _context.SaveChanges();
@@ -266,7 +267,6 @@ namespace ATSManagement.Controllers
             model.CreatedDate = tblCivilJustice.CreatedDate;
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CivilJusticeExternalRequestModel model)
@@ -346,7 +346,6 @@ namespace ATSManagement.Controllers
             }
 
         }
-
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblCivilJustices == null)
@@ -362,6 +361,9 @@ namespace ATSManagement.Controllers
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ExternalRequestStatus)
+                .Include(x => x.DepartmentUpprovalStatusNavigation)
+                .Include(x => x.DeputyUprovalStatusNavigation)
+                .Include(y => y.TeamUpprovalStatusNavigation)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (tblCivilJustice == null)
             {
@@ -388,12 +390,10 @@ namespace ATSManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool TblCivilJusticeExists(Guid id)
         {
             return (_context.TblCivilJustices?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
-
         public async Task<IActionResult> AssignToUser(Guid id)
         {
 
@@ -536,7 +536,6 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
-
         public async Task<IActionResult> Replies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -584,13 +583,11 @@ namespace ATSManagement.Controllers
             }
 
         }
-
         private async Task SendMail(List<string> to, string subject, string body)
         {
             MailData data = new MailData(to, subject, body, "degaait@gmail.com");
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
-
         public async Task<IActionResult> CompletedRequests()
         {
             var atsdbContext = _context.TblCivilJustices
@@ -602,7 +599,10 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
-                                                        .Include(t => t.Priority).Where(x=>x.ExternalRequestStatus.StatusName== "Completed");
+                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                        .Include(x => x.DeputyUprovalStatusNavigation)
+                                                        .Include(y => y.TeamUpprovalStatusNavigation)
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "Completed");
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> PendingRequests()
@@ -616,7 +616,10 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
-                                                        .Include(t => t.Priority).Where(x=>x.ExternalRequestStatus.StatusName== "In Progress");
+                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                        .Include(x => x.DeputyUprovalStatusNavigation)
+                                                        .Include(y => y.TeamUpprovalStatusNavigation)
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress");
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AssignedRequests()
@@ -632,18 +635,20 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
+                                                         .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                        .Include(x => x.DeputyUprovalStatusNavigation)
+                                                        .Include(y => y.TeamUpprovalStatusNavigation)
                                                         .Include(t => t.Priority).Where(a => a.AssignedTo == userId);
             return View(await atsdbContext.ToListAsync());
         }
-
         public async Task<IActionResult> UpploadFinalReport(Guid id)
         {
-            CivilJusticeExternalRequestModel model= new CivilJusticeExternalRequestModel();
-            var detail=_context.TblExternalRequests.FindAsync(id).Result;
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            var detail = _context.TblCivilJustices.FindAsync(id).Result;
             model.RequestId = id;
-            model.CreatedDate=DateTime.UtcNow;
+            model.CreatedDate = DateTime.UtcNow;
             model.RequestDetail = detail.RequestDetail;
-            
+
             return View(model);
         }
         [HttpPost]
@@ -651,7 +656,7 @@ namespace ATSManagement.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UpploadFinalReport(CivilJusticeExternalRequestModel model)
         {
-            TblCivilJustice civilJustice=await _context.TblCivilJustices.FindAsync(model.RequestId);
+            TblCivilJustice civilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
 
             //create folder if not exist
@@ -678,13 +683,12 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
-
         public async Task<IActionResult> AddAdjornyDates(Guid? id)
         {
             ViewData["Adjornies"] = _context.TblAdjornments.ToList();
             AjornyDateModel model = new AjornyDateModel();
             model.RequestId = id;
-            model.CreatedDate=DateTime.UtcNow;
+            model.CreatedDate = DateTime.UtcNow;
             return View(model);
         }
         [HttpPost]
@@ -694,27 +698,28 @@ namespace ATSManagement.Controllers
         {
             TblAdjornment tblAdjornment = new TblAdjornment();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            tblAdjornment.AdjorneyDate=ajornyDateModel.AdjorneyDate;
-            tblAdjornment.RequestId= ajornyDateModel.RequestId;
-            tblAdjornment.CreatedDate=DateTime.UtcNow;
+            tblAdjornment.AdjorneyDate = ajornyDateModel.AdjorneyDate;
+            tblAdjornment.RequestId = ajornyDateModel.RequestId;
+            tblAdjornment.CreatedDate = DateTime.UtcNow;
             tblAdjornment.WhatIsDone = ajornyDateModel.WhatIsDone;
-            tblAdjornment.CreatedBy= userId;
+            tblAdjornment.CreatedBy = userId;
             _context.TblAdjornments.Add(tblAdjornment);
-            int saved=_context.SaveChanges();
-            ViewData["Adjornies"]=_context.TblAdjornments.ToList();
-            if (saved>0)
+            int saved = _context.SaveChanges();
+            ViewData["Adjornies"] = _context.TblAdjornments.ToList();
+            if (saved > 0)
             {
                 return View(ajornyDateModel);
             }
             return View(ajornyDateModel);
         }
-
         public async Task<IActionResult> AddEvidencesAndWitnesses(Guid? id)
         {
-            WitnessEvidenceModel model=new WitnessEvidenceModel();
-            model.RequestId= id;
-            model.CreatedDate= DateTime.UtcNow;
-            ViewData["evidences"]=_context.TblWitnessEvidences.ToList();
+            WitnessEvidenceModel model = new WitnessEvidenceModel();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            model.RequestId = id;
+            model.CreatedDate = DateTime.UtcNow;
+            model.CreatedBy = userId;
+            ViewData["evidences"] = _context.TblWitnessEvidences.Include(x => x.Request).ToList();
             if (id == null)
             {
                 return NotFound();
@@ -728,13 +733,45 @@ namespace ATSManagement.Controllers
         {
             TblWitnessEvidence evidence = new TblWitnessEvidence();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            evidence.RequestId=evidenceModel.RequestId;
-            evidence.CreatedDate= DateTime.UtcNow;
+            string dbPath = null, dbVideoPath = null;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+
+            //create folder if not exist
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            //get file extension
+            if (evidenceModel.EvidenceFiles != null)
+            {
+                string file = Guid.NewGuid().ToString() + evidenceModel.EvidenceFiles.FileName;
+                string fileWithPath = Path.Combine(path, file);
+                using (var stream = new FileStream(fileWithPath, FileMode.Create))
+                {
+                    evidenceModel.EvidenceFiles.CopyTo(stream);
+                }
+                dbPath = "/Files/" + file;
+            }
+
+            if (evidenceModel.EvidenceVideos != null)
+            {
+                string videos = Guid.NewGuid().ToString() + evidenceModel.EvidenceVideos.FileName;
+                string videoWithPath = Path.Combine(path, videos);
+                using (var stream = new FileStream(videoWithPath, FileMode.Create))
+                {
+                    evidenceModel.EvidenceVideos.CopyTo(stream);
+                }
+                dbVideoPath = "/Files/" + videos;
+            }
+            evidence.RequestId = evidenceModel.RequestId;
+            evidence.CreatedDate = DateTime.UtcNow;
             evidence.CreatedBy = userId;
+            evidence.WitnessesName = evidenceModel.WitnessesName;
+            evidence.EvidenceVideos = dbVideoPath;
+            evidence.EvidenceFiles = dbPath;
             _context.TblWitnessEvidences.Add(evidence);
-            int saved=_context.SaveChanges();
-            ViewData["evidences"] = _context.TblWitnessEvidences.ToList();
-            if (saved>0)
+            int saved = _context.SaveChanges();
+            ViewData["evidences"] = _context.TblWitnessEvidences.Include(x => x.Request).ToList();
+            if (saved > 0)
             {
                 return View(evidenceModel);
             }
@@ -743,6 +780,232 @@ namespace ATSManagement.Controllers
                 return View(evidenceModel);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> DownloadEvidenceFile(string path)
+        {
+            string filename = path.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
+        }
+        public async Task<IActionResult> DeleteActivity(Guid? id)
+        {
+            if (id == null || _context.TblCivilJusticeRequestActivities == null)
+            {
+                return NotFound();
+            }
 
+            var tblWitnessEvidence = await _context.TblCivilJusticeRequestActivities
+                .Include(t => t.CreatedByNavigation)
+                .Include(t => t.Request)
+                .FirstOrDefaultAsync(m => m.ActivityId == id);
+            if (tblWitnessEvidence == null)
+            {
+                return NotFound();
+            }
+
+            return View(tblWitnessEvidence);
+        }
+
+     
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteActivity(Guid id)
+        {
+            if (_context.TblCivilJusticeRequestActivities == null)
+            {
+                return Problem("Entity set 'AtsdbContext.TblCivilJusticeRequestActivities'  is null.");
+            }
+            var tblWitnessEvidence = await _context.TblCivilJusticeRequestActivities.FindAsync(id);
+            if (tblWitnessEvidence != null)
+            {
+                _context.TblCivilJusticeRequestActivities.Remove(tblWitnessEvidence);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AddActivity), new { id = tblWitnessEvidence.RequestId });
+        }
+        public async Task<IActionResult> DeleteWitness(Guid? id)
+        {
+            if (id == null || _context.TblWitnessEvidences == null)
+            {
+                return NotFound();
+            }
+
+            var tblWitnessEvidence = await _context.TblWitnessEvidences
+                .Include(t => t.CreatedByNavigation)
+                .Include(t => t.Request)
+                .FirstOrDefaultAsync(m => m.WitnessId == id);
+            if (tblWitnessEvidence == null)
+            {
+                return NotFound();
+            }
+
+            return View(tblWitnessEvidence);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteWitness(Guid id)
+        {
+            if (_context.TblWitnessEvidences == null)
+            {
+                return Problem("Entity set 'AtsdbContext.TblWitnessEvidences'  is null.");
+            }
+            var tblWitnessEvidence = await _context.TblWitnessEvidences.FindAsync(id);
+            if (tblWitnessEvidence != null)
+            {
+                _context.TblWitnessEvidences.Remove(tblWitnessEvidence);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AddEvidencesAndWitnesses), new { id = tblWitnessEvidence.RequestId });
+        }
+        public async Task<IActionResult> DeleteAdjorny(Guid? id)
+        {
+            if (id == null || _context.TblAdjornments == null)
+            {
+                return NotFound();
+            }
+
+            var tblAdjornment = await _context.TblAdjornments
+                .Include(t => t.CreatedByNavigation)
+                .Include(t => t.Request)
+                .FirstOrDefaultAsync(m => m.AdjoryId == id);
+            if (tblAdjornment == null)
+            {
+                return NotFound();
+            }
+
+            return View(tblAdjornment);
+        }
+      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAdjorny(Guid id)
+        {
+            if (_context.TblAdjornments == null)
+            {
+                return Problem("Entity set 'AtsdbContext.TblAdjornments'  is null.");
+            }
+            var tblAdjornment = await _context.TblAdjornments.FindAsync(id);
+            if (tblAdjornment != null)
+            {
+                _context.TblAdjornments.Remove(tblAdjornment);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AddAdjornyDates), new { id = tblAdjornment.RequestId });
+        }
+
+        public async Task<IActionResult> UppdateProgressStatus(Guid? id)
+        {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            model.RequestDetail = tblCivilJustice.RequestDetail;
+            model.RequestId = tblCivilJustice.RequestId;
+            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed").Select(x => new SelectListItem
+            {
+                Text = x.StatusName,
+                Value = x.ExternalRequestStatusId.ToString()
+            }).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UppdateProgressStatus(CivilJusticeExternalRequestModel model)
+        {
+            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+            TblDecisionStatus status = _context.TblDecisionStatuses.Where(x => x.StatusName == "Waiting for Upproval").FirstOrDefault();
+
+            tblCivilJustice.ExternalRequestStatusId = model.ExternalRequestStatusID;
+            tblCivilJustice.TeamUpprovalStatus = status.DesStatusId;
+            tblCivilJustice.DepartmentUpprovalStatus = status.DesStatusId;
+            tblCivilJustice.DeputyUprovalStatus = status.DesStatusId;
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                return RedirectToAction(nameof(AssignedRequests));
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> UppdateDesicionStatus(Guid? id)
+        {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            model.RequestDetail = tblCivilJustice.RequestDetail;
+            model.RequestId = tblCivilJustice.RequestId;
+            model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved"||x.StatusName== "Rejected").Select(x => new SelectListItem
+            {
+                Text = x.StatusName,
+                Value = x.DesStatusId.ToString()
+            }).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UppdateDesicionStatus(CivilJusticeExternalRequestModel model)
+        {
+            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblInternalUser user=await _context.TblInternalUsers.FindAsync(userId);
+            if (user.IsTeamLeader==true)
+            {
+                tblCivilJustice.TeamUpprovalStatus = model.DesStatusId;
+            }
+            else if (user.IsDepartmentHead==true)
+            {
+                tblCivilJustice.DepartmentUpprovalStatus = model.DesStatusId;
+            }
+            else if (user.IsDeputy==true)
+            {
+                tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;
+            }
+            else
+            {
+                model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
+                {
+                    Text = x.StatusName,
+                    Value = x.DesStatusId.ToString()
+                }).ToList();
+                return View(model);
+            }
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                return RedirectToAction(nameof(CompletedRequests));
+            }
+            else
+            {
+                model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
+                {
+                    Text = x.StatusName,
+                    Value = x.DesStatusId.ToString()
+                }).ToList();
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> RequestActivities(Guid? id)
+        {
+            var atsdbContext = _context.TblCivilJusticeRequestActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request);
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> RequestAdjornies(Guid? id)
+        {
+            var atsdbContext = _context.TblAdjornments.Include(t => t.CreatedByNavigation).Include(t => t.Request);
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> WitnessesandEvidences(Guid? id)
+        {
+            var atsdbContext = _context.TblWitnessEvidences.Include(t => t.CreatedByNavigation).Include(t => t.Request);
+            return View(await atsdbContext.ToListAsync());
+        }
     }
 }

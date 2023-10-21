@@ -69,13 +69,9 @@ public partial class TblCivilJustice
 
     public virtual TblExternalUser? RequestedByNavigation { get; set; }
 
-    public virtual ICollection<TblAdjornment> TblAdjornments { get; set; } = new List<TblAdjornment>();
-
     public virtual ICollection<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; } = new List<TblCivilJusticeRequestActivity>();
 
     public virtual ICollection<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplies { get; set; } = new List<TblCivilJusticeRequestReply>();
-
-    public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 
     public virtual TblDecisionStatus TeamUpprovalStatusNavigation { get; set; } = null!;
 

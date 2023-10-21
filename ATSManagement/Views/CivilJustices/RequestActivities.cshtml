@@ -1,0 +1,108 @@
+﻿@model IEnumerable<ATSManagement.Models.TblCivilJusticeRequestActivity>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Activities done by Assignee
+                </h2>
+            </div>
+            <!-- Page title actions -->
+
+        </div>
+    </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <table class="table table-bordered" id="role">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Detail
+                                        </th>
+                                        <th>
+                                            Added Date
+                                        </th>
+                                        <th>
+                                            Created by
+                                        </th>
+                                        <th>
+                                            Request
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.ActivityDetail)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AddedDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.Request.RequestDetail)
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script type="text/javascript">
+        var dp = $("#Date").datepicker({
+            format: "dd/mm/yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true
+        });
+        dp.on('changeDate', function (e) {
+            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
+        });
+    </script>
+}

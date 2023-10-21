@@ -1,0 +1,173 @@
+﻿@model ATSManagementExternal.ViewModels.RepliesModel
+
+@{
+    ViewData["Title"] = "Create";
+    IEnumerable<TblLegalStudiesReplay> replyes = ViewData["Replies"] as IEnumerable<TblLegalStudiesReplay>;
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Request Replys
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create</h4>
+                        </div>
+                        <form asp-action="Replies">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                        <input asp-for="RequestId" type="hidden" class="form-control" />
+                                        <input asp-for="ExternalReplayedBy" type="hidden" class="form-control" />
+                                        <div class="mb-3 row">
+                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">Reply</label>
+                                            <div class="col">
+                                                <input asp-for="ReplayDetail" class="form-control" />
+                                                <span asp-validation-for="ReplayDetail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">Date</label>
+                                            <div class="col">
+                                                <input asp-for="ReplyDate" readonly class="form-control" />
+                                                <span asp-validation-for="ReplyDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Submit" class="btn btn-primary" />|
+                                    <a asp-action="CivilJustice">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Replies</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <table class="table table-bordered" id="role">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Reply Details
+                                            </th>
+                                            <th>
+                                                Date time
+                                            </th>
+                                            <th>
+                                                Replied by
+                                            </th>
+                                            <th>
+                                                Admin user
+                                            </th>
+                                            <th>
+                                                Request
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in replyes)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.Raw(item.ReplayDetail)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ReplyDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedByNavigation.FirstName)
+                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedByNavigation.MiddleName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedBy1.FirstName)
+                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedBy1.MidleName)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Request.RequestDetail)
+                                                </td>
+                                                <td>
+                                                   
+                                                    <a asp-action="Delete" asp-route-id="@item.ReplyId">Delete</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ReplayDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

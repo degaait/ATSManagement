@@ -31,24 +31,22 @@
                                 <dl class="row">
                                     <dt class="col-sm-2">
                                         <label asp-for="RequestDetail" class="col-form-label-m">Request detail</label>
-
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.RequestDetail)
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="CreatedDate" class="col-form-label-m">Request Date</label>
-
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedDate)
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="CreatedBy" class="col-form-label-m">User</label>
-
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
+                                        @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="AssignedDate" class="col-form-label-m">When did assigned to user</label>
@@ -126,34 +124,31 @@
                                         @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
                                     </dd>
-
                                     <dt class="col-sm-2">
-                                        <label asp-for="UserUpprovalStatus" class="col-form-label-m">User Upproval status</label>
-
-                                    </dt>
+                                        <label asp-for="UserUpprovalStatus" class="col-form-label-m">Team Upproval status</label>
+                                    </dt>                                  
                                     <dd class="col-sm-10">
-                                        @Html.Raw(Model.UserUpprovalStatusNavigation.StatusWithColor)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="TeamUpprovalStatus" class="col-form-label-m">Team Upproval status</label>
-
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.Raw(Model.TeamUpprovalStatusNavigation.StatusWithColor)
+                                        <div class="col-sm-2">
+                                            @Html.Raw(Model.TeamUpprovalStatusNavigation.StatusWithColor)
+                                            </div>
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="DepartmentUpprovalStatus" class="col-form-label-m">Department Upproval status</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
-                                        @Html.Raw(Model.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                        <div class="col-sm-2">
+                                            @Html.Raw(Model.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                            </div>
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="DeputyUprovalStatus" class="col-form-label-m">Deputy Upproval status</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
-                                        @Html.Raw(Model.DeputyUprovalStatusNavigation.StatusWithColor)
+                                        <div class="col-sm-2">
+                                            @Html.Raw(Model.DeputyUprovalStatusNavigation.StatusWithColor)
+                                            </div>
                                     </dd>
                                 </dl>
                             </div>

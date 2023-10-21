@@ -44,14 +44,14 @@
                                         <div class="mb-3 row">
                                             <label class="col-3 col-form-label">Adjorny Date</label>
                                             <div class="col">
-                                                <input asp-for="AdjorneyDate" class="form-file-button" />
+                                                <input asp-for="AdjorneyDate" class="form-control" />
                                                 <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label class="col-3 col-form-label">What is done</label>
                                             <div class="col">
-                                                <input asp-for="WhatIsDone" class="form-file-button" />
+                                                <input asp-for="WhatIsDone" class="form-control" />
                                                 <span asp-validation-for="WhatIsDone" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -61,7 +61,7 @@
                             <div class="card-footer text-end">
                                 <div class="d-flex">
                                     <input type="submit" value="Update" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <a asp-action="AssignedRequests">Back to List</a>
                                 </div>
                             </div>
                         </form>
@@ -98,9 +98,8 @@
                                                     @Html.DisplayFor(modelItem => item.AdjorneyDate)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.AdjoryId">Edit</a> |
-                                                    <a asp-action="Details" asp-route-id="@item.AdjoryId">Details</a> |
-                                                    <a asp-action="Delete" asp-route-id="@item.AdjoryId">Delete</a>
+                                                   
+                                                    <a asp-action="DeleteAdjorny" asp-route-id="@item.AdjoryId">Delete</a>
                                                 </td>
                                             </tr>
                                         }
@@ -127,7 +126,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {
-                selector: '#ActivityDetail',
+                selector: '#WhatIsDone',
                 height: 300,
                 menubar: true,
                 statusbar: false,

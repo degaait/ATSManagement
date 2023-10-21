@@ -1,5 +1,5 @@
-using ATSManagement.IModels;
 using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +24,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(6000);
+    options.IdleTimeout = TimeSpan.FromSeconds(60000);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -41,7 +41,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();

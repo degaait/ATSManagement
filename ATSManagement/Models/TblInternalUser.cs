@@ -35,9 +35,15 @@ public partial class TblInternalUser
 
     public virtual TblDepartment? Dep { get; set; }
 
+    public virtual ICollection<TblActivity> TblActivities { get; set; } = new List<TblActivity>();
+
     public virtual ICollection<TblAdjornment> TblAdjornments { get; set; } = new List<TblAdjornment>();
 
+    public virtual ICollection<TblAppointmentParticipant> TblAppointmentParticipants { get; set; } = new List<TblAppointmentParticipant>();
+
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
+
+    public virtual ICollection<TblAssignee> TblAssignees { get; set; } = new List<TblAssignee>();
 
     public virtual ICollection<TblCivilJustice> TblCivilJusticeAssignedByNavigations { get; set; } = new List<TblCivilJustice>();
 
@@ -64,6 +70,12 @@ public partial class TblInternalUser
     public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
 
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
+
+    public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
+
+    public virtual ICollection<TblRequest> TblRequestAssignedByNavigations { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblRequest> TblRequestCreatedByNavigations { get; set; } = new List<TblRequest>();
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 

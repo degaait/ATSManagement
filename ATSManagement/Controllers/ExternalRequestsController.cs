@@ -1,9 +1,9 @@
-﻿using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -118,11 +118,14 @@ namespace ATSManagement.Controllers
                     tblCivilJustice.RequestDetail = model.RequestDetail;
                     tblCivilJustice.InistId = model.InistId;
                     tblCivilJustice.CreatedBy = userId;
+                    tblCivilJustice.CaseTypeId = model.CaseTypeId;
                     tblCivilJustice.ExternalRequestStatusId = statusiD;
+                    tblCivilJustice.CreatedDate = DateTime.Now;
                     tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
                     tblCivilJustice.TeamUpprovalStatus = decision.DesStatusId;
                     tblCivilJustice.DeputyUprovalStatus = decision.DesStatusId;
                     tblCivilJustice.UserUpprovalStatus = decision.DesStatusId;
+                    tblCivilJustice.PriorityId = model.PriorityId;
                     _context.TblCivilJustices.Add(tblCivilJustice);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
@@ -154,8 +157,9 @@ namespace ATSManagement.Controllers
                     drafting.DeputyUprovalStatus = decision.DesStatusId;
                     drafting.UserUpprovalStatus = decision.DesStatusId;
                     drafting.ExternalRequestStatusId = statusiD;
-                    drafting.QuestTypeId=model.QuestTypeId;
+                    drafting.QuestTypeId = model.QuestTypeId;
                     drafting.DocId = model.DocId;
+                    drafting.PriorityId = model.PriorityId;
                     _context.TblLegalStudiesDraftings.Add(drafting);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
@@ -257,7 +261,7 @@ namespace ATSManagement.Controllers
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.AssignedToNavigation)
                .Include(t => t.Doc)
-               .Include(x=>x.QuestType)
+               .Include(x => x.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
