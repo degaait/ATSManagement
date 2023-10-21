@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ATSManagement.Models;
+﻿namespace ATSManagement.Models;
 
 public partial class TblLegalDraftingQuestionType
 {
@@ -11,5 +8,7 @@ public partial class TblLegalDraftingQuestionType
 
     public string? QuestTypeDescription { get; set; }
 
+
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
+
 }
