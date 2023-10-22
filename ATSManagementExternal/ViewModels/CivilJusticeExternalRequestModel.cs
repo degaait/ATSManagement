@@ -64,5 +64,13 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Service types")]
         public List<SelectListItem>? ServiceTypes { get; set; }
+
+
+        [Display(Name = "Document File")]
+        public IFormFile DocumentFile { get; set; }
+
+        public Guid? PriorityId { get; set; }
+        [Display(Name = "Priority")]
+        public List<SelectListItem>? Priorities { get; set; }
     }
 }

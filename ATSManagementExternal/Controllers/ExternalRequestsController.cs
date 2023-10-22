@@ -230,45 +230,8 @@ namespace ATSManagementExternal.Controllers
         // GET: ExternalRequests/Create
         public IActionResult Create()
         {
-            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            model.RequestedDate = DateTime.Now;
-            model.ExterUserId = userId;
-            model.IntId = instName.InistId;
-            model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
-            {
-                Text = a.DepName,
-                Value = a.DepId.ToString()
 
-            }).ToList();
-            model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
-            {
-                Value = s.ServiceTypeId.ToString(),
-                Text = s.ServiceTypeName
-            }).ToList();
-            model.RequestTypes = _context.TblRequestTypes.Select(r => new SelectListItem
-            {
-                Text = r.TypeName,
-                Value = r.TypeId.ToString()
-            }).ToList();
-
-            model.LegalStadiesCasetypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
-            {
-                Value = s.DocId.ToString(),
-                Text = s.DocName.ToString()
-            }).ToList();
-            model.LegalStadiesQuestiontypes = _context.TblLegalDraftingQuestionTypes.Select(x => new SelectListItem
-            {
-                Value = x.QuestTypeId.ToString(),
-                Text = x.QuestTypeId.ToString()
-            }).ToList();
-            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
-            {
-                Value = x.CaseTypeId.ToString(),
-                Text = x.CaseTypeName.ToString()
-            }).ToList();
-            return View(model);
+            return View(getModel());
         }
 
         [HttpPost]
@@ -295,6 +258,7 @@ namespace ATSManagementExternal.Controllers
                     appointment.RequestedBy = model.ExterUserId;
                     _context.TblAppointments.Add(appointment);
                     _context.SaveChanges();
+                    return View(model);
                 }
                 else
                 {
@@ -307,13 +271,29 @@ namespace ATSManagementExternal.Controllers
                     request.DeputyUprovalStatus = decision.DesStatusId;
                     request.UserUpprovalStatus = decision.DesStatusId;
                     request.ServiceTypeId = model.ServiceTypeID;
-                    if (true)
-                    {
-                        request.DocTypeId = model.DocId;
-                        if (true)
-                        {
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
 
+
+                    if (model.DocumentFile.FileName != null)
+                    {
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+
+                        //get file extension
+                        FileInfo fileInfo = new FileInfo(model.DocumentFile.FileName);
+                        string fileName = Guid.NewGuid().ToString() + model.DocumentFile.FileName;
+                        string fileNameWithPath = Path.Combine(path, fileName);
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            model.DocumentFile.CopyTo(stream);
                         }
+                        string dbPath = "/Files/" + fileName;
+                        request.DocumentFile = dbPath;
+                        request.QuestTypeId = model.QuestTypeId;
+                        request.DocTypeId = model.DocId;
+                        request.DocTypeId = model.DocId;
+
                     }
                     _context.TblRequests.Add(request);
                     int saved = await _context.SaveChangesAsync();
@@ -345,6 +325,54 @@ namespace ATSManagementExternal.Controllers
                 }).ToList();
                 return View(model);
             }
+        }
+
+        public CivilJusticeExternalRequestModel getModel()
+        {
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            model.RequestedDate = DateTime.Now;
+            model.ExterUserId = userId;
+            model.IntId = instName.InistId;
+            model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
+            {
+                Text = a.DepName,
+                Value = a.DepId.ToString()
+
+            }).ToList();
+            model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
+            {
+                Value = s.ServiceTypeId.ToString(),
+                Text = s.ServiceTypeName
+            }).ToList();
+            model.RequestTypes = _context.TblRequestTypes.Select(r => new SelectListItem
+            {
+                Text = r.TypeName,
+                Value = r.TypeId.ToString()
+            }).ToList();
+
+            model.LegalStadiesCasetypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
+            {
+                Value = s.DocId.ToString(),
+                Text = s.DocName.ToString()
+            }).ToList();
+            model.LegalStadiesQuestiontypes = _context.TblLegalDraftingQuestionTypes.Select(x => new SelectListItem
+            {
+                Value = x.QuestTypeId.ToString(),
+                Text = x.QuestTypeName.ToString()
+            }).ToList();
+            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            {
+                Value = x.CaseTypeId.ToString(),
+                Text = x.CaseTypeName.ToString()
+            }).ToList();
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Value = x.PriorityId.ToString(),
+                Text = x.PriorityName
+            }).ToList();
+            return model;
         }
         public async Task<IActionResult> Edit(Guid? id)
         {

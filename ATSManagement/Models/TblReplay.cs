@@ -20,4 +20,6 @@ public partial class TblReplay
     public virtual TblExternalUser? ExternalReplayedByNavigation { get; set; }
 
     public virtual TblInternalUser? InternalReplayedByNavigation { get; set; }
+
+    public virtual TblRequest? Request { get; set; }
 }

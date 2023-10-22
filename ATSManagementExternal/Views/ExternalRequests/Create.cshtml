@@ -1,4 +1,4 @@
-﻿@model ATSManagementExternal.ViewModels.CivilJusticeExternalRequestModel    
+﻿@model ATSManagementExternal.ViewModels.CivilJusticeExternalRequestModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -32,7 +32,7 @@
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
                                         <div class="mb-3 row" id="divServiceType">
-                                            <label asp-for="TypeID" class=" col-2 col-form-label">Responsible Department</label>
+                                            <label asp-for="TypeID" class=" col-2 col-form-label">Request types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.TypeID, new SelectList(Model.RequestTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="TypeID" class="text-danger"></span>
@@ -60,14 +60,14 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divServiceType">
-                                            <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Responsible Department</label>
+                                            <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Service types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divCasetype">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
+                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="CaseTypeId" class="text-danger"></span>
@@ -81,10 +81,24 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divQuestType">
-                                            <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question type</label>
+                                            <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="QuestTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Document file</label>
+                                            <div class="col">
+                                                <input asp-for="DocumentFile" type="file" class="form-file-button" />
+                                                <span asp-validation-for="DocumentFile" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Priorities" class=" col-2 col-form-label">Priority</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="PriorityId" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -111,6 +125,32 @@
         document.addEventListener("DOMContentLoaded", function () {
             let options = {
                 selector: '#RequestDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#AppointmentDetail',
                 height: 300,
                 menubar: true,
                 statusbar: false,

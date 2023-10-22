@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+﻿using ATSManagement.IModels;
 using ATSManagement.Models;
-using ATSManagement.IModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ATSManagement.Controllers
 {
@@ -23,8 +23,8 @@ namespace ATSManagement.Controllers
             ViewBag.ExternalUser = _context.TblExternalUsers.ToList().Count;
             ViewBag.Insititutions = _context.TblInistitutions.ToList().Count;
             ViewBag.Inspects = _context.TblInspectionPlans.ToList().Count;
-            ViewBag.RequestsFromeCJAD=_context.TblCivilJustices.ToList().Count;
-            ViewBag.RequestFromLegalStudies=_context.TblLegalStudiesDraftings.ToList().Count;
+            ViewBag.RequestsFromeCJAD = _context.TblRequests.Where(x => x.Dep.DepCode == "").ToList().Count;
+            ViewBag.RequestFromLegalStudies = _context.TblRequests.Where(x => x.Dep.DepCode == "").ToList().Count;
             // await SendMail();
             return View();
         }

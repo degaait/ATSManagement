@@ -1,11 +1,11 @@
-﻿using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -24,9 +24,8 @@ namespace ATSManagement.Controllers
         // GET: CivilJustices
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -46,7 +45,7 @@ namespace ATSManagement.Controllers
             model.RequestId = id;
             model.AddedDate = DateTime.Now;
             model.CreatedBy = userId;
-            ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
+            ViewData["Activities"] = _context.TblActivities
                  .Include(x => x.Request)
                  .Include(x => x.CreatedByNavigation)
                  .Where(x => x.RequestId == model.RequestId).ToList();
@@ -58,20 +57,20 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> AddActivity(ActivityModel model)
         {
             List<string> assignedBody = new List<string>();
-            var request = _context.TblCivilJustices.Where(x => x.RequestId == model.RequestId).FirstOrDefault();
+            var request = _context.TblRequests.Where(x => x.RequestId == model.RequestId).FirstOrDefault();
             assignedBody = (from items in _context.TblInternalUsers where items.UserId == request.AssignedBy select items.EmailAddress).ToList();
-            TblCivilJusticeRequestActivity activity = new TblCivilJusticeRequestActivity();
+            TblActivity activity = new TblActivity();
             activity.RequestId = model.RequestId;
             activity.AddedDate = DateTime.Now;
             activity.ActivityDetail = model.ActivityDetail;
             activity.CreatedBy = model.CreatedBy;
-            _context.Add(activity);
+            _context.TblActivities.Add(activity);
             int saved = await _context.SaveChangesAsync();
             if (saved > 0)
             {
                 model.ActivityDetail = null;
                 SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
-                ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
+                ViewData["Activities"] = _context.TblActivities
                     .Include(x => x.Request)
                     .Include(x => x.CreatedByNavigation)
                     .Where(x => x.RequestId == model.RequestId).ToList();
@@ -80,7 +79,7 @@ namespace ATSManagement.Controllers
             }
             else
             {
-                ViewData["Activities"] = _context.TblCivilJusticeRequestActivities
+                ViewData["Activities"] = _context.TblActivities
                     .Include(x => x.Request)
                     .Include(x => x.CreatedByNavigation)
                     .Where(x => x.RequestId == model.RequestId).ToList();
@@ -91,14 +90,13 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.TblCivilJustices == null)
+            if (id == null || _context.TblActivities == null)
             {
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblCivilJustices
+            var tblCivilJustice = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.AssignedToNavigation)
                 .Include(t => t.CaseType)
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
@@ -150,7 +148,7 @@ namespace ATSManagement.Controllers
         {
             try
             {
-                TblCivilJustice tblCivilJustice = new TblCivilJustice();
+                TblRequest tblCivilJustice = new TblRequest();
                 var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
 
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
@@ -166,7 +164,7 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.DeputyUprovalStatus = decision.DesStatusId;
                 tblCivilJustice.UserUpprovalStatus = decision.DesStatusId;
                 tblCivilJustice.ExternalRequestStatusId = statusiD;
-                _context.TblCivilJustices.Add(tblCivilJustice);
+                _context.TblRequests.Add(tblCivilJustice);
                 int saved = _context.SaveChanges();
                 if (saved > 0)
                 {
@@ -233,7 +231,7 @@ namespace ATSManagement.Controllers
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            var tblCivilJustice = await _context.TblRequests.FindAsync(id);
             if (tblCivilJustice == null)
             {
                 return NotFound();
@@ -281,7 +279,7 @@ namespace ATSManagement.Controllers
                 {
                     return NotFound();
                 }
-                TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+                TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepId = model.DepId;
@@ -353,9 +351,8 @@ namespace ATSManagement.Controllers
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblCivilJustices
+            var tblCivilJustice = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.AssignedToNavigation)
                 .Include(t => t.CaseType)
                 .Include(t => t.Dep)
                 .Include(t => t.Inist)
@@ -377,14 +374,14 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.TblCivilJustices == null)
+            if (_context.TblRequests == null)
             {
                 return Problem("Entity set 'AtsdbContext.TblCivilJustices'  is null.");
             }
-            var tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            var tblCivilJustice = await _context.TblRequests.FindAsync(id);
             if (tblCivilJustice != null)
             {
-                _context.TblCivilJustices.Remove(tblCivilJustice);
+                _context.TblRequests.Remove(tblCivilJustice);
             }
 
             await _context.SaveChangesAsync();
@@ -392,7 +389,7 @@ namespace ATSManagement.Controllers
         }
         private bool TblCivilJusticeExists(Guid id)
         {
-            return (_context.TblCivilJustices?.Any(e => e.RequestId == id)).GetValueOrDefault();
+            return (_context.TblRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
         public async Task<IActionResult> AssignToUser(Guid id)
         {
@@ -539,14 +536,14 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> Replies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var replays = await _context.TblCivilJusticeRequestReplys.Where(a => a.RequestId == id).ToListAsync();
+            var replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
             RepliesModel model = new RepliesModel
             {
                 RequestId = id,
                 ReplyDate = DateTime.Now,
                 InternalReplayedBy = userId,
             };
-            ViewData["Replies"] = _context.TblCivilJusticeRequestReplys
+            ViewData["Replies"] = _context.TblReplays
                 .Include(x => x.InternalReplayedByNavigation)
                 .Include(x => x.ExternalReplayedByNavigation)
                 .Include(x => x.Request)
@@ -560,12 +557,12 @@ namespace ATSManagement.Controllers
         {
             try
             {
-                TblCivilJusticeRequestReply replay = new TblCivilJusticeRequestReply();
+                TblReplay replay = new TblReplay();
                 replay.ReplyDate = DateTime.Now;
                 replay.InternalReplayedBy = model.InternalReplayedBy;
                 replay.RequestId = model.RequestId;
                 replay.ReplayDetail = model.ReplayDetail;
-                _context.TblCivilJusticeRequestReplys.Add(replay);
+                _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
@@ -590,9 +587,8 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> CompletedRequests()
         {
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -607,9 +603,8 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> PendingRequests()
         {
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -626,9 +621,8 @@ namespace ATSManagement.Controllers
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
 
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -795,12 +789,12 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> DeleteActivity(Guid? id)
         {
-            if (id == null || _context.TblCivilJusticeRequestActivities == null)
+            if (id == null || _context.TblActivities == null)
             {
                 return NotFound();
             }
 
-            var tblWitnessEvidence = await _context.TblCivilJusticeRequestActivities
+            var tblWitnessEvidence = await _context.TblActivities
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.Request)
                 .FirstOrDefaultAsync(m => m.ActivityId == id);
@@ -812,19 +806,19 @@ namespace ATSManagement.Controllers
             return View(tblWitnessEvidence);
         }
 
-     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteActivity(Guid id)
         {
-            if (_context.TblCivilJusticeRequestActivities == null)
+            if (_context.TblActivities == null)
             {
-                return Problem("Entity set 'AtsdbContext.TblCivilJusticeRequestActivities'  is null.");
+                return Problem("Entity set 'AtsdbContext.TblActivities'  is null.");
             }
-            var tblWitnessEvidence = await _context.TblCivilJusticeRequestActivities.FindAsync(id);
+            var tblWitnessEvidence = await _context.TblActivities.FindAsync(id);
             if (tblWitnessEvidence != null)
             {
-                _context.TblCivilJusticeRequestActivities.Remove(tblWitnessEvidence);
+                _context.TblActivities.Remove(tblWitnessEvidence);
             }
 
             await _context.SaveChangesAsync();
@@ -848,7 +842,7 @@ namespace ATSManagement.Controllers
 
             return View(tblWitnessEvidence);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteWitness(Guid id)
@@ -884,7 +878,7 @@ namespace ATSManagement.Controllers
 
             return View(tblAdjornment);
         }
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAdjorny(Guid id)
@@ -906,7 +900,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> UppdateProgressStatus(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
             model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed").Select(x => new SelectListItem
@@ -920,7 +914,7 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UppdateProgressStatus(CivilJusticeExternalRequestModel model)
         {
-            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+            TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
             TblDecisionStatus status = _context.TblDecisionStatuses.Where(x => x.StatusName == "Waiting for Upproval").FirstOrDefault();
 
             tblCivilJustice.ExternalRequestStatusId = model.ExternalRequestStatusID;
@@ -938,10 +932,10 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> UppdateDesicionStatus(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(id);
+            TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
-            model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved"||x.StatusName== "Rejected").Select(x => new SelectListItem
+            model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
             {
                 Text = x.StatusName,
                 Value = x.DesStatusId.ToString()
@@ -952,18 +946,18 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UppdateDesicionStatus(CivilJusticeExternalRequestModel model)
         {
-            TblCivilJustice tblCivilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+            TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            TblInternalUser user=await _context.TblInternalUsers.FindAsync(userId);
-            if (user.IsTeamLeader==true)
+            TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
+            if (user.IsTeamLeader == true)
             {
                 tblCivilJustice.TeamUpprovalStatus = model.DesStatusId;
             }
-            else if (user.IsDepartmentHead==true)
+            else if (user.IsDepartmentHead == true)
             {
                 tblCivilJustice.DepartmentUpprovalStatus = model.DesStatusId;
             }
-            else if (user.IsDeputy==true)
+            else if (user.IsDeputy == true)
             {
                 tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;
             }
@@ -994,7 +988,7 @@ namespace ATSManagement.Controllers
 
         public async Task<IActionResult> RequestActivities(Guid? id)
         {
-            var atsdbContext = _context.TblCivilJusticeRequestActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request);
+            var atsdbContext = _context.TblActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> RequestAdjornies(Guid? id)
