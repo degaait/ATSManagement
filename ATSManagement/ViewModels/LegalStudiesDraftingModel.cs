@@ -42,7 +42,7 @@ namespace ATSManagement.ViewModels
         [DataType(DataType.MultilineText)]
         public string? AssingmentRemark { get; set; }
         [Required(ErrorMessage = "*")]
-        public Guid? AssignedTo { get; set; }
+        public Guid[] AssignedTo { get; set; }
 
         [Display(Name = "Assigned to")]
         public List<SelectListItem>? AssignedTos { get; set; }

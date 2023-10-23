@@ -1,10 +1,10 @@
-﻿using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -51,13 +51,10 @@ namespace ATSManagement.Controllers
         public IActionResult Create()
         {
             InispectionPlan plan = new InispectionPlan();
-            List<Guid> InistIds = new List<Guid>();
-
             plan.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
             {
                 Text = a.Name,
                 Value = a.InistId.ToString(),
-
             }).ToList();
 
             plan.CreationDate = DateTime.Now;
@@ -288,7 +285,7 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Assign(InspectionAssignModel model)
         {
-           
+
             TblAssignedYearlyPlan yearlyPlan = new TblAssignedYearlyPlan();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var loggedInUser = _context.TblInternalUsers.Where(p => p.UserId == userId).ToList();

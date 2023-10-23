@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblCivilJustice>
+﻿@model IEnumerable<ATSManagement.Models.TblRequest>
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
@@ -107,6 +107,7 @@
                                     @foreach (var item in Model)
                                     {
                                         var isRequest = (from items in ats.TblCivilJustices where items.RequestId == item.RequestId select items).FirstOrDefault();
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
 
                                         <tr>
                                             <td>
@@ -155,8 +156,11 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.MidleName)
+                                                @foreach (var assignees in assigneess)
+                                                {
+                                                    @Html.DisplayFor(modelItem => assignees.FirstName)
+                                                    @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)

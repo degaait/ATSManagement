@@ -35,7 +35,7 @@ namespace ATSManagement.Controllers
                                                         .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority);
+                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA");
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AddActivity(Guid? id)
@@ -150,7 +150,6 @@ namespace ATSManagement.Controllers
             {
                 TblRequest tblCivilJustice = new TblRequest();
                 var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
-
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.CreatedBy = model.CreatedBy;
@@ -169,7 +168,6 @@ namespace ATSManagement.Controllers
                 if (saved > 0)
                 {
                     return RedirectToAction(nameof(Index));
-
                 }
                 else
                 {
@@ -195,7 +193,6 @@ namespace ATSManagement.Controllers
                     }).ToList();
                     return View(model);
                 }
-
             }
             catch (Exception ex)
             {
@@ -437,13 +434,19 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignToUser(CivilJusticeExternalRequestModel model)
         {
-            var userEmails = (from user in _context.TblInternalUsers where user.UserId == model.AssignedTo select user.EmailAddress).ToList();
+            List<string>? emails = new List<string>();
+            List<TblRequestAssignee> assignees;
+            foreach (var item in model.AssignedTo)
+            {
+                var userEmails = (from user in _context.TblInternalUsers where user.UserId == item select user.EmailAddress).FirstOrDefault();
+                emails.Add(userEmails);
+            }
             TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "In Progress" select items).FirstOrDefault();
             if (model.RequestId == null)
             {
                 return NotFound();
             }
-            TblCivilJustice drafting = await _context.TblCivilJustices.FindAsync(model.RequestId);
+            TblRequest drafting = await _context.TblRequests.FindAsync(model.RequestId);
             if (drafting == null)
             {
                 return NotFound();
@@ -453,16 +456,24 @@ namespace ATSManagement.Controllers
                 drafting.DueDate = model.DueDate;
                 drafting.AssignedDate = model.AssignedDate;
                 drafting.PriorityId = model.PriorityId;
-                drafting.AssignedTo = model.AssignedTo;
                 drafting.AssignedBy = model.AssignedBy;
                 drafting.AssingmentRemark = model.AssingmentRemark;
                 drafting.CreatedBy = model.CreatedBy;
                 drafting.CaseTypeId = model.CaseTypeId;
                 drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
+                if (model.AssignedTo.Length > 0)
+                {
+                    assignees = new List<TblRequestAssignee>();
+                    foreach (var item in model.AssignedTo)
+                    {
+                        assignees.Add(new TblRequestAssignee { UserId = item, RequestId = model.RequestId });
+                    }
+                    drafting.TblRequestAssignees = assignees;
+                }
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
                 {
-                    await SendMail(userEmails, "Task is assign notification", "<h3>Some tasks are assigned to you via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
+                    await SendMail(emails, "Task is assign notification", "<h3>Some tasks are assigned to you via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -805,8 +816,6 @@ namespace ATSManagement.Controllers
 
             return View(tblWitnessEvidence);
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteActivity(Guid id)

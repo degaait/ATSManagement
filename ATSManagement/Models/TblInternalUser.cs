@@ -75,6 +75,8 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblRequest> TblRequestAssignedByNavigations { get; set; } = new List<TblRequest>();
 
+    public virtual ICollection<TblRequestAssignee> TblRequestAssignees { get; set; } = new List<TblRequestAssignee>();
+
     public virtual ICollection<TblRequest> TblRequestCreatedByNavigations { get; set; } = new List<TblRequest>();
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();

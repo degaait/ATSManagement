@@ -89,6 +89,10 @@ public partial class TblRequest
 
     public virtual ICollection<TblDocumentHistory> TblDocumentHistories { get; set; } = new List<TblDocumentHistory>();
 
+    public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
+
+    public virtual ICollection<TblRequestAssignee> TblRequestAssignees { get; set; } = new List<TblRequestAssignee>();
+
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 
     public virtual TblDecisionStatus? TeamUpprovalStatusNavigation { get; set; }

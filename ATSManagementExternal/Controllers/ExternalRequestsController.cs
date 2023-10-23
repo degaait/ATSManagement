@@ -25,7 +25,19 @@ namespace ATSManagementExternal.Controllers
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus).Where(x => x.DepId == null);
+            var atsdbContext = _context.TblRequests
+                                                     .Include(t => t.AssignedByNavigation)
+                                                     .Include(t => t.CaseType)
+                                                     .Include(t => t.Dep)
+                                                     .Include(t => t.Inist)
+                                                     .Include(t => t.RequestedByNavigation)
+                                                     .Include(t => t.CreatedByNavigation)
+                                                     .Include(x => x.ExternalRequestStatus)
+                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                     .Include(x => x.DeputyUprovalStatusNavigation)
+                                                     .Include(y => y.TeamUpprovalStatusNavigation)
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
+
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AssignedRequests()

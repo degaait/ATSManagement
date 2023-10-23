@@ -941,6 +941,14 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.AssigneeRequestId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.RequestId).HasColumnName("RequestID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblRequestAssignees)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_RequestAssignees_tbl_Requests");
+
+            entity.HasOne(d => d.User).WithMany(p => p.TblRequestAssignees)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_tbl_RequestAssignees_tbl_InternalUsers");
         });
 
         modelBuilder.Entity<TblRequestType>(entity =>

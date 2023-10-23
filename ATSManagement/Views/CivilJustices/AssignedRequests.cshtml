@@ -1,6 +1,6 @@
-﻿@model IEnumerable<ATSManagement.Models.TblCivilJustice>
-@*@inject IHttpContextAccessor httpsSession;
-    @inject AtsdbContext ats;*@
+﻿@model IEnumerable<ATSManagement.Models.TblRequest>
+@inject IHttpContextAccessor httpsSession;
+    @inject AtsdbContext ats;
 @{
     ViewData["Title"] = "Requests";
     //Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
@@ -108,7 +108,7 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
                                         <tr>
                                             <td>
                                                 @Html.Raw(item.RequestDetail)
@@ -156,8 +156,12 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.MidleName)
+                                                @foreach (var assignees in assigneess)
+                                                {
+                                                    @Html.DisplayFor(modelItem => assignees.FirstName)
+                                                    @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                }
+
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)

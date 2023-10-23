@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblLegalStudiesDrafting>
+﻿@model IEnumerable<ATSManagement.Models.TblRequest>
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
@@ -106,7 +106,8 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                       
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
+
                                         <tr>
                                             <td>
                                                 @Html.Raw(item.RequestDetail)
@@ -154,11 +155,17 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.MidleName)
+                                                @if (assigneess != null)
+                                                {
+                                                    foreach (var assignees in assigneess)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => assignees.FirstName)
+                                                        @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                    }
+                                                }
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Doc.DocName)
+                                                @Html.DisplayFor(modelItem => item.DocType.DocName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Dep.DepName)
