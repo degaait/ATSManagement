@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ATSManagementExternal.IModels;
 using ATSManagementExternal.Models;
-using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -256,7 +256,7 @@ namespace ATSManagementExternal.Controllers
                 TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "New" select items).FirstOrDefault();
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
                 var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
-                var requestType = _context.TblRequestTypes.Where(s => s.TypeId == model.TypeID).FirstOrDefault();
+                var requestType = _context.TblRequestTypes.Where(s => s.TypeId == model.TypeId).FirstOrDefault();
                 if (requestType.TypeName == "Appointment")
                 {
                     TblAppointment appointment = new TblAppointment();
@@ -265,8 +265,15 @@ namespace ATSManagementExternal.Controllers
                     appointment.InistId = model.IntId;
                     appointment.RequestedBy = model.ExterUserId;
                     _context.TblAppointments.Add(appointment);
-                    _context.SaveChanges();
-                    return View(model);
+                    int saved = _context.SaveChanges();
+                    if (saved > 0)
+                    {
+                        return View(getModel());
+                    }
+                    else
+                    {
+                        return View(getModel());
+                    }
                 }
                 else
                 {
@@ -280,8 +287,6 @@ namespace ATSManagementExternal.Controllers
                     request.UserUpprovalStatus = decision.DesStatusId;
                     request.ServiceTypeId = model.ServiceTypeID;
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-
-
                     if (model.DocumentFile.FileName != null)
                     {
                         //create folder if not exist
@@ -301,7 +306,6 @@ namespace ATSManagementExternal.Controllers
                         request.QuestTypeId = model.QuestTypeId;
                         request.DocTypeId = model.DocId;
                         request.DocTypeId = model.DocId;
-
                     }
                     _context.TblRequests.Add(request);
                     int saved = await _context.SaveChangesAsync();

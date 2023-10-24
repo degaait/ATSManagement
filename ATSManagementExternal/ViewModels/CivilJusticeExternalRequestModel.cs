@@ -15,7 +15,7 @@ namespace ATSManagementExternal.ViewModels
         [Display(Name = "Request Detail")]
         public string? AppointmentDetail { get; set; }
 
-        public Guid? TypeID { get; set; }
+        public Guid? TypeId { get; set; }
 
         [Display(Name = "Request types")]
         public List<SelectListItem>? RequestTypes { get; set; }

@@ -31,70 +31,70 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row" id="divServiceType">
-                                            <label asp-for="TypeID" class=" col-2 col-form-label">Request types</label>
+                                        <div class="mb-3 row" id="divRequestType">
+                                            <label asp-for="TypeId" class=" col-2 col-form-label">Request types</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.TypeID, new SelectList(Model.RequestTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="TypeID" class="text-danger"></span>
+                                                @Html.DropDownListFor(model => model.TypeId, new SelectList(Model.RequestTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="TypeId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divRequestDetail">
+                                        <div class="mb-3 row" id="divRequestDetail" style="display:none" >
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                        <div class="mb-3 row" id="divAppointmentDetail" style="display:none">
                                             <label asp-for="AppointmentDetail" class=" col-2 col-form-label">Appointment Detail</label>
                                             <div class="col">
                                                 <input asp-for="AppointmentDetail" class="form-control" />
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-3 row" id="DivRequestedDate" style="display:none">
                                             <label asp-for="RequestedDate" class=" col-2 col-form-label">Creation Date</label>
                                             <div class="col">
                                                 <input asp-for="CreatedDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divServiceType">
+                                        <div class="mb-3 row" id="divServiceType" style="display:none">
                                             <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Service types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divCasetype">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy types</label>
+                                        <div class="mb-3 row" id="divCasetype" style="display:none">
+                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Case types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="CaseTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divDocType">
+                                        <div class="mb-3 row" id="divDocType" style="display:none">
                                             <label asp-for="DocId" class=" col-2 col-form-label">Document type</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divQuestType">
+                                        <div class="mb-3 row" id="divQuestType" style="display:none">
                                             <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="QuestTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-3 row" id="DivDocumentFile" style="display:none">
                                             <label class="col-3 col-form-label">Document file</label>
                                             <div class="col">
                                                 <input asp-for="DocumentFile" type="file" class="form-file-button" />
                                                 <span asp-validation-for="DocumentFile" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-3 row" id="DivPriority" style="display:none">
                                             <label asp-for="Priorities" class=" col-2 col-form-label">Priority</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
@@ -176,13 +176,63 @@
     <script type="text/javascript">
         $(function () {
             $(document).ready(function () {
-                $("#TypeID").change(function () {
-                    if ($(this).val() != "Ghana") { // It doesn't work over here.
-                        $("#showStateLga").show();
-                    } else {
-                        $("#showStateLga").hide();
+                $("#TypeId").change(function () {
+                    var value = $("#TypeId").val();
+                                       
+                    if (value == "D5AABE5F-FCAC-42C4-BFF7-A8585E8DB29D") { // It doesn't work over here.                       
+                        $('#divRequestDetail').show();
+                        $("#divAppointmentDetail").hide();
+                        $("#DivRequestedDate").show();
+                        $("#divServiceType").show();
+                       // $("#divCasetype").show();
+                       // $("#divDocType").show();
+                       // $("#divQuestType").show();
+                       // $("#DivDocumentFile").show();
+                        $("#DivPriority").show();
+                    } else if (value == "093F2484-6B94-47BB-9294-BA7995913F70") {
+                        $('#divRequestDetail').hide();
+                        $("#divAppointmentDetail").show();
+                        $("#DivRequestedDate").hide();
+                        $("#divServiceType").hide();
+                      //  $("#divCasetype").hide();
+                      //  $("#divDocType").hide();
+                       // $("#divQuestType").hide();
+                       // $("#DivDocumentFile").hide();
+                        $("#DivPriority").hide();
+                    }
+                    else {
+                        $("#divRequestDetail").hide();
+                        $("#divAppointmentDetail").hide();
+                        $("#DivRequestedDate").hide();
+                        $("#divServiceType").hide();
+                       // $("#divCasetype").hide();
+                       // $("#divDocType").hide();
+                        //$("#divQuestType").hide();
+                        //$("#DivDocumentFile").hide();
+                        $("#DivPriority").hide();                     
                     }
                 });
+
+                $("#ServiceTypeID").change(function () {
+                    var value = $("#ServiceTypeID").val();
+                    alert(value);
+                    if (value == "F935DCD1-2651-4C64-947C-0A877F652FB5" ||
+                        value == "ACB92222-4872-4A9D-8EDB-8BCD5317129A" ||
+                        value == "6E00B0EA-7B4D-40C4-8289-A566FE16E88E" ||
+                        value == "92FC1FC5-95D2-4250-98FB-0BA862F6DB02" ||
+                        value == "C792938C-7952-488C-A23E-1A27F8B2B8E6") {
+                        $("#divDocType").show();
+                        $("#divQuestType").show();
+                        $("#DivDocumentFile").show();
+
+                    }
+                    else {
+                        $("#divDocType").hide();
+                        $("#divQuestType").hide();
+                        $("#DivDocumentFile").hide();
+                    }
+                });
+
             });
         });
     </script>

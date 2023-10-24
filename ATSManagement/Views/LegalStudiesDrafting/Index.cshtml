@@ -183,7 +183,7 @@
                                                 @Html.DisplayFor(modelItem => item.DocType.DocName)
                                                 <br />
                                                 @if (item.DocumentFile != null)
-                                                {
+                                                 {
                                                     <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.DocumentFile">
 
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -195,8 +195,8 @@
                                                         </svg>
                                                         Download
                                                     </a>
-                                                }
-                                                </td>
+                                                 }
+                                            </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Dep.DepName)
                                             </td>
@@ -215,7 +215,7 @@
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             @if (isRequest.AssignedTo == null)
-                                                            {
+                                                             {
                                                                 if (user.IsDepartmentHead == true || user.IsSuperAdmin == true)
                                                                 {
                                                                     <a class="dropdown-item" asp-action="AssignToUser" asp-route-id="@item.RequestId">
@@ -230,7 +230,7 @@
                                                                         Replies
                                                                     </a>
                                                                 }
-                                                            }
+                                                             }
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
