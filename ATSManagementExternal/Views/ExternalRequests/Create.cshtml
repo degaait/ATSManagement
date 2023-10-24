@@ -173,4 +173,17 @@
             tinyMCE.init(options);
         })
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+                $("#TypeID").change(function () {
+                    if ($(this).val() != "Ghana") { // It doesn't work over here.
+                        $("#showStateLga").show();
+                    } else {
+                        $("#showStateLga").hide();
+                    }
+                });
+            });
+        });
+    </script>
 }

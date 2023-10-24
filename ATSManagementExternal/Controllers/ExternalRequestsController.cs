@@ -1,10 +1,10 @@
-﻿using ATSManagementExternal.IModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -20,7 +20,6 @@ namespace ATSManagementExternal.Controllers
             _mail = mail;
         }
 
-        // GET: ExternalRequests
         public async Task<IActionResult> Index()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -221,7 +220,6 @@ namespace ATSManagementExternal.Controllers
                                                         .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "New" && x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
-        // GET: ExternalRequests/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblExternalRequests == null)
@@ -238,8 +236,6 @@ namespace ATSManagementExternal.Controllers
             }
             return View(tblExternalRequest);
         }
-
-        // GET: ExternalRequests/Create
         public IActionResult Create()
         {
 
