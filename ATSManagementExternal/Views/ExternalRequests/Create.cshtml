@@ -38,7 +38,7 @@
                                                 <span asp-validation-for="TypeId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divRequestDetail" style="display:none" >
+                                        <div class="mb-3 row" id="divRequestDetail" style="display:none">
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
@@ -106,10 +106,31 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">
+                                        Submit
+                                    </a>
                                     <a asp-action="CivilJustice">Back to List</a>
                                 </div>
                             </div>
+
+                            <div class="modal modal-blur fade" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Scrollable modal</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                           @ViewBag.PrivacyPolicy
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
