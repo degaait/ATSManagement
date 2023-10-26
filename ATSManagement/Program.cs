@@ -1,7 +1,10 @@
-using ATSManagement.Models;
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.Services;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -14,7 +17,6 @@ builder.Services.AddDbContext<AtsdbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(5),
                 errorNumbersToAdd: null);
         });
-
 });
 // Add services to the container.
 builder.Services.AddServerSideBlazor(); // Add support for Blazor
@@ -30,6 +32,19 @@ builder.Services.AddSession(options =>
 });
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
+{
+    ProgressBar = true,
+    Timeout = 5000,
+
+});
+builder.Services.AddNotyf(config =>
+{
+    config.DurationInSeconds = 10;
+    config.HasRippleEffect = true;
+    config.IsDismissable = true;
+    config.Position = NotyfPosition.TopRight;
+});
 
 var app = builder.Build();
 
@@ -47,9 +62,12 @@ app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseNToastNotify();
+app.UseNotyf();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
+
+
 
 app.Run();

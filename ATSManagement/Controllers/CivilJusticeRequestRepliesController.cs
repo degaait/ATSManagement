@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATSManagement.Models;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class CivilJusticeRequestRepliesController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public CivilJusticeRequestRepliesController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public CivilJusticeRequestRepliesController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 
@@ -167,14 +165,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblCivilJusticeRequestReplys.Remove(tblCivilJusticeRequestReply);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblCivilJusticeRequestReplyExists(Guid id)
         {
-          return (_context.TblCivilJusticeRequestReplys?.Any(e => e.ReplyId == id)).GetValueOrDefault();
+            return (_context.TblCivilJusticeRequestReplys?.Any(e => e.ReplyId == id)).GetValueOrDefault();
         }
     }
 }

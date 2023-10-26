@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATSManagement.Models;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class DepartmentsController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public DepartmentsController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public DepartmentsController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-              return _context.TblDepartments != null ? 
-                          View(await _context.TblDepartments.ToListAsync()) :
-                          Problem("Entity set 'AtsdbContext.TblDepartments'  is null.");
+            return _context.TblDepartments != null ?
+                        View(await _context.TblDepartments.ToListAsync()) :
+                        Problem("Entity set 'AtsdbContext.TblDepartments'  is null.");
         }
 
         // GET: Departments/Details/5
@@ -150,14 +147,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblDepartments.Remove(tblDepartment);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblDepartmentExists(Guid id)
         {
-          return (_context.TblDepartments?.Any(e => e.DepId == id)).GetValueOrDefault();
+            return (_context.TblDepartments?.Any(e => e.DepId == id)).GetValueOrDefault();
         }
     }
 }

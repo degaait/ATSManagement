@@ -1,6 +1,7 @@
 ﻿using ATSManagement.IModels;
 using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System.Diagnostics;
 
 namespace ATSManagement.Controllers
@@ -10,8 +11,10 @@ namespace ATSManagement.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMailService _mail;
         private readonly AtsdbContext _context;
-        public HomeController(ILogger<HomeController> logger, IMailService mail, AtsdbContext atsdbContext)
+        private readonly IToastNotification _toastNotification;
+        public HomeController(ILogger<HomeController> logger, IMailService mail, AtsdbContext atsdbContext, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _logger = logger;
             _mail = mail;
             _context = atsdbContext;

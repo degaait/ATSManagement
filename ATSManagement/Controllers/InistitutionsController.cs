@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATSManagement.Models;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class InistitutionsController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public InistitutionsController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public InistitutionsController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 
         // GET: Inistitutions
         public async Task<IActionResult> Index()
         {
-              return _context.TblInistitutions != null ? 
-                          View(await _context.TblInistitutions.ToListAsync()) :
-                          Problem("Entity set 'AtsdbContext.TblInistitutions'  is null.");
+            return _context.TblInistitutions != null ?
+                        View(await _context.TblInistitutions.ToListAsync()) :
+                        Problem("Entity set 'AtsdbContext.TblInistitutions'  is null.");
         }
 
         // GET: Inistitutions/Details/5
@@ -150,14 +147,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblInistitutions.Remove(tblInistitution);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblInistitutionExists(Guid id)
         {
-          return (_context.TblInistitutions?.Any(e => e.InistId == id)).GetValueOrDefault();
+            return (_context.TblInistitutions?.Any(e => e.InistId == id)).GetValueOrDefault();
         }
     }
 }

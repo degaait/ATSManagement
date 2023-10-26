@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
@@ -13,9 +14,10 @@ namespace ATSManagement.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private IWebHostEnvironment env { get; }
-
-        public AssignedYearlyPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IWebHostEnvironment env)
+        private readonly IToastNotification _toastNotification;
+        public AssignedYearlyPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IWebHostEnvironment env, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
             _contextAccessor = contextAccessor;
             this.env = env;

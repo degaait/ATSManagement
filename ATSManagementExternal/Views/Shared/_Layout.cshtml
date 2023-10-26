@@ -192,7 +192,7 @@
                                     </a>
                                 </li>
                                 @if (_context.HttpContext.Session.GetString("MenuMaster") != null)
-                                 {
+                                {
                                     var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(_context.HttpContext.Session.GetString("MenuMaster"));
                                     var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
                                     foreach (var MenuList in groupByMenu)
@@ -375,6 +375,9 @@
     <script src="~/dist/libs/tinymce/tinymce.min.js?1684106062" defer></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("NToastNotify")
+    @await Component.InvokeAsync("Notyf")
+
 
 </body>
 </html>

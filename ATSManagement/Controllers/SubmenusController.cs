@@ -1,20 +1,18 @@
-﻿using System;
-using System.Linq;
-using ATSManagement.Models;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class SubmenusController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public SubmenusController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public SubmenusController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 
@@ -91,7 +89,7 @@ namespace ATSManagement.Controllers
             ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", tblSubmenu.DepId);
             ViewData["MenuId"] = new SelectList(_context.TblMainMenus, "MenuId", "MenuName", tblSubmenu.MenuId);
             ViewData["RoleId"] = new SelectList(_context.TblRoles, "RoleId", "RoleId", tblSubmenu.RoleId);
-            return View(tblSubmenu); 
+            return View(tblSubmenu);
         }
 
         // POST: Submenus/Edit/5
@@ -167,14 +165,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblSubmenus.Remove(tblSubmenu);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblSubmenuExists(Guid id)
         {
-          return (_context.TblSubmenus?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.TblSubmenus?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

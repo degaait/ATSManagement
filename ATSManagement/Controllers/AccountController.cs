@@ -3,6 +3,7 @@ using ATSManagement.Security;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using System.Text.Json;
 
 namespace ATSManagement.Controllers
@@ -11,11 +12,13 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-
-        public AccountController(AtsdbContext context, IHttpContextAccessor contextAccessor)
+        private readonly IToastNotification _toastNotification;
+        public AccountController(AtsdbContext context, IHttpContextAccessor contextAccessor, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
             _contextAccessor = contextAccessor;
+
         }
 
         public IActionResult Index()

@@ -1,17 +1,19 @@
 ﻿using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class InspectionInstitutionsController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public InspectionInstitutionsController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public InspectionInstitutionsController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 

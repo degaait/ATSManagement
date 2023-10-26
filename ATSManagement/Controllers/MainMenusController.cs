@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATSManagement.Models;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class MainMenusController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public MainMenusController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public MainMenusController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 
         // GET: MainMenus
         public async Task<IActionResult> Index()
         {
-              return _context.TblMainMenus != null ? 
-                          View(await _context.TblMainMenus.ToListAsync()) :
-                          Problem("Entity set 'AtsdbContext.TblMainMenus'  is null.");
+            return _context.TblMainMenus != null ?
+                        View(await _context.TblMainMenus.ToListAsync()) :
+                        Problem("Entity set 'AtsdbContext.TblMainMenus'  is null.");
         }
 
         // GET: MainMenus/Details/5
@@ -150,14 +147,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblMainMenus.Remove(tblMainMenu);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblMainMenuExists(Guid id)
         {
-          return (_context.TblMainMenus?.Any(e => e.MenuId == id)).GetValueOrDefault();
+            return (_context.TblMainMenus?.Any(e => e.MenuId == id)).GetValueOrDefault();
         }
     }
 }

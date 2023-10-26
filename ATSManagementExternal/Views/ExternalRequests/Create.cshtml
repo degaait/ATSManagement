@@ -24,7 +24,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Create</h4>
                         </div>
-                        <form asp-action="Create">
+                        <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
@@ -236,7 +236,7 @@
 
                 $("#ServiceTypeID").change(function () {
                     var value = $("#ServiceTypeID").val();
-                    alert(value);
+                   // alert(value);
                     if (value == "F935DCD1-2651-4C64-947C-0A877F652FB5" ||
                         value == "ACB92222-4872-4A9D-8EDB-8BCD5317129A" ||
                         value == "6E00B0EA-7B4D-40C4-8289-A566FE16E88E" ||

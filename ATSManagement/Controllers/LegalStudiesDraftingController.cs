@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
@@ -14,9 +15,12 @@ namespace ATSManagement.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
-
-        public LegalStudiesDraftingController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mailService)
+        private readonly IToastNotification _toastNotification;
+        public LegalStudiesDraftingController(AtsdbContext context,
+            IHttpContextAccessor contextAccessor, IMailService mailService,
+            IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mailService;

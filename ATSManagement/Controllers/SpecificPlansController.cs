@@ -2,6 +2,7 @@
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
@@ -9,9 +10,10 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-
-        public SpecificPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor)
+        private readonly IToastNotification _toastNotification;
+        public SpecificPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
             _contextAccessor = contextAccessor;
         }

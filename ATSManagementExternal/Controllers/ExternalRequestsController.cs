@@ -1,10 +1,12 @@
-﻿using ATSManagementExternal.IModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using ATSManagementExternal.IModels;
 using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -13,8 +15,12 @@ namespace ATSManagementExternal.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
-        public ExternalRequestsController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail)
+        private readonly IToastNotification _toastNotification;
+        private readonly INotyfService _notifyService;
+        public ExternalRequestsController(AtsdbContext context, INotyfService notyfService, IHttpContextAccessor contextAccessor, IMailService mail, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
+            _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mail;
@@ -268,15 +274,33 @@ namespace ATSManagementExternal.Controllers
                     int saved = _context.SaveChanges();
                     if (saved > 0)
                     {
+                        _notifyService.Success("Your Appointment is submitted successfully!");
+                        _toastNotification.AddInfoToastMessage("Your Appointment is submitted successfully!");
                         return View(getModel());
                     }
                     else
                     {
+                        _notifyService.Error("Your request isn't submitted successfully!. Please try again.");
+                        _toastNotification.AddErrorToastMessage("Your request isn't submitted successfully!. Please try again.");
                         return View(getModel());
                     }
                 }
                 else
                 {
+
+                    if (request.ServiceTypeId == Guid.Parse("F935DCD1-2651-4C64-947C-0A877F652FB5") ||
+                       request.ServiceTypeId == Guid.Parse("ACB92222-4872-4A9D-8EDB-8BCD5317129A") ||
+                       request.ServiceTypeId == Guid.Parse("6E00B0EA-7B4D-40C4-8289-A566FE16E88E") ||
+                       request.ServiceTypeId == Guid.Parse("92FC1FC5-95D2-4250-98FB-0BA862F6DB02") ||
+                       request.ServiceTypeId == Guid.Parse("C792938C-7952-488C-A23E-1A27F8B2B8E6"))
+                    {
+                        //if (model.DocumentFile.FileName == null||)
+                        //{
+
+                        //}
+                    }
+
+
                     request.RequestDetail = model.RequestDetail;
                     request.InistId = model.IntId;
                     request.RequestedBy = userId;
@@ -311,31 +335,24 @@ namespace ATSManagementExternal.Controllers
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {
+                        _notifyService.Success("Your request is submitted Successfully. Responsive body is notified by email");
+                        _toastNotification.AddSuccessToastMessage("Your request is submitted Successfully. Responsive body is notified by email");
                         await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
-
-                        return RedirectToAction(nameof(CivilJustice));
+                        return View(getModel());
                     }
                     else
                     {
-                        model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
-                        {
-                            Text = a.DepName,
-                            Value = a.DepId.ToString()
-
-                        }).ToList();
-                        return View(model);
+                        _notifyService.Error("Your request isn't successfully submitted!. Please try again");
+                        _toastNotification.AddErrorToastMessage("Your request isn't successfully submitted!. Please try again");
+                        return View(getModel());
                     }
                 }
             }
             catch (Exception ex)
             {
-                model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
-                {
-                    Text = a.DepName,
-                    Value = a.DepId.ToString()
-
-                }).ToList();
-                return View(model);
+                _notifyService.Error(ex.Message + " happened. Please try again");
+                _toastNotification.AddErrorToastMessage(ex.Message + " happened. Please try again");
+                return View(getModel());
             }
         }
 
@@ -525,16 +542,18 @@ namespace ATSManagementExternal.Controllers
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
+                    _toastNotification.AddSuccessToastMessage("Reply submitted");
                     return RedirectToAction("Replies", new { id = model.RequestId });
                 }
                 else
                 {
+                    _toastNotification.AddErrorToastMessage("Reply isn't subbmitted. Please try again");
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
-
+                _toastNotification.AddErrorToastMessage("Reply isn't subbmitted because of " + ex.Message + ". Please try again");
                 return View(model);
             }
 

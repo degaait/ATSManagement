@@ -4,6 +4,7 @@ using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
@@ -12,8 +13,10 @@ namespace ATSManagement.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
-        public ExternalRequestsController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail)
+        private readonly IToastNotification _toastNotification;
+        public ExternalRequestsController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mail;

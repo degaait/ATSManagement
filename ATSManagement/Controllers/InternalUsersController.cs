@@ -4,15 +4,17 @@ using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class InternalUsersController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public InternalUsersController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public InternalUsersController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 

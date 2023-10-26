@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ATSManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ATSManagement.Models;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
     public class WitnessEvidencesController : Controller
     {
         private readonly AtsdbContext _context;
-
-        public WitnessEvidencesController(AtsdbContext context)
+        private readonly IToastNotification _toastNotification;
+        public WitnessEvidencesController(AtsdbContext context, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _context = context;
         }
 
@@ -161,14 +159,14 @@ namespace ATSManagement.Controllers
             {
                 _context.TblWitnessEvidences.Remove(tblWitnessEvidence);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblWitnessEvidenceExists(Guid id)
         {
-          return (_context.TblWitnessEvidences?.Any(e => e.WitnessId == id)).GetValueOrDefault();
+            return (_context.TblWitnessEvidences?.Any(e => e.WitnessId == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,7 +1,10 @@
-using ATSManagementExternal.Models;
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.Services;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -30,7 +33,19 @@ builder.Services.AddSession(options =>
 });
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
+{
+    ProgressBar = true,
+    Timeout = 5000,
 
+});
+builder.Services.AddNotyf(config =>
+{
+    config.DurationInSeconds = 10;
+    config.HasRippleEffect = true;
+    config.IsDismissable = true;
+    config.Position = NotyfPosition.TopRight;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,7 +62,9 @@ app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseNToastNotify();
+app.UseNotyf();
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
