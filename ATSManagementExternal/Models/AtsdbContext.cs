@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Models;
-
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -105,7 +104,7 @@ public partial class AtsdbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

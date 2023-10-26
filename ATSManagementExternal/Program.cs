@@ -1,10 +1,10 @@
+using NToastNotify;
+using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Services;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using ATSManagementExternal.IModels;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.Services;
-using Microsoft.EntityFrameworkCore;
-using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -67,6 +67,6 @@ app.UseNotyf();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

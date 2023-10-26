@@ -44,10 +44,7 @@
                         </div>
                         <div class="mb-2">
                             <label class="form-label">
-                                Password
-                                <span class="form-label-description">
-                                    <a href="./forgot-password.html">I forgot password</a>
-                                </span>
+                                Password                               
                             </label>
                             <div class="input-group input-group-flat">
                                 <input asp-for="Password" class="form-control" placeholder="password" autocomplete="off" type="password" />
@@ -65,7 +62,11 @@
                         </div>
                     </form>
                 </div>
-                <div class="hr-text">or</div>
+                <div class="hr-text">
+                    <span class="nav-link">
+                        <a asp-action="Index" asp-controller="Home">Home</a>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

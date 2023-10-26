@@ -1,12 +1,12 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ATSManagementExternal.IModels;
+﻿using NToastNotify;
+using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -67,10 +67,9 @@ namespace ATSManagementExternal.Controllers
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
 
-            var atsdbContext = _context.TblLegalStudiesDraftings
+            var atsdbContext = _context.TblRequests
                .Include(t => t.AssignedByNavigation)
-               .Include(t => t.AssignedToNavigation)
-               .Include(t => t.Doc)
+               .Include(t => t.DocType)
                .Include(x => x.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
@@ -88,10 +87,9 @@ namespace ATSManagementExternal.Controllers
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
 
-            var atsdbContext = _context.TblLegalStudiesDraftings
+            var atsdbContext = _context.TblRequests
                                    .Include(t => t.AssignedByNavigation)
-                                   .Include(t => t.AssignedToNavigation)
-                                   .Include(t => t.Doc)
+                                   .Include(t => t.DocType)
                                    .Include(t => t.QuestType)
                                    .Include(t => t.Dep)
                                    .Include(t => t.Inist)
@@ -110,10 +108,9 @@ namespace ATSManagementExternal.Controllers
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
 
-            var atsdbContext = _context.TblLegalStudiesDraftings
+            var atsdbContext = _context.TblRequests
                .Include(t => t.AssignedByNavigation)
-               .Include(t => t.AssignedToNavigation)
-               .Include(t => t.Doc)
+               .Include(t => t.DocType)
                .Include(s => s.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
@@ -131,10 +128,9 @@ namespace ATSManagementExternal.Controllers
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
 
-            var atsdbContext = _context.TblLegalStudiesDraftings
+            var atsdbContext = _context.TblRequests
                .Include(t => t.AssignedByNavigation)
-               .Include(t => t.AssignedToNavigation)
-               .Include(t => t.Doc)
+               .Include(t => t.DocType)
                .Include(s => s.QuestType)
                .Include(t => t.Dep)
                .Include(t => t.Inist)
@@ -143,7 +139,7 @@ namespace ATSManagementExternal.Controllers
                 .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC" && x.ExternalRequestStatus.StatusName == "In Progress" && x.InistId == user.InistId);
+               .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress" && x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> CivilJustice()
@@ -151,9 +147,8 @@ namespace ATSManagementExternal.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -163,7 +158,7 @@ namespace ATSManagementExternal.Controllers
                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.InistId == user.InistId);
+                                                        .Include(t => t.Priority).Where(x =>  x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> PendingCivilJustice()
@@ -171,9 +166,8 @@ namespace ATSManagementExternal.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -183,7 +177,7 @@ namespace ATSManagementExternal.Controllers
                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "In Progress" && x.InistId == user.InistId);
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress" && x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> CompletedCivilJustice()
@@ -191,9 +185,8 @@ namespace ATSManagementExternal.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -203,7 +196,7 @@ namespace ATSManagementExternal.Controllers
                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "Completed" && x.InistId == user.InistId);
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "Completed" && x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> NewCivilJustice()
@@ -211,9 +204,8 @@ namespace ATSManagementExternal.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblExternalUser user = _context.TblExternalUsers.Find(userId);
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            var atsdbContext = _context.TblCivilJustices
+            var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.AssignedToNavigation)
                                                         .Include(t => t.CaseType)
                                                         .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
@@ -223,7 +215,7 @@ namespace ATSManagementExternal.Controllers
                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA" && x.ExternalRequestStatus.StatusName == "New" && x.InistId == user.InistId);
+                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "New" && x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> Details(Guid? id)
@@ -247,7 +239,6 @@ namespace ATSManagementExternal.Controllers
 
             return View(getModel());
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
@@ -294,13 +285,19 @@ namespace ATSManagementExternal.Controllers
                        request.ServiceTypeId == Guid.Parse("92FC1FC5-95D2-4250-98FB-0BA862F6DB02") ||
                        request.ServiceTypeId == Guid.Parse("C792938C-7952-488C-A23E-1A27F8B2B8E6"))
                     {
-                        //if (model.DocumentFile.FileName == null||)
-                        //{
-
-                        //}
+                        if (model.DocumentFile.FileName == null)
+                        {
+                            _notifyService.Error("Please add Document file and try again");
+                            _toastNotification.AddErrorToastMessage("Please add Document file and try again");
+                            return View(getModel());
+                        }
+                        if (request.QuestTypeId == null)
+                        {
+                            _notifyService.Error("Please Select Question type and submit again");
+                            _toastNotification.AddErrorToastMessage("Please Select Question type and submit again.");
+                            return View(getModel());
+                        }
                     }
-
-
                     request.RequestDetail = model.RequestDetail;
                     request.InistId = model.IntId;
                     request.RequestedBy = userId;
@@ -355,7 +352,6 @@ namespace ATSManagementExternal.Controllers
                 return View(getModel());
             }
         }
-
         public CivilJusticeExternalRequestModel getModel()
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
@@ -425,10 +421,6 @@ namespace ATSManagementExternal.Controllers
 
             return View(model);
         }
-
-        // POST: ExternalRequests/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CivilJusticeExternalRequestModel model)
@@ -445,6 +437,7 @@ namespace ATSManagementExternal.Controllers
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
                 {
+
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -512,14 +505,14 @@ namespace ATSManagementExternal.Controllers
         public async Task<IActionResult> Replies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var replays = await _context.TblCivilJusticeRequestReplys.Where(a => a.RequestId == id).ToListAsync();
+            var replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
             RepliesModel model = new RepliesModel
             {
                 RequestId = id,
                 ReplyDate = DateTime.Now,
                 ExternalReplayedBy = userId,
             };
-            ViewData["Replies"] = _context.TblCivilJusticeRequestReplys
+            ViewData["Replies"] = _context.TblReplays
                 .Include(x => x.InternalReplayedByNavigation)
                 .Include(x => x.ExternalReplayedByNavigation)
                 .Include(x => x.Request)
@@ -533,12 +526,12 @@ namespace ATSManagementExternal.Controllers
         {
             try
             {
-                TblCivilJusticeRequestReply replay = new TblCivilJusticeRequestReply();
+                TblReplay replay = new ();
                 replay.ReplyDate = DateTime.Now;
                 replay.ExternalReplayedBy = model.ExternalReplayedBy;
                 replay.RequestId = model.RequestId;
                 replay.ReplayDetail = model.ReplayDetail;
-                _context.TblCivilJusticeRequestReplys.Add(replay);
+                _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
@@ -568,9 +561,9 @@ namespace ATSManagementExternal.Controllers
                 ReplyDate = DateTime.Now,
                 ExternalReplayedBy = userId,
             };
-            ViewData["Replies"] = _context.TblLegalStudiesReplays
-                .Include(x => x.ExternalReplayedBy1)
+            ViewData["Replies"] = _context.TblReplays
                 .Include(x => x.ExternalReplayedByNavigation)
+                .Include(x => x.InternalReplayedBy)
                 .Include(x => x.Request)
                 .Where(_context => _context.RequestId == id).ToList();
             return View(model);
@@ -582,12 +575,12 @@ namespace ATSManagementExternal.Controllers
         {
             try
             {
-                TblLegalStudiesReplay replay = new TblLegalStudiesReplay();
+                TblReplay replay = new TblReplay();
                 replay.ReplyDate = DateTime.Now;
                 replay.ExternalReplayedBy = model.ExternalReplayedBy;
                 replay.RequestId = model.RequestId;
                 replay.ReplayDetail = model.ReplayDetail;
-                _context.TblLegalStudiesReplays.Add(replay);
+                _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {

@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    IEnumerable<TblLegalStudiesReplay> replyes = ViewData["Replies"] as IEnumerable<TblLegalStudiesReplay>;
+    IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
 }
 <style type="text/css">
     .table thead th {
@@ -112,8 +112,8 @@
                                                     @Html.DisplayFor(modelItem => item.ExternalReplayedByNavigation.MiddleName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedBy1.FirstName)
-                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedBy1.MidleName)
+                                                    @Html.DisplayFor(modelItem => item.InternalReplayedByNavigation.FirstName)
+                                                    @Html.DisplayFor(modelItem => item.InternalReplayedByNavigation.MidleName)
                                                 </td>
                                                 <td>
                                                     @Html.Raw(item.Request.RequestDetail)

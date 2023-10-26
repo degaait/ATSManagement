@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagementExternal.Models.TblLegalStudiesDrafting>
+﻿@model IEnumerable<ATSManagementExternal.Models.TblRequest>
 @inject AtsdbContext _context;
 @{
     ViewData["Title"] = "Requests";
@@ -114,6 +114,8 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        var assignees = (from users in _context.TblRequestAssignees where users.RequestId == item.RequestId select users).ToList();
+
                                         var replies = (from replys in _context.TblCivilJusticeRequestReplys where item.RequestId == replys.RequestId select replys).FirstOrDefault();
                                         <tr>
                                             <td>
@@ -162,11 +164,15 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.MidleName)
+                                                @foreach (var items in assignees)
+                                                {
+                                                    @Html.DisplayFor(modelItem => items.User.FirstName)
+                                                    @Html.DisplayFor(modelItem => items.User.MidleName)
+                                                    <br />
+                                                }
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Doc.DocName)
+                                                @Html.DisplayFor(modelItem => item.DocType.DocName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Dep.DepName)
