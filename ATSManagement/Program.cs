@@ -35,8 +35,7 @@ builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
 {
     ProgressBar = true,
-    Timeout = 5000,
-
+    Timeout = 5000
 });
 builder.Services.AddNotyf(config =>
 {
@@ -45,9 +44,7 @@ builder.Services.AddNotyf(config =>
     config.IsDismissable = true;
     config.Position = NotyfPosition.TopRight;
 });
-
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
