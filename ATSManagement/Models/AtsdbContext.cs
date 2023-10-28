@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
+
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -76,6 +77,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblPriority> TblPriorities { get; set; }
 
+    public virtual DbSet<TblPriorityQuestion> TblPriorityQuestions { get; set; }
+
     public virtual DbSet<TblRecomendation> TblRecomendations { get; set; }
 
     public virtual DbSet<TblRecomendationStatus> TblRecomendationStatuses { get; set; }
@@ -87,6 +90,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblRequest> TblRequests { get; set; }
 
     public virtual DbSet<TblRequestAssignee> TblRequestAssignees { get; set; }
+
+    public virtual DbSet<TblRequestPriorityQuestionsRelation> TblRequestPriorityQuestionsRelations { get; set; }
 
     public virtual DbSet<TblRequestType> TblRequestTypes { get; set; }
 
@@ -104,7 +109,7 @@ public partial class AtsdbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -782,6 +787,15 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.PriorityName).HasMaxLength(250);
         });
 
+        modelBuilder.Entity<TblPriorityQuestion>(entity =>
+        {
+            entity.HasKey(e => e.PriorityQueId);
+
+            entity.ToTable("tbl_PriorityQuestions");
+
+            entity.Property(e => e.PriorityQueId).HasDefaultValueSql("(newid())");
+        });
+
         modelBuilder.Entity<TblRecomendation>(entity =>
         {
             entity.HasKey(e => e.RecoId);
@@ -948,6 +962,24 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.TblRequestAssignees)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_tbl_RequestAssignees_tbl_InternalUsers");
+        });
+
+        modelBuilder.Entity<TblRequestPriorityQuestionsRelation>(entity =>
+        {
+            entity.ToTable("tbl_RequestPriorityQuestionsRelations");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.PriorityQue).WithMany(p => p.TblRequestPriorityQuestionsRelations)
+                .HasForeignKey(d => d.PriorityQueId)
+                .HasConstraintName("FK_tbl_RequestPriorityQuestionsRelations_tbl_PriorityQuestions");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblRequestPriorityQuestionsRelations)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_RequestPriorityQuestionsRelations_tbl_Requests");
         });
 
         modelBuilder.Entity<TblRequestType>(entity =>

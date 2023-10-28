@@ -101,7 +101,22 @@
                                                 <span asp-validation-for="PriorityId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="mb-3 row" id="priorityQuestionType" style="display:none">
+                                            <label class=" col-2 col-form-label">Additional Questions</label>
+                                            <div class="col">
+                                                
+                                                @for (var i = 0; i < Model.PrioritiesQues.Count(); i++)
+                                                {
+                                                    @Html.CheckBoxFor(model => model.PrioritiesQues[i].IsSelected)
+                                                
+                                                    @Html.HiddenFor(model => model.PrioritiesQues[i].PriorityQueId)
+                                                    @Html.DisplayFor(model => model.PrioritiesQues[i].Title)
+                                                    <br />
+
+                                                }
+                                            </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                             <div class="card-footer text-end">
@@ -121,7 +136,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                           @ViewBag.PrivacyPolicy
+                                            @ViewBag.PrivacyPolicy
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
@@ -199,26 +214,27 @@
             $(document).ready(function () {
                 $("#TypeId").change(function () {
                     var value = $("#TypeId").val();
-                                       
-                    if (value == "D5AABE5F-FCAC-42C4-BFF7-A8585E8DB29D") { // It doesn't work over here.                       
+
+                    if (value == "D5AABE5F-FCAC-42C4-BFF7-A8585E8DB29D") { // It doesn't work over here.
                         $('#divRequestDetail').show();
                         $("#divAppointmentDetail").hide();
                         $("#DivRequestedDate").show();
                         $("#divServiceType").show();
-                       // $("#divCasetype").show();
-                       // $("#divDocType").show();
-                       // $("#divQuestType").show();
-                       // $("#DivDocumentFile").show();
+                        $("#priorityQuestionType").show();
+                        // $("#divCasetype").show();
+                        // $("#divDocType").show();
+                        // $("#divQuestType").show();
+                        // $("#DivDocumentFile").show();
                         $("#DivPriority").show();
                     } else if (value == "093F2484-6B94-47BB-9294-BA7995913F70") {
                         $('#divRequestDetail').hide();
                         $("#divAppointmentDetail").show();
                         $("#DivRequestedDate").hide();
                         $("#divServiceType").hide();
-                      //  $("#divCasetype").hide();
-                      //  $("#divDocType").hide();
-                       // $("#divQuestType").hide();
-                       // $("#DivDocumentFile").hide();
+                        //  $("#divCasetype").hide();
+                        //  $("#divDocType").hide();
+                        // $("#divQuestType").hide();
+                        // $("#DivDocumentFile").hide();
                         $("#DivPriority").hide();
                     }
                     else {
@@ -226,31 +242,32 @@
                         $("#divAppointmentDetail").hide();
                         $("#DivRequestedDate").hide();
                         $("#divServiceType").hide();
-                       // $("#divCasetype").hide();
-                       // $("#divDocType").hide();
+                        // $("#divCasetype").hide();
+                        // $("#divDocType").hide();
                         //$("#divQuestType").hide();
                         //$("#DivDocumentFile").hide();
-                        $("#DivPriority").hide();                     
+                        $("#DivPriority").hide();
                     }
                 });
 
                 $("#ServiceTypeID").change(function () {
                     var value = $("#ServiceTypeID").val();
-                   // alert(value);
+                    // alert(value);
                     if (value == "F935DCD1-2651-4C64-947C-0A877F652FB5" ||
                         value == "ACB92222-4872-4A9D-8EDB-8BCD5317129A" ||
                         value == "6E00B0EA-7B4D-40C4-8289-A566FE16E88E" ||
                         value == "92FC1FC5-95D2-4250-98FB-0BA862F6DB02" ||
-                        value == "C792938C-7952-488C-A23E-1A27F8B2B8E6") {
+                        value == "C792938C-7952-488C-A23E-1A27F8B2B8E6")
+                    {
                         $("#divDocType").show();
                         $("#divQuestType").show();
                         $("#DivDocumentFile").show();
-
                     }
                     else {
                         $("#divDocType").hide();
                         $("#divQuestType").hide();
                         $("#DivDocumentFile").hide();
+                        $("#priorityQuestionType").show();
                     }
                 });
 

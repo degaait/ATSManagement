@@ -72,5 +72,10 @@ namespace ATSManagementExternal.ViewModels
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
         public List<SelectListItem>? Priorities { get; set; }
+
+
+        [Display(Name = "Addional Questions")]
+        public List<CheckBoxItem>? PrioritiesQues { get; set; }
+
     }
 }

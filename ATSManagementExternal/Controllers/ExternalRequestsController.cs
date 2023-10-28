@@ -1,12 +1,12 @@
-﻿using NToastNotify;
-using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -158,7 +158,7 @@ namespace ATSManagementExternal.Controllers
                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x =>  x.InistId == user.InistId);
+                                                        .Include(t => t.Priority).Where(x => x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> PendingCivilJustice()
@@ -243,7 +243,6 @@ namespace ATSManagementExternal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
         {
-
             try
             {
                 TblRequest request = new TblRequest();
@@ -266,13 +265,11 @@ namespace ATSManagementExternal.Controllers
                     if (saved > 0)
                     {
                         _notifyService.Success("Your Appointment is submitted successfully!");
-                        _toastNotification.AddInfoToastMessage("Your Appointment is submitted successfully!");
                         return View(getModel());
                     }
                     else
                     {
                         _notifyService.Error("Your request isn't submitted successfully!. Please try again.");
-                        _toastNotification.AddErrorToastMessage("Your request isn't submitted successfully!. Please try again.");
                         return View(getModel());
                     }
                 }
@@ -288,16 +285,15 @@ namespace ATSManagementExternal.Controllers
                         if (model.DocumentFile.FileName == null)
                         {
                             _notifyService.Error("Please add Document file and try again");
-                            _toastNotification.AddErrorToastMessage("Please add Document file and try again");
                             return View(getModel());
                         }
                         if (request.QuestTypeId == null)
                         {
                             _notifyService.Error("Please Select Question type and submit again");
-                            _toastNotification.AddErrorToastMessage("Please Select Question type and submit again.");
                             return View(getModel());
                         }
                     }
+
                     request.RequestDetail = model.RequestDetail;
                     request.InistId = model.IntId;
                     request.RequestedBy = userId;
@@ -333,14 +329,12 @@ namespace ATSManagementExternal.Controllers
                     if (saved > 0)
                     {
                         _notifyService.Success("Your request is submitted Successfully. Responsive body is notified by email");
-                        _toastNotification.AddSuccessToastMessage("Your request is submitted Successfully. Responsive body is notified by email");
                         await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
                         return View(getModel());
                     }
                     else
                     {
                         _notifyService.Error("Your request isn't successfully submitted!. Please try again");
-                        _toastNotification.AddErrorToastMessage("Your request isn't successfully submitted!. Please try again");
                         return View(getModel());
                     }
                 }
@@ -348,7 +342,6 @@ namespace ATSManagementExternal.Controllers
             catch (Exception ex)
             {
                 _notifyService.Error(ex.Message + " happened. Please try again");
-                _toastNotification.AddErrorToastMessage(ex.Message + " happened. Please try again");
                 return View(getModel());
             }
         }
@@ -396,6 +389,12 @@ namespace ATSManagementExternal.Controllers
             {
                 Value = x.PriorityId.ToString(),
                 Text = x.PriorityName
+            }).ToList();
+            model.PrioritiesQues = _context.TblPriorityQuestions.Select(x => new CheckBoxItem
+            {
+                PriorityQueId = x.PriorityQueId,
+                Title = x.QuestionName,
+                IsSelected = false
             }).ToList();
             return model;
         }
@@ -526,7 +525,7 @@ namespace ATSManagementExternal.Controllers
         {
             try
             {
-                TblReplay replay = new ();
+                TblReplay replay = new();
                 replay.ReplyDate = DateTime.Now;
                 replay.ExternalReplayedBy = model.ExternalReplayedBy;
                 replay.RequestId = model.RequestId;

@@ -17,6 +17,8 @@ public partial class TblReplay
 
     public Guid? ExternalReplayedBy { get; set; }
 
+    public bool? IsSent { get; set; }
+
     public virtual TblExternalUser? ExternalReplayedByNavigation { get; set; }
 
     public virtual TblInternalUser? InternalReplayedByNavigation { get; set; }
