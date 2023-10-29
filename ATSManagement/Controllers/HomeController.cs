@@ -1,8 +1,8 @@
-﻿using ATSManagement.IModels;
-using ATSManagement.Models;
-using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
+﻿using NToastNotify;
 using System.Diagnostics;
+using ATSManagement.Models;
+using ATSManagement.IModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ATSManagement.Controllers
 {

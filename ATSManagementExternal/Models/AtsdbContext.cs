@@ -35,6 +35,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplys { get; set; }
 
+    public virtual DbSet<TblCompanyEmail> TblCompanyEmails { get; set; }
+
     public virtual DbSet<TblDecisionStatus> TblDecisionStatuses { get; set; }
 
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
@@ -109,12 +111,10 @@ public partial class AtsdbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Latin1_General_CI_AS");
-
         modelBuilder.Entity<TblActivity>(entity =>
         {
             entity.HasKey(e => e.ActivityId);
@@ -374,6 +374,18 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.RequestId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJusticeRequestReplys_tbl_CivilJustice");
+        });
+
+        modelBuilder.Entity<TblCompanyEmail>(entity =>
+        {
+            entity.HasKey(e => e.EmailId).HasName("PK_tbl_CompanyEmail");
+
+            entity.ToTable("tbl_CompanyEmails");
+
+            entity.Property(e => e.EmailId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("EmailID");
+            entity.Property(e => e.EmailAdress).HasMaxLength(350);
         });
 
         modelBuilder.Entity<TblDecisionStatus>(entity =>

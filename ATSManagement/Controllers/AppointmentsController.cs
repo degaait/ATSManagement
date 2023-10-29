@@ -1,19 +1,24 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
     public class AppointmentsController : Controller
     {
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public AppointmentsController(AtsdbContext context, IToastNotification toastNotification)
+        //private readonly IToastNotification _toastNotification;
+        private readonly ILogger _logger;
+        private readonly INotyfService _notifyService;
+        public AppointmentsController(AtsdbContext context, IToastNotification toastNotification, INotyfService notyfService)
         {
-            _toastNotification = toastNotification;
+           
+            _notifyService = notyfService;
             _context = context;
         }
 
@@ -137,11 +142,50 @@ namespace ATSManagement.Controllers
                 Text = a.FirstName + " " + a.MidleName,
                 Value = a.UserId.ToString()
             }).ToList();
+            
             app.AppointmentID = id;
             app.AppointmentDetail = appointment.AppointmentDetail;
             app.Institution = _context.TblInistitutions.Where(a => a.InistId == appointment.InistId).Select(s => s.Name).FirstOrDefault();
+           
             return View(app);
         }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignParticipants(AppointmentModel model)
+        {
+            List<TblAppointmentParticipant> tblAppointmentParticipants;
+            TblAppointment tblAppointment = _context.TblAppointments.Find(model.AppointmentID);
+            if (tblAppointment == null)
+            {
+                return NotFound();
+            }
+            tblAppointment.AppointmentDate = model.AppointmentDate;
+            if (model.UserId.Length > 0)
+            {
+                tblAppointmentParticipants = new List<TblAppointmentParticipant>();
+                foreach (var item in model.UserId)
+                {
+                    tblAppointmentParticipants.Add(new TblAppointmentParticipant { UserId = item, AppointmentId = model.AppointmentID });
+                }
+                tblAppointment.TblAppointmentParticipants = tblAppointmentParticipants;
+            }
+            tblAppointment.AppointmentDate=model.AppointmentDate;
+            int updated = await _context.SaveChangesAsync();
+            if (updated>0)
+            {
+                _notifyService.Success("Appointment Participants are assigned succeesfully. Email notification is will be sent to respective institution focal person.");
+                return RedirectToAction(nameof(Index));
+
+            }
+            else
+            {
+
+            }
+
+            return View();
+        }
+
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblAppointments == null)
@@ -183,6 +227,41 @@ namespace ATSManagement.Controllers
         private bool TblAppointmentExists(Guid id)
         {
             return (_context.TblAppointments?.Any(e => e.AppointmentId == id)).GetValueOrDefault();
+        }
+
+        public async Task<IActionResult> AddFinalOutCome(Guid? id)
+        {
+            AppointmentModel app = new AppointmentModel();
+            TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(id);
+            app.AppointmentDetail = tblAppointment.AppointmentDetail;
+            app.CreatedDate=tblAppointment.CreatedDate;
+            app.AppointmentDate=tblAppointment?.AppointmentDate;
+            return View(app);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddFinalOutCome(AppointmentModel model)
+        {
+            if (model.AppointmentDate>DateTime.Now)
+            {
+                _notifyService.Error("Final meeting outcome can't be added before appointment date");
+                return View(model);
+            }
+            TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(model.AppointmentID);
+            tblAppointment.DescusionFinalComeup = model.FinalOutCome;
+            int saved=await _context.SaveChangesAsync();
+            if (saved>0)
+            {
+                _notifyService.Success("Successfully saved.");
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _notifyService.Error("Data isn't added successfully. Please try again");
+                return View(model);
+            }            
+           
         }
 
     }

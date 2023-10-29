@@ -103,8 +103,7 @@
                                         </div>
                                         <div class="mb-3 row" id="priorityQuestionType" style="display:none">
                                             <label class=" col-2 col-form-label">Additional Questions</label>
-                                            <div class="col">
-                                                
+                                            <div class="col">                                                
                                                 @for (var i = 0; i < Model.PrioritiesQues.Count(); i++)
                                                 {
                                                     @Html.CheckBoxFor(model => model.PrioritiesQues[i].IsSelected)
@@ -112,7 +111,6 @@
                                                     @Html.HiddenFor(model => model.PrioritiesQues[i].PriorityQueId)
                                                     @Html.DisplayFor(model => model.PrioritiesQues[i].Title)
                                                     <br />
-
                                                 }
                                             </div>
                                             </div>

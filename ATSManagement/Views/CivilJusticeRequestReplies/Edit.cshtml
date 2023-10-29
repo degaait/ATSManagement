@@ -14,27 +14,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReplyId" />
             <div class="form-group">
-                <label asp-for="ReplayDetail" class="control-label"></label>
+                <label asp-for="ReplayDetail" class="col-2 col-form-label"></label>
                 <input asp-for="ReplayDetail" class="form-control" />
                 <span asp-validation-for="ReplayDetail" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RequestId" class="control-label"></label>
+                <label asp-for="RequestId" class="col-2 col-form-label"></label>
                 <select asp-for="RequestId" class="form-control" asp-items="ViewBag.RequestId"></select>
                 <span asp-validation-for="RequestId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="InternalReplayedBy" class="control-label"></label>
+                <label asp-for="InternalReplayedBy" class="col-2 col-form-label"></label>
                 <select asp-for="InternalReplayedBy" class="form-control" asp-items="ViewBag.InternalReplayedBy"></select>
                 <span asp-validation-for="InternalReplayedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReplyDate" class="control-label"></label>
+                <label asp-for="ReplyDate" class="col-2 col-form-label"></label>
                 <input asp-for="ReplyDate" class="form-control" />
                 <span asp-validation-for="ReplyDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExternalReplayedBy" class="control-label"></label>
+                <label asp-for="ExternalReplayedBy" class="col-2 col-form-label"></label>
                 <select asp-for="ExternalReplayedBy" class="form-control" asp-items="ViewBag.ExternalReplayedBy"></select>
                 <span asp-validation-for="ExternalReplayedBy" class="text-danger"></span>
             </div>

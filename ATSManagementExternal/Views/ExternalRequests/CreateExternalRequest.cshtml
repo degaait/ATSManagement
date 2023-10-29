@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Create";
 }
-
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -33,7 +32,7 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail Detail</label>
+                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
@@ -43,7 +42,6 @@
                                             <label asp-for="InistId" class=" col-2 col-form-label">Institution</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-
                                                 <span asp-validation-for="InistId" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -58,7 +56,6 @@
                                             <label asp-for="DepId" class=" col-2 col-form-label">Responsible Department</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-
                                                 <span asp-validation-for="DepId" class="text-danger"></span>
                                             </div>
                                         </div>

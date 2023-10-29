@@ -41,22 +41,24 @@
                                         <div class="mb-3 row">
                                             <label asp-for="CreatedDate" class=" col-2 col-form-label">Requested Date Date</label>
                                             <div class="col">
-                                                <input asp-for="CreatedDate" class="form-control" />
+                                                <input asp-for="CreatedDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="UserId" class=" col-2 col-form-label">Responsible User</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
-                                                <span asp-validation-for="UserId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label asp-for="AppointmentDate" class=" col-2 col-form-label">Appointment Date</label>
                                             <div class="col">
-                                                <input asp-for="AppointmentDate" class="calendar-date" />
+
+                                                <input asp-for="AppointmentDate" class="calendar-date" readonly />
                                                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="FinalOutCome" class=" col-2 col-form-label">Meeting Outcome</label>
+                                            <div class="col">
+
+                                                <input asp-for="FinalOutCome" class="form-control"  />
+                                                <span asp-validation-for="FinalOutCome" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -80,7 +82,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {
-                selector: '#RequestDetail',
+                selector: '#FinalOutCome',
                 height: 300,
                 menubar: true,
                 statusbar: false,
@@ -104,29 +106,4 @@
         })
     </script>
 
-    <script>
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var el;
-            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
-                copyClassesToDropdown: false,
-                dropdownParent: 'body',
-                controlInput: '<input>',
-                render: {
-                    item: function (data, escape) {
-                        if (data.customProperties) {
-                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                        }
-                        return '<div>' + escape(data.text) + '</div>';
-                    },
-                    option: function (data, escape) {
-                        if (data.customProperties) {
-                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                        }
-                        return '<div>' + escape(data.text) + '</div>';
-                    },
-                },
-            }));
-        });
-    </script>
 }

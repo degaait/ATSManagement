@@ -14,7 +14,6 @@ namespace ATSManagementExternal.ViewModels
         [DisplayFormat(ApplyFormatInEditMode = true)]
         [Display(Name = "Request Detail")]
         public string? AppointmentDetail { get; set; }
-
         public Guid? TypeId { get; set; }
 
         [Display(Name = "Request types")]
@@ -23,12 +22,10 @@ namespace ATSManagementExternal.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Date")]
         [DataType(DataType.DateTime)]
-
         public DateTime? RequestedDate { get; set; }
 
         [Display(Name = "Request Date")]
         [DataType(DataType.DateTime)]
-
         public DateTime? AppointmentDate { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -48,7 +45,6 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Departments")]
         public List<SelectListItem>? Deparments { get; set; }
-
         public Guid? DocId { get; set; }
         public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
         [Display(Name = "Question type")]
@@ -58,24 +54,28 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Case types")]
         public List<SelectListItem>? CaseTypes { get; set; }
-        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? CreatedDate { get; set; }
 
+        [Display(Name = "Document File")]
+        public IFormFile DocumentFile { get; set; }
+        public Guid? PriorityId { get; set; }
+        [Display(Name = "Priority")]
+        public List<SelectListItem>? Priorities { get; set; }
         public Guid? ServiceTypeID { get; set; }
 
         [Display(Name = "Service types")]
         public List<SelectListItem>? ServiceTypes { get; set; }
 
-
-        [Display(Name = "Document File")]
-        public IFormFile DocumentFile { get; set; }
-
-        public Guid? PriorityId { get; set; }
-        [Display(Name = "Priority")]
-        public List<SelectListItem>? Priorities { get; set; }
-
-
         [Display(Name = "Addional Questions")]
         public List<CheckBoxItem>? PrioritiesQues { get; set; }
+        [Display(Name="Your Full Name")]
+        public String? Name { get; set; }
+        [Display(Name = "Email Address")]
+        [DataType(DataType.EmailAddress)]
+        public string? EmailAddress { get; set; }
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        public string? PhoneNumber { get; set; }
 
     }
 }

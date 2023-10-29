@@ -57,8 +57,7 @@
                                         <div class="mb-3 row">
                                             <label asp-for="AssignedTo" class=" col-2 col-form-label">Responsible User</label>
                                             <div class="col">
-
-                                                @Html.DropDownListFor(model => model.AssignedTo, new SelectList(Model.AssignedTos, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                @Html.DropDownListFor(model => model.AssignedTo, new SelectList(Model.AssignedTos, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
                                                 <span asp-validation-for="AssignedTo" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -87,7 +86,6 @@
                                             <label asp-for="AssingmentRemark" class="col-2 col-form-label">Remark</label>
                                             <div class="col">
                                                 @Html.EditorFor(model => model.AssingmentRemark, new { htmlAttributes = new { @class = "form-control" } })
-
                                                 <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -134,5 +132,29 @@
             }
             tinyMCE.init(options);
         })
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var el;
+            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
+                copyClassesToDropdown: false,
+                dropdownParent: 'body',
+                controlInput: '<input>',
+                render: {
+                    item: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                    option: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                },
+            }));
+        });
     </script>
 }
