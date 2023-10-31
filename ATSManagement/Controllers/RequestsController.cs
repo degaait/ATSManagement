@@ -1,16 +1,12 @@
-﻿using System;
-using System.Linq;
-using NToastNotify;
-using ATSManagement.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.IModels;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
@@ -21,13 +17,13 @@ namespace ATSManagement.Controllers
         private readonly IMailService _mail;
         private readonly IToastNotification _toastNotification;
         private readonly INotyfService _notifyService;
-        public RequestsController(AtsdbContext context,INotyfService notyfService, IMailService mailService,IHttpContextAccessor httpContextAccessor)
+        public RequestsController(AtsdbContext context, INotyfService notyfService, IMailService mailService, IHttpContextAccessor httpContextAccessor)
         {
-            _mail= mailService;
-            _notifyService= notyfService;
+            _mail = mailService;
+            _notifyService = notyfService;
             _contextAccessor = httpContextAccessor;
             _context = context;
-        }   
+        }
         public async Task<IActionResult> Index()
         {
             var atsdbContext = _context.TblRequests
@@ -45,12 +41,12 @@ namespace ATSManagement.Controllers
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ServiceType)
                 .Include(t => t.TeamUpprovalStatusNavigation)
-                .Include(t => t.UserUpprovalStatusNavigation).Where(x=>x.DepId==null);
+                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.DepId == null);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AssignToDepartment(Guid? id)
         {
-            if (id==null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -62,24 +58,24 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> AssignToDepartment(RequestModel requestModel)
         {
             TblRequest request = await _context.TblRequests.FindAsync(requestModel.RequestId);
-            request.DepId=requestModel.DepId;
-           int saved=await _context.SaveChangesAsync();
-            if (saved>0)
+            request.DepId = requestModel.DepId;
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
             {
-                var DepartmentHeade=_context.TblInternalUsers.Where(x=>x.Dep.DepId==requestModel.DepId).Select(x=>x.EmailAddress).ToList();                
+                var DepartmentHeade = _context.TblInternalUsers.Where(x => x.Dep.DepId == requestModel.DepId).Select(x => x.EmailAddress).ToList();
                 _notifyService.Success("Request is assigned to Department");
                 return RedirectToAction(nameof(Index));
-               await SendMail(DepartmentHeade, "Request Assignment notifications from Deputy director", "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+                await SendMail(DepartmentHeade, "Request Assignment notifications from Deputy director", "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
             }
             else
             {
                 _notifyService.Error("Request isn't assigned. Please try again");
                 return View(getModels(requestModel.RequestId));
-            }    
+            }
         }
-        public  RequestModel getModels(Guid? id)
+        public RequestModel getModels(Guid? id)
         {
-            var reques =  _context.TblRequests.Find(id);
+            var reques = _context.TblRequests.Find(id);
             RequestModel requestModel = new RequestModel();
             requestModel.RequestId = id;
             requestModel.Deparments = _context.TblDepartments.Select(x => new SelectListItem
@@ -94,12 +90,12 @@ namespace ATSManagement.Controllers
                 Value = s.ServiceTypeId.ToString()
             }).ToList();
             requestModel.ServiceTypeID = reques.ServiceTypeId;
-            requestModel.Intitutions = _context.TblInistitutions.Where(s=>s.InistId==reques.InistId).Select(x => new SelectListItem
+            requestModel.Intitutions = _context.TblInistitutions.Where(s => s.InistId == reques.InistId).Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.InistId.ToString()
             }).ToList();
-            requestModel.InistId= reques.InistId;
+            requestModel.InistId = reques.InistId;
             return requestModel;
         }
         public async Task<IActionResult> Details(Guid? id)
@@ -133,7 +129,7 @@ namespace ATSManagement.Controllers
 
             return View(tblRequest);
         }
- 
+
         public IActionResult Create()
         {
             ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
@@ -153,7 +149,7 @@ namespace ATSManagement.Controllers
             ViewData["UserUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId");
             return View();
         }
-   
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ExternalRequestStatusId,TopStatus,PriorityId,UserUpprovalStatus,TeamUpprovalStatus,DeputyUprovalStatus,DepartmentUpprovalStatus,DocTypeId,QuestTypeId,FinalReport,DocumentFile,ServiceTypeId,RequestRound")] TblRequest tblRequest)
@@ -182,7 +178,7 @@ namespace ATSManagement.Controllers
             ViewData["UserUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.UserUpprovalStatus);
             return View(tblRequest);
         }
- 
+
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.TblRequests == null)
@@ -211,7 +207,7 @@ namespace ATSManagement.Controllers
             ViewData["TeamUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.TeamUpprovalStatus);
             ViewData["UserUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.UserUpprovalStatus);
             return View(tblRequest);
-        }       
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ExternalRequestStatusId,TopStatus,PriorityId,UserUpprovalStatus,TeamUpprovalStatus,DeputyUprovalStatus,DepartmentUpprovalStatus,DocTypeId,QuestTypeId,FinalReport,DocumentFile,ServiceTypeId,RequestRound")] TblRequest tblRequest)
@@ -259,7 +255,7 @@ namespace ATSManagement.Controllers
             return View(tblRequest);
         }
 
-     
+
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblRequests == null)
@@ -292,7 +288,7 @@ namespace ATSManagement.Controllers
             return View(tblRequest);
         }
 
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -306,18 +302,18 @@ namespace ATSManagement.Controllers
             {
                 _context.TblRequests.Remove(tblRequest);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TblRequestExists(Guid id)
         {
-          return (_context.TblRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
+            return (_context.TblRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
         private async Task SendMail(List<string> to, string subject, string body)
         {
-            var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
+            var companyEmail = _context.TblCompanyEmail.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }

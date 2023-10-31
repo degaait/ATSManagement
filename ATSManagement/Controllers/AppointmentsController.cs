@@ -1,11 +1,11 @@
-﻿using NToastNotify;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
@@ -17,7 +17,7 @@ namespace ATSManagement.Controllers
         private readonly INotyfService _notifyService;
         public AppointmentsController(AtsdbContext context, IToastNotification toastNotification, INotyfService notyfService)
         {
-           
+
             _notifyService = notyfService;
             _context = context;
         }
@@ -142,11 +142,11 @@ namespace ATSManagement.Controllers
                 Text = a.FirstName + " " + a.MidleName,
                 Value = a.UserId.ToString()
             }).ToList();
-            
+
             app.AppointmentID = id;
             app.AppointmentDetail = appointment.AppointmentDetail;
             app.Institution = _context.TblInistitutions.Where(a => a.InistId == appointment.InistId).Select(s => s.Name).FirstOrDefault();
-           
+
             return View(app);
         }
         [HttpPost]
@@ -170,9 +170,9 @@ namespace ATSManagement.Controllers
                 }
                 tblAppointment.TblAppointmentParticipants = tblAppointmentParticipants;
             }
-            tblAppointment.AppointmentDate=model.AppointmentDate;
+            tblAppointment.AppointmentDate = model.AppointmentDate;
             int updated = await _context.SaveChangesAsync();
-            if (updated>0)
+            if (updated > 0)
             {
                 _notifyService.Success("Appointment Participants are assigned succeesfully. Email notification is will be sent to respective institution focal person.");
                 return RedirectToAction(nameof(Index));
@@ -234,8 +234,8 @@ namespace ATSManagement.Controllers
             AppointmentModel app = new AppointmentModel();
             TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(id);
             app.AppointmentDetail = tblAppointment.AppointmentDetail;
-            app.CreatedDate=tblAppointment.CreatedDate;
-            app.AppointmentDate=tblAppointment?.AppointmentDate;
+            app.CreatedDate = tblAppointment.CreatedDate;
+            app.AppointmentDate = tblAppointment?.AppointmentDate;
             return View(app);
         }
         [HttpPost]
@@ -243,15 +243,15 @@ namespace ATSManagement.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AddFinalOutCome(AppointmentModel model)
         {
-            if (model.AppointmentDate>DateTime.Now)
+            if (model.AppointmentDate > DateTime.Now)
             {
                 _notifyService.Error("Final meeting outcome can't be added before appointment date");
                 return View(model);
             }
             TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(model.AppointmentID);
             tblAppointment.DescusionFinalComeup = model.FinalOutCome;
-            int saved=await _context.SaveChangesAsync();
-            if (saved>0)
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
             {
                 _notifyService.Success("Successfully saved.");
                 return RedirectToAction(nameof(Index));
@@ -260,8 +260,8 @@ namespace ATSManagement.Controllers
             {
                 _notifyService.Error("Data isn't added successfully. Please try again");
                 return View(model);
-            }            
-           
+            }
+
         }
 
     }

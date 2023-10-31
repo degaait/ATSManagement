@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ATSManagement.Models;
+﻿namespace ATSManagement.Models;
 
 public partial class TblDocumentHistory
 {
@@ -12,6 +9,18 @@ public partial class TblDocumentHistory
     public string? DocPath { get; set; }
 
     public int? Round { get; set; }
+
+    public string? Description { get; set; }
+
+    public Guid? InternalReplyId { get; set; }
+
+    public Guid? ExternalRepliedBy { get; set; }
+
+    public string? FileDescription { get; set; }
+
+    public virtual TblExternalUser? ExternalRepliedByNavigation { get; set; }
+
+    public virtual TblInternalUser? InternalReply { get; set; }
 
     public virtual TblRequest? Request { get; set; }
 }

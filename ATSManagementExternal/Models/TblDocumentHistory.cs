@@ -13,5 +13,17 @@ public partial class TblDocumentHistory
 
     public int? Round { get; set; }
 
+    public string? Description { get; set; }
+
+    public Guid? InternalReplyId { get; set; }
+
+    public Guid? ExternalRepliedBy { get; set; }
+
+    public string? FileDescription { get; set; }
+
+    public virtual TblExternalUser? ExternalRepliedByNavigation { get; set; }
+
+    public virtual TblInternalUser? InternalReply { get; set; }
+
     public virtual TblRequest? Request { get; set; }
 }

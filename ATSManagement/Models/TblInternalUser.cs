@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ATSManagement.Models;
-
+﻿namespace ATSManagement.Models;
 public partial class TblInternalUser
 {
     public Guid UserId { get; set; }
@@ -54,6 +50,8 @@ public partial class TblInternalUser
     public virtual ICollection<TblCivilJusticeRequestActivity> TblCivilJusticeRequestActivities { get; set; } = new List<TblCivilJusticeRequestActivity>();
 
     public virtual ICollection<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplies { get; set; } = new List<TblCivilJusticeRequestReply>();
+
+    public virtual ICollection<TblDocumentHistory> TblDocumentHistories { get; set; } = new List<TblDocumentHistory>();
 
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 

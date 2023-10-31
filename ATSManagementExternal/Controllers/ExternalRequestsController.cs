@@ -1,12 +1,12 @@
-﻿using NToastNotify;
-using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -246,8 +246,8 @@ namespace ATSManagementExternal.Controllers
             try
             {
                 TblRequest request = new TblRequest();
-                TblDocumentHistory documentHistory = new TblDocumentHistory();
-                TblRequestPriorityQuestionsRelation relation = new TblRequestPriorityQuestionsRelation();
+                List<TblDocumentHistory> documentHistory = new List<TblDocumentHistory>();
+                List<TblRequestPriorityQuestionsRelation> relations = new List<TblRequestPriorityQuestionsRelation>();
                 var institutionName = (from items in _context.TblInistitutions where items.InistId == model.IntId select items.Name).FirstOrDefault();
                 var users = (from user in _context.TblInternalUsers where (user.IsDepartmentHead == true || user.IsDeputy == true) select user.EmailAddress).ToList();
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -255,92 +255,91 @@ namespace ATSManagementExternal.Controllers
                 Guid statusiD = (from id in _context.TblExternalRequestStatuses where id.StatusName == "New" select id.ExternalRequestStatusId).FirstOrDefault();
                 var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
                 var requestType = _context.TblRequestTypes.Where(s => s.TypeId == model.TypeId).FirstOrDefault();
-                if (requestType.TypeName == "Appointment")
+
+                if (model.ServiceTypeID == null)
                 {
-                    TblAppointment appointment = new TblAppointment();
-                    appointment.CreatedDate = DateTime.Now;
-                    appointment.AppointmentDetail = model.AppointmentDetail;
-                    appointment.InistId = model.IntId;
-                    appointment.RequestedBy = model.ExterUserId;
-                    _context.TblAppointments.Add(appointment);
-                    int saved = _context.SaveChanges();
-                    if (saved > 0)
+                    _notifyService.Error("Please Select Service type");
+                    return View(getModel());
+                }
+
+                if (model.ServiceTypeID == Guid.Parse("F935DCD1-2651-4C64-947C-0A877F652FB5") ||
+                   model.ServiceTypeID == Guid.Parse("ACB92222-4872-4A9D-8EDB-8BCD5317129A") ||
+                   model.ServiceTypeID == Guid.Parse("6E00B0EA-7B4D-40C4-8289-A566FE16E88E") ||
+                   model.ServiceTypeID == Guid.Parse("92FC1FC5-95D2-4250-98FB-0BA862F6DB02") ||
+                   model.ServiceTypeID == Guid.Parse("C792938C-7952-488C-A23E-1A27F8B2B8E6"))
+                {
+                    if (model.DocumentFile.FileName == null)
                     {
-                        _notifyService.Success("Your Appointment is submitted successfully!");
+                        _notifyService.Error("Please add Document file and try again");
                         return View(getModel());
                     }
-                    else
+
+                    if (model.DocId == null)
                     {
-                        _notifyService.Error("Your request isn't submitted successfully!. Please try again.");
+                        _notifyService.Error("Please select Document type");
                         return View(getModel());
                     }
+                }
+
+                request.RequestDetail = model.RequestDetail;
+                request.InistId = model.IntId;
+                request.RequestedBy = userId;
+                request.ExternalRequestStatusId = statusiD;
+                request.DepartmentUpprovalStatus = decision.DesStatusId;
+                request.TeamUpprovalStatus = decision.DesStatusId;
+                request.DeputyUprovalStatus = decision.DesStatusId;
+                request.UserUpprovalStatus = decision.DesStatusId;
+                request.ServiceTypeId = model.ServiceTypeID;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+
+
+                if (model.DocumentFile != null)
+                {
+                    //create folder if not exist
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    //get file extension
+                    FileInfo fileInfo = new FileInfo(model.DocumentFile.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.DocumentFile.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.DocumentFile.CopyTo(stream);
+                    }
+                    string dbPath = "/Files/" + fileName;
+                    request.QuestTypeId = model.ServiceTypeID;
+                    request.DocTypeId = model.DocId;
+                    request.DocTypeId = model.DocId;
+                    documentHistory.Add(new TblDocumentHistory { DocPath = dbPath, Round = model.Round, RequestId = request.RequestId });
+                    request.TblDocumentHistories = documentHistory;
+                }
+                if (model.PrioritiesQues != null)
+                {
+                    foreach (var item in model.PrioritiesQues)
+                    {
+                        if (item.IsSelected == true)
+                        {
+                            relations.Add(new TblRequestPriorityQuestionsRelation { RequestId = request.RequestId, PriorityQueId = item.PriorityQueId });
+                        }
+                    }
+                    request.TblRequestPriorityQuestionsRelations = relations;
+                }
+                _context.TblRequests.Add(request);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Your request is submitted Successfully. Responsive body is notified by email");
+                    await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+                    return View(nameof(Index));
                 }
                 else
                 {
-                    if (model.ServiceTypeID == Guid.Parse("F935DCD1-2651-4C64-947C-0A877F652FB5") ||
-                       model.ServiceTypeID == Guid.Parse("ACB92222-4872-4A9D-8EDB-8BCD5317129A") ||
-                       model.ServiceTypeID == Guid.Parse("6E00B0EA-7B4D-40C4-8289-A566FE16E88E") ||
-                       model.ServiceTypeID == Guid.Parse("92FC1FC5-95D2-4250-98FB-0BA862F6DB02") ||
-                       model.ServiceTypeID == Guid.Parse("C792938C-7952-488C-A23E-1A27F8B2B8E6"))
-                    {
-                        if (model.DocumentFile.FileName == null)
-                        {
-                            _notifyService.Error("Please add Document file and try again");
-                            return View(getModel());
-                        }
-                        if (request.QuestTypeId == null)
-                        {
-                            _notifyService.Error("Please Select Question type and submit again");
-                            return View(getModel());
-                        }
-                    }
-                    request.RequestDetail = model.RequestDetail;
-                    request.InistId = model.IntId;
-                    request.RequestedBy = userId;
-                    request.ExternalRequestStatusId = statusiD;
-                    request.DepartmentUpprovalStatus = decision.DesStatusId;
-                    request.TeamUpprovalStatus = decision.DesStatusId;
-                    request.DeputyUprovalStatus = decision.DesStatusId;
-                    request.UserUpprovalStatus = decision.DesStatusId;
-                    request.ServiceTypeId = model.ServiceTypeID;
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-                    if (model.DocumentFile.FileName != null)
-                    {
-                        //create folder if not exist
-                        if (!Directory.Exists(path))
-                            Directory.CreateDirectory(path);
-
-                        //get file extension
-                        FileInfo fileInfo = new FileInfo(model.DocumentFile.FileName);
-                        string fileName = Guid.NewGuid().ToString() + model.DocumentFile.FileName;
-                        string fileNameWithPath = Path.Combine(path, fileName);
-                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                        {
-                            model.DocumentFile.CopyTo(stream);
-                        }
-                        string dbPath = "/Files/" + fileName;
-                        request.QuestTypeId = model.QuestTypeId;
-                        request.DocTypeId = model.DocId;
-                        request.DocTypeId = model.DocId;
-                        documentHistory.RequestId = request.RequestId;
-                        documentHistory.Round = model.Round;
-                        documentHistory.DocPath = dbPath;                        
-                    }
-                    _context.TblRequests.Add(request);
-                    _context.TblDocumentHistories.Add(documentHistory);                   
-                    int saved = await _context.SaveChangesAsync();
-                    if (saved > 0)
-                    {
-                        _notifyService.Success("Your request is submitted Successfully. Responsive body is notified by email");
-                        await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
-                        return View(getModel());
-                    }
-                    else
-                    {
-                        _notifyService.Error("Your request isn't successfully submitted!. Please try again");
-                        return View(getModel());
-                    }
+                    _notifyService.Error("Your request isn't successfully submitted!. Please try again");
+                    return View(getModel());
                 }
+
+
+
             }
             catch (Exception ex)
             {
@@ -348,19 +347,109 @@ namespace ATSManagementExternal.Controllers
                 return View(getModel());
             }
         }
+
+        public async Task<IActionResult> Appointments()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            var atsdbContext = _context.TblAppointments.Include(t => t.Inist).Include(t => t.RequestedByNavigation).Where(x => x.InistId == instName.InistId && x.RequestedBy == userId);
+            return View(await atsdbContext.OrderByDescending(X => X.CreatedDate).ToListAsync());
+        }
+        public async Task<IActionResult> AddAppointments()
+        {
+            AppointmentModel model = AppointmentModel();
+            return View(model);
+        }
+
+        private AppointmentModel AppointmentModel()
+        {
+            AppointmentModel model = new AppointmentModel();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+
+            model.ExterUserId = userId;
+            model.IntId = instName.InistId;
+            model.AppointmentDate = DateTime.Now;
+            return model;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addppointments(AppointmentModel model)
+        {
+            TblAppointment appointment = new TblAppointment();
+            appointment.CreatedDate = DateTime.Now;
+            appointment.AppointmentDetail = model.AppointmentDetail;
+            appointment.InistId = model.IntId;
+            appointment.RequestedBy = model.ExterUserId;
+            _context.TblAppointments.Add(appointment);
+            int saved = _context.SaveChanges();
+            if (saved > 0)
+            {
+                _notifyService.Success("Your Appointment is submitted successfully!");
+                return View(AppointmentModel());
+            }
+            else
+            {
+                _notifyService.Error("Your request isn't submitted successfully!. Please try again.");
+                return View(model);
+            }
+        }
+        public async Task<IActionResult> EditAppointments(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            TblAppointment appointment = await _context.TblAppointments.FindAsync(id);
+            AppointmentModel model = new AppointmentModel();
+            model.AppointmentDetail = appointment.AppointmentDetail;
+            model.AppointmentDate = appointment.AppointmentDate;
+            model.ExterUserId = appointment.RequestedBy;
+            model.IntId = appointment.InistId;
+            model.AppointmentId = id;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> EditAppointments(AppointmentModel appointmentModel)
+        {
+            if (appointmentModel.AppointmentId == null)
+            {
+                return NotFound();
+            }
+            TblAppointment appointment = await _context.TblAppointments.FindAsync(appointmentModel.AppointmentId);
+            AppointmentModel model = new AppointmentModel();
+            appointment.AppointmentDetail = appointmentModel.AppointmentDetail;
+            appointment.AppointmentDate = appointmentModel.AppointmentDate;
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                _notifyService.Success("Your Appointment is uppdated successfully!");
+                return RedirectToAction(nameof(Appointments));
+            }
+            else
+            {
+                _notifyService.Error("Your request isn't submitted successfully!. Please try again.");
+                return View(model);
+            }
+
+        }
         public CivilJusticeExternalRequestModel getModel()
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
             model.RequestedDate = DateTime.Now;
+            model.CreatedDate = DateTime.Now;
             model.ExterUserId = userId;
             model.IntId = instName.InistId;
             model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
             {
                 Text = a.DepName,
                 Value = a.DepId.ToString()
-
             }).ToList();
             model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
             {
@@ -500,7 +589,7 @@ namespace ATSManagementExternal.Controllers
         }
         private async Task SendMail(List<string> to, string subject, string body)
         {
-            var companyEmail=_context.TblCompanyEmails.Where(x=>x.IsActive==true).FirstOrDefault();
+            var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
@@ -739,6 +828,24 @@ namespace ATSManagementExternal.Controllers
                 }).ToList();
                 return View(model);
             }
+        }
+
+        public async Task<IActionResult> AppointmentDetail(Guid? id)
+        {
+            if (id == null || _context.TblAppointments == null)
+            {
+                return NotFound();
+            }
+            var tblAppointment = await _context.TblAppointments
+                .Include(t => t.Inist)
+                .Include(t => t.RequestedByNavigation)
+                .FirstOrDefaultAsync(m => m.AppointmentId == id);
+            if (tblAppointment == null)
+            {
+                return NotFound();
+            }
+
+            return View(tblAppointment);
         }
 
     }

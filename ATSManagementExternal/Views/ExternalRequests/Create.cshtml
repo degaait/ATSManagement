@@ -30,36 +30,22 @@
                                     <div class="col-md-8">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
-                                        <input asp-for="IntId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row" id="divRequestType">
-                                            <label asp-for="TypeId" class=" col-2 col-form-label">Request types</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.TypeId, new SelectList(Model.RequestTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="TypeId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row" id="divRequestDetail" style="display:none">
+                                        <input asp-for="IntId" type="hidden" class="form-control" />                                          
+                                        <div class="mb-3 row" id="divRequestDetail">
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
                                             </div>
-                                        </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail" style="display:none">
-                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">Appointment Detail</label>
-                                            <div class="col">
-                                                <input asp-for="AppointmentDetail" class="form-control" />
-                                                <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row" id="DivRequestedDate" style="display:none">
+                                        </div>  
+                                        <div class="mb-3 row" id="DivRequestedDate">
                                             <label asp-for="RequestedDate" class=" col-2 col-form-label">Creation Date</label>
                                             <div class="col">
                                                 <input asp-for="CreatedDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divServiceType" style="display:none">
+                                        <div class="mb-3 row" id="divServiceType">
                                             <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Service types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
@@ -80,14 +66,14 @@
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divQuestType" style="display:none">
+                                        @*<div class="mb-3 row" id="divQuestType" style="display:none">
                                             <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question types</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="QuestTypeId" class="text-danger"></span>
                                             </div>
-                                        </div>
-                                        <div class="mb-3 row" id="DivDocumentFile" style="display:none">
+                                        </div>*@
+                                        <div class="mb-3 row" id="DivDocumentFile">
                                             <label class="col-3 col-form-label">Document file</label>
                                             <div class="col">
                                                 <input asp-for="DocumentFile" type="file" class="form-file-button" />
@@ -122,7 +108,7 @@
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">
                                         Submit
                                     </a>
-                                    <a asp-action="CivilJustice">Back to List</a>
+                                    <a asp-action="Index">Back to List</a>
                                 </div>
                             </div>
 
@@ -151,8 +137,6 @@
         </div>
     </div>
 </div>
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
@@ -209,44 +193,7 @@
     </script>
     <script type="text/javascript">
         $(function () {
-            $(document).ready(function () {
-                $("#TypeId").change(function () {
-                    var value = $("#TypeId").val();
-
-                    if (value == "D5AABE5F-FCAC-42C4-BFF7-A8585E8DB29D") { // It doesn't work over here.
-                        $('#divRequestDetail').show();
-                        $("#divAppointmentDetail").hide();
-                        $("#DivRequestedDate").show();
-                        $("#divServiceType").show();
-                        $("#priorityQuestionType").show();
-                        // $("#divCasetype").show();
-                        // $("#divDocType").show();
-                        // $("#divQuestType").show();
-                        // $("#DivDocumentFile").show();
-                        $("#DivPriority").show();
-                    } else if (value == "093F2484-6B94-47BB-9294-BA7995913F70") {
-                        $('#divRequestDetail').hide();
-                        $("#divAppointmentDetail").show();
-                        $("#DivRequestedDate").hide();
-                        $("#divServiceType").hide();
-                        //  $("#divCasetype").hide();
-                        //  $("#divDocType").hide();
-                        // $("#divQuestType").hide();
-                        // $("#DivDocumentFile").hide();
-                        $("#DivPriority").hide();
-                    }
-                    else {
-                        $("#divRequestDetail").hide();
-                        $("#divAppointmentDetail").hide();
-                        $("#DivRequestedDate").hide();
-                        $("#divServiceType").hide();
-                        // $("#divCasetype").hide();
-                        // $("#divDocType").hide();
-                        //$("#divQuestType").hide();
-                        //$("#DivDocumentFile").hide();
-                        $("#DivPriority").hide();
-                    }
-                });
+            $(document).ready(function () {                   
 
                 $("#ServiceTypeID").change(function () {
                     var value = $("#ServiceTypeID").val();
@@ -258,13 +205,10 @@
                         value == "C792938C-7952-488C-A23E-1A27F8B2B8E6")
                     {
                         $("#divDocType").show();
-                        $("#divQuestType").show();
-                        $("#DivDocumentFile").show();
-                    }
+                        $("#divQuestType").show();                       }
                     else {
                         $("#divDocType").hide();
                         $("#divQuestType").hide();
-                        $("#DivDocumentFile").hide();
                         $("#priorityQuestionType").show();
                     }
                 });
