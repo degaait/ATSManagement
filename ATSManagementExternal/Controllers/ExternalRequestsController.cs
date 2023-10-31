@@ -246,6 +246,8 @@ namespace ATSManagementExternal.Controllers
             try
             {
                 TblRequest request = new TblRequest();
+                TblDocumentHistory documentHistory = new TblDocumentHistory();
+                TblRequestPriorityQuestionsRelation relation = new TblRequestPriorityQuestionsRelation();
                 var institutionName = (from items in _context.TblInistitutions where items.InistId == model.IntId select items.Name).FirstOrDefault();
                 var users = (from user in _context.TblInternalUsers where (user.IsDepartmentHead == true || user.IsDeputy == true) select user.EmailAddress).ToList();
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -275,12 +277,11 @@ namespace ATSManagementExternal.Controllers
                 }
                 else
                 {
-
-                    if (request.ServiceTypeId == Guid.Parse("F935DCD1-2651-4C64-947C-0A877F652FB5") ||
-                       request.ServiceTypeId == Guid.Parse("ACB92222-4872-4A9D-8EDB-8BCD5317129A") ||
-                       request.ServiceTypeId == Guid.Parse("6E00B0EA-7B4D-40C4-8289-A566FE16E88E") ||
-                       request.ServiceTypeId == Guid.Parse("92FC1FC5-95D2-4250-98FB-0BA862F6DB02") ||
-                       request.ServiceTypeId == Guid.Parse("C792938C-7952-488C-A23E-1A27F8B2B8E6"))
+                    if (model.ServiceTypeID == Guid.Parse("F935DCD1-2651-4C64-947C-0A877F652FB5") ||
+                       model.ServiceTypeID == Guid.Parse("ACB92222-4872-4A9D-8EDB-8BCD5317129A") ||
+                       model.ServiceTypeID == Guid.Parse("6E00B0EA-7B4D-40C4-8289-A566FE16E88E") ||
+                       model.ServiceTypeID == Guid.Parse("92FC1FC5-95D2-4250-98FB-0BA862F6DB02") ||
+                       model.ServiceTypeID == Guid.Parse("C792938C-7952-488C-A23E-1A27F8B2B8E6"))
                     {
                         if (model.DocumentFile.FileName == null)
                         {
@@ -293,7 +294,6 @@ namespace ATSManagementExternal.Controllers
                             return View(getModel());
                         }
                     }
-
                     request.RequestDetail = model.RequestDetail;
                     request.InistId = model.IntId;
                     request.RequestedBy = userId;
@@ -319,12 +319,15 @@ namespace ATSManagementExternal.Controllers
                             model.DocumentFile.CopyTo(stream);
                         }
                         string dbPath = "/Files/" + fileName;
-                        request.DocumentFile = dbPath;
                         request.QuestTypeId = model.QuestTypeId;
                         request.DocTypeId = model.DocId;
                         request.DocTypeId = model.DocId;
+                        documentHistory.RequestId = request.RequestId;
+                        documentHistory.Round = model.Round;
+                        documentHistory.DocPath = dbPath;                        
                     }
                     _context.TblRequests.Add(request);
+                    _context.TblDocumentHistories.Add(documentHistory);                   
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {

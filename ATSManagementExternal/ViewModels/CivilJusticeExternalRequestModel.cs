@@ -76,6 +76,7 @@ namespace ATSManagementExternal.ViewModels
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
         public string? PhoneNumber { get; set; }
-
+        [Display(Name="Round")]
+        public int? Round { get; internal set; }
     }
 }
