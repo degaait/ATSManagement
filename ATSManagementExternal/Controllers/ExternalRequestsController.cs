@@ -463,7 +463,6 @@ namespace ATSManagementExternal.Controllers
                 Text = r.TypeName,
                 Value = r.TypeId.ToString()
             }).ToList();
-
             model.LegalStadiesCasetypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
             {
                 Value = s.DocId.ToString(),
