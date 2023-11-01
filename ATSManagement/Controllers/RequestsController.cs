@@ -1,12 +1,12 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ATSManagement.IModels;
+﻿using NToastNotify;
 using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -313,9 +313,9 @@ namespace ATSManagement.Controllers
         }
         private async Task SendMail(List<string> to, string subject, string body)
         {
-            var companyEmail = _context.TblCompanyEmail.Where(x => x.IsActive == true).FirstOrDefault();
-            MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
-            bool sentResult = await _mail.SendAsync(data, new CancellationToken());
+            //var companyEmail = _context.TblCompanyEmail.Where(x => x.IsActive == true).FirstOrDefault();
+            //MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
+            //bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
         public async Task<IActionResult> HighPriorityRequsts()
         {
