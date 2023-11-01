@@ -35,6 +35,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplys { get; set; }
 
+    public virtual DbSet<TblCompanyEmail> TblCompanyEmails { get; set; }
+
     public virtual DbSet<TblDecisionStatus> TblDecisionStatuses { get; set; }
 
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
@@ -374,6 +376,18 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.RequestId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_CivilJusticeRequestReplys_tbl_CivilJustice");
+        });
+
+        modelBuilder.Entity<TblCompanyEmail>(entity =>
+        {
+            entity.HasKey(e => e.EmailId);
+
+            entity.ToTable("tbl_CompanyEmails");
+
+            entity.Property(e => e.EmailId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("EmailID");
+            entity.Property(e => e.EmailAdress).HasMaxLength(350);
         });
 
         modelBuilder.Entity<TblDecisionStatus>(entity =>

@@ -5,6 +5,7 @@ using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 
@@ -45,6 +46,7 @@ namespace ATSManagement.Controllers
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AssignToDepartment(Guid? id)
+
         {
             if (id == null)
             {
@@ -59,13 +61,15 @@ namespace ATSManagement.Controllers
         {
             TblRequest request = await _context.TblRequests.FindAsync(requestModel.RequestId);
             request.DepId = requestModel.DepId;
+            request.ServiceTypeId = requestModel.ServiceTypeID;
             int saved = await _context.SaveChangesAsync();
             if (saved > 0)
             {
                 var DepartmentHeade = _context.TblInternalUsers.Where(x => x.Dep.DepId == requestModel.DepId).Select(x => x.EmailAddress).ToList();
                 _notifyService.Success("Request is assigned to Department");
-                return RedirectToAction(nameof(Index));
                 await SendMail(DepartmentHeade, "Request Assignment notifications from Deputy director", "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -78,6 +82,7 @@ namespace ATSManagement.Controllers
             var reques = _context.TblRequests.Find(id);
             RequestModel requestModel = new RequestModel();
             requestModel.RequestId = id;
+            requestModel.CreatedDate = reques.CreatedDate;
             requestModel.Deparments = _context.TblDepartments.Select(x => new SelectListItem
             {
                 Text = x.DepName,
@@ -96,6 +101,12 @@ namespace ATSManagement.Controllers
                 Value = x.InistId.ToString()
             }).ToList();
             requestModel.InistId = reques.InistId;
+            requestModel.RequestedUsers = _context.TblExternalUsers.Where(x => x.ExterUserId == reques.RequestedBy).Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.MiddleName,
+                Value = x.ExterUserId.ToString()
+            }).ToList();
+            requestModel.RequestedBy = reques.RequestedBy;
             return requestModel;
         }
         public async Task<IActionResult> Details(Guid? id)
@@ -313,13 +324,42 @@ namespace ATSManagement.Controllers
         }
         private async Task SendMail(List<string> to, string subject, string body)
         {
-            var companyEmail = _context.TblCompanyEmail.Where(x => x.IsActive == true).FirstOrDefault();
+            var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
         public async Task<IActionResult> HighPriorityRequsts()
         {
-            return View();
+            var atsdbContext = _context.TblRequests
+                .Include(t => t.AssignedByNavigation)
+                .Include(t => t.CaseType)
+                .Include(t => t.CreatedByNavigation)
+                .Include(t => t.Dep)
+                .Include(t => t.DepartmentUpprovalStatusNavigation)
+                .Include(t => t.DeputyUprovalStatusNavigation)
+                .Include(t => t.DocType)
+                .Include(t => t.ExternalRequestStatus)
+                .Include(t => t.Inist)
+                .Include(t => t.Priority)
+                .Include(t => t.QuestType)
+                .Include(t => t.RequestedByNavigation)
+                .Include(t => t.ServiceType)
+                .Include(t => t.TeamUpprovalStatusNavigation)
+                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.DepId == null && x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73"));
+            return View(await atsdbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> DownloadEvidenceFile(string path)
+        {
+            string filename = path.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
         }
     }
 }

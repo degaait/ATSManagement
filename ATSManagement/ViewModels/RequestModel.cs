@@ -12,6 +12,7 @@ namespace ATSManagement.ViewModels
         public Guid? InistId { get; set; }
 
         public Guid? RequestedBy { get; set; }
+        public IEnumerable<SelectListItem>? RequestedUsers { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
@@ -31,7 +32,7 @@ namespace ATSManagement.ViewModels
         public Guid? IntId { get; set; }
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Detail")]
-        public IEnumerable<SelectListItem>? Intitutions { get; set; }       
+        public IEnumerable<SelectListItem>? Intitutions { get; set; }
 
         [Display(Name = "Departments")]
         public List<SelectListItem>? Deparments { get; set; }

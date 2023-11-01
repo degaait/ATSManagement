@@ -48,7 +48,7 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Departments")]
         public List<SelectListItem>? Deparments { get; set; }
-
+        [Required(ErrorMessage = "*")]
         public Guid? DocId { get; set; }
         public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
         [Display(Name = "Question type")]
@@ -68,7 +68,7 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Document File")]
         public IFormFile DocumentFile { get; set; }
-
+        [Required(ErrorMessage = "*")]
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
         public List<SelectListItem>? Priorities { get; set; }

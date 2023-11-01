@@ -1,10 +1,10 @@
-﻿using NToastNotify;
+﻿using ATSManagement.IModels;
 using ATSManagement.Models;
-using ATSManagement.IModels;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {

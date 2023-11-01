@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblCivilJustice>
+﻿@model IEnumerable<ATSManagement.Models.TblRequest>
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
@@ -104,6 +104,7 @@
                                     @foreach (var item in Model)
                                     {
                                         var isRequest = (from items in ats.TblCivilJustices where items.RequestId == item.RequestId select items).FirstOrDefault();
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
 
                                         <tr>
                                             <td>
@@ -152,8 +153,14 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedToNavigation.MidleName)
+                                                @if (assigneess != null)
+                                                {
+                                                    foreach (var assignees in assigneess)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => assignees.FirstName)
+                                                        @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                    }
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
@@ -175,7 +182,7 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                            @if (isRequest.AssignedTo == null)
+                                                            @if (assigneess == null)
                                                             {
                                                                 if (user.IsDepartmentHead == true || user.IsSuperAdmin == true)
                                                                 {
