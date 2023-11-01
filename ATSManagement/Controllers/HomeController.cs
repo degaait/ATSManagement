@@ -1,8 +1,8 @@
-﻿using NToastNotify;
-using System.Diagnostics;
+﻿using ATSManagement.IModels;
 using ATSManagement.Models;
-using ATSManagement.IModels;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
+using System.Diagnostics;
 
 namespace ATSManagement.Controllers
 {
@@ -19,15 +19,16 @@ namespace ATSManagement.Controllers
             _mail = mail;
             _context = atsdbContext;
         }
-
         public async Task<IActionResult> Index()
         {
             ViewBag.internalUser = _context.TblInternalUsers.ToList().Count;
             ViewBag.ExternalUser = _context.TblExternalUsers.ToList().Count;
             ViewBag.Insititutions = _context.TblInistitutions.ToList().Count;
             ViewBag.Inspects = _context.TblInspectionPlans.ToList().Count;
-            ViewBag.RequestsFromeCJAD = _context.TblRequests.Where(x => x.Dep.DepCode == "").ToList().Count;
-            ViewBag.RequestFromLegalStudies = _context.TblRequests.Where(x => x.Dep.DepCode == "").ToList().Count;
+            ViewBag.NewRequests = _context.TblRequests.Where(x => x.DepId == null).ToList().Count;
+            ViewBag.HighPriorityRequests = _context.TblRequests.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).ToList().Count;
+            ViewBag.RequestsFromeCJAD = _context.TblRequests.Where(x => x.Dep.DepCode == "CVA").ToList().Count;
+            ViewBag.RequestFromLegalStudies = _context.TblRequests.Where(x => x.Dep.DepCode == "LSDC").ToList().Count;
             // await SendMail();
             return View();
         }

@@ -25,7 +25,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Assign</h4>
                         </div>
-                        <form asp-action="AssignToUser">
+                        <form asp-action="AssignToDepartment">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -38,9 +38,16 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
+                                            <label asp-for="ServiceTypeID" class="col-2 col-form-label">Service type</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), htmlAttributes: new { @class = "form-select", @readonly = true })
+                                                <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
                                             <label asp-for="RequestedBy" class="col-2 col-form-label">Requested User</label>
                                             <div class="col">
-                                                <select asp-for="RequestedBy" class="form-control" asp-items="ViewBag.RequestedBy"></select>
+                                                @Html.DropDownListFor(model => model.RequestedBy, new SelectList(Model.RequestedUsers, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="RequestedBy" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -65,13 +72,7 @@
                                                 <span asp-validation-for="DepId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="CaseTypeId" class="col-2 col-form-label"></label>
-                                            <div class="col">
-                                                <select asp-for="CaseTypeId" class="form-control" asp-items="ViewBag.CaseTypeId"></select>
-                                                <span asp-validation-for="CaseTypeId" class="text-danger"></span>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>

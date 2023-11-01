@@ -1,12 +1,12 @@
-﻿using NToastNotify;
+﻿using ATSManagement.IModels;
 using ATSManagement.Models;
-using ATSManagement.IModels;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 namespace ATSManagement.Controllers
 {

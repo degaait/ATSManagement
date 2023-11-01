@@ -5,6 +5,7 @@ using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 
@@ -38,16 +39,13 @@ namespace ATSManagementExternal.Controllers
                                                      .Include(t => t.RequestedByNavigation)
                                                      .Include(t => t.CreatedByNavigation)
                                                      .Include(x => x.ExternalRequestStatus)
-                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
-                                                     .Include(x => x.DeputyUprovalStatusNavigation)
-                                                     .Include(y => y.TeamUpprovalStatusNavigation)
+                                                     .Include(x => x.ServiceType)
                                                      .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
 
-            return View(await atsdbContext.ToListAsync());
+            return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
         public async Task<IActionResult> AssignedRequests()
         {
-
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
             var atsdbContext = _context.TblExternalRequests.Include(t => t.ExterUser).Include(t => t.Int).Include(s => s.ExternalRequestStatus).Include(x => x.DepId);
@@ -261,7 +259,6 @@ namespace ATSManagementExternal.Controllers
                     _notifyService.Error("Please Select Service type");
                     return View(getModel());
                 }
-
                 if (model.ServiceTypeID == Guid.Parse("F935DCD1-2651-4C64-947C-0A877F652FB5") ||
                    model.ServiceTypeID == Guid.Parse("ACB92222-4872-4A9D-8EDB-8BCD5317129A") ||
                    model.ServiceTypeID == Guid.Parse("6E00B0EA-7B4D-40C4-8289-A566FE16E88E") ||
@@ -273,7 +270,6 @@ namespace ATSManagementExternal.Controllers
                         _notifyService.Error("Please add Document file and try again");
                         return View(getModel());
                     }
-
                     if (model.DocId == null)
                     {
                         _notifyService.Error("Please select Document type");
@@ -284,6 +280,7 @@ namespace ATSManagementExternal.Controllers
                 request.RequestDetail = model.RequestDetail;
                 request.InistId = model.IntId;
                 request.RequestedBy = userId;
+                request.CreatedDate = DateTime.Now;
                 request.ExternalRequestStatusId = statusiD;
                 request.DepartmentUpprovalStatus = decision.DesStatusId;
                 request.TeamUpprovalStatus = decision.DesStatusId;
@@ -307,7 +304,6 @@ namespace ATSManagementExternal.Controllers
                         model.DocumentFile.CopyTo(stream);
                     }
                     string dbPath = "/Files/" + fileName;
-                    request.QuestTypeId = model.ServiceTypeID;
                     request.DocTypeId = model.DocId;
                     request.DocTypeId = model.DocId;
                     documentHistory.Add(new TblDocumentHistory { DocPath = dbPath, Round = model.Round, RequestId = request.RequestId });
@@ -320,17 +316,23 @@ namespace ATSManagementExternal.Controllers
                         if (item.IsSelected == true)
                         {
                             relations.Add(new TblRequestPriorityQuestionsRelation { RequestId = request.RequestId, PriorityQueId = item.PriorityQueId });
+                            request.PriorityId = _context.TblPriorities.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).Select(x => x.PriorityId).FirstOrDefault();
+                        }
+                        else
+                        {
+                            request.PriorityId = Guid.Parse("79fa9e18-c973-40d4-b77d-1d5d31ded31f");
                         }
                     }
                     request.TblRequestPriorityQuestionsRelations = relations;
                 }
+
                 _context.TblRequests.Add(request);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
                     _notifyService.Success("Your request is submitted Successfully. Responsive body is notified by email");
                     await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
-                    return View(nameof(Index));
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -848,5 +850,31 @@ namespace ATSManagementExternal.Controllers
             return View(tblAppointment);
         }
 
+        public async Task<IActionResult> DownloadEvidenceFile(string path)
+        {
+            string filename = path.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
+        }
+
+        public async Task<IActionResult> AddHistory(Guid? id)
+        {
+            DocumentHistoryModel model = new DocumentHistoryModel();
+            ViewBag.histories = _context.TblDocumentHistories.Where(x => x.RequestId == id).ToList();
+            model.RequestId = id;
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> AddHistory(DocumentHistoryModel? model)
+        {
+
+        }
     }
 }
