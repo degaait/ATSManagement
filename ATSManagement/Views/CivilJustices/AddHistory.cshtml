@@ -1,0 +1,213 @@
+﻿@model ATSManagement.ViewModels.DocumentHistoryModel
+@inject AtsdbContext ats;
+@{
+    ViewData["Title"] = "Create";
+    IEnumerable<TblDocumentHistory> replyes = ViewData["histories"] as IEnumerable<TblDocumentHistory>;
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Document Histories
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Uppdate</h4>
+                        </div>
+                        <form asp-action="AddHistory" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input asp-for="ExternalRepliedBy" type="hidden" class="form-control" />
+                                        <input asp-for="RequestId" type="hidden" class="form-control" />
+                                        <div class="mb-3 row">
+                                            <label asp-for="Description" class=" col-2 col-form-label">Description</label>
+                                            <div class="col">
+                                                <input asp-for="Description" class="form-control" />
+                                                <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="DocPath" class=" col-2 col-form-label">Document</label>
+                                            <div class="col">
+                                                <input asp-for="DocPath" type="file" required class="form-file-button" />
+                                                <span asp-validation-for="DocPath" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="FileDescription" class=" col-2 col-form-label">File Description</label>
+                                            <div class="col">
+                                                <input asp-for="FileDescription" class="form-control" />
+                                                <span asp-validation-for="FileDescription" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Round" class=" col-2 col-form-label">Round</label>
+                                            <div class="col">
+                                                <input asp-for="Round" readonly class="form-control" />
+                                                <span asp-validation-for="Round" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Send" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Replies</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <table class="table table-bordered" id="role">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Request
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                Replied by
+                                            </th>
+                                            <th>
+                                                Sent by
+                                            </th>
+                                            <th>
+                                                Document
+                                            </th>
+                                            <th>
+                                                Round
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in replyes)
+                                        {
+                                            var internalUser = (from user in ats.TblInternalUsers
+                                                                join m in ats.TblDocumentHistories on user.UserId equals m.InternalReplyId
+                                                                where m.RequestId == item.RequestId
+                                                                select user).FirstOrDefault();
+                                            var externalUser = (from user in ats.TblExternalUsers
+                                                                join m in ats.TblDocumentHistories on user.ExterUserId equals m.ExternalRepliedBy
+                                                                where m.RequestId == item.RequestId
+                                                                select user).FirstOrDefault();
+                                            <tr>
+                                                <td>
+                                                    @if (item.Request != null)
+                                                    {
+                                                        @Html.Raw(item.Request.RequestDetail)
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Description)
+                                                </td>
+                                                <td>
+                                                    @if (internalUser != null)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => internalUser.FirstName)
+                                                        @Html.DisplayFor(modelItem => internalUser.MidleName)
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (externalUser != null)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => externalUser.FirstName)
+                                                        @Html.DisplayFor(modelItem => externalUser.MiddleName)
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="ExternalRequests" asp-route-path="@item.DocPath">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                            <path d="M12 17v-6"></path>
+                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                        </svg>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Round)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Description',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

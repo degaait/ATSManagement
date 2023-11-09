@@ -1,10 +1,10 @@
+using NToastNotify;
+using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Services;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using ATSManagementExternal.IModels;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.Services;
-using Microsoft.EntityFrameworkCore;
-using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -44,7 +44,7 @@ builder.Services.AddNotyf(config =>
     config.DurationInSeconds = 10;
     config.HasRippleEffect = true;
     config.IsDismissable = true;
-    config.Position = NotyfPosition.BottomRight;
+    config.Position = NotyfPosition.TopRight;
 });
 var app = builder.Build();
 

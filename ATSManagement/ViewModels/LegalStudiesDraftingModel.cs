@@ -46,7 +46,11 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Assigned to")]
         public List<SelectListItem>? AssignedTos { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? ServiceTypeID { get; set; }
 
+        [Display(Name = "Service types")]
+        public List<SelectListItem>? ServiceTypes { get; set; }
         public string? ProgressStatus { get; set; }
         [Display(Name = "Is Upproved by User")]
 

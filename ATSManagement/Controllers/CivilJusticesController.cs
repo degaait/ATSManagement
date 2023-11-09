@@ -1,12 +1,13 @@
-﻿using ATSManagement.IModels;
+﻿using NToastNotify;
 using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -15,30 +16,36 @@ namespace ATSManagement.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
-        private readonly IToastNotification _toastNotification;
-        public CivilJusticesController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mailService, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        public CivilJusticesController(AtsdbContext context, INotyfService notyfService, IHttpContextAccessor contextAccessor, IMailService mailService)
         {
-            _toastNotification = toastNotification;
-            _context = context;
+            _notifyService=notyfService;
+             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mailService;
         }
-        // GET: CivilJustices
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblRequests
-                                                        .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
-                                                        .Include(t => t.Inist)
-                                                        .Include(t => t.RequestedByNavigation)
-                                                        .Include(t => t.CreatedByNavigation)
-                                                        .Include(x => x.ExternalRequestStatus)
-                                                        .Include(x => x.DepartmentUpprovalStatusNavigation)
-                                                        .Include(x => x.DeputyUprovalStatusNavigation)
-                                                        .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.Dep.DepCode == "CVA");
-            return View(await atsdbContext.ToListAsync());
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            TblRequest tblRequest;
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a=>a.RequestId).DistinctBy(x=>x.Value).ToList();
+            foreach (var item in moreDeps)
+            {
+                tblRequest = _context.TblRequests
+                                                                      .Include(t => t.AssignedByNavigation)
+                                                                      .Include(t => t.CaseType)
+                                                                      .Include(t => t.Inist)
+                                                                      .Include(t => t.RequestedByNavigation)
+                                                                      .Include(t => t.CreatedByNavigation)
+                                                                      .Include(x => x.ExternalRequestStatus)
+                                                                      .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                                      .Include(x => x.DeputyUprovalStatusNavigation)
+                                                                      .Include(y => y.TeamUpprovalStatusNavigation)
+                                                                      .Include(t => t.Priority).Where(x => x.RequestId==item).FirstOrDefault();
+                atsdbContext.Add(tblRequest);
+            }
+          
+            return View(atsdbContext);
         }
         public async Task<IActionResult> AddActivity(Guid? id)
         {
@@ -71,12 +78,12 @@ namespace ATSManagement.Controllers
             if (saved > 0)
             {
                 model.ActivityDetail = null;
-                SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
+               await SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
                 ViewData["Activities"] = _context.TblActivities
                     .Include(x => x.Request)
                     .Include(x => x.CreatedByNavigation)
                     .Where(x => x.RequestId == model.RequestId).ToList();
-
+                _notifyService.Success("Activity added successfully!");
                 return View(model);
             }
             else
@@ -85,7 +92,7 @@ namespace ATSManagement.Controllers
                     .Include(x => x.Request)
                     .Include(x => x.CreatedByNavigation)
                     .Where(x => x.RequestId == model.RequestId).ToList();
-
+                _notifyService.Error("Activity isn't added successfully Please try again");
                 return View(model);
             }
 
@@ -134,10 +141,10 @@ namespace ATSManagement.Controllers
                 Text = x.PriorityName,
                 Value = x.PriorityId.ToString()
             }).ToList();
-            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
             {
-                Value = x.CaseTypeId.ToString(),
-                Text = x.CaseTypeName
+                Value = s.ServiceTypeId.ToString(),
+                Text = s.ServiceTypeName
             }).ToList();
             model.CreatedDate = DateTime.Now;
             model.CreatedBy = userId;
@@ -156,7 +163,7 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.CreatedBy = model.CreatedBy;
                 tblCivilJustice.CreatedDate = DateTime.Now;
-                tblCivilJustice.CaseTypeId = model.CaseTypeId;
+                tblCivilJustice.CaseTypeId = model.ServiceTypeID;
                 tblCivilJustice.InistId = model.InistId;
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepId = model.DepId;
@@ -188,10 +195,10 @@ namespace ATSManagement.Controllers
                         Text = x.PriorityName,
                         Value = x.PriorityId.ToString()
                     }).ToList();
-                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
                     {
-                        Value = x.CaseTypeId.ToString(),
-                        Text = x.CaseTypeName
+                        Value = s.ServiceTypeId.ToString(),
+                        Text = s.ServiceTypeName
                     }).ToList();
                     return View(model);
                 }
@@ -213,10 +220,10 @@ namespace ATSManagement.Controllers
                     Text = x.PriorityName,
                     Value = x.PriorityId.ToString()
                 }).ToList();
-                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
                 {
-                    Value = x.CaseTypeId.ToString(),
-                    Text = x.CaseTypeName
+                    Value = s.ServiceTypeId.ToString(),
+                    Text = s.ServiceTypeName
                 }).ToList();
                 return View(model);
             }
@@ -253,12 +260,12 @@ namespace ATSManagement.Controllers
                 Value = x.PriorityId.ToString()
             }).ToList();
             model.PriorityId = tblCivilJustice.PriorityId;
-            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
             {
-                Value = x.CaseTypeId.ToString(),
-                Text = x.CaseTypeName
+                Value = s.ServiceTypeId.ToString(),
+                Text = s.ServiceTypeName
             }).ToList();
-            model.CaseTypeId = tblCivilJustice.CaseTypeId;
+            model.ServiceTypeID = tblCivilJustice.CaseTypeId;
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
             model.CreatedDate = tblCivilJustice.CreatedDate;
@@ -282,7 +289,7 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepId = model.DepId;
-                tblCivilJustice.CaseTypeId = model.CaseTypeId;
+                tblCivilJustice.CaseTypeId = model.ServiceTypeID;
                 tblCivilJustice.InistId = model.InistId;
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
@@ -307,10 +314,10 @@ namespace ATSManagement.Controllers
                         Text = x.PriorityName,
                         Value = x.PriorityId.ToString()
                     }).ToList();
-                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
                     {
-                        Value = x.CaseTypeId.ToString(),
-                        Text = x.CaseTypeName
+                        Value = s.ServiceTypeId.ToString(),
+                        Text = s.ServiceTypeName
                     }).ToList();
                     return View(model);
 
@@ -334,10 +341,10 @@ namespace ATSManagement.Controllers
                     Text = x.PriorityName,
                     Value = x.PriorityId.ToString()
                 }).ToList();
-                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
                 {
-                    Value = x.CaseTypeId.ToString(),
-                    Text = x.CaseTypeName
+                    Value = s.ServiceTypeId.ToString(),
+                    Text = s.ServiceTypeName
                 }).ToList();
                 return View(model);
             }
@@ -394,21 +401,20 @@ namespace ATSManagement.Controllers
         {
 
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            TblCivilJustice drafting = await _context.TblCivilJustices.FindAsync(id);
+            TblRequest drafting = await _context.TblRequests.FindAsync(id);
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             model.RequestDetail = drafting.RequestDetail;
             model.RequestId = id;
             model.AssignedBy = userId;
             model.AssignedDate = DateTime.Now;
             model.CreatedBy = drafting.CreatedBy;
-            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            model.ServiceTypes = _context.TblServiceTypes.Where(x=>x.Dep.DepCode== "CVA").Select(s => new SelectListItem
             {
-                Text = x.CaseTypeName,
-                Value = x.CaseTypeId.ToString()
-
+                Value = s.ServiceTypeId.ToString(),
+                Text = s.ServiceTypeName
             }).ToList();
-            model.CaseTypeId = drafting.CaseTypeId;
-            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            model.ServiceTypeID = drafting.ServiceTypeId;
+            model.Deparments = _context.TblDepartments.Where(x=>x.DepId==drafting.DepId).Select(x => new SelectListItem
             {
                 Value = x.DepId.ToString(),
                 Text = x.DepName
@@ -461,7 +467,6 @@ namespace ATSManagement.Controllers
                 drafting.AssignedBy = model.AssignedBy;
                 drafting.AssingmentRemark = model.AssingmentRemark;
                 drafting.CreatedBy = model.CreatedBy;
-                drafting.CaseTypeId = model.CaseTypeId;
                 drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
                 if (model.AssignedTo.Length > 0)
                 {
@@ -480,13 +485,12 @@ namespace ATSManagement.Controllers
                 }
                 else
                 {
-                    model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                    model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
                     {
-                        Text = x.CaseTypeName,
-                        Value = x.CaseTypeId.ToString()
-
+                        Value = s.ServiceTypeId.ToString(),
+                        Text = s.ServiceTypeName
                     }).ToList();
-                    model.CaseTypeId = drafting.CaseTypeId;
+                    model.ServiceTypeID = drafting.ServiceTypeId;
                     model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
                     {
                         Value = x.DepId.ToString(),
@@ -515,13 +519,12 @@ namespace ATSManagement.Controllers
             }
             catch (Exception)
             {
-                model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+                model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
                 {
-                    Text = x.CaseTypeName,
-                    Value = x.CaseTypeId.ToString()
-
+                    Value = s.ServiceTypeId.ToString(),
+                    Text = s.ServiceTypeName
                 }).ToList();
-                model.CaseTypeId = drafting.CaseTypeId;
+                model.ServiceTypeID = drafting.ServiceTypeId;
                 model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
                 {
                     Value = x.DepId.ToString(),
@@ -601,53 +604,79 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> CompletedRequests()
         {
-            var atsdbContext = _context.TblRequests
-                                                        .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
-                                                        .Include(t => t.Inist)
-                                                        .Include(t => t.RequestedByNavigation)
-                                                        .Include(t => t.CreatedByNavigation)
-                                                        .Include(x => x.ExternalRequestStatus)
-                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
-                                                        .Include(x => x.DeputyUprovalStatusNavigation)
-                                                        .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "Completed");
-            return View(await atsdbContext.ToListAsync());
+
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            TblRequest tblRequest;
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).DistinctBy(x=>x.Value).ToList();
+            foreach (var item in moreDeps)
+            {
+                 tblRequest = _context.TblRequests
+                                                     .Include(t => t.AssignedByNavigation)
+                                                     .Include(t => t.CaseType)
+                                                     .Include(t => t.Inist)
+                                                     .Include(t => t.RequestedByNavigation)
+                                                     .Include(t => t.CreatedByNavigation)
+                                                     .Include(x => x.ExternalRequestStatus)
+                                                       .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                     .Include(x => x.DeputyUprovalStatusNavigation)
+                                                     .Include(y => y.TeamUpprovalStatusNavigation)
+                                                     .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "Completed"&&x.RequestId==item).FirstOrDefault();
+                atsdbContext.Add(tblRequest);
+            }
+            return View(atsdbContext);
         }
         public async Task<IActionResult> PendingRequests()
         {
-            var atsdbContext = _context.TblRequests
-                                                        .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
-                                                        .Include(t => t.Inist)
-                                                        .Include(t => t.RequestedByNavigation)
-                                                        .Include(t => t.CreatedByNavigation)
-                                                        .Include(x => x.ExternalRequestStatus)
-                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
-                                                        .Include(x => x.DeputyUprovalStatusNavigation)
-                                                        .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress");
-            return View(await atsdbContext.ToListAsync());
+
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            TblRequest tblRequest;
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).DistinctBy(x => x.Value).ToList();
+            foreach (var item in moreDeps)
+            {
+                tblRequest = _context.TblRequests
+                                                    .Include(t => t.AssignedByNavigation)
+                                                    .Include(t => t.CaseType)
+                                                    .Include(t => t.Inist)
+                                                    .Include(t => t.RequestedByNavigation)
+                                                    .Include(t => t.CreatedByNavigation)
+                                                    .Include(x => x.ExternalRequestStatus)
+                                                      .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                    .Include(x => x.DeputyUprovalStatusNavigation)
+                                                    .Include(y => y.TeamUpprovalStatusNavigation)
+                                                    .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress" && x.RequestId == item).FirstOrDefault();
+                atsdbContext.Add(tblRequest);
+            }
+            return View(atsdbContext);
+
+
         }
         public async Task<IActionResult> AssignedRequests()
         {
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            TblRequest Request;
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblInternalUser tblInternalUser = await _context.TblInternalUsers.FindAsync(userId);
+            var assignedReq = _context.TblRequestAssignees.Where(x => x.UserId == userId).ToList();
 
-            var atsdbContext = _context.TblRequests
-                                                        .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
-                                                        .Include(t => t.Inist)
-                                                        .Include(t => t.RequestedByNavigation)
-                                                        .Include(t => t.CreatedByNavigation)
-                                                        .Include(x => x.ExternalRequestStatus)
-                                                         .Include(x => x.DepartmentUpprovalStatusNavigation)
-                                                        .Include(x => x.DeputyUprovalStatusNavigation)
-                                                        .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(a => a.AssignedTo == userId);
-            return View(await atsdbContext.ToListAsync());
+            foreach (var item in assignedReq)
+            {
+                Request = new TblRequest();
+                Request = _context.TblRequests
+             .Include(t => t.AssignedByNavigation)
+             .Include(t => t.CaseType)
+             .Include(t => t.Inist)
+             .Include(t => t.RequestedByNavigation)
+             .Include(t => t.CreatedByNavigation)
+             .Include(x => x.ExternalRequestStatus)
+             .Include(x => x.DepartmentUpprovalStatusNavigation)
+             .Include(x => x.DeputyUprovalStatusNavigation)
+             .Include(y => y.TeamUpprovalStatusNavigation)
+             .Include(t => t.Priority).Where(a => a.RequestId == item.RequestId).FirstOrDefault();
+                atsdbContext.Add(Request);
+
+            }
+
+            return View(atsdbContext);
         }
         public async Task<IActionResult> UpploadFinalReport(Guid id)
         {
@@ -908,7 +937,6 @@ namespace ATSManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(AddAdjornyDates), new { id = tblAdjornment.RequestId });
         }
-
         public async Task<IActionResult> UppdateProgressStatus(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
@@ -997,7 +1025,6 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
-
         public async Task<IActionResult> RequestActivities(Guid? id)
         {
             var atsdbContext = _context.TblActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request);
@@ -1012,6 +1039,88 @@ namespace ATSManagement.Controllers
         {
             var atsdbContext = _context.TblWitnessEvidences.Include(t => t.CreatedByNavigation).Include(t => t.Request);
             return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> AddHistory(Guid? id)
+        {
+            DocumentHistoryModel model = await historyModel(id);
+
+            return View(model);
+        }
+        private async Task<DocumentHistoryModel> historyModel(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblDocumentHistory tblDocument = _context.TblDocumentHistories.Where(x => x.RequestId == id).OrderBy(x => x.Round).Last();
+            DocumentHistoryModel model = new DocumentHistoryModel();
+            ViewData["histories"] = _context.TblDocumentHistories.Where(x => x.RequestId == id).ToList();
+            model.RequestId = id;
+            model.InternalReplyId = userId;
+            if (tblDocument.Round == null)
+            {
+                model.Round = 1;
+            }
+            else
+            {
+                model.Round = Convert.ToInt32(tblDocument.Round) + 1;
+            }
+            return model;
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddHistory(DocumentHistoryModel? model)
+        {
+            List<string> emails = new List<string>();
+            var users = (from user in _context.TblRequestAssignees
+                         join assignees in _context.TblInternalUsers on user.UserId equals assignees.UserId
+                         where (assignees.IsDepartmentHead == true || assignees.IsDeputy == true) && user.RequestId == model.RequestId
+                         select assignees.EmailAddress).ToList();
+            if (users.Count != 0)
+            {
+                emails = users;
+            }
+            else
+            {
+                emails = (from assignees in _context.TblInternalUsers
+                          where assignees.IsDepartmentHead == true || assignees.IsDeputy == true
+                          select assignees.EmailAddress).ToList();
+            }
+            var institutionName = (from items in _context.TblRequests where items.RequestId == model.RequestId select items.Inist.Name).FirstOrDefault();
+            TblDocumentHistory history = new TblDocumentHistory();
+            history.InternalReplyId = model.InternalReplyId;
+            history.Round = model.Round;
+            history.Description = model.Description;
+            history.FileDescription = model.FileDescription;
+            history.RequestId = model.RequestId;
+            history.CreatedDate = DateTime.Now;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+            if (model.DocPath != null)
+            {
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                FileInfo fileInfo = new FileInfo(model.DocPath.FileName);
+                string fileName = Guid.NewGuid().ToString() + model.DocPath.FileName;
+                string fileNameWithPath = Path.Combine(path, fileName);
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    model.DocPath.CopyTo(stream);
+                }
+                string dbPath = "/Files/" + fileName;
+                history.DocPath = dbPath;
+            }
+
+            _context.TblDocumentHistories.Add(history);
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+                _notifyService.Success("Document added successfully!");
+                return RedirectToAction(nameof(AddHistory));
+            }
+            else
+            {
+                _notifyService.Error("Document is not successfully added. Please try again");
+                return View(model);
+            }
         }
     }
 }

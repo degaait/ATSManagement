@@ -1,13 +1,14 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ATSManagementExternal.IModels;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.EntityFrameworkCore;
+﻿using System.IO;
 using NToastNotify;
+using Microsoft.AspNetCore.Mvc;
+using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -16,11 +17,10 @@ namespace ATSManagementExternal.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
-        private readonly IToastNotification _toastNotification;
         private readonly INotyfService _notifyService;
-        public ExternalRequestsController(AtsdbContext context, INotyfService notyfService, IHttpContextAccessor contextAccessor, IMailService mail, IToastNotification toastNotification)
+        public ExternalRequestsController(AtsdbContext context, INotyfService notyfService, IHttpContextAccessor contextAccessor, IMailService mail)
         {
-            _toastNotification = toastNotification;
+           
             _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
@@ -40,7 +40,7 @@ namespace ATSManagementExternal.Controllers
                                                      .Include(t => t.CreatedByNavigation)
                                                      .Include(x => x.ExternalRequestStatus)
                                                      .Include(x => x.ServiceType)
-                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId && x.DepId == null);
 
             return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
@@ -234,7 +234,7 @@ namespace ATSManagementExternal.Controllers
         }
         public IActionResult Create()
         {
-
+            
             return View(getModel());
         }
         [HttpPost]
@@ -287,9 +287,10 @@ namespace ATSManagementExternal.Controllers
                 request.DeputyUprovalStatus = decision.DesStatusId;
                 request.UserUpprovalStatus = decision.DesStatusId;
                 request.ServiceTypeId = model.ServiceTypeID;
+                request.FullName = model.FullName;
+                request.PhoneNumber = model.PhoneNumber;
+                request.EmailAddress = model.EmailAddress;
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-
-
                 if (model.DocumentFile != null)
                 {
                     //create folder if not exist
@@ -325,7 +326,6 @@ namespace ATSManagementExternal.Controllers
                     }
                     request.TblRequestPriorityQuestionsRelations = relations;
                 }
-
                 _context.TblRequests.Add(request);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
@@ -339,9 +339,6 @@ namespace ATSManagementExternal.Controllers
                     _notifyService.Error("Your request isn't successfully submitted!. Please try again");
                     return View(getModel());
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -362,7 +359,6 @@ namespace ATSManagementExternal.Controllers
             AppointmentModel model = AppointmentModel();
             return View(model);
         }
-
         private AppointmentModel AppointmentModel()
         {
             AppointmentModel model = new AppointmentModel();
@@ -374,7 +370,6 @@ namespace ATSManagementExternal.Controllers
             model.AppointmentDate = DateTime.Now;
             return model;
         }
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -437,7 +432,6 @@ namespace ATSManagementExternal.Controllers
                 _notifyService.Error("Your request isn't submitted successfully!. Please try again.");
                 return View(model);
             }
-
         }
         public CivilJusticeExternalRequestModel getModel()
         {
@@ -447,6 +441,7 @@ namespace ATSManagementExternal.Controllers
             model.RequestedDate = DateTime.Now;
             model.CreatedDate = DateTime.Now;
             model.ExterUserId = userId;
+            model.Round = 1;
             model.IntId = instName.InistId;
             model.Deparments = _context.TblDepartments.Select(a => new SelectListItem
             {
@@ -489,6 +484,7 @@ namespace ATSManagementExternal.Controllers
                 Title = x.QuestionName,
                 IsSelected = false
             }).ToList();
+            model.TermsAndCondionts= _context.TblTermsAndConditions.Select(s => s.Details).FirstOrDefault();
             return model;
         }
         public async Task<IActionResult> Edit(Guid? id)
@@ -509,8 +505,6 @@ namespace ATSManagementExternal.Controllers
             model.RequestedDate = tblExternalRequest.RequestedDate;
             model.RequestId = tblExternalRequest.RequestId;
             model.RequestDetail = tblExternalRequest.RequestDetail;
-
-
             return View(model);
         }
         [HttpPost]
@@ -564,7 +558,6 @@ namespace ATSManagementExternal.Controllers
             {
                 return NotFound();
             }
-
             return View(tblExternalRequest);
         }
 
@@ -598,7 +591,7 @@ namespace ATSManagementExternal.Controllers
         public async Task<IActionResult> Replies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
+            var replays = await _context.TblReplays.Where(a => a.RequestId == id&&a.IsSent==true).ToListAsync();
             RepliesModel model = new RepliesModel
             {
                 RequestId = id,
@@ -609,7 +602,7 @@ namespace ATSManagementExternal.Controllers
                 .Include(x => x.InternalReplayedByNavigation)
                 .Include(x => x.ExternalReplayedByNavigation)
                 .Include(x => x.Request)
-                .Where(_context => _context.RequestId == id).ToList();
+                .Where(y => y.RequestId == id && y.IsSent == true).ToList();
             return View(model);
         }
         [HttpPost]
@@ -624,25 +617,25 @@ namespace ATSManagementExternal.Controllers
                 replay.ExternalReplayedBy = model.ExternalReplayedBy;
                 replay.RequestId = model.RequestId;
                 replay.ReplayDetail = model.ReplayDetail;
+                replay.IsSent = true;
                 _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
-                    _toastNotification.AddSuccessToastMessage("Reply submitted");
+                    _notifyService.Success("Reply submitted");
                     return RedirectToAction("Replies", new { id = model.RequestId });
                 }
                 else
                 {
-                    _toastNotification.AddErrorToastMessage("Reply isn't subbmitted. Please try again");
+                    _notifyService.Error("Reply isn't subbmitted. Please try again");
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
-                _toastNotification.AddErrorToastMessage("Reply isn't subbmitted because of " + ex.Message + ". Please try again");
+                _notifyService.Error("Reply isn't subbmitted because of " + ex.Message + ". Please try again");
                 return View(model);
             }
-
         }
         public async Task<IActionResult> LegalReplies(Guid? id)
         {
@@ -686,10 +679,8 @@ namespace ATSManagementExternal.Controllers
             }
             catch (Exception ex)
             {
-
                 return View(model);
             }
-
         }
         public IActionResult CreateExternalRequest()
         {
@@ -831,7 +822,6 @@ namespace ATSManagementExternal.Controllers
                 return View(model);
             }
         }
-
         public async Task<IActionResult> AppointmentDetail(Guid? id)
         {
             if (id == null || _context.TblAppointments == null)
@@ -849,7 +839,6 @@ namespace ATSManagementExternal.Controllers
 
             return View(tblAppointment);
         }
-
         public async Task<IActionResult> DownloadEvidenceFile(string path)
         {
             string filename = path.Substring(7);
@@ -865,16 +854,103 @@ namespace ATSManagementExternal.Controllers
 
         public async Task<IActionResult> AddHistory(Guid? id)
         {
-            DocumentHistoryModel model = new DocumentHistoryModel();
-            ViewBag.histories = _context.TblDocumentHistories.Where(x => x.RequestId == id).ToList();
-            model.RequestId = id;
+            DocumentHistoryModel model = await historyModel(id);
 
             return View(model);
         }
-
+        private async Task<DocumentHistoryModel> historyModel(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblDocumentHistory tblDocument =  _context.TblDocumentHistories.Include(x=>x.Request).Where(x => x.RequestId == id).OrderBy(x=>x.Round).Last();
+            DocumentHistoryModel model = new DocumentHistoryModel();
+            ViewData["histories"] = _context.TblDocumentHistories.Where(x => x.RequestId == id).ToList();
+            model.RequestId = id;            
+            model.ExternalRepliedBy = userId;
+            if (tblDocument.Round==null)
+            {
+                model.Round = 1;
+            }
+            else
+            {
+                model.Round =Convert.ToInt32(tblDocument.Round) + 1;
+            }            
+            return model;
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> AddHistory(DocumentHistoryModel? model)
         {
+            List<string> emails=new List<string>();
 
+
+            var users = (from user in _context.TblRequestAssignees
+                         join assignees in _context.TblInternalUsers on user.UserId equals assignees.UserId
+                          where (assignees.IsDepartmentHead == true || assignees.IsDeputy == true )&&user.RequestId==model.RequestId select assignees.EmailAddress).ToList();
+            if (users.Count!=0)
+            {
+                emails = users;
+            }
+            else
+            {
+                emails= (from  assignees in _context.TblInternalUsers 
+                         where assignees.IsDepartmentHead == true || assignees.IsDeputy == true
+                         select assignees.EmailAddress).ToList();
+            }
+            var institutionName = (from items in _context.TblRequests where items.RequestId == model.RequestId select items.Inist.Name).FirstOrDefault();
+
+            TblDocumentHistory history = new TblDocumentHistory();
+            history.ExternalRepliedBy = model.ExternalRepliedBy;
+            history.Round = model.Round;
+            history.Description = model.Description;
+            history.FileDescription= model.FileDescription;
+            history.RequestId = model.RequestId;
+            history.CreatedDate=DateTime.Now;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+            if (model.DocPath != null)
+            {
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);               
+                FileInfo fileInfo = new FileInfo(model.DocPath.FileName);
+                string fileName = Guid.NewGuid().ToString() + model.DocPath.FileName;
+                string fileNameWithPath = Path.Combine(path, fileName);
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    model.DocPath.CopyTo(stream);
+                }
+                string dbPath = "/Files/" + fileName;
+                history.DocPath = dbPath;
+            }
+
+            _context.TblDocumentHistories.Add(history);
+            int saved = await _context.SaveChangesAsync();
+            if (saved>0)
+            {
+                await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+                _notifyService.Success("Document added successfully!");
+                return RedirectToAction(nameof(AddHistory));
+            }
+            else
+            {
+                _notifyService.Error("Document is not successfully added. Please try again");
+                return View(model);
+            }           
+        }
+        public async Task<IActionResult> ContinuationRequests()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            var atsdbContext = _context.TblRequests
+                                                     .Include(t => t.AssignedByNavigation)
+                                                     .Include(t => t.CaseType)
+                                                     .Include(t => t.Dep)
+                                                     .Include(t => t.Inist)
+                                                     .Include(t => t.RequestedByNavigation)
+                                                     .Include(t => t.CreatedByNavigation)
+                                                     .Include(x => x.ExternalRequestStatus)
+                                                     .Include(x => x.ServiceType)
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId && x.DepId != null);
+            return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
     }
 }

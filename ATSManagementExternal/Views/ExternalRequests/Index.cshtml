@@ -62,24 +62,16 @@
                                         </th>
                                         <th>
                                             Created by
-                                        </th>
-                                        <th>
-                                            Assigned date
-                                        </th>
-                                        <th>
-                                            Due date
-                                        </th>
+                                        </th>                                       
                                         <th>
                                             Progress status
                                         </th>
                                         <th>
                                             Priority
                                         </th>
-
                                         <th>
                                             Final status
                                         </th>
-
                                         <th>
                                             Service type
                                         </th>
@@ -111,12 +103,7 @@
                                                 @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
                                                 @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.DueDate)
-                                            </td>
+                                          
                                             <td>
                                                 @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
                                             </td>
@@ -168,7 +155,6 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-
                                                             @if (replyes != null)
                                                             {
                                                                 <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
@@ -176,6 +162,7 @@
                                                                     Replies
                                                                 </a>
                                                             }
+
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

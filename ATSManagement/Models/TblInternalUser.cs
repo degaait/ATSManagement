@@ -1,4 +1,8 @@
-﻿namespace ATSManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
+
 public partial class TblInternalUser
 {
     public Guid UserId { get; set; }
@@ -78,6 +82,8 @@ public partial class TblInternalUser
     public virtual ICollection<TblRequest> TblRequestCreatedByNavigations { get; set; } = new List<TblRequest>();
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
+
+    public virtual ICollection<TblTeam> TblTeams { get; set; } = new List<TblTeam>();
 
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 }

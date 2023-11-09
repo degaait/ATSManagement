@@ -1,15 +1,25 @@
-﻿using ATSManagementExternal.Models;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AtsdbContext _context;
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IMailService _mail;
+        private readonly INotyfService _notifyService;
+        public HomeController(ILogger<HomeController> logger,INotyfService notyfService,IMailService mailService,AtsdbContext atsdbContext)
         {
+            _notifyService = notyfService;
+            _mail = mailService;
+            _context= atsdbContext;
             _logger = logger;
         }
 
@@ -18,9 +28,48 @@ namespace ATSManagementExternal.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult AboutUs()
         {
             return View();
+        }
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ContactUs(ContactModel model)
+        {
+            try
+            {
+                ContactModel coModel= new ContactModel();
+                TblContactInformation tblContact = new TblContactInformation();
+                var userEmails=_context.TblInternalUsers.Where(x=>x.IsDeputy==true||x.IsDepartmentHead==true).Select(s=>s.EmailAddress).ToList();
+                tblContact.ContactPhoneNumber = model.ContactPhoneNumber;
+                tblContact.ContactEmail = model.ContactEmail;
+                tblContact.ContactDetaiMessage = model.ContactDetaiMessage;
+                tblContact.ContactCountry = model.ContactCountry;
+                _context.TblContactInformations.Add(tblContact);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Your Message is successfully submitted.");
+                    await SendMail(userEmails, "Contact message notification from Task Tracking Dashboard", "<h3>Please review the detail on Task Tracking Dashboard and reply accordingly.<h3>");
+                    return RedirectToAction(nameof(ContactUs));
+                }
+                else
+                {
+                    _notifyService.Error("Your message isn't submitted successfully. Please try again");
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error("Your message isn't submitted successfully because of "+ex.Message+". Please try again");
+                return View(model);
+            }
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -28,5 +77,13 @@ namespace ATSManagementExternal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private async Task SendMail(List<string> to, string subject, string body)
+        {
+            var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
+            MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
+            bool sentResult = await _mail.SendAsync(data, new CancellationToken());
+        }
+
     }
 }

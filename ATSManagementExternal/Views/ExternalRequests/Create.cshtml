@@ -30,14 +30,14 @@
                                     <div class="col-md-8">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
-                                        <input asp-for="IntId" type="hidden" class="form-control" />                                          
+                                        <input asp-for="IntId" type="hidden" class="form-control" />
                                         <div class="mb-3 row" id="divRequestDetail">
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="mb-3 row" id="DivRequestedDate">
                                             <label asp-for="RequestedDate" class=" col-2 col-form-label">Creation Date</label>
                                             <div class="col">
@@ -67,12 +67,12 @@
                                             </div>
                                         </div>
                                         @*<div class="mb-3 row" id="divQuestType" style="display:none">
-                                            <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question types</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="QuestTypeId" class="text-danger"></span>
-                                            </div>
-                                        </div>*@
+                                                <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question types</label>
+                                                <div class="col">
+                                                    @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                    <span asp-validation-for="QuestTypeId" class="text-danger"></span>
+                                                </div>
+                                            </div>*@
                                         <div class="mb-3 row" id="DivDocumentFile">
                                             <label class="col-3 col-form-label">Document file</label>
                                             <div class="col">
@@ -89,18 +89,39 @@
                                         </div>
                                         <div class="mb-3 row" id="priorityQuestionType" style="display:none">
                                             <label class=" col-2 col-form-label">Additional Questions</label>
-                                            <div class="col">                                                
+                                            <div class="col">
                                                 @for (var i = 0; i < Model.PrioritiesQues.Count(); i++)
                                                 {
                                                     @Html.CheckBoxFor(model => model.PrioritiesQues[i].IsSelected)
-                                                
+
                                                     @Html.HiddenFor(model => model.PrioritiesQues[i].PriorityQueId)
                                                     @Html.DisplayFor(model => model.PrioritiesQues[i].Title)
                                                     <br />
                                                 }
                                             </div>
+                                        </div>
+                                        <div class="mb-3 row" id="DivFullName">
+                                            <label asp-for="FullName" class=" col-2 col-form-label">Full Name</label>
+                                            <div class="col">
+                                                <input asp-for="FullName" class="form-control" />
+                                                <span asp-validation-for="FullName" class="text-danger"></span>
                                             </div>
                                         </div>
+                                        <div class="mb-3 row" id="DivPhoneNumber">
+                                            <label asp-for="PhoneNumber" class=" col-2 col-form-label">Phone number</label>
+                                            <div class="col">
+                                                <input asp-for="PhoneNumber" class="form-control" />
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="DivRequestedDate">
+                                            <label asp-for="EmailAddress" class=" col-2 col-form-label">Email Address</label>
+                                            <div class="col">
+                                                <input asp-for="EmailAddress" class="form-control" />
+                                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer text-end">
@@ -111,20 +132,19 @@
                                     <a asp-action="Index">Back to List</a>
                                 </div>
                             </div>
-
                             <div class="modal modal-blur fade" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                <div class="modal-dialog modal-full-width modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Scrollable modal</h5>
+                                            <h5 class="modal-title">Terms and Conditions</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            @ViewBag.PrivacyPolicy
+                                            @Html.Raw(Model.TermsAndCondionts)
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                            <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Accept and Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -193,7 +213,7 @@
     </script>
     <script type="text/javascript">
         $(function () {
-            $(document).ready(function () {                   
+            $(document).ready(function () {
 
                 $("#ServiceTypeID").change(function () {
                     var value = $("#ServiceTypeID").val();
@@ -202,10 +222,10 @@
                         value == "ACB92222-4872-4A9D-8EDB-8BCD5317129A" ||
                         value == "6E00B0EA-7B4D-40C4-8289-A566FE16E88E" ||
                         value == "92FC1FC5-95D2-4250-98FB-0BA862F6DB02" ||
-                        value == "C792938C-7952-488C-A23E-1A27F8B2B8E6")
-                    {
+                        value == "C792938C-7952-488C-A23E-1A27F8B2B8E6") {
                         $("#divDocType").show();
-                        $("#divQuestType").show();                       }
+                        $("#divQuestType").show();
+                    }
                     else {
                         $("#divDocType").hide();
                         $("#divQuestType").hide();

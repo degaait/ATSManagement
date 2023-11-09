@@ -1,10 +1,10 @@
-﻿using ATSManagement.IModels;
+﻿using NToastNotify;
 using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
@@ -76,10 +76,10 @@ namespace ATSManagement.Controllers
                 Text = x.PriorityName,
                 Value = x.PriorityId.ToString()
             }).ToList();
-            model.CaseTypes = _context.TblCivilJusticeCaseTypes.Select(x => new SelectListItem
+            model.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
             {
-                Value = x.CaseTypeId.ToString(),
-                Text = x.CaseTypeName
+                Value = s.ServiceTypeId.ToString(),
+                Text = s.ServiceTypeName
             }).ToList();
             model.LegalStadiesCasetypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
             {
@@ -112,7 +112,7 @@ namespace ATSManagement.Controllers
                 var decision = _context.TblDecisionStatuses.Where(x => x.StatusName == "Not set").FirstOrDefault();
 
                 TblExternalRequest requests = new TblExternalRequest();
-                TblCivilJustice tblCivilJustice = new TblCivilJustice();
+                TblRequest tblCivilJustice = new TblRequest();
                 TblLegalStudiesDrafting drafting = new TblLegalStudiesDrafting();
                 TblDepartment department = _context.TblDepartments.FindAsync(model.DepId).Result;
                 if (department.DepCode == "CVA")
@@ -121,7 +121,7 @@ namespace ATSManagement.Controllers
                     tblCivilJustice.RequestDetail = model.RequestDetail;
                     tblCivilJustice.InistId = model.InistId;
                     tblCivilJustice.CreatedBy = userId;
-                    tblCivilJustice.CaseTypeId = model.CaseTypeId;
+                    tblCivilJustice.ServiceTypeId = model.ServiceTypeID;
                     tblCivilJustice.ExternalRequestStatusId = statusiD;
                     tblCivilJustice.CreatedDate = DateTime.Now;
                     tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
@@ -129,7 +129,7 @@ namespace ATSManagement.Controllers
                     tblCivilJustice.DeputyUprovalStatus = decision.DesStatusId;
                     tblCivilJustice.UserUpprovalStatus = decision.DesStatusId;
                     tblCivilJustice.PriorityId = model.PriorityId;
-                    _context.TblCivilJustices.Add(tblCivilJustice);
+                    _context.TblRequests.Add(tblCivilJustice);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {

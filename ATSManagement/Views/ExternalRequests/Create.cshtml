@@ -63,10 +63,10 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divCaseType" style="display:none">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Casy type</label>
+                                            <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Casy type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpCasetypes" })
-                                                <span asp-validation-for="CaseTypeId" class="text-danger"></span>
+                                                @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpCasetypes" })
+                                                <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divDoctype" style="display:none">
@@ -77,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divQuestionType" style="display:none">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Question type</label>
+                                            <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question type</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="QuestTypeId" class="text-danger"></span>

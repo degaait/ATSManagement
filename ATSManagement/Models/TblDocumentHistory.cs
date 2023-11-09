@@ -1,4 +1,7 @@
-﻿namespace ATSManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
 
 public partial class TblDocumentHistory
 {
@@ -17,6 +20,8 @@ public partial class TblDocumentHistory
     public Guid? ExternalRepliedBy { get; set; }
 
     public string? FileDescription { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
 
     public virtual TblExternalUser? ExternalRepliedByNavigation { get; set; }
 

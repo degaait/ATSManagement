@@ -1,11 +1,12 @@
-﻿using ATSManagement.IModels;
+﻿using NToastNotify;
 using ATSManagement.Models;
+using ATSManagement.IModels;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -15,9 +16,10 @@ namespace ATSManagement.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
         private readonly IToastNotification _toastNotification;
-        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, INotyfService notyfService)
         {
-            _toastNotification = toastNotification;
+            _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mail;
@@ -79,7 +81,7 @@ namespace ATSManagement.Controllers
                 tible.PlanTitle = inispectionPlan.PlanTitle;
                 tible.PlanDescription = inispectionPlan.PlanDescription;
                 tible.CreationDate = DateTime.Now;
-                tible.InspectionYear = inispectionPlan.InspectionYear;
+               // tible.InspectionYear = inispectionPlan.InspectionYear;
                 tible.UserId = userId;
                 tible.StatusId = _context.TblStatuses.Where(A => A.Status == "New").Select(A => A.StatusId).FirstOrDefault();
                 if (inispectionPlan.InistId.Length > 0)
@@ -93,6 +95,10 @@ namespace ATSManagement.Controllers
                 }
                 _context.TblInspectionPlans.Add(tible);
                 int saved = await _context.SaveChangesAsync();
+                if (saved>0)
+                {
+                    _notifyService.Success("Plan created successfully");
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(inispectionPlan);
@@ -112,7 +118,7 @@ namespace ATSManagement.Controllers
             tblInspectionPlan.TblPlanInistitutions.ToList().ForEach(x => InistId.Add((Guid)x.InistId));
             inispection.PlanTitle = tblInspectionPlan.PlanTitle;
             inispection.PlanDescription = tblInspectionPlan.PlanDescription;
-            inispection.InspectionYear = tblInspectionPlan.InspectionYear;
+           // inispection.InspectionYear = tblInspectionPlan.InspectionYear;
             inispection.ModificationDate = tblInspectionPlan.ModificationDate;
             inispection.InspectionPlanId = tblInspectionPlan.InspectionPlanId;
             inispection.CreationDate = tblInspectionPlan.CreationDate;
@@ -152,7 +158,7 @@ namespace ATSManagement.Controllers
                     tible.PlanDescription = model.PlanDescription;
                     tible.CreationDate = model.CreationDate;
                     tible.ModificationDate = DateTime.Now;
-                    tible.InspectionYear = model.InspectionYear;
+                    //tible.InspectionYear = model.InspectionYear;
                     if (model.InistId.Length > 0)
                     {
                         plan_in = new List<TblPlanInistitution>();

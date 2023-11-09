@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
 
@@ -34,6 +36,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplys { get; set; }
 
     public virtual DbSet<TblCompanyEmail> TblCompanyEmails { get; set; }
+
+    public virtual DbSet<TblContactInformation> TblContactInformations { get; set; }
 
     public virtual DbSet<TblDecisionStatus> TblDecisionStatuses { get; set; }
 
@@ -91,6 +95,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblRequestAssignee> TblRequestAssignees { get; set; }
 
+    public virtual DbSet<TblRequestDepartmentRelation> TblRequestDepartmentRelations { get; set; }
+
     public virtual DbSet<TblRequestPriorityQuestionsRelation> TblRequestPriorityQuestionsRelations { get; set; }
 
     public virtual DbSet<TblRequestType> TblRequestTypes { get; set; }
@@ -105,16 +111,20 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblSubmenu> TblSubmenus { get; set; }
 
+    public virtual DbSet<TblTeam> TblTeams { get; set; }
+
+    public virtual DbSet<TblTermsAndCondition> TblTermsAndConditions { get; set; }
+
     public virtual DbSet<TblWitnessEvidence> TblWitnessEvidences { get; set; }
+
+    public virtual DbSet<TblYear> TblYears { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Latin1_General_CI_AS");
-
         modelBuilder.Entity<TblActivity>(entity =>
         {
             entity.HasKey(e => e.ActivityId);
@@ -388,6 +398,20 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.EmailAdress).HasMaxLength(350);
         });
 
+        modelBuilder.Entity<TblContactInformation>(entity =>
+        {
+            entity.HasKey(e => e.ContactId);
+
+            entity.ToTable("tbl_ContactInformations");
+
+            entity.Property(e => e.ContactId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ContactID");
+            entity.Property(e => e.ContactCountry).HasMaxLength(100);
+            entity.Property(e => e.ContactEmail).HasMaxLength(100);
+            entity.Property(e => e.ContactPhoneNumber).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<TblDecisionStatus>(entity =>
         {
             entity.HasKey(e => e.DesStatusId);
@@ -419,6 +443,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.HistoryId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("HistoryID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.InternalReplyId).HasColumnName("InternalReplyID");
             entity.Property(e => e.RequestId).HasColumnName("RequestID");
 
@@ -579,7 +604,7 @@ public partial class AtsdbContext : DbContext
 
             entity.Property(e => e.InspectionPlanId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreationDate).HasColumnType("datetime");
-            entity.Property(e => e.InspectionYear).HasColumnType("date");
+            entity.Property(e => e.InspectionYear).HasMaxLength(50);
             entity.Property(e => e.ModificationDate).HasColumnType("datetime");
             entity.Property(e => e.StatusId).HasColumnName("StatusID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -876,6 +901,7 @@ public partial class AtsdbContext : DbContext
 
             entity.HasOne(d => d.Request).WithMany(p => p.TblReplays)
                 .HasForeignKey(d => d.RequestId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_Replays_tbl_Requests");
         });
 
@@ -902,7 +928,10 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.EmailAddress).HasMaxLength(300);
             entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
+            entity.Property(e => e.FullName).HasMaxLength(300);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(50);
             entity.Property(e => e.QuestTypeId).HasColumnName("QuestTypeID");
             entity.Property(e => e.ServiceTypeId).HasColumnName("ServiceTypeID");
 
@@ -986,6 +1015,23 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_RequestAssignees_tbl_InternalUsers");
         });
 
+        modelBuilder.Entity<TblRequestDepartmentRelation>(entity =>
+        {
+            entity.ToTable("TBL_RequestDepartmentRelations");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.DepId).HasColumnName("DepID");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblRequestDepartmentRelations)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_TBL_RequestDepartmentRelations_tbl_Department");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblRequestDepartmentRelations)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_TBL_RequestDepartmentRelations_tbl_Requests");
+        });
+
         modelBuilder.Entity<TblRequestPriorityQuestionsRelation>(entity =>
         {
             entity.ToTable("tbl_RequestPriorityQuestionsRelations");
@@ -1038,7 +1084,12 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.ServiceTypeId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("ServiceTypeID");
+            entity.Property(e => e.DepId).HasColumnName("DepID");
             entity.Property(e => e.ServiceTypeName).HasMaxLength(350);
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblServiceTypes)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_tbl_ServiceTypes_tbl_Department");
         });
 
         modelBuilder.Entity<TblSpecificPlan>(entity =>
@@ -1095,6 +1146,39 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_Submenu_tbl_Roles");
         });
 
+        modelBuilder.Entity<TblTeam>(entity =>
+        {
+            entity.HasKey(e => e.TeamId);
+
+            entity.ToTable("tbl_Teams");
+
+            entity.Property(e => e.TeamId)
+                .ValueGeneratedNever()
+                .HasColumnName("TeamID");
+            entity.Property(e => e.DepId).HasColumnName("DepID");
+            entity.Property(e => e.TeamLeaderId).HasColumnName("TeamLeaderID");
+            entity.Property(e => e.TeamName).HasMaxLength(250);
+
+            entity.HasOne(d => d.Dep).WithMany(p => p.TblTeams)
+                .HasForeignKey(d => d.DepId)
+                .HasConstraintName("FK_tbl_Teams_tbl_Department");
+
+            entity.HasOne(d => d.TeamLeader).WithMany(p => p.TblTeams)
+                .HasForeignKey(d => d.TeamLeaderId)
+                .HasConstraintName("FK_tbl_Teams_tbl_InternalUsers");
+        });
+
+        modelBuilder.Entity<TblTermsAndCondition>(entity =>
+        {
+            entity.HasKey(e => e.TermsId);
+
+            entity.ToTable("tbl_TermsAndConditions");
+
+            entity.Property(e => e.TermsId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("TermsID");
+        });
+
         modelBuilder.Entity<TblWitnessEvidence>(entity =>
         {
             entity.HasKey(e => e.WitnessId);
@@ -1116,9 +1200,20 @@ public partial class AtsdbContext : DbContext
                 .HasConstraintName("FK_tbl_Witness_Evidences_tbl_Requests");
         });
 
+        modelBuilder.Entity<TblYear>(entity =>
+        {
+            entity.HasKey(e => e.YearId);
+
+            entity.ToTable("tbl_Years");
+
+            entity.Property(e => e.YearId)
+                .ValueGeneratedNever()
+                .HasColumnName("YearID");
+            entity.Property(e => e.Year).HasMaxLength(50);
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
-

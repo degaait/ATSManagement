@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ATSManagementExternal.Models.TblRecomendation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Recomendations 
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="card">
+            <div class="card-body">
+                <div class="accordion" id="accordion-example">
+                    @foreach (var item in Model)
+                    {
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-1">
+                                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                    @item.Inist.Name
+                                </button>
+                            </h2>
+                            <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
+                                <div class="accordion-body pt-0">
+                                    @Html.Raw(item.Recomendation)
+                                    @if (item.Recostatus.Status == "Open")
+                                    {
+                                        <p style="color:dodgerblue">
+                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p style="color:red">
+                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
+                                        </p>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+

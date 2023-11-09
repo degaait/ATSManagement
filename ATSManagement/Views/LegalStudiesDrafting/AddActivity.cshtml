@@ -2,7 +2,7 @@
 @inject AtsdbContext _context;
 @{
     ViewData["Title"] = "Create";
-    IEnumerable<TblLegalStudiesActivity> activities = ViewData["Activities"] as IEnumerable<TblLegalStudiesActivity>;
+    IEnumerable<TblActivity> activities = ViewData["Activities"] as IEnumerable<TblActivity>;
 }
 <style type="text/css">
     .table thead th {
@@ -99,9 +99,7 @@
                                         {
 
                                             <tr>
-                                                @{
-                                                    var requestName = _context.TblLegalStudiesDraftings.Where(a => a.RequestId == item.RequestId).FirstOrDefault();
-                                                }
+                                               
                                                 <td>
                                                     @Html.Raw(item.ActivityDetail)
                                                 </td>
@@ -113,7 +111,7 @@
                                                     @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
                                                 </td>
                                                 <td>
-                                                    @Html.Raw(requestName.RequestDetail)
+                                                    @Html.Raw(item.Request.RequestDetail)
                                                 </td>
                                                 <td>
                                                     <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId">Delete</a>

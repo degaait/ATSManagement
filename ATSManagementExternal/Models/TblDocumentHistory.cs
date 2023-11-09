@@ -21,6 +21,8 @@ public partial class TblDocumentHistory
 
     public string? FileDescription { get; set; }
 
+    public DateTime? CreatedDate { get; set; }
+
     public virtual TblExternalUser? ExternalRepliedByNavigation { get; set; }
 
     public virtual TblInternalUser? InternalReply { get; set; }

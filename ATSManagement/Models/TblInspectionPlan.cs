@@ -17,7 +17,7 @@ public partial class TblInspectionPlan
 
     public Guid? UserId { get; set; }
 
-    public DateTime? InspectionYear { get; set; }
+    public string? InspectionYear { get; set; }
 
     public Guid? StatusId { get; set; }
 

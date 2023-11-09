@@ -18,7 +18,7 @@ namespace ATSManagement.ViewModels
 
         public Guid? CreatedBy { get; set; }
 
-        public Guid? DepId { get; set; }
+      
 
         public Guid? CaseTypeId { get; set; }
 
@@ -33,7 +33,7 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Detail")]
         public IEnumerable<SelectListItem>? Intitutions { get; set; }
-
+        public Guid[]? DepId { get; set; }
         [Display(Name = "Departments")]
         public List<SelectListItem>? Deparments { get; set; }
 

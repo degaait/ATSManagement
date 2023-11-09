@@ -1,8 +1,9 @@
-﻿using ATSManagement.IModels;
-using ATSManagement.Models;
-using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
+﻿using NToastNotify;
 using System.Diagnostics;
+using ATSManagement.Models;
+using ATSManagement.IModels;
+using Microsoft.AspNetCore.Mvc;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -11,16 +12,20 @@ namespace ATSManagement.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMailService _mail;
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public HomeController(ILogger<HomeController> logger, IMailService mail, AtsdbContext atsdbContext, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        public HomeController(ILogger<HomeController> logger, IMailService mail, AtsdbContext atsdbContext, INotyfService notyfService)
         {
-            _toastNotification = toastNotification;
+            _notifyService = notyfService;
             _logger = logger;
             _mail = mail;
             _context = atsdbContext;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String? type,string? message)
         {
+            if (type=="0")
+            {
+                _notifyService.Error(message);
+            }
             ViewBag.internalUser = _context.TblInternalUsers.ToList().Count;
             ViewBag.ExternalUser = _context.TblExternalUsers.ToList().Count;
             ViewBag.Insititutions = _context.TblInistitutions.ToList().Count;

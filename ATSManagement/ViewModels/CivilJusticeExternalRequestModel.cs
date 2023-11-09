@@ -60,10 +60,11 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Priority")]
         public List<SelectListItem>? Priorities { get; set; }
 
-        public Guid? CaseTypeId { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? ServiceTypeID { get; set; }
 
-        [Display(Name = "Case types")]
-        public List<SelectListItem>? CaseTypes { get; set; }
+        [Display(Name = "Service types")]
+        public List<SelectListItem>? ServiceTypes { get; set; }
         [Display(Name = "Departments")]
         public List<SelectListItem>? Deparments { get; set; }
 
@@ -94,6 +95,20 @@ namespace ATSManagement.ViewModels
         public Guid DesStatusId { get; set; }
         [Required(ErrorMessage = "*")]
         public List<SelectListItem>? DesicionStatus { get; set; }
+
+        //Additional information for requester
+        [Display(Name ="Full Name")]
+        public string? FullName { get; set; }
+        [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "Email id is required")]
+        [RegularExpression(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z",
+                            ErrorMessage = "Please enter a valid email address")]
+        public string? EmailAddress { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name ="Phone Numebr")]
+        [Required(ErrorMessage = "Required")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
+        public string? PhoneNumber { get; set; }
 
 
     }

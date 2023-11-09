@@ -83,5 +83,7 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 
+    public virtual ICollection<TblTeam> TblTeams { get; set; } = new List<TblTeam>();
+
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 }

@@ -21,7 +21,13 @@ public partial class TblDepartment
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
 
+    public virtual ICollection<TblRequestDepartmentRelation> TblRequestDepartmentRelations { get; set; } = new List<TblRequestDepartmentRelation>();
+
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 
+    public virtual ICollection<TblServiceType> TblServiceTypes { get; set; } = new List<TblServiceType>();
+
     public virtual ICollection<TblSubmenu> TblSubmenus { get; set; } = new List<TblSubmenu>();
+
+    public virtual ICollection<TblTeam> TblTeams { get; set; } = new List<TblTeam>();
 }

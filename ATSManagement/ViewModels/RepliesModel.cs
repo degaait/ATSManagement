@@ -10,15 +10,11 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         [DataType(DataType.MultilineText)]
         public string? ReplayDetail { get; set; }
-
         public Guid? RequestId { get; set; }
-
         public Guid? InternalReplayedBy { get; set; }
         [Display(Name = "Date time")]
         public DateTime? ReplyDate { get; set; }
-
         public Guid? ExternalReplayedBy { get; set; }
-
         public IEnumerable<TblCivilJusticeRequestReply>? Replies { get; }
     }
 }

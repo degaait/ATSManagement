@@ -4,10 +4,10 @@ using ATSManagement.IModels;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -16,7 +16,6 @@ namespace ATSManagement.Controllers
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
-        private readonly IToastNotification _toastNotification;
         private readonly INotyfService _notifyService;
         public RequestsController(AtsdbContext context, INotyfService notyfService, IMailService mailService, IHttpContextAccessor httpContextAccessor)
         {
@@ -27,11 +26,21 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var userinfor=_context.TblInternalUsers.Where(x=>x.UserId == userId).FirstOrDefault();
+            if (userinfor==null)
+            {
+                return NotFound();
+            }
+            if (userinfor.IsDeputy==false&&userinfor.IsSuperAdmin!=true)
+            {
+                _notifyService.Information("Only users who have deputy role can access this page");
+                return RedirectToAction("Index", "Home", new { type ="0", message = "Only users who have deputy role can access this page" });
+            }
             var atsdbContext = _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
-                .Include(t => t.Dep)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
                 .Include(t => t.DocType)
@@ -60,14 +69,28 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> AssignToDepartment(RequestModel requestModel)
         {
             TblRequest request = await _context.TblRequests.FindAsync(requestModel.RequestId);
-            request.DepId = requestModel.DepId;
+            List<TblRequestDepartmentRelation> departmentRelations;
+            List<String> depHeadEmail = new List<string>();
             request.ServiceTypeId = requestModel.ServiceTypeID;
+            if (requestModel.DepId.Length > 0)
+            {
+                departmentRelations = new List<TblRequestDepartmentRelation>();
+                foreach (var item in requestModel.DepId)
+                {
+                    departmentRelations.Add(new TblRequestDepartmentRelation { DepId = item, RequestId = requestModel.RequestId });
+                }
+                request.TblRequestDepartmentRelations = departmentRelations;
+            }
             int saved = await _context.SaveChangesAsync();
             if (saved > 0)
             {
-                var DepartmentHeade = _context.TblInternalUsers.Where(x => x.Dep.DepId == requestModel.DepId).Select(x => x.EmailAddress).ToList();
+                foreach (var item in requestModel.DepId)
+                {
+                    var DepartmentHeade = _context.TblInternalUsers.Where(x => x.Dep.DepId == item).Select(x => x.EmailAddress).ToList();
+                    depHeadEmail.AddRange(DepartmentHeade);
+                }
                 _notifyService.Success("Request is assigned to Department");
-                await SendMail(DepartmentHeade, "Request Assignment notifications from Deputy director", "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
+                await SendMail(depHeadEmail, "Request Assignment notifications from Deputy director", "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
 
                 return RedirectToAction(nameof(Index));
             }
@@ -324,12 +347,24 @@ namespace ATSManagement.Controllers
         }
         private async Task SendMail(List<string> to, string subject, string body)
         {
-            var companyEmail = _context.TblCompanyEmail.Where(x => x.IsActive == true).FirstOrDefault();
+            var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
         public async Task<IActionResult> HighPriorityRequsts()
         {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var userinfor = _context.TblInternalUsers.Where(x => x.UserId == userId).FirstOrDefault();
+            if (userinfor == null)
+            {
+                return NotFound();
+            }
+            if(userinfor.IsDeputy == false && userinfor.IsSuperAdmin != true)
+            {
+                _notifyService.Information("Only users who have deputy role can access this page");
+                return RedirectToAction("Index", "Home", new { type = "0", message = "Only users who have deputy role can access this page" });
+            }
+
             var atsdbContext = _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
@@ -345,7 +380,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ServiceType)
                 .Include(t => t.TeamUpprovalStatusNavigation)
-                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.DepId == null && x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73"));
+                .Include(t => t.UserUpprovalStatusNavigation).Where(x =>  x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73"));
             return View(await atsdbContext.ToListAsync());
         }
 

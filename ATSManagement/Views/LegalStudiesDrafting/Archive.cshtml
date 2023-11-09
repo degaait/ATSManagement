@@ -1,0 +1,59 @@
+﻿@model ATSManagement.ViewModels.ArchiveModel
+
+@{
+    ViewData["Title"] = "Archive";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Archive Request
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Archive</h4>
+                        </div>
+                        <form asp-action="Archive">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="RequestId" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Request Detail</label>
+                                            <div class="col">
+                                                @Html.Raw(Model.RequestDetail)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Archive" class="btn btn-primary" />|
+                                    <a asp-action="CompletedRequests">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

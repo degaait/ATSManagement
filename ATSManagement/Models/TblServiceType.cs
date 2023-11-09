@@ -9,5 +9,9 @@ public partial class TblServiceType
 
     public string? ServiceTypeName { get; set; }
 
+    public Guid? DepId { get; set; }
+
+    public virtual TblDepartment? Dep { get; set; }
+
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 }

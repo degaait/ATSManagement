@@ -14,8 +14,6 @@ namespace ATSManagementExternal.ViewModels
         [DisplayFormat(ApplyFormatInEditMode = true)]
         [Display(Name = "Request Detail")]
         public string? RequestDetail { get; set; }
-
-
         public Guid? TypeId { get; set; }
 
         [Display(Name = "Request types")]
@@ -24,12 +22,10 @@ namespace ATSManagementExternal.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Request Date")]
         [DataType(DataType.DateTime)]
-
         public DateTime? RequestedDate { get; set; }
 
         [Display(Name = "Request Date")]
         [DataType(DataType.DateTime)]
-
         public DateTime? AppointmentDate { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -76,6 +72,21 @@ namespace ATSManagementExternal.ViewModels
 
         [Display(Name = "Addional Questions")]
         public List<CheckBoxItem>? PrioritiesQues { get; set; }
+
+        [Display(Name = "Full Name")]
+        [Required(ErrorMessage = "*")]
+        public string? FullName { get; set; }
+        [Required(ErrorMessage = "*")]
+        [RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$", ErrorMessage = "Your email address is not in a valid format. Example of correct format: joe.example@example.org")]
+        [DataType(DataType.EmailAddress)]
+        public string? EmailAddress { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone Numebr")]
+        [Required(ErrorMessage = "*")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
+        public string? PhoneNumber { get; set; }
+
+        public string TermsAndCondionts { get; set; }
 
     }
 }

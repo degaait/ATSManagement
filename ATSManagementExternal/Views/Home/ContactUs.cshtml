@@ -1,0 +1,126 @@
+﻿@model ATSManagementExternal.ViewModels.ContactModel
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Contact Us
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                        </div>
+                        <form asp-action="ContactUs">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+
+                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                            <label asp-for="ContactDetaiMessage" class=" col-2 col-form-label">Message</label>
+                                            <div class="col">
+                                                <input asp-for="ContactDetaiMessage" class="form-control" />
+                                                <span asp-validation-for="ContactDetaiMessage" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                            <label asp-for="ContactEmail" class=" col-2 col-form-label">Email Address</label>
+                                            <div class="col">
+                                                <input asp-for="ContactEmail" class="form-control" />
+                                                <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                            <label asp-for="ContactPhoneNumber" class=" col-2 col-form-label">Phone Number</label>
+                                            <div class="col">
+                                                <input asp-for="ContactPhoneNumber" class="form-control" />
+                                                <span asp-validation-for="ContactPhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                            <label asp-for="ContactCountry" class=" col-2 col-form-label">Country</label>
+                                            <div class="col">
+                                                <input asp-for="ContactCountry" class="form-control" />
+                                                <span asp-validation-for="ContactCountry" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">
+                                        Submit
+                                    </a>                                 
+                                </div>
+                            </div>
+                            <div class="modal modal-blur fade" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Terms and Conditions</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @ViewBag.PrivacyPolicy
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ContactDetaiMessage',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+
+}

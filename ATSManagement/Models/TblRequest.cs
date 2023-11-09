@@ -1,4 +1,7 @@
-﻿namespace ATSManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
 
 public partial class TblRequest
 {
@@ -54,6 +57,14 @@ public partial class TblRequest
 
     public int? RequestRound { get; set; }
 
+    public bool? IsArchived { get; set; }
+
+    public string? FullName { get; set; }
+
+    public string? EmailAddress { get; set; }
+
+    public string? PhoneNumber { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
     public virtual TblCivilJusticeCaseType? CaseType { get; set; }
@@ -89,6 +100,8 @@ public partial class TblRequest
     public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
 
     public virtual ICollection<TblRequestAssignee> TblRequestAssignees { get; set; } = new List<TblRequestAssignee>();
+
+    public virtual ICollection<TblRequestDepartmentRelation> TblRequestDepartmentRelations { get; set; } = new List<TblRequestDepartmentRelation>();
 
     public virtual ICollection<TblRequestPriorityQuestionsRelation> TblRequestPriorityQuestionsRelations { get; set; } = new List<TblRequestPriorityQuestionsRelation>();
 
