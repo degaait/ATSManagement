@@ -103,11 +103,15 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
 
                                         <tr>
                                             <td>
-                                                @Html.Raw(item.RequestDetail)
+                                                @if (item != null)
+                                                {
+                                                    @Html.Raw(item.RequestDetail)
+                                                }
+
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CreatedDate)

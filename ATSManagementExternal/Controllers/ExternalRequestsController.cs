@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
 using ATSManagementExternal.IModels;
 using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Filters;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {
+    [CheckSessionIsAvailable]
     public class ExternalRequestsController : Controller
     {
         private readonly AtsdbContext _context;

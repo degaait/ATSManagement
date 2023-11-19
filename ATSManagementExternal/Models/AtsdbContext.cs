@@ -19,6 +19,10 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblAdjornment> TblAdjornments { get; set; }
 
+    public virtual DbSet<TblAdractivitiesReport> TblAdractivitiesReports { get; set; }
+
+    public virtual DbSet<TblAdreventType> TblAdreventTypes { get; set; }
+
     public virtual DbSet<TblAppointment> TblAppointments { get; set; }
 
     public virtual DbSet<TblAppointmentParticipant> TblAppointmentParticipants { get; set; }
@@ -39,11 +43,21 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblContactInformation> TblContactInformations { get; set; }
 
+    public virtual DbSet<TblDebatePerformance> TblDebatePerformances { get; set; }
+
+    public virtual DbSet<TblDebatePerformanceEventType> TblDebatePerformanceEventTypes { get; set; }
+
+    public virtual DbSet<TblDebateWorkPerformanceReport> TblDebateWorkPerformanceReports { get; set; }
+
     public virtual DbSet<TblDecisionStatus> TblDecisionStatuses { get; set; }
 
     public virtual DbSet<TblDepartment> TblDepartments { get; set; }
 
     public virtual DbSet<TblDocumentHistory> TblDocumentHistories { get; set; }
+
+    public virtual DbSet<TblDraftContractExaminationReport> TblDraftContractExaminationReports { get; set; }
+
+    public virtual DbSet<TblEvent> TblEvents { get; set; }
 
     public virtual DbSet<TblExternalMainMenu> TblExternalMainMenus { get; set; }
 
@@ -63,7 +77,11 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblInspectionStatus> TblInspectionStatuses { get; set; }
 
+    public virtual DbSet<TblInstotutionMonitoringReport> TblInstotutionMonitoringReports { get; set; }
+
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
+
+    public virtual DbSet<TblLegalAdviceReport> TblLegalAdviceReports { get; set; }
 
     public virtual DbSet<TblLegalDraftingDocType> TblLegalDraftingDocTypes { get; set; }
 
@@ -76,6 +94,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; }
 
     public virtual DbSet<TblMainMenu> TblMainMenus { get; set; }
+
+    public virtual DbSet<TblMonth> TblMonths { get; set; }
 
     public virtual DbSet<TblPlanInistitution> TblPlanInistitutions { get; set; }
 
@@ -91,9 +111,13 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblReponseStatus> TblReponseStatuses { get; set; }
 
+    public virtual DbSet<TblReportServiceType> TblReportServiceTypes { get; set; }
+
     public virtual DbSet<TblRequest> TblRequests { get; set; }
 
     public virtual DbSet<TblRequestAssignee> TblRequestAssignees { get; set; }
+
+    public virtual DbSet<TblRequestAssignementType> TblRequestAssignementTypes { get; set; }
 
     public virtual DbSet<TblRequestDepartmentRelation> TblRequestDepartmentRelations { get; set; }
 
@@ -108,6 +132,8 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblSpecificPlan> TblSpecificPlans { get; set; }
 
     public virtual DbSet<TblStatus> TblStatuses { get; set; }
+
+    public virtual DbSet<TblSubDebatePerformance> TblSubDebatePerformances { get; set; }
 
     public virtual DbSet<TblSubmenu> TblSubmenus { get; set; }
 
@@ -164,6 +190,56 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Request).WithMany(p => p.TblAdjornments)
                 .HasForeignKey(d => d.RequestId)
                 .HasConstraintName("FK_tbl_Adjornments_tbl_Requests");
+        });
+
+        modelBuilder.Entity<TblAdractivitiesReport>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("tbl_ADRActivitiesReport");
+
+            entity.Property(e => e.Childrens).HasMaxLength(50);
+            entity.Property(e => e.Hivpositives)
+                .HasMaxLength(300)
+                .HasColumnName("HIVPositives");
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+            entity.Property(e => e.Mens).HasMaxLength(300);
+            entity.Property(e => e.MonthId).HasColumnName("MonthID");
+            entity.Property(e => e.OtherServantType).HasMaxLength(300);
+            entity.Property(e => e.TypeId).HasColumnName("TypeID");
+            entity.Property(e => e.WomeElders).HasMaxLength(300);
+            entity.Property(e => e.Womens).HasMaxLength(50);
+            entity.Property(e => e.YearId).HasColumnName("YearID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany()
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_ADRActivitiesReport_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Month).WithMany()
+                .HasForeignKey(d => d.MonthId)
+                .HasConstraintName("FK_tbl_ADRActivitiesReport_tbl_Months");
+
+            entity.HasOne(d => d.Type).WithMany()
+                .HasForeignKey(d => d.TypeId)
+                .HasConstraintName("FK_tbl_ADRActivitiesReport_tbl_ADREventTypes");
+
+            entity.HasOne(d => d.Year).WithMany()
+                .HasForeignKey(d => d.YearId)
+                .HasConstraintName("FK_tbl_ADRActivitiesReport_tbl_Years");
+        });
+
+        modelBuilder.Entity<TblAdreventType>(entity =>
+        {
+            entity.HasKey(e => e.TypeId);
+
+            entity.ToTable("tbl_ADREventTypes");
+
+            entity.Property(e => e.TypeId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("TypeID");
+            entity.Property(e => e.TypeNames).HasMaxLength(450);
         });
 
         modelBuilder.Entity<TblAppointment>(entity =>
@@ -412,6 +488,62 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.ContactPhoneNumber).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<TblDebatePerformance>(entity =>
+        {
+            entity.HasKey(e => e.PerformanceId);
+
+            entity.ToTable("tbl_DebatePerformances");
+
+            entity.Property(e => e.PerformanceId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("PerformanceID");
+        });
+
+        modelBuilder.Entity<TblDebatePerformanceEventType>(entity =>
+        {
+            entity.ToTable("tbl_DebatePerformanceEventTypes");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+            entity.Property(e => e.WorkPerformanceEventType).HasMaxLength(350);
+
+            entity.HasOne(d => d.SubPerformance).WithMany(p => p.TblDebatePerformanceEventTypes)
+                .HasForeignKey(d => d.SubPerformanceId)
+                .HasConstraintName("FK_tbl_DebatePerformanceEventTypes_tbl_SubDebatePerformances");
+        });
+
+        modelBuilder.Entity<TblDebateWorkPerformanceReport>(entity =>
+        {
+            entity.HasKey(e => e.WorkPerformId);
+
+            entity.ToTable("tbl_DebateWorkPerformanceReports");
+
+            entity.Property(e => e.WorkPerformId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("WorkPerformID");
+            entity.Property(e => e.Hivpositives).HasColumnName("HIVPositives");
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.MonthId).HasColumnName("MonthID");
+            entity.Property(e => e.YearId).HasColumnName("YearID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblDebateWorkPerformanceReports)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_DebateWorkPerformanceReports_tbl_InternalUsers");
+
+            entity.HasOne(d => d.IdNavigation).WithMany(p => p.TblDebateWorkPerformanceReports)
+                .HasForeignKey(d => d.Id)
+                .HasConstraintName("FK_tbl_DebateWorkPerformanceReports_tbl_DebateWorkPerformanceReports");
+
+            entity.HasOne(d => d.Month).WithMany(p => p.TblDebateWorkPerformanceReports)
+                .HasForeignKey(d => d.MonthId)
+                .HasConstraintName("FK_tbl_DebateWorkPerformanceReports_tbl_Months");
+
+            entity.HasOne(d => d.Year).WithMany(p => p.TblDebateWorkPerformanceReports)
+                .HasForeignKey(d => d.YearId)
+                .HasConstraintName("FK_tbl_DebateWorkPerformanceReports_tbl_Years");
+        });
+
         modelBuilder.Entity<TblDecisionStatus>(entity =>
         {
             entity.HasKey(e => e.DesStatusId);
@@ -459,6 +591,45 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.RequestId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_DocumentHistories_tbl_Requests");
+        });
+
+        modelBuilder.Entity<TblDraftContractExaminationReport>(entity =>
+        {
+            entity.ToTable("tbl_DraftContractExaminationReport");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+            entity.Property(e => e.MonthId).HasColumnName("MonthID");
+            entity.Property(e => e.YearId).HasColumnName("YearID");
+
+            entity.HasOne(d => d.Month).WithMany(p => p.TblDraftContractExaminationReports)
+                .HasForeignKey(d => d.MonthId)
+                .HasConstraintName("FK_tbl_DraftContractExaminationReport_tbl_Months");
+
+            entity.HasOne(d => d.SubmittedByNavigation).WithMany(p => p.TblDraftContractExaminationReports)
+                .HasForeignKey(d => d.SubmittedBy)
+                .HasConstraintName("FK_tbl_DraftContractExaminationReport_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Year).WithMany(p => p.TblDraftContractExaminationReports)
+                .HasForeignKey(d => d.YearId)
+                .HasConstraintName("FK_tbl_DraftContractExaminationReport_tbl_Years");
+        });
+
+        modelBuilder.Entity<TblEvent>(entity =>
+        {
+            entity.HasKey(e => e.EventId);
+
+            entity.ToTable("tbl_Events");
+
+            entity.Property(e => e.EventId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("EventID");
+            entity.Property(e => e.EventName).HasMaxLength(350);
+
+            entity.HasOne(d => d.SubPerformance).WithMany(p => p.TblEvents)
+                .HasForeignKey(d => d.SubPerformanceId)
+                .HasConstraintName("FK_tbl_Events_tbl_SubDebatePerformances");
         });
 
         modelBuilder.Entity<TblExternalMainMenu>(entity =>
@@ -627,6 +798,31 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.ProId).HasDefaultValueSql("(newid())");
         });
 
+        modelBuilder.Entity<TblInstotutionMonitoringReport>(entity =>
+        {
+            entity.ToTable("tbl_InstotutionMonitoringReports");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+            entity.Property(e => e.AdrmoneyAmount).HasColumnName("ADRMoneyAmount");
+            entity.Property(e => e.Adrnumber).HasColumnName("ADRNumber");
+            entity.Property(e => e.MonthId).HasColumnName("MonthID");
+            entity.Property(e => e.YearId).HasColumnName("YearID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblInstotutionMonitoringReports)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_InstotutionMonitoringReports_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Month).WithMany(p => p.TblInstotutionMonitoringReports)
+                .HasForeignKey(d => d.MonthId)
+                .HasConstraintName("FK_tbl_InstotutionMonitoringReports_tbl_Months");
+
+            entity.HasOne(d => d.Year).WithMany(p => p.TblInstotutionMonitoringReports)
+                .HasForeignKey(d => d.YearId)
+                .HasConstraintName("FK_tbl_InstotutionMonitoringReports_tbl_Years");
+        });
+
         modelBuilder.Entity<TblInternalUser>(entity =>
         {
             entity.HasKey(e => e.UserId);
@@ -642,11 +838,37 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.MidleName).HasMaxLength(250);
             entity.Property(e => e.Password).HasMaxLength(400);
             entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+            entity.Property(e => e.TeamId).HasColumnName("TeamID");
             entity.Property(e => e.UserName).HasMaxLength(250);
 
             entity.HasOne(d => d.Dep).WithMany(p => p.TblInternalUsers)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tbl_InternalUsers_tbl_Department");
+
+            entity.HasOne(d => d.Team).WithMany(p => p.TblInternalUsers)
+                .HasForeignKey(d => d.TeamId)
+                .HasConstraintName("FK_tbl_InternalUsers_tbl_Teams");
+        });
+
+        modelBuilder.Entity<TblLegalAdviceReport>(entity =>
+        {
+            entity.HasKey(e => e.ReportId);
+
+            entity.ToTable("tbl_LegalAdviceReports");
+
+            entity.Property(e => e.ReportId).ValueGeneratedNever();
+
+            entity.HasOne(d => d.MonthNavigation).WithMany(p => p.TblLegalAdviceReports)
+                .HasForeignKey(d => d.Month)
+                .HasConstraintName("FK_tbl_LegalAdviceReports_tbl_Months");
+
+            entity.HasOne(d => d.ReportedByNavigation).WithMany(p => p.TblLegalAdviceReports)
+                .HasForeignKey(d => d.ReportedBy)
+                .HasConstraintName("FK_tbl_LegalAdviceReports_tbl_LegalAdviceReports");
+
+            entity.HasOne(d => d.YearNavigation).WithMany(p => p.TblLegalAdviceReports)
+                .HasForeignKey(d => d.Year)
+                .HasConstraintName("FK_tbl_LegalAdviceReports_tbl_Years");
         });
 
         modelBuilder.Entity<TblLegalDraftingDocType>(entity =>
@@ -806,6 +1028,17 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.MenuName).HasMaxLength(250);
         });
 
+        modelBuilder.Entity<TblMonth>(entity =>
+        {
+            entity.HasKey(e => e.MonthId);
+
+            entity.ToTable("tbl_Months");
+
+            entity.Property(e => e.MonthId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("MonthID");
+        });
+
         modelBuilder.Entity<TblPlanInistitution>(entity =>
         {
             entity.ToTable("tbl_Plan_Inistitution");
@@ -915,6 +1148,15 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.StatusName).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<TblReportServiceType>(entity =>
+        {
+            entity.ToTable("tbl_ReportServiceTypes");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID");
+        });
+
         modelBuilder.Entity<TblRequest>(entity =>
         {
             entity.HasKey(e => e.RequestId);
@@ -991,6 +1233,10 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.TeamUpprovalStatus)
                 .HasConstraintName("FK_tbl_Requests_tbl_DecisionStatus1");
 
+            entity.HasOne(d => d.Type).WithMany(p => p.TblRequests)
+                .HasForeignKey(d => d.TypeId)
+                .HasConstraintName("FK_tbl_Requests_tbl_RequestAssignementTypes");
+
             entity.HasOne(d => d.UserUpprovalStatusNavigation).WithMany(p => p.TblRequestUserUpprovalStatusNavigations)
                 .HasForeignKey(d => d.UserUpprovalStatus)
                 .HasConstraintName("FK_tbl_Requests_tbl_DecisionStatus");
@@ -1013,6 +1259,15 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.TblRequestAssignees)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_tbl_RequestAssignees_tbl_InternalUsers");
+        });
+
+        modelBuilder.Entity<TblRequestAssignementType>(entity =>
+        {
+            entity.HasKey(e => e.TypeId);
+
+            entity.ToTable("tbl_RequestAssignementTypes");
+
+            entity.Property(e => e.TypeId).HasDefaultValueSql("(newid())");
         });
 
         modelBuilder.Entity<TblRequestDepartmentRelation>(entity =>
@@ -1121,6 +1376,20 @@ public partial class AtsdbContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("StatusID");
             entity.Property(e => e.Status).HasMaxLength(300);
+        });
+
+        modelBuilder.Entity<TblSubDebatePerformance>(entity =>
+        {
+            entity.HasKey(e => e.SubPerformanceId);
+
+            entity.ToTable("tbl_SubDebatePerformances");
+
+            entity.Property(e => e.SubPerformanceId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.PerformanceId).HasColumnName("PerformanceID");
+
+            entity.HasOne(d => d.Performance).WithMany(p => p.TblSubDebatePerformances)
+                .HasForeignKey(d => d.PerformanceId)
+                .HasConstraintName("FK_tbl_SubDebatePerformances_tbl_DebatePerformances");
         });
 
         modelBuilder.Entity<TblSubmenu>(entity =>

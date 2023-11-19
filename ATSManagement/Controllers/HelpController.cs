@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
+﻿using NToastNotify;
+using ATSManagement.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ATSManagement.Controllers
 {
-
+    [CheckSessionIsAvailable]
     public class HelpController : Controller
     {
         private readonly IToastNotification _toastNotification;

@@ -1,25 +1,30 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using NToastNotify;
 using ATSManagement.Models;
+using ATSManagement.IModels;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class AppointmentsController : Controller
     {
         private readonly AtsdbContext _context;
         //private readonly IToastNotification _toastNotification;
         private readonly ILogger _logger;
         private readonly INotyfService _notifyService;
-        public AppointmentsController(AtsdbContext context, IToastNotification toastNotification, INotyfService notyfService)
+        private readonly IMailService _mail;
+        public AppointmentsController(AtsdbContext context, INotyfService notyfService, IMailService mail)
         {
 
             _notifyService = notyfService;
             _context = context;
+            _mail=mail;
         }
 
         // GET: Appointments
@@ -142,8 +147,10 @@ namespace ATSManagement.Controllers
                 Text = a.FirstName + " " + a.MidleName,
                 Value = a.UserId.ToString()
             }).ToList();
-
+            app.CreatedDate = appointment.CreatedDate;
+            app.AppointmentDate= appointment.AppointmentDate;
             app.AppointmentID = id;
+            app.Remark=appointment.Remark;
             app.AppointmentDetail = appointment.AppointmentDetail;
             app.Institution = _context.TblInistitutions.Where(a => a.InistId == appointment.InistId).Select(s => s.Name).FirstOrDefault();
 
@@ -156,6 +163,7 @@ namespace ATSManagement.Controllers
         {
             List<TblAppointmentParticipant> tblAppointmentParticipants;
             TblAppointment tblAppointment = _context.TblAppointments.Find(model.AppointmentID);
+            var externalUser = _context.TblExternalUsers.Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Email).ToList();
             if (tblAppointment == null)
             {
                 return NotFound();
@@ -175,15 +183,15 @@ namespace ATSManagement.Controllers
             if (updated > 0)
             {
                 _notifyService.Success("Appointment Participants are assigned succeesfully. Email notification is will be sent to respective institution focal person.");
+                await SendMail(externalUser,"Appointment request from "+ tblAppointment.Inist.Name,"<h3>Please review the detail on Task Tracking Dashboard and reply</h3>");
                 return RedirectToAction(nameof(Index));
-
             }
             else
             {
-
+                _notifyService.Error("Appointment isn't successfull.Please try again.");
+                return View(model);
             }
 
-            return View();
         }
 
         public async Task<IActionResult> Delete(Guid? id)
@@ -235,6 +243,7 @@ namespace ATSManagement.Controllers
             TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(id);
             app.AppointmentDetail = tblAppointment.AppointmentDetail;
             app.CreatedDate = tblAppointment.CreatedDate;
+            app.AppointmentID = tblAppointment.AppointmentId;
             app.AppointmentDate = tblAppointment?.AppointmentDate;
             return View(app);
         }
@@ -263,6 +272,46 @@ namespace ATSManagement.Controllers
             }
 
         }
+        private async Task SendMail(List<string> to, string subject, string body)
+        {
+            var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
+            MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
+            bool sentResult = await _mail.SendAsync(data, new CancellationToken());
+        }
 
+        public async Task<IActionResult> ReplyBack(Guid? id)
+        {
+            AppointmentModel app = new AppointmentModel();
+            TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(id);
+            app.AppointmentDetail = tblAppointment.AppointmentDetail;
+            app.CreatedDate = tblAppointment.CreatedDate;
+            app.AppointmentID = tblAppointment.AppointmentId;
+            app.AppointmentDate = tblAppointment?.AppointmentDate;
+            return View(app);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> ReplyBack(AppointmentModel model)
+        {
+            TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(model.AppointmentID);
+            var externalUser = _context.TblExternalUsers.Include(x=>x.Inist).Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Email).ToList();
+            var instname = _context.TblInistitutions.Where(x=>x.InistId==tblAppointment.InistId).Select(x=>x.Name).FirstOrDefault();
+            tblAppointment.Remark = model.Remark;
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                _notifyService.Success("Successfully saved.");
+                await SendMail(externalUser, "Appointment Reply" + instname, "<h3>Please review the detail on Task Tracking Dashboard</h3>");
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _notifyService.Error("Data isn't added successfully. Please try again");
+                return View(model);
+            }
+
+        }
     }
 }

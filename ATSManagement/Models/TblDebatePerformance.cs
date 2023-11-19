@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
+
+public partial class TblDebatePerformance
+{
+    public Guid PerformanceId { get; set; }
+
+    public string? PreformanceName { get; set; }
+
+    public virtual ICollection<TblSubDebatePerformance> TblSubDebatePerformances { get; set; } = new List<TblSubDebatePerformance>();
+}

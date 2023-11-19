@@ -49,6 +49,10 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Department")]
         public Guid? DepId { get; set; }
         public IEnumerable<TblDepartment>? Departments { get; set; }
+        [Display(Name ="Team")]
+        public Guid? TeamID { get; set; }
+        public IEnumerable<TblTeam>? Teams { get; set; }
+
 
     }
 

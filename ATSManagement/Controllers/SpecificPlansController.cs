@@ -1,11 +1,13 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class SpecificPlansController : Controller
     {
         private readonly AtsdbContext _context;

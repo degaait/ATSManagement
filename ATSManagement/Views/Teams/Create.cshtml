@@ -1,0 +1,79 @@
+﻿@model ATSManagement.Models.TblTeam
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Teams
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create</h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-4 row">
+                                            <label asp-for="TeamName" class="col-3 col-form-label">Team Name</label>
+                                            <div class="col">
+                                                <input asp-for="TeamName" class="form-control" />
+                                                <span asp-validation-for="TeamName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4 row">
+                                            <label asp-for="DepId" class="col-3 col-form-label">Department</label>
+                                            <div class="col">
+                                                <select asp-for="DepId" class="form-control" asp-items="ViewBag.DepId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4 row">
+                                            <label asp-for="DepId" class="col-3 col-form-label">Team Description</label>
+                                            <div class="col">
+                                                <input asp-for="TeamDescription" class="form-control" />
+                                                <span asp-validation-for="TeamDescription" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+
+    }
+}
+

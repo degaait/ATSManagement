@@ -1,6 +1,7 @@
 ﻿using NToastNotify;
 using ATSManagement.Models;
 using ATSManagement.IModels;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class ExternalRequestsController : Controller
     {
         private readonly AtsdbContext _context;

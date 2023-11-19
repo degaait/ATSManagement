@@ -19,6 +19,8 @@ public partial class TblAppointment
 
     public DateTime? AppointmentDate { get; set; }
 
+    public string? Remark { get; set; }
+
     public virtual TblInistitution? Inist { get; set; }
 
     public virtual TblExternalUser? RequestedByNavigation { get; set; }

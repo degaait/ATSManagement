@@ -1,12 +1,14 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class InspectionInstitutionsController : Controller
     {
         private readonly AtsdbContext _context;

@@ -1,0 +1,204 @@
+﻿@model ATSManagement.Models.TblDebateWorkPerformanceReport
+@{
+    ViewData["Title"] = "የረቂቅ ውል ምርመራ/ዝግጅት አፈፃፀም ሪፖርት";
+}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        የረቂቅ ውል ምርመራ/ዝግጅት አፈፃፀም ሪፖርት
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                የረቂቅ ውል ምርመራ/ዝግጅት
+                            </h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="SubPerformanceId" class="col-4 col-form-label">የክርክር አፈጻጸም</label>
+                                            <div class="col">
+                                                <select asp-for="SubPerformanceId" id="drpSubPerformanceTypes" class="form-select" asp-items="ViewBag.subDebateTypes"></select>
+                                                <span asp-validation-for="SubPerformanceId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Id" class="col-4 col-form-label">ክንውን</label>
+                                            <div class="col">
+                                                <select asp-for="Id" class="form-select" id="drpEventTypes" asp-items="@(new SelectList(string.Empty,"Id","WorkPerformanceEventType"))"></select>
+                                                <span asp-validation-for="Id" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Womens" class="col-4 col-form-label">ሴት</label>
+                                            <div class="col">
+                                                <input asp-for="Womens" type="number" required required class="form-control" />
+                                                <span asp-validation-for="Womens" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Childrens" class="col-4 col-form-label">ህፃን</label>
+                                            <div class="col">
+                                                <input asp-for="Childrens" type="number" required class="form-control" />
+                                                <span asp-validation-for="Childrens" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="WomenElders" class="col-4 col-form-label">አረጋዊያን</label>
+                                            <div class="col">
+                                                <input asp-for="WomenElders" type="number" required class="form-control" />
+                                                <span asp-validation-for="WomenElders" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Hivpositives" class="col-4 col-form-label">ኤች አይቪ ፖዘቲቭ</label>
+                                            <div class="col">
+                                                <input asp-for="Hivpositives" type="number" required class="form-control" />
+                                                <span asp-validation-for="Hivpositives" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Mens" class="col-4 col-form-label">ወንድ</label>
+                                            <div class="col">
+                                                <input asp-for="Mens" type="number" required class="form-control" />
+                                                <span asp-validation-for="Mens" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="OtherServants" class="col-4 col-form-label">ሌሎች</label>
+                                            <div class="col">
+                                                <input asp-for="OtherServants" type="number" required class="form-control" />
+                                                <span asp-validation-for="OtherServants" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="TotalServant" class="col-4 col-form-label">ድምር</label>
+                                            <div class="col">
+                                                <input asp-for="TotalServant" type="number" required class="form-control" />
+                                                <span asp-validation-for="TotalServant" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3 row">
+                                            <label asp-for="OutofContact" class="col-4 col-form-label">ከውል ውጭ ኃላፊነት</label>
+                                            <div class="col">
+                                                <input asp-for="OutofContact" type="number" required class="form-control" />
+                                                <span asp-validation-for="OutofContact" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Family" class="col-4 col-form-label">ቤተሰብ</label>
+                                            <div class="col">
+                                                <input asp-for="Family" type="number" required class="form-control" />
+                                                <span asp-validation-for="Family" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Property" class="col-4 col-form-label">ውርስ/ንብረት</label>
+                                            <div class="col">
+                                                <input asp-for="Property" type="number" required class="form-control" />
+                                                <span asp-validation-for="Property" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="WorkDebate" class="col-4 col-form-label">ስራ ክርክር</label>
+                                            <div class="col">
+                                                <input asp-for="WorkDebate" type="number" required class="form-control" />
+                                                <span asp-validation-for="WorkDebate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="OtherCaseTypes" class="col-4 col-form-label">ሌሎች</label>
+                                            <div class="col">
+                                                <input asp-for="OtherCaseTypes" type="number" required class="form-control" />
+                                                <span asp-validation-for="OtherCaseTypes" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3 row">
+                                            <label asp-for="JudgementMoneyAmmount" class="col-4 col-form-label">ዳኝነት የተጠየቀበት የገንዘብ መጠን</label>
+                                            <div class="col">
+                                                <input asp-for="JudgementMoneyAmmount" type="number" required class="form-control" />
+                                                <span asp-validation-for="JudgementMoneyAmmount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="JudgementVerifiedAmmount" class="col-4 col-form-label">የተወሰነ የገንዘብ መጠን</label>
+                                            <div class="col">
+                                                <input asp-for="JudgementVerifiedAmmount" type="number" required class="form-control" />
+                                                <span asp-validation-for="JudgementVerifiedAmmount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="YearId" class="col-4 col-form-label">ዓመት</label>
+                                            <div class="col">
+                                                <select asp-for="YearId" class="form-select" asp-items="ViewBag.YearId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="MonthId" class="col-4 col-form-label">ወር</label>
+                                            <div class="col">
+                                                <select asp-for="MonthId" class="form-select" asp-items="ViewBag.MonthId"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var items = "<option value='00000000-0000-0000-0000-000000000000'>--ምረጥ--</option>";
+            $('#drpEventTypes').html(items);
+        });
+    </script>
+    <script type="text/javascript">
+       $(document).ready(function () {
+           $('#drpSubPerformanceTypes').change(function () {
+               var url = '@Url.Content("~/")' + "DebateWorkPerformanceReports/GetEventTypes";
+               var ddlsource = "#drpSubPerformanceTypes";
+               $.getJSON(url, { SubPerformanceId: $(ddlsource).val() }, function (data) {
+                   var items = '';
+                   $("#drpEventTypes").empty();
+                   $.each(data, function (i, eventTypes) {
+                       items += "<option value='" + eventTypes.value + "'>" + eventTypes.text + "</option>";
+                   });
+                   $('#drpEventTypes').html(items);
+               });
+           });
+       });
+    </script>
+}

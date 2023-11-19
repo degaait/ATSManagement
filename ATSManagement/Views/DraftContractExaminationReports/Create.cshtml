@@ -1,0 +1,96 @@
+﻿@model ATSManagement.Models.TblDraftContractExaminationReport
+
+@{
+    ViewData["Title"] = "የረቂቅ ውል ምርመራ/ዝግጅት አፈፃፀም ሪፖርት";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        የረቂቅ ውል ምርመራ/ዝግጅት አፈፃፀም ሪፖርት
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                የረቂቅ ውል ምርመራ/ዝግጅት
+                            </h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-2 row">
+                                            <label asp-for="QuestionSubmitter" class="col-3 col-form-label">ጥያቄ ያቀረበው አካል</label>
+                                            <div class="col">
+                                                <input asp-for="QuestionSubmitter" required class="form-control" />
+                                                <span asp-validation-for="QuestionSubmitter" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2 row">
+                                            <label asp-for="CaseType" class="col-3 col-form-label">የጉዳዩ ዓይነት</label>
+                                            <div class="col">
+                                                <input asp-for="CaseType" class="form-control" required />
+                                                <span asp-validation-for="CaseType" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2 row">
+                                            <label asp-for="FullMoneyAmmount" class="col-3 col-form-label">የውሉ የገንዘብ መጠን</label>
+                                            <div class="col">
+                                                <input asp-for="FullMoneyAmmount" type="number" required class="form-control" />
+                                                <span asp-validation-for="FullMoneyAmmount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-2 row">
+                                            <label asp-for="Investigation" class="col-3 col-form-label">ምርመራ</label>
+                                            <div class="col">
+                                                <input asp-for="Investigation" required class="form-control" />
+                                                <span asp-validation-for="Investigation" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2 row">
+                                            <label asp-for="YearId" class="col-3 col-form-label">ዓመት</label>
+                                            <div class="col">
+                                                <select asp-for="YearId" class="form-control" asp-items="ViewBag.YearId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2 row">
+                                            <label asp-for="MonthId" class="col-3 col-form-label">ወር</label>
+                                            <div class="col">
+                                                <select asp-for="MonthId" class="form-control" asp-items="ViewBag.MonthId"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

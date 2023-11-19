@@ -1,6 +1,7 @@
 ﻿using NToastNotify;
 using ATSManagement.Models;
 using ATSManagement.IModels;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class CivilJusticesController : Controller
     {
         private readonly AtsdbContext _context;
@@ -28,23 +30,22 @@ namespace ATSManagement.Controllers
         {
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
-            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a=>a.RequestId).DistinctBy(x=>x.Value).ToList();
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a=>a.RequestId).ToList();
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
-                                                                      .Include(t => t.AssignedByNavigation)
-                                                                      .Include(t => t.CaseType)
-                                                                      .Include(t => t.Inist)
-                                                                      .Include(t => t.RequestedByNavigation)
-                                                                      .Include(t => t.CreatedByNavigation)
-                                                                      .Include(x => x.ExternalRequestStatus)
-                                                                      .Include(x => x.DepartmentUpprovalStatusNavigation)
-                                                                      .Include(x => x.DeputyUprovalStatusNavigation)
-                                                                      .Include(y => y.TeamUpprovalStatusNavigation)
-                                                                      .Include(t => t.Priority).Where(x => x.RequestId==item).FirstOrDefault();
+                    .Include(t => t.AssignedByNavigation)
+                    .Include(t => t.CaseType)
+                    .Include(t => t.Inist)
+                    .Include(t => t.RequestedByNavigation)
+                    .Include(t => t.CreatedByNavigation)
+                    .Include(x => x.ExternalRequestStatus)
+                    .Include(x => x.DepartmentUpprovalStatusNavigation)
+                    .Include(x => x.DeputyUprovalStatusNavigation)
+                    .Include(y => y.TeamUpprovalStatusNavigation)
+                    .Include(t => t.Priority).Where(x => x.RequestId==item).FirstOrDefault();
                 atsdbContext.Add(tblRequest);
-            }
-          
+            }          
             return View(atsdbContext);
         }
         public async Task<IActionResult> AddActivity(Guid? id)
@@ -607,7 +608,7 @@ namespace ATSManagement.Controllers
 
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
-            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).DistinctBy(x=>x.Value).ToList();
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).ToList();
             foreach (var item in moreDeps)
             {
                  tblRequest = _context.TblRequests
@@ -630,7 +631,7 @@ namespace ATSManagement.Controllers
 
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
-            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).DistinctBy(x => x.Value).ToList();
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).ToList();
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
@@ -968,7 +969,6 @@ namespace ATSManagement.Controllers
             }
             return View(model);
         }
-
         public async Task<IActionResult> UppdateDesicionStatus(Guid? id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();

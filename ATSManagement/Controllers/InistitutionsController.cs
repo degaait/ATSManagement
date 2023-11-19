@@ -1,10 +1,12 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class InistitutionsController : Controller
     {
         private readonly AtsdbContext _context;

@@ -1,6 +1,7 @@
 ﻿using NToastNotify;
 using ATSManagement.Models;
 using ATSManagement.IModels;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class RequestsController : Controller
     {
         private readonly AtsdbContext _context;
@@ -163,7 +165,6 @@ namespace ATSManagement.Controllers
 
             return View(tblRequest);
         }
-
         public IActionResult Create()
         {
             ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
@@ -183,7 +184,6 @@ namespace ATSManagement.Controllers
             ViewData["UserUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId");
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RequestId,RequestDetail,InistId,RequestedBy,CreatedDate,CreatedBy,DepId,CaseTypeId,AssignedBy,AssignedDate,DueDate,AssingmentRemark,AssignedTo,ExternalRequestStatusId,TopStatus,PriorityId,UserUpprovalStatus,TeamUpprovalStatus,DeputyUprovalStatus,DepartmentUpprovalStatus,DocTypeId,QuestTypeId,FinalReport,DocumentFile,ServiceTypeId,RequestRound")] TblRequest tblRequest)
@@ -212,7 +212,6 @@ namespace ATSManagement.Controllers
             ViewData["UserUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.UserUpprovalStatus);
             return View(tblRequest);
         }
-
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.TblRequests == null)
@@ -288,8 +287,6 @@ namespace ATSManagement.Controllers
             ViewData["UserUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.UserUpprovalStatus);
             return View(tblRequest);
         }
-
-
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblRequests == null)
@@ -322,7 +319,6 @@ namespace ATSManagement.Controllers
             return View(tblRequest);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -340,7 +336,6 @@ namespace ATSManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool TblRequestExists(Guid id)
         {
             return (_context.TblRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
@@ -383,7 +378,6 @@ namespace ATSManagement.Controllers
                 .Include(t => t.UserUpprovalStatusNavigation).Where(x =>  x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73"));
             return View(await atsdbContext.ToListAsync());
         }
-
         public async Task<IActionResult> DownloadEvidenceFile(string path)
         {
             string filename = path.Substring(7);

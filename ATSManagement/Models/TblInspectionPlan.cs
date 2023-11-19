@@ -17,7 +17,7 @@ public partial class TblInspectionPlan
 
     public Guid? UserId { get; set; }
 
-    public string? InspectionYear { get; set; }
+    public Guid? YearId { get; set; }
 
     public Guid? StatusId { get; set; }
 
@@ -32,4 +32,6 @@ public partial class TblInspectionPlan
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 
     public virtual TblInternalUser? User { get; set; }
+
+    public virtual TblYear? Year { get; set; }
 }

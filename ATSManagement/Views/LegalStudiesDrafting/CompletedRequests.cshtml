@@ -106,7 +106,7 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users).ToList();
 
                                         <tr>
                                             <td>
@@ -159,8 +159,8 @@
                                                 {
                                                     foreach (var assignees in assigneess)
                                                     {
-                                                        @Html.DisplayFor(modelItem => assignees.FirstName)
-                                                        @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                        @Html.DisplayFor(modelItem => assignees.User.FirstName)
+                                                        @Html.DisplayFor(modelItem => assignees.User.MidleName)
                                                     }
                                                 }
                                             </td>

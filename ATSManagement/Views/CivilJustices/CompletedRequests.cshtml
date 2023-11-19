@@ -106,8 +106,8 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        var isRequest = (from items in ats.TblCivilJustices where items.RequestId == item.RequestId select items).FirstOrDefault();
-                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
+                                        // var isRequest = (from items in ats.TblRequests where items.RequestId == item.RequestId select items).FirstOrDefault();
+                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
 
                                         <tr>
                                             <td>

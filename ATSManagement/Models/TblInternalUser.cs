@@ -33,11 +33,15 @@ public partial class TblInternalUser
 
     public bool IsActive { get; set; }
 
+    public Guid? TeamId { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual ICollection<TblActivity> TblActivities { get; set; } = new List<TblActivity>();
 
     public virtual ICollection<TblAdjornment> TblAdjornments { get; set; } = new List<TblAdjornment>();
+
+    public virtual ICollection<TblAdractivitiesReport> TblAdractivitiesReports { get; set; } = new List<TblAdractivitiesReport>();
 
     public virtual ICollection<TblAppointmentParticipant> TblAppointmentParticipants { get; set; } = new List<TblAppointmentParticipant>();
 
@@ -55,11 +59,19 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblCivilJusticeRequestReply> TblCivilJusticeRequestReplies { get; set; } = new List<TblCivilJusticeRequestReply>();
 
+    public virtual ICollection<TblDebateWorkPerformanceReport> TblDebateWorkPerformanceReports { get; set; } = new List<TblDebateWorkPerformanceReport>();
+
     public virtual ICollection<TblDocumentHistory> TblDocumentHistories { get; set; } = new List<TblDocumentHistory>();
+
+    public virtual ICollection<TblDraftContractExaminationReport> TblDraftContractExaminationReports { get; set; } = new List<TblDraftContractExaminationReport>();
 
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();
+
+    public virtual ICollection<TblInstotutionMonitoringReport> TblInstotutionMonitoringReports { get; set; } = new List<TblInstotutionMonitoringReport>();
+
+    public virtual ICollection<TblLegalAdviceReport> TblLegalAdviceReports { get; set; } = new List<TblLegalAdviceReport>();
 
     public virtual ICollection<TblLegalStudiesActivity> TblLegalStudiesActivities { get; set; } = new List<TblLegalStudiesActivity>();
 
@@ -86,4 +98,6 @@ public partial class TblInternalUser
     public virtual ICollection<TblTeam> TblTeams { get; set; } = new List<TblTeam>();
 
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
+
+    public virtual TblTeam? Team { get; set; }
 }

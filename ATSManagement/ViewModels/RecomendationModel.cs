@@ -11,24 +11,18 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         [DisplayFormat(HtmlEncode = true)]
         public string? Recomendation { get; set; }
-
         [Display(Name = "Inistitutions")]
         public List<SelectListItem>? Inistitutions { get; set; }
-
         [Required(ErrorMessage = "Required")]
         public Guid? InistId { get; set; }
-
         [Display(Name = "Status")]
-
         public List<SelectListItem>? Status { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? RecostatusID { get; set; }
-
+        public Guid? YearId { get; set; }
         [Display(Name = "Evaluation year")]
         [Required(ErrorMessage = "*")]
-        [DisplayFormat(ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
-        public DateTime? EvaluationYear { get; set; }
+        public IEnumerable<SelectListItem>? Years { get; set; }
 
         [Display(Name = "Created by")]
         [Required(ErrorMessage = "*")]

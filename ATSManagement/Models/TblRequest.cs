@@ -65,6 +65,8 @@ public partial class TblRequest
 
     public string? PhoneNumber { get; set; }
 
+    public Guid? TypeId { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
     public virtual TblCivilJusticeCaseType? CaseType { get; set; }
@@ -108,6 +110,8 @@ public partial class TblRequest
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 
     public virtual TblDecisionStatus? TeamUpprovalStatusNavigation { get; set; }
+
+    public virtual TblRequestAssignementType? Type { get; set; }
 
     public virtual TblDecisionStatus? UserUpprovalStatusNavigation { get; set; }
 }

@@ -63,7 +63,13 @@
                                         <div class="mb-3 row">
                                             <label asp-for="DepId" class="col-3 col-form-label">Department</label>
                                             <div class="col">
-                                                <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
+                                                <select asp-for="DepId" id="drpDepartment" class="form-select" asp-items="ViewBag.DepId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="TeamID" class="col-3 col-form-label">Team</label>
+                                            <div class="col">
+                                                <select asp-for="TeamID" class="form-control" id="drpTeam" asp-items="@(new SelectList(string.Empty,"TeamId","TeamName"))"></select>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -146,5 +152,27 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
+    }
+    <script type="text/javascript">
+     $(document).ready(function () {
+         var items = "<option value='0'>Select</option>";
+         $('#drpTeam').html(items);
+     });
+    </script>
+    <script type="text/javascript">
+     $(document).ready(function () {
+         $('#drpDepartment').change(function () {
+             var url = '@Url.Content("~/")' + "InternalUsers/GetTeams";
+             var ddlsource = "#drpDepartment";
+             $.getJSON(url, { DepId: $(ddlsource).val() }, function (data) {
+                 var items = '';
+                 $("#drpTeam").empty();
+                 $.each(data, function (i, subcategory) {
+                     items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
+                 });
+                 $('#drpTeam').html(items);
+             });
+         });
+     });
+    </script>
 }

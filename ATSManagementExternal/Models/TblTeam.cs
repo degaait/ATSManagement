@@ -17,5 +17,7 @@ public partial class TblTeam
 
     public virtual TblDepartment? Dep { get; set; }
 
+    public virtual ICollection<TblInternalUser> TblInternalUsers { get; set; } = new List<TblInternalUser>();
+
     public virtual TblInternalUser? TeamLeader { get; set; }
 }

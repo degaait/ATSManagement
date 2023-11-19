@@ -148,7 +148,11 @@
                                                 @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
                                             </td>
                                             <td>
+                                                @if (item.Priority != null)
+                                                {
                                                 @Html.Raw(item.Priority.PriorityNameWithColor)
+                                                }
+
                                             </td>
                                             <td>
                                                 @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)

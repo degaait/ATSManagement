@@ -2,11 +2,13 @@
 using System.Diagnostics;
 using ATSManagement.Models;
 using ATSManagement.IModels;
+using ATSManagement.Filters;
 using Microsoft.AspNetCore.Mvc;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

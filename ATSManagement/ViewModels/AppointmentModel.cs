@@ -23,5 +23,8 @@ namespace ATSManagement.ViewModels
         [Display(Name ="Final OutCome")]
         [DisplayFormat(ApplyFormatInEditMode = true)]
         public string? FinalOutCome {  get; set; }
+        [Display(Name = "Remark")]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
+        public string? Remark { get; set; }
     }
 }

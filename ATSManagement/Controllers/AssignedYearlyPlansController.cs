@@ -1,14 +1,16 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class AssignedYearlyPlansController : Controller
     {
         private readonly AtsdbContext _context;
@@ -52,7 +54,6 @@ namespace ATSManagement.Controllers
             return View(tblAssignedYearlyPlan);
         }
 
-        // GET: AssignedYearlyPlans/Create
         public IActionResult Create(Guid? id)
         {
             ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
@@ -60,9 +61,6 @@ namespace ATSManagement.Controllers
             return View();
         }
 
-        // POST: AssignedYearlyPlans/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,AssignedTo,AssignedBy,PlanId,AssignedDate,DueDate,EvaluationCheckLists,EngagementLetter,MeetingLetter,Remark,ProgressStatus")] TblAssignedYearlyPlan tblAssignedYearlyPlan)
@@ -97,9 +95,6 @@ namespace ATSManagement.Controllers
             return View(tblAssignedYearlyPlan);
         }
 
-        // POST: AssignedYearlyPlans/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,AssignedTo,AssignedBy,PlanId,AssignedDate,DueDate,EvaluationCheckLists,EngagementLetter,MeetingLetter,Remark,ProgressStatus")] TblAssignedYearlyPlan tblAssignedYearlyPlan)
@@ -134,7 +129,6 @@ namespace ATSManagement.Controllers
             return View(tblAssignedYearlyPlan);
         }
 
-        // GET: AssignedYearlyPlans/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblAssignedYearlyPlans == null)
@@ -153,8 +147,6 @@ namespace ATSManagement.Controllers
 
             return View(tblAssignedYearlyPlan);
         }
-
-        // POST: AssignedYearlyPlans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

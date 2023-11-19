@@ -1,6 +1,8 @@
 ﻿using NToastNotify;
+using System.Numerics;
 using ATSManagement.Models;
 using ATSManagement.IModels;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class InispectionPlansController : Controller
     {
         private readonly AtsdbContext _context;
@@ -25,15 +28,13 @@ namespace ATSManagement.Controllers
             _mail = mail;
         }
 
-        // GET: InispectionPlans
         public async Task<IActionResult> Index()
         {
 
-            var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status);
+            var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status).Include(s=>s.Year);
             return View(await atsdbContext.ToListAsync());
         }
 
-        // GET: InispectionPlans/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblInspectionPlans == null)
@@ -52,7 +53,6 @@ namespace ATSManagement.Controllers
             return View(tblInspectionPlan);
         }
 
-        // GET: InispectionPlans/Create
         public IActionResult Create()
         {
             InispectionPlan plan = new InispectionPlan();
@@ -61,50 +61,99 @@ namespace ATSManagement.Controllers
                 Text = a.Name,
                 Value = a.InistId.ToString(),
             }).ToList();
-
+            plan.InspectionYear = _context.TblYears.Select(a=> new SelectListItem
+            {
+                Value= a.YearId.ToString(),
+                Text=a.Year
+            }).ToList();
             plan.CreationDate = DateTime.Now;
             return View(plan);
         }
 
-        // POST: InispectionPlans/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InispectionPlan inispectionPlan)
         {
-            TblInspectionPlan tible = new TblInspectionPlan();
-            List<TblPlanInistitution> plan_in = new List<TblPlanInistitution>();
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            if (ModelState.IsValid)
+            try
             {
-                tible.PlanTitle = inispectionPlan.PlanTitle;
-                tible.PlanDescription = inispectionPlan.PlanDescription;
-                tible.CreationDate = DateTime.Now;
-               // tible.InspectionYear = inispectionPlan.InspectionYear;
-                tible.UserId = userId;
-                tible.StatusId = _context.TblStatuses.Where(A => A.Status == "New").Select(A => A.StatusId).FirstOrDefault();
-                if (inispectionPlan.InistId.Length > 0)
+                TblInspectionPlan tible = new TblInspectionPlan();
+                List<TblPlanInistitution> plan_in = new List<TblPlanInistitution>();
+                Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+                if (ModelState.IsValid)
                 {
-                    plan_in = new List<TblPlanInistitution>();
-                    foreach (var item in inispectionPlan.InistId)
+                    tible.PlanTitle = inispectionPlan.PlanTitle;
+                    tible.PlanDescription = inispectionPlan.PlanDescription;
+                    tible.CreationDate = DateTime.Now;
+                    tible.YearId = inispectionPlan.YearId;
+                    tible.UserId = userId;
+                    tible.StatusId = _context.TblStatuses.Where(A => A.Status == "New").Select(A => A.StatusId).FirstOrDefault();
+                    if (inispectionPlan.InistId.Length > 0)
                     {
-                        plan_in.Add(new TblPlanInistitution { InistId = item, PlanId = inispectionPlan.InspectionPlanId });
+                        plan_in = new List<TblPlanInistitution>();
+                        foreach (var item in inispectionPlan.InistId)
+                        {
+                            plan_in.Add(new TblPlanInistitution { InistId = item, PlanId = inispectionPlan.InspectionPlanId });
+                        }
+                        tible.TblPlanInistitutions = plan_in;
                     }
-                    tible.TblPlanInistitutions = plan_in;
+                    _context.TblInspectionPlans.Add(tible);
+                    int saved = await _context.SaveChangesAsync();
+                    if (saved > 0)
+                    {
+                        _notifyService.Success("Plan is created successfully");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _notifyService.Error("Plan isn't created successfully. Please try again");
+                        inispectionPlan.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
+                        {
+                            Text = a.Name,
+                            Value = a.InistId.ToString(),
+                        }).ToList();
+                        inispectionPlan.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+                        {
+                            Value = a.YearId.ToString(),
+                            Text = a.Year
+                        }).ToList();
+                        return View(inispectionPlan);
+                    }
                 }
-                _context.TblInspectionPlans.Add(tible);
-                int saved = await _context.SaveChangesAsync();
-                if (saved>0)
+                else
                 {
-                    _notifyService.Success("Plan created successfully");
+                    _notifyService.Error("Please fill all neccessary field and try again");
+                    inispectionPlan.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
+                    {
+                        Text = a.Name,
+                        Value = a.InistId.ToString(),
+                    }).ToList();
+                    inispectionPlan.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+                    {
+                        Value = a.YearId.ToString(),
+                        Text = a.Year
+                    }).ToList();
+                    return View(inispectionPlan);
                 }
-                return RedirectToAction(nameof(Index));
+               
             }
-            return View(inispectionPlan);
+            catch (Exception ex)
+            {
+                _notifyService.Error($"Error:{ex.Message}. Please  try again");
+                inispectionPlan.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.InistId.ToString(),
+                }).ToList();
+                inispectionPlan.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+                {
+                    Value = a.YearId.ToString(),
+                    Text = a.Year
+                }).ToList();
+                return View(inispectionPlan);
+            }        
         }
 
-        // GET: InispectionPlans/Edit/5
         public Task<IActionResult> Edit(Guid? id)
         {
             InispectionPlan inispection = new InispectionPlan();
@@ -117,8 +166,7 @@ namespace ATSManagement.Controllers
             var tblInspectionPlan = _context.TblInspectionPlans.Include("TblPlanInistitutions").FirstOrDefault(a => a.InspectionPlanId == id.Value);
             tblInspectionPlan.TblPlanInistitutions.ToList().ForEach(x => InistId.Add((Guid)x.InistId));
             inispection.PlanTitle = tblInspectionPlan.PlanTitle;
-            inispection.PlanDescription = tblInspectionPlan.PlanDescription;
-           // inispection.InspectionYear = tblInspectionPlan.InspectionYear;
+            inispection.PlanDescription = tblInspectionPlan.PlanDescription;           
             inispection.ModificationDate = tblInspectionPlan.ModificationDate;
             inispection.InspectionPlanId = tblInspectionPlan.InspectionPlanId;
             inispection.CreationDate = tblInspectionPlan.CreationDate;
@@ -128,6 +176,12 @@ namespace ATSManagement.Controllers
                 Value = a.InistId.ToString(),
 
             }).ToList();
+            inispection.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+            {
+                Value = a.YearId.ToString(),
+                Text = a.Year
+            }).ToList();
+            inispection.YearId = tblInspectionPlan.YearId;
             inispection.InistId = InistId.ToArray();
             if (tblInspectionPlan == null)
             {
@@ -137,9 +191,6 @@ namespace ATSManagement.Controllers
             return Task.FromResult<IActionResult>(View(inispection));
         }
 
-        // POST: InispectionPlans/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(InispectionPlan model)
@@ -158,7 +209,7 @@ namespace ATSManagement.Controllers
                     tible.PlanDescription = model.PlanDescription;
                     tible.CreationDate = model.CreationDate;
                     tible.ModificationDate = DateTime.Now;
-                    //tible.InspectionYear = model.InspectionYear;
+                    tible.YearId = model.YearId;
                     if (model.InistId.Length > 0)
                     {
                         plan_in = new List<TblPlanInistitution>();
@@ -171,15 +222,28 @@ namespace ATSManagement.Controllers
                     int updated = await _context.SaveChangesAsync();
                     if (updated > 0)
                     {
+                        _notifyService.Success("Plan is updated successfully");
                         return RedirectToAction("Index");
                     }
                     else
                     {
+                        _notifyService.Success("Plan isn't updated successfully. Please try again");
+                        model.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
+                        {
+                            Text = a.Name,
+                            Value = a.InistId.ToString(),
+
+                        }).ToList();
+                        model.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+                        {
+                            Value = a.YearId.ToString(),
+                            Text = a.Year
+                        }).ToList();
                         return View(model);
                     }
 
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!TblInspectionPlanExists(model.InspectionPlanId))
                     {
@@ -187,15 +251,40 @@ namespace ATSManagement.Controllers
                     }
                     else
                     {
-                        throw;
+                        _notifyService.Success($"Error:{ex.Message} happened. Please try again");
+                        model.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
+                        {
+                            Text = a.Name,
+                            Value = a.InistId.ToString(),
+
+                        }).ToList();
+                        model.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+                        {
+                            Value = a.YearId.ToString(),
+                            Text = a.Year
+                        }).ToList();
+                        return View(model);
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(model);
+            else
+            {
+                _notifyService.Success("Please fill all neccessary fields and try again");
+                model.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.InistId.ToString(),
+
+                }).ToList();
+                model.InspectionYear = _context.TblYears.Select(a => new SelectListItem
+                {
+                    Value = a.YearId.ToString(),
+                    Text = a.Year
+                }).ToList();
+                return View(model);
+            }
         }
 
-        // GET: InispectionPlans/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblInspectionPlans == null)
@@ -214,7 +303,6 @@ namespace ATSManagement.Controllers
             return View(tblInspectionPlan);
         }
 
-        // POST: InispectionPlans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

@@ -1,13 +1,15 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
 using ATSManagement.Security;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class InternalUsersController : Controller
     {
         private readonly AtsdbContext _context;
@@ -17,15 +19,11 @@ namespace ATSManagement.Controllers
             _toastNotification = toastNotification;
             _context = context;
         }
-
-        // GET: InternalUsers
         public async Task<IActionResult> Index()
         {
             var atsdbContext = _context.TblInternalUsers.Include(t => t.Dep);
             return View(await atsdbContext.ToListAsync());
-        }
-
-        // GET: InternalUsers/Details/5
+        }     
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblInternalUsers == null)
@@ -43,8 +41,6 @@ namespace ATSManagement.Controllers
 
             return View(tblInternalUser);
         }
-
-        // GET: InternalUsers/Create
         public IActionResult Create()
         {
             UserModel user = new UserModel();
@@ -53,11 +49,7 @@ namespace ATSManagement.Controllers
 
             ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName");
             return View(user);
-        }
-
-        // POST: InternalUsers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        }        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserModel userModel)
@@ -100,7 +92,11 @@ namespace ATSManagement.Controllers
                 tblInternalUser.Password = PawwordEncryption.EncryptPasswordBase64Strig(userModel.Password);
                 tblInternalUser.EmailAddress = userModel.EmailAddress;
                 tblInternalUser.DepId = userModel.DepId;
-
+                if (userModel.TeamID.ToString()!="0")
+                {
+                    tblInternalUser.TeamId = userModel.TeamID;
+                }
+              
                 _context.Add(tblInternalUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -108,8 +104,6 @@ namespace ATSManagement.Controllers
             ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", userModel.DepId);
             return View(userModel);
         }
-
-        // GET: InternalUsers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             UserModel userModel = new UserModel();
@@ -174,10 +168,6 @@ namespace ATSManagement.Controllers
             ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", tblInternalUser.DepId);
             return View(userModel);
         }
-
-        // POST: InternalUsers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserModel userModel)
@@ -200,6 +190,10 @@ namespace ATSManagement.Controllers
                     tblInternalUser.EmailAddress = userModel.EmailAddress;
                     tblInternalUser.IsActive = userModel.IsActive;
                     tblInternalUser.IsSuperAdmin = userModel.IsSuperAdmin;
+                    if (userModel.TeamID.ToString() != "0")
+                    {
+                        tblInternalUser.TeamId = userModel.TeamID;
+                    }
                     if (userModel.specialRoles.ToString() == "IsDeputy")
                     {
                         tblInternalUser.IsDeputy = true;
@@ -244,8 +238,6 @@ namespace ATSManagement.Controllers
             ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", userModel.DepId);
             return View(userModel);
         }
-
-        // GET: InternalUsers/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblInternalUsers == null)
@@ -264,7 +256,6 @@ namespace ATSManagement.Controllers
             return View(tblInternalUser);
         }
 
-        // POST: InternalUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -282,10 +273,15 @@ namespace ATSManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool TblInternalUserExists(Guid id)
         {
             return (_context.TblInternalUsers?.Any(e => e.UserId == id)).GetValueOrDefault();
+        }
+        public JsonResult GetTeams(Guid? DepId)
+        {
+            List<TblTeam> subcategoryModels = new List<TblTeam>();
+            subcategoryModels = (from items in _context.TblTeams where items.DepId == DepId select items).ToList();
+            return Json(new SelectList(subcategoryModels, "TeamId", "TeamName"));
         }
     }
 }

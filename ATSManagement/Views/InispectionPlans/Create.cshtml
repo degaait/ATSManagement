@@ -54,17 +54,17 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
+                                            <label asp-for="YearId" class="col-3 col-form-label">Inispection year</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.YearId, new SelectList(Model.InspectionYear, "Value", "Text"), htmlAttributes: new { @class = "form-select", @readonly = true })
+                                                <span asp-validation-for="YearId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
                                             <label class="col-3 col-form-label">Creation date</label>
                                             <div class="col">
                                                 <input asp-for="CreationDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreationDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Inispection year</label>
-                                            <div class="col">
-                                                <input asp-for="InspectionYear" id="inpic" class="form-control" />
-                                                <span asp-validation-for="InspectionYear" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
- 
+
     <script>
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -113,5 +113,32 @@
                 },
             }));
         });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#PlanDescription',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
     </script>
 }
