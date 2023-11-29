@@ -25,13 +25,9 @@
                     Requests
                 </h2>
             </div>
-            <!-- Page title actions -->
-
         </div>
     </div>
 </div>
-
-<!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
@@ -137,7 +133,6 @@
                                                 {
                                                     @Html.Raw(item.Priority.PriorityNameWithColor)
                                                 }
-
                                             </td>
                                             <td>
                                                 @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
@@ -158,16 +153,15 @@
                                             <td>
                                                 @foreach (var assignees in assigneess)
                                                 {
-                                                    @Html.DisplayFor(modelItem => assignees.FirstName)
-                                                    @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                    @Html.DisplayFor(modelItem => assignees.EmailAddress) 
+                                                    <br />
                                                 }
-
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                                <label>Civil Justice Administration</label>
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Inist.Name)
@@ -180,7 +174,6 @@
                                                 @if (item.FinalReport != null)
                                                 {
                                                     <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.FinalReport">
-
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>

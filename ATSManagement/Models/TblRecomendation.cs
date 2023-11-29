@@ -23,9 +23,17 @@ public partial class TblRecomendation
 
     public bool IsActive { get; set; }
 
+    public Guid? LawId { get; set; }
+
+    public string? ReportPath { get; set; }
+
+    public string? RecomendationTitle { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblInistitution? Inist { get; set; }
+
+    public virtual TblInspectionLaw? Law { get; set; }
 
     public virtual TblRecomendationStatus? Recostatus { get; set; }
 

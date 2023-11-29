@@ -1,4 +1,6 @@
 ﻿using ATSManagement.Models;
+using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
@@ -12,11 +14,9 @@ namespace ATSManagement.ViewModels
         public string? UserName { get; set; }
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "*")]
         public string? Password { get; set; }
         [Display(Name = "Confirm Password")]
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Confirmation Password is required.")]
         [Compare("Password", ErrorMessage = "New password and Confirmation password must match.")]
         public string? ConfirmPassword { get; set; }
         [Required(ErrorMessage = "*")]
@@ -45,22 +45,26 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Is Team leader?")]
         public SpecialRoles specialRoles { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Department")]
         public Guid? DepId { get; set; }
-        public IEnumerable<TblDepartment>? Departments { get; set; }
+        public IEnumerable<SelectListItem>? Departments { get; set; }
         [Display(Name ="Team")]
         public Guid? TeamID { get; set; }
-        public IEnumerable<TblTeam>? Teams { get; set; }
+        public IEnumerable<SelectListItem>? Teams { get; set; }
 
 
     }
 
     public enum SpecialRoles
     {
+        [DataMember(Name = "Is Deputy?")]
         IsDeputy,
+        [DataMember(Name ="Is Department head")]
         IsDepartmentHead,
+        [DataMember(Name = "Is Team leader?")]
         IsTeamLeader,
+        [DataMember(Name = "Is Default User?")]
+        DefaultUser,
     }
 
 }

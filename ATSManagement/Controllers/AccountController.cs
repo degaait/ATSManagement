@@ -1,10 +1,10 @@
-﻿using ATSManagement.Models;
+﻿using NToastNotify;
+using System.Text.Json;
+using ATSManagement.Models;
 using ATSManagement.Security;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
-using System.Text.Json;
 
 namespace ATSManagement.Controllers
 {
@@ -41,7 +41,7 @@ namespace ATSManagement.Controllers
             {
                 string realPas = PawwordEncryption.DecryptPasswordBase64String("MTIzNDU2");
                 string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
-                TblInternalUser userinfo = (from items in _context.TblInternalUsers where items.UserName == collection.UserName && items.Password == password select items).FirstOrDefault();
+                TblInternalUser userinfo = (from items in _context.TblInternalUsers where (items.UserName == collection.UserName && items.Password == password)||(items.EmailAddress==collection.UserName &&items.Password==password)  select items).FirstOrDefault();
 
                 if (userinfo != null)
                 {

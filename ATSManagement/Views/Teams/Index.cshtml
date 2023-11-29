@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblTeam>
-
+@inject AtsdbContext ats;
 @{
     ViewData["Title"] = "Index";
 }
@@ -72,6 +72,7 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        var leader = ats.TblInternalUsers.Where(s => s.TeamId == item.TeamId && s.IsTeamLeader == true).FirstOrDefault();
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.TeamName)
@@ -83,8 +84,12 @@
                                                 @Html.DisplayFor(modelItem => item.Dep.DepName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.TeamLeader.FirstName)
-                                                @Html.DisplayFor(modelItem => item.TeamLeader.MidleName)
+                                                @if (leader != null)
+                                                {
+                                                    @Html.DisplayFor(modelItem => leader.FirstName)
+                                                    @Html.DisplayFor(modelItem => leader.MidleName)
+                                                }
+
                                             </td>
                                             <td>
 

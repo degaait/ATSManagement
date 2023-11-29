@@ -6,7 +6,6 @@
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 }
-
 <style type="text/css">
     .table thead th {
         text-transform: capitalize !important;
@@ -166,7 +165,7 @@
                                                 @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                                <label>Legal Studies, Drafting & Consolidation</label>
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Inist.Name)

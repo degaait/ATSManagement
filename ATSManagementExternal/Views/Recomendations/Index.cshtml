@@ -1,57 +1,147 @@
-﻿@model IEnumerable<ATSManagementExternal.Models.TblRecomendation>
+﻿@model ATSManagementExternal.ViewModels.CollectionModel
 
 @{
     ViewData["Title"] = "Index";
+    int id = 0;
 }
-
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    Recomendations 
-                </h2>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Page body -->
+<script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				theme: "light2",
+				animationEnabled: true,
+				title: {
+					text: ""
+				},
+				subtitles: [
+					{ text: "" }
+				],
+				data: [{
+		            type: "bar",
+		            indexLabel: "{y}",
+		            dataPoints: @Html.Raw(ViewBag.DataPoints),
+	            }]
+			});
+			chart.render();
+		};
+</script>
 <div class="page-body">
     <div class="container-xl">
-        <div class="card">
-            <div class="card-body">
-                <div class="accordion" id="accordion-example">
-                    @foreach (var item in Model)
-                    {
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading-1">
-                                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
-                                    @item.Inist.Name
-                                </button>
-                            </h2>
-                            <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
-                                <div class="accordion-body pt-0">
-                                    @Html.Raw(item.Recomendation)
-                                    @if (item.Recostatus.Status == "Open")
-                                    {
-                                        <p style="color:dodgerblue">
-                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
-                                        </p>
-                                    }
-                                    else
-                                    {
-                                        <p style="color:red">
-                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
-                                        </p>
-                                    }
-
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2>Recommendation Dashboard</h2>
+                                    <hr />
+                                    <p>The Ministry of Justice  makes recommendations to different Ethiopina Ministry offices to promote effectiveness, efficiency, economy, and integrity of all programs and operations, including those performed by its contractors and grantees. Recommendations are considered resolved when Ministry offices and Ministry agree on the required corrective actions. After the agreed-upon corrective actions have been completed, the recommendations are considered closed. This Recommendation Dashboard provides the status of Ministry of Justice recommendations going back to FY 2011.</p>
                                 </div>
                             </div>
                         </div>
-                    }
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="accordion" id="accordion-example">
+                                    @foreach (var item in Model.tblRecomendations)
+                                    {
+                                        id = id + 1;
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading-1">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@id" aria-expanded="false">
+                                                    @Html.Raw(item.RecomendationTitle)
+                                                </button>
+                                            </h2>
+                                            <div id="collapse-@id" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
+                                                @Html.Raw(item.Recomendation)
+                                                <div class="accordion-body pt-0">
+                                                    @item.Inist.Name
+                                                    @if (item.Recostatus.Status == "Open")
+                                                    {
+                                                        <p style="color:dodgerblue">
+                                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p style="color:red">
+                                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
+                                                        </p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                @using (Html.BeginForm("Index", "Recomendations", FormMethod.Post, new { @name = "Form1" }))
+                {
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="card-body">
+                                @Html.DropDownListFor(model => model.RecostatusId, new SelectList(Model.tblRecomendationsStatus, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select" , @id = "ddlStatus" })
+
+                            </div>
+                        </div>
+                    </div>
+                <br />
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.DropDownListFor(model => model.YearId, new SelectList(Model.tblYears, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlYears" })
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.DropDownListFor(model => model.InistId, new SelectList(Model.tblInistitutions, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlInistitutions" })
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.DropDownListFor(model => model.LawId, new SelectList(Model.tblInspectionLaws, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlInspectionLaws" })
+
+                        </div>
+                    </div>
+                </div>
+                }
             </div>
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $("body").on("change", "#ddlStatus", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlYears", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlInistitutions", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlInspectionLaws", function () {
+        document.forms["Form1"].submit();
+    });
+</script>

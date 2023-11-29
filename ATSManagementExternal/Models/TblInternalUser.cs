@@ -35,15 +35,21 @@ public partial class TblInternalUser
 
     public Guid? TeamId { get; set; }
 
+    public bool? IsDefaultUser { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual ICollection<TblActivity> TblActivities { get; set; } = new List<TblActivity>();
 
     public virtual ICollection<TblAdjornment> TblAdjornments { get; set; } = new List<TblAdjornment>();
 
+    public virtual ICollection<TblAdractivitiesReport> TblAdractivitiesReports { get; set; } = new List<TblAdractivitiesReport>();
+
     public virtual ICollection<TblAppointmentParticipant> TblAppointmentParticipants { get; set; } = new List<TblAppointmentParticipant>();
 
-    public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
+    public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlanAssignedByNavigations { get; set; } = new List<TblAssignedYearlyPlan>();
+
+    public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlanAssignedToNavigations { get; set; } = new List<TblAssignedYearlyPlan>();
 
     public virtual ICollection<TblAssignee> TblAssignees { get; set; } = new List<TblAssignee>();
 

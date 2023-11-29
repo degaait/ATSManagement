@@ -30,37 +30,59 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <div class="mb-3 row">
-                                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                                        <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                                        <div class="mb-6 row">
+
+                                            <label asp-for="Title" class="col-3 col-form-label"></label>
+                                            <div class="col">
+                                                <input asp-for="Title" class="form-control" />
+                                                <span asp-validation-for="Title" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-6 row">
+
                                             <label asp-for="Recomendation" class="col-3 col-form-label"></label>
                                             <div class="col">
                                                 <input asp-for="Recomendation" class="form-control" />
                                                 <span asp-validation-for="Recomendation" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-6 row">
                                             <label asp-for="InistId" class="col-3 col-form-label">Inistitutions</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Inistitutions, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="InistId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-6 row">
                                             <label asp-for="Status" class="col-3 col-form-label">Status</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.RecostatusID, new SelectList(Model.Status, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="RecostatusID" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-6 row">
+                                            <label asp-for="LawId" class="col-3 col-form-label">Inspection Laws</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.LawId, new SelectList(Model.Laws, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="LawId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-6 row">
                                             <label asp-for="YearId" class="col-3 col-form-label">Evaluation year</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.YearId, new SelectList(Model.Years, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="RecostatusID" class="text-danger"></span>
-                                                
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-6 row">
+                                            <label class="col-3 col-form-label">Final Report</label>
+                                            <div class="col">
+                                                <input asp-for="FinalReport" type="file" class="form-file-button" />
+                                                <span asp-validation-for="FinalReport" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-6 row">
                                             <label asp-for="IsActive" class="col-3 col-form-label">IsActive?</label>
                                             <div class="col">
                                                 <input asp-for="IsActive" class="form-check-input m-0" type="checkbox" />
@@ -87,19 +109,21 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {
                 selector: '#Recomendation',
-                height: 300,
+                height: 500,
                 menubar: true,
                 statusbar: false,
                 plugins: [
+                    'table',
                     'advlist autolink lists link image charmap print preview anchor',
                     'searchreplace visualblocks code fullscreen',
                     'insertdatetime media table paste code help wordcount',
-                    'lists'
+                    'lists',
+                    'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
                 ],
                 toolbar: 'undo redo | formatselect | ' +
                     'bold italic backcolor | alignleft aligncenter ' +

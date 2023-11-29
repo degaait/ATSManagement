@@ -28,8 +28,6 @@
         </div>
     </div>
 </div>
-
-<!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
@@ -137,7 +135,6 @@
                                                 {
                                                     @Html.Raw(item.Priority.PriorityNameWithColor)
                                                 }
-
                                             </td>
                                             <td>
                                                 @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
@@ -169,7 +166,7 @@
                                                 @Html.DisplayFor(modelItem => item.DocType.DocName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                                <label>Legal Studies, Drafting & Consolidation</label>
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Inist.Name)

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
-using ATSManagement.Models;
-using ATSManagement.IModels;
-using ATSManagement.Filters;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
-
-namespace ATSManagement.Controllers
+﻿namespace ATSManagement.Controllers
 {
+    using System;
+    using System.Linq;
+    using ATSManagement.Models;
+    using ATSManagement.IModels;
+    using ATSManagement.Filters;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using AspNetCoreHero.ToastNotification.Abstractions;
+
     [CheckSessionIsAvailable]
     public class TeamsController : Controller
     {
@@ -50,6 +50,7 @@ namespace ATSManagement.Controllers
         public IActionResult Create()
         {
             ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName");
+           
             return View();
         }
         [HttpPost]

@@ -13,7 +13,7 @@ public partial class TblRecomendation
 
     public Guid? RecostatusId { get; set; }
 
-    public DateTime? EvaluationYear { get; set; }
+    public Guid? YearId { get; set; }
 
     public Guid? CreatedBy { get; set; }
 
@@ -23,9 +23,19 @@ public partial class TblRecomendation
 
     public bool IsActive { get; set; }
 
+    public Guid? LawId { get; set; }
+
+    public string? ReportPath { get; set; }
+
+    public string? RecomendationTitle { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblInistitution? Inist { get; set; }
 
+    public virtual TblInspectionLaw? Law { get; set; }
+
     public virtual TblRecomendationStatus? Recostatus { get; set; }
+
+    public virtual TblYear? Year { get; set; }
 }

@@ -7,7 +7,7 @@ public partial class TblLegalAdviceReport
 {
     public Guid ReportId { get; set; }
 
-    public string? ServantName { get; set; }
+    public Guid? Id { get; set; }
 
     public string? Amount { get; set; }
 
@@ -18,6 +18,10 @@ public partial class TblLegalAdviceReport
     public Guid? Year { get; set; }
 
     public Guid? ReportedBy { get; set; }
+
+    public string? Total { get; set; }
+
+    public virtual TblLegalAdviceServantType? IdNavigation { get; set; }
 
     public virtual TblMonth? MonthNavigation { get; set; }
 

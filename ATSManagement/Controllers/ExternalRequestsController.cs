@@ -103,7 +103,6 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
         {
-
             try
             {
                 var institutionName = (from items in _context.TblInistitutions where items.InistId == model.InistId select items.Name).FirstOrDefault();
@@ -119,7 +118,6 @@ namespace ATSManagement.Controllers
                 TblDepartment department = _context.TblDepartments.FindAsync(model.DepId).Result;
                 if (department.DepCode == "CVA")
                 {
-                    tblCivilJustice.DepId = model.DepId;
                     tblCivilJustice.RequestDetail = model.RequestDetail;
                     tblCivilJustice.InistId = model.InistId;
                     tblCivilJustice.CreatedBy = userId;

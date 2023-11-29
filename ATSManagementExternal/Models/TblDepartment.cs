@@ -23,8 +23,6 @@ public partial class TblDepartment
 
     public virtual ICollection<TblRequestDepartmentRelation> TblRequestDepartmentRelations { get; set; } = new List<TblRequestDepartmentRelation>();
 
-    public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
-
     public virtual ICollection<TblServiceType> TblServiceTypes { get; set; } = new List<TblServiceType>();
 
     public virtual ICollection<TblSubmenu> TblSubmenus { get; set; } = new List<TblSubmenu>();

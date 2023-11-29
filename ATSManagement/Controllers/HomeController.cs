@@ -4,6 +4,7 @@ using ATSManagement.Models;
 using ATSManagement.IModels;
 using ATSManagement.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
@@ -32,10 +33,10 @@ namespace ATSManagement.Controllers
             ViewBag.ExternalUser = _context.TblExternalUsers.ToList().Count;
             ViewBag.Insititutions = _context.TblInistitutions.ToList().Count;
             ViewBag.Inspects = _context.TblInspectionPlans.ToList().Count;
-            ViewBag.NewRequests = _context.TblRequests.Where(x => x.DepId == null).ToList().Count;
+            ViewBag.NewRequests = _context.TblRequests.Where(x => x.IsAssignedTodepartment ==null ||x.IsAssignedTodepartment==false).ToList().Count;
             ViewBag.HighPriorityRequests = _context.TblRequests.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).ToList().Count;
-            ViewBag.RequestsFromeCJAD = _context.TblRequests.Where(x => x.Dep.DepCode == "CVA").ToList().Count;
-            ViewBag.RequestFromLegalStudies = _context.TblRequests.Where(x => x.Dep.DepCode == "LSDC").ToList().Count;
+            ViewBag.RequestsFromeCJAD = _context.TblRequestDepartmentRelations.Include(x=>x.Dep).Where(x => x.Dep.DepCode == "CVA").ToList().Count;
+            ViewBag.RequestFromLegalStudies = _context.TblRequestDepartmentRelations.Include(x => x.Dep).Where(x => x.Dep.DepCode == "LSDC").ToList().Count;
             // await SendMail();
             return View();
         }

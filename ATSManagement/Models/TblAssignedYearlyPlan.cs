@@ -37,6 +37,8 @@ public partial class TblAssignedYearlyPlan
 
     public bool? IsUpprovedbyDepartment { get; set; }
 
+    public virtual TblInternalUser? AssignedByNavigation { get; set; }
+
     public virtual TblInternalUser? AssignedToNavigation { get; set; }
 
     public virtual TblInspectionPlan? Plan { get; set; }

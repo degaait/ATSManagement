@@ -74,8 +74,12 @@
                                         <th>
                                             User name
                                         </th>
+
                                         <th>
                                             Department
+                                        </th>
+                                        <th>
+                                            Teams
                                         </th>
                                         <th></th>
                                     </tr>
@@ -107,6 +111,9 @@
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Team.TeamName)
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">

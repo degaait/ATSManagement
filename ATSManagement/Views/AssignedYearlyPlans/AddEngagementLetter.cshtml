@@ -31,6 +31,7 @@
                                     <div class="col-md-6">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="Id" />
+                                        <input type="hidden" asp-for="AssignedBy" />
                                         <div class="mb-3 row">
                                             <label class="col-3 col-form-label">Title</label>
                                             <div class="col">
@@ -40,7 +41,7 @@
                                         <div class="mb-3 row">
                                             <label class="col-3 col-form-label">Engagement Letter</label>
                                             <div class="col">
-                                                <input asp-for="EngagementLetter" type="file"  class="form-file-button" />
+                                                <input asp-for="EngagementLetter" type="file" class="form-file-button" />
                                                 <span asp-validation-for="EngagementLetter" class="text-danger"></span>
                                             </div>
                                         </div>

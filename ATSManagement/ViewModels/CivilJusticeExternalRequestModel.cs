@@ -110,6 +110,13 @@ namespace ATSManagement.ViewModels
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
         public string? PhoneNumber { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        public Guid? AssigneeTypeId { get; set; }
+        public IEnumerable<SelectListItem>? AssignmentTypes { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? TeamId { get; set; }
+        public IEnumerable<SelectListItem?>? Teams { get; set; }
+
 
     }
 }

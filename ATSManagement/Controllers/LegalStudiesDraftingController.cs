@@ -64,6 +64,39 @@ namespace ATSManagement.Controllers
             }         
           
         }
+        public async Task<IActionResult> TeamRequests()
+        {
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            TblRequest tblRequest;
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var userinfor = _context.TblInternalUsers.Include(c => c.Dep).Where(x => x.UserId == userId).FirstOrDefault();
+            if (userinfor.IsDeputy == true || (userinfor.Dep.DepCode == "LSDC" && userinfor.IsDepartmentHead == true) || userinfor.IsSuperAdmin == true)
+            {
+                var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "LSDC" && x.TeamId == userinfor.TeamId).Select(a => a.RequestId).ToList();
+                foreach (var item in moreDeps)
+                {
+                    tblRequest = _context.TblRequests
+                                                                          .Include(t => t.AssignedByNavigation)
+                                                                          .Include(t => t.CaseType)
+                                                                          .Include(t => t.Inist)
+                                                                          .Include(t => t.RequestedByNavigation)
+                                                                          .Include(t => t.CreatedByNavigation)
+                                                                          .Include(x => x.ExternalRequestStatus)
+                                                                          .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                                          .Include(x => x.DeputyUprovalStatusNavigation)
+                                                                          .Include(y => y.TeamUpprovalStatusNavigation)
+                                                                          .Include(t => t.Priority).Where(x => x.RequestId == item).FirstOrDefault();
+                    atsdbContext.Add(tblRequest);
+                }
+                return View(atsdbContext);
+            }
+
+            else
+            {
+                return RedirectToAction(nameof(AssignedRequests));
+            }
+
+        }
         public async Task<IActionResult> AddActivity(Guid? id)
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -125,7 +158,6 @@ namespace ATSManagement.Controllers
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.DocType)
                 .Include(x => x.QuestType)
-                .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
                 .Include(x => x.ExternalRequestStatus)
@@ -210,7 +242,6 @@ namespace ATSManagement.Controllers
                 draftings.TeamUpprovalStatus = decision.DesStatusId;
                 draftings.DeputyUprovalStatus = decision.DesStatusId;
                 draftings.UserUpprovalStatus = decision.DesStatusId;
-                draftings.DepId = model.DepId;
                 draftings.DocumentFile = dbPath;
                 draftings.ExternalRequestStatusId = statusiD;
                 _context.TblRequests.Add(draftings);
@@ -411,7 +442,6 @@ namespace ATSManagement.Controllers
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.DocType)
                 .Include(x => x.QuestType)
-                .Include(t => t.Dep)
                 .Include(t => t.Inist)
                 .Include(t => t.RequestedByNavigation)
                 .Include(x => x.ExternalRequestStatus)
@@ -472,13 +502,16 @@ namespace ATSManagement.Controllers
                 Text = x.ServiceTypeName
             }).ToList();
             model.ServiceTypeID = drafting.ServiceTypeId;
-            model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
             {
-                Value = x.DepId.ToString(),
-                Text = x.DepName
-
+                Text = s.AssigneeType.ToString(),
+                Value = s.AssigneeTypeId.ToString(),
             }).ToList();
-            model.DepId = drafting.DepId;
+            model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "CVA").Select(s => new SelectListItem
+            {
+                Text = s.TeamName,
+                Value = s.TeamId.ToString(),
+            }).ToList();
             model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
             {
                 Value = x.UserId.ToString(),
@@ -500,8 +533,8 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignToUser(LegalStudiesDraftingModel model)
         {
-            List<TblRequestAssignee> assignees;
 
+            List<TblRequestAssignee> assignees;
             List<string> emails = new List<string>();
             foreach (var item in model.AssignedTo)
             {
@@ -510,13 +543,13 @@ namespace ATSManagement.Controllers
                                   select user.EmailAddress).FirstOrDefault();
                 emails.Add(userEmails);
             }
-
-            TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "In Progress" select items).FirstOrDefault();
+            TblRequest drafting = await _context.TblRequests.FindAsync(model.RequestId);
+            TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "Assigned to user" select items).FirstOrDefault();
             if (model.RequestId == null)
             {
                 return BadRequest();
             }
-            TblRequest drafting = await _context.TblRequests.FindAsync(model.RequestId);
+            
             if (drafting == null)
             {
                 return NotFound();
@@ -535,9 +568,14 @@ namespace ATSManagement.Controllers
                 if (model.AssignedTo.Length > 0)
                 {
                     assignees = new List<TblRequestAssignee>();
+                   
                     foreach (var item in model.AssignedTo)
                     {
-                        assignees.Add(new TblRequestAssignee { UserId = item, RequestId = model.RequestId });
+                        var ifExists = _context.TblRequestAssignees.Where(x => x.RequestId == model.RequestId && x.UserId==item).FirstOrDefault();
+                        if (ifExists==null)
+                        {
+                            assignees.Add(new TblRequestAssignee { UserId = item, RequestId = model.RequestId });
+                        }                        
                     }
                     drafting.TblRequestAssignees = assignees;
                 }
@@ -560,13 +598,16 @@ namespace ATSManagement.Controllers
                         Value = x.QuestTypeId.ToString(),
                         Text = x.QuestTypeName
                     }).ToList();
-                    model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                    model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                     {
-                        Value = x.DepId.ToString(),
-                        Text = x.DepName
-
+                        Text = s.AssigneeType.ToString(),
+                        Value = s.AssigneeTypeId.ToString(),
                     }).ToList();
-                    model.DepId = drafting.DepId;
+                    model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                    {
+                        Text = s.TeamName,
+                        Value = s.TeamId.ToString(),
+                    }).ToList();
                     model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
                     {
                         Value = x.UserId.ToString(),
@@ -601,7 +642,6 @@ namespace ATSManagement.Controllers
                     Text = x.DepName
 
                 }).ToList();
-                model.DepId = drafting.DepId;
                 model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
                 {
                     Value = x.UserId.ToString(),
@@ -622,7 +662,6 @@ namespace ATSManagement.Controllers
 
 
         }
-
         public async Task<IActionResult> Archive(Guid? id)
         {
             ArchiveModel model = new ArchiveModel();
@@ -815,7 +854,6 @@ namespace ATSManagement.Controllers
                 Request = _context.TblRequests
                                      .Include(t => t.AssignedByNavigation)
                                      .Include(t => t.CaseType)
-                                     .Include(t => t.Dep)
                                      .Include(t => t.Inist)
                                      .Include(t => t.RequestedByNavigation)
                                      .Include(t => t.CreatedByNavigation)
@@ -1132,7 +1170,6 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
-
         public async Task<IActionResult> ArchivedRequests()
         {
             ArchiveFilterModel model = new ArchiveFilterModel();
@@ -1166,6 +1203,172 @@ namespace ATSManagement.Controllers
             //   .Include(y => y.TeamUpprovalStatusNavigation)
             //   .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC"&&x.IsArchived==true);
             return View(model);
+        }
+
+        public async Task<IActionResult> AssignFromTeam(Guid id)
+        {
+
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            TblRequest drafting = await _context.TblRequests.FindAsync(id);
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            model.RequestDetail = drafting.RequestDetail;
+            model.RequestId = id;
+            model.AssignedBy = userId;
+            model.AssignedDate = DateTime.Now;
+            model.CreatedBy = drafting.CreatedBy;
+            model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+            {
+                Value = s.ServiceTypeId.ToString(),
+                Text = s.ServiceTypeName
+            }).ToList();
+            model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+            {
+                Text = s.AssigneeType.ToString(),
+                Value = s.AssigneeTypeId.ToString(),
+            }).ToList();
+            model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+            {
+                Text = s.TeamName,
+                Value = s.TeamId.ToString(),
+            }).ToList();
+            model.ServiceTypeID = drafting.ServiceTypeId;
+            model.AssignedTos = _context.TblInternalUsers.Where(s => s.Dep.DepCode == "LSDC").Select(x => new SelectListItem
+            {
+                Value = x.UserId.ToString(),
+                Text = x.FirstName.ToString() + " " + x.MidleName
+
+            }).ToList();
+            model.DueDate = DateTime.Now.AddDays(10);
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Value = x.PriorityId.ToString(),
+                Text = x.PriorityName.ToString()
+
+            }).ToList();
+            model.PriorityId = drafting.PriorityId;
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignFromTeam(CivilJusticeExternalRequestModel model)
+        {
+            List<string>? emails = new List<string>();
+            List<TblRequestAssignee> assignees;
+            foreach (var item in model.AssignedTo)
+            {
+                var userEmails = (from user in _context.TblInternalUsers where user.UserId == item select user.EmailAddress).FirstOrDefault();
+                emails.Add(userEmails);
+            }
+            TblRequestDepartmentRelation departmentRelation = await _context.TblRequestDepartmentRelations.Where(s => s.RequestId == model.RequestId).FirstOrDefaultAsync();
+            TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "Assigned to user" select items).FirstOrDefault();
+            if (model.RequestId == null)
+            {
+                return NotFound();
+            }
+            TblRequest drafting = await _context.TblRequests.FindAsync(model.RequestId);
+            if (drafting == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                departmentRelation.IsAssingedToUser = true;
+                drafting.DueDate = model.DueDate;
+                drafting.AssignedDate = model.AssignedDate;
+                drafting.PriorityId = model.PriorityId;
+                drafting.AssignedBy = model.AssignedBy;
+                drafting.AssingmentRemark = model.AssingmentRemark;
+                drafting.CreatedBy = model.CreatedBy;
+                drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
+                if (model.AssignedTo.Length > 0)
+                {
+                    assignees = new List<TblRequestAssignee>();
+
+                   
+                    foreach (var item in model.AssignedTo)
+                    {
+                        var ifExists = _context.TblRequestAssignees.Where(x => x.RequestId == model.RequestId && x.UserId == item).FirstOrDefault();
+                        if (ifExists == null)
+                        {
+                            assignees.Add(new TblRequestAssignee { UserId = item, RequestId = model.RequestId });
+                        }
+                    }
+                    drafting.TblRequestAssignees = assignees;
+                }
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
+                {
+                    await SendMail(emails, "Task is assign notification", "<h3>Some tasks are assigned to you via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
+                    return RedirectToAction(nameof(TeamRequests));
+                }
+                else
+                {
+                    model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+                    {
+                        Value = s.ServiceTypeId.ToString(),
+                        Text = s.ServiceTypeName
+                    }).ToList();
+                    model.ServiceTypeID = drafting.ServiceTypeId;
+                    model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+                    {
+                        Text = s.AssigneeType.ToString(),
+                        Value = s.AssigneeTypeId.ToString(),
+                    }).ToList();
+                    model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+                    {
+                        Text = s.TeamName,
+                        Value = s.TeamId.ToString(),
+                    }).ToList();
+                    model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+                    {
+                        Value = x.UserId.ToString(),
+                        Text = x.FirstName.ToString() + " " + x.MidleName
+
+                    }).ToList();
+                    model.DueDate = DateTime.Now.AddDays(10);
+                    model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                    {
+                        Value = x.PriorityId.ToString(),
+                        Text = x.PriorityName.ToString()
+
+                    }).ToList();
+                    model.PriorityId = drafting.PriorityId;
+                    return View(model);
+
+                }
+
+            }
+            catch (Exception)
+            {
+                model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                {
+                    Value = s.ServiceTypeId.ToString(),
+                    Text = s.ServiceTypeName
+                }).ToList();
+                model.ServiceTypeID = drafting.ServiceTypeId;
+                model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+                {
+                    Value = x.DepId.ToString(),
+                    Text = x.DepName
+
+                }).ToList();
+                model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+                {
+                    Value = x.UserId.ToString(),
+                    Text = x.FirstName.ToString() + " " + x.MidleName
+
+                }).ToList();
+                model.DueDate = DateTime.Now.AddDays(10);
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Value = x.PriorityId.ToString(),
+                    Text = x.PriorityName.ToString()
+
+                }).ToList();
+                model.PriorityId = drafting.PriorityId;
+                return View(model);
+            }
         }
 
     }

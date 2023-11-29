@@ -9,6 +9,9 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Recomendation")]
         [Required(ErrorMessage = "*")]
+        public string? Title { get; set; }
+        [Display(Name = "Recomendation")]
+        [Required(ErrorMessage = "*")]
         [DisplayFormat(HtmlEncode = true)]
         public string? Recomendation { get; set; }
         [Display(Name = "Inistitutions")]
@@ -19,9 +22,10 @@ namespace ATSManagement.ViewModels
         public List<SelectListItem>? Status { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? RecostatusID { get; set; }
+        [Required(ErrorMessage = "*")]
         public Guid? YearId { get; set; }
         [Display(Name = "Evaluation year")]
-        [Required(ErrorMessage = "*")]
+       
         public IEnumerable<SelectListItem>? Years { get; set; }
 
         [Display(Name = "Created by")]
@@ -37,5 +41,10 @@ namespace ATSManagement.ViewModels
         [Display(Name = "IsActive?")]
         [Required(ErrorMessage = "*")]
         public bool IsActive { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? LawId { get; set; }
+        public IEnumerable<SelectListItem>? Laws { get; set; }
+     
+        public IFormFile? FinalReport { get; set; }
     }
 }

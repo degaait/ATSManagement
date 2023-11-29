@@ -5,7 +5,7 @@ namespace ATSManagementExternal.Models;
 
 public partial class TblAdractivitiesReport
 {
-    public Guid? Id { get; set; }
+    public Guid Id { get; set; }
 
     public Guid? TypeId { get; set; }
 

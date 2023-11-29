@@ -41,9 +41,24 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="UserId" class="col-3 col-form-label">Assign</label>
+                                            <label asp-for="AssigneeTypeId" class="col-3 col-form-label">Assignment Type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                @Html.DropDownListFor(model => model.AssigneeTypeId, new SelectList(Model.AssignmentTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="AssigneeTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divUsers" style="display:none">
+                                            <label asp-for="UserId" class="col-3 col-form-label">Experts</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpUserId" })
+                                                <span asp-validation-for="UserId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divTeams" style="display:none">
+                                            <label asp-for="UserId" class="col-3 col-form-label">Teams</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.TeamId, new SelectList(Model.Teams, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpTeamId" })
+                                                <span asp-validation-for="TeamId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -90,7 +105,8 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -115,5 +131,27 @@
                 },
             }));
         });
+    </script>
+
+
+    <script type="text/javascript">
+                $(function () {
+                    $(document).ready(function () {
+
+                        $("#AssigneeTypeId").change(function () {
+                            var value = $("#AssigneeTypeId").val();
+                            // alert(value);
+                            if (value == "BDFB6C89-FB2A-45F9-82F1-D56A3A396847" ) {
+                                $("#divTeams").show();
+                                $("#divUsers").hide();
+                            }
+                            else {
+                                $("#divTeams").hide();
+                                $("#divUsers").show();
+                            }
+                        });
+
+                    });
+            });
     </script>
 }

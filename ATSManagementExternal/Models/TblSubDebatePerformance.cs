@@ -15,5 +15,7 @@ public partial class TblSubDebatePerformance
 
     public virtual ICollection<TblDebatePerformanceEventType> TblDebatePerformanceEventTypes { get; set; } = new List<TblDebatePerformanceEventType>();
 
+    public virtual ICollection<TblDebateWorkPerformanceReport> TblDebateWorkPerformanceReports { get; set; } = new List<TblDebateWorkPerformanceReport>();
+
     public virtual ICollection<TblEvent> TblEvents { get; set; } = new List<TblEvent>();
 }

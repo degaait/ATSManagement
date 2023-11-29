@@ -23,6 +23,14 @@ public partial class TblInspectionPlan
 
     public string? AssigningRemark { get; set; }
 
+    public Guid? TeamId { get; set; }
+
+    public Guid? AssigneeTypeId { get; set; }
+
+    public bool? IsAssignedToUser { get; set; }
+
+    public virtual TblAssignementType? AssigneeType { get; set; }
+
     public virtual TblStatus? Status { get; set; }
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
@@ -30,6 +38,8 @@ public partial class TblInspectionPlan
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
+
+    public virtual TblTeam? Team { get; set; }
 
     public virtual TblInternalUser? User { get; set; }
 

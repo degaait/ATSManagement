@@ -113,10 +113,13 @@
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
-                                    { 
-                                    var assignees = (from users in _context.TblRequestAssignees where users.RequestId == item.RequestId select users).ToList();
-
-                                    var replies = (from replys in _context.TblCivilJusticeRequestReplys where item.RequestId == replys.RequestId select replys).FirstOrDefault();
+                                    {
+                                        var assignees = (from users in _context.TblRequestAssignees where users.RequestId == item.RequestId select users).ToList();
+                                        var departments = (from deps in _context.TblRequestDepartmentRelations
+                                                           join reques in _context.TblRequests on deps.RequestId equals reques.RequestId
+                                                           where reques.RequestId == item.RequestId
+                                                           select deps.Dep.DepName).ToList();
+                                        var replies = (from replys in _context.TblCivilJusticeRequestReplys where item.RequestId == replys.RequestId select replys).FirstOrDefault();
                                     <tr>
                                         <td>
                                             @Html.Raw(item.RequestDetail)
@@ -174,7 +177,11 @@
                                             @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                            @foreach (var deps in departments)
+                                            {
+                                                @Html.DisplayFor(modelitem => deps)
+                                                <br />
+                                            }
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Inist.Name)

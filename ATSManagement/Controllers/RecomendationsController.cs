@@ -31,7 +31,7 @@ namespace ATSManagement.Controllers
         // GET: Recomendations
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblRecomendations.Include(t => t.Inist).Include(s => s.CreatedByNavigation).Include(s => s.Recostatus);
+            var atsdbContext = _context.TblRecomendations.Include(t => t.Inist).Include(s => s.CreatedByNavigation).Include(s => s.Recostatus).Include(s=>s.Year);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -76,6 +76,11 @@ namespace ATSManagement.Controllers
                 Text = s.Year
             }).ToList();
             model.IsActive = false;
+            model.Laws = _context.TblInspectionLaws.Select(s => new SelectListItem
+            {
+                Text = s.LawDescription,
+                Value = s.LawId.ToString(),
+            }).ToList();
             return View(model);
         }
 
@@ -89,6 +94,7 @@ namespace ATSManagement.Controllers
             if (ModelState.IsValid)
             {
                 tblRecomendation.RecoId = Guid.NewGuid();
+                tblRecomendation.RecomendationTitle = model.Title;
                 tblRecomendation.Recomendation = model.Recomendation;
                 tblRecomendation.RecostatusId = model.RecostatusID;
                 tblRecomendation.CreatinDate = DateTime.Now;
@@ -96,24 +102,75 @@ namespace ATSManagement.Controllers
                 tblRecomendation.YearId = model.YearId;
                 tblRecomendation.IsActive = model.IsActive;
                 tblRecomendation.InistId = model.InistId;
-
-                _context.TblRecomendations.Add(tblRecomendation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                tblRecomendation.LawId = model.LawId;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (model.FinalReport != null)
+                {
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    FileInfo fileInfo = new FileInfo(model.FinalReport.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.FinalReport.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.FinalReport.CopyTo(stream);
+                    }
+                    string dbPath = "/admin/Files/" + fileName;
+                }
+                    _context.TblRecomendations.Add(tblRecomendation);
+               int save= await _context.SaveChangesAsync();
+                if (save>0)
+                {
+                    _notifyService.Success("Recomendation successfully Created");                   
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notifyService.Error("Recomendation isn't successfully created.");
+                    model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                    {
+                        Text = t.Name,
+                        Value = t.InistId.ToString(),
+                    }).ToList();
+                    model.InistId = model.InistId;
+                    model.Status = _context.TblRecomendationStatuses.Select(t => new SelectListItem
+                    {
+                        Text = t.Status,
+                        Value = t.RecostatusId.ToString(),
+                    }).ToList();
+                    model.Laws = _context.TblInspectionLaws.Select(s => new SelectListItem
+                    {
+                        Text = s.LawDescription,
+                        Value = s.LawId.ToString(),
+                    }).ToList();
+                    model.RecostatusID = model.RecostatusID;
+                    return View(model);
+                }
+               
             }
-            model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+            else
             {
-                Text = t.Name,
-                Value = t.InistId.ToString(),
-            }).ToList();
-            model.InistId = model.InistId;
-            model.Status = _context.TblRecomendationStatuses.Select(t => new SelectListItem
-            {
-                Text = t.Status,
-                Value = t.RecostatusId.ToString(),
-            }).ToList();
-            model.RecostatusID = model.RecostatusID;
-            return View(model);
+                _notifyService.Error("Recomendation isn't successfully Created. Please try again by filling all neccessary fields");
+                model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
+                {
+                    Text = t.Name,
+                    Value = t.InistId.ToString(),
+                }).ToList();
+                model.InistId = model.InistId;
+                model.Status = _context.TblRecomendationStatuses.Select(t => new SelectListItem
+                {
+                    Text = t.Status,
+                    Value = t.RecostatusId.ToString(),
+                }).ToList();
+                model.Laws = _context.TblInspectionLaws.Select(s => new SelectListItem
+                {
+                    Text = s.LawDescription,
+                    Value = s.LawId.ToString(),
+                }).ToList();
+                model.RecostatusID = model.RecostatusID;
+                return View(model);
+            }
+          
         }
 
         public async Task<IActionResult> Edit(Guid? id)
@@ -129,6 +186,7 @@ namespace ATSManagement.Controllers
             model.Recomendation = tblRecomendation.Recomendation;
             model.CreatedBy = tblRecomendation.CreatedBy;
             model.IsActive = tblRecomendation.IsActive;
+            model.Title = tblRecomendation.RecomendationTitle;
             model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
             {
                 Text = t.Name,
@@ -140,6 +198,12 @@ namespace ATSManagement.Controllers
                 Text = t.Status,
                 Value = t.RecostatusId.ToString(),
             }).ToList();
+            model.Laws = _context.TblInspectionLaws.Select(s => new SelectListItem
+            {
+                Text = s.LawDescription,
+                Value = s.LawId.ToString(),
+            }).ToList();
+            model.LawId=tblRecomendation.LawId;
             model.RecostatusID = tblRecomendation.RecostatusId;
             model.Years = _context.TblYears.Select(s => new SelectListItem
             {
@@ -172,7 +236,25 @@ namespace ATSManagement.Controllers
                     tblRecomendation.RecostatusId = model.RecostatusID;
                     tblRecomendation.InistId = model.InistId;
                     tblRecomendation.YearId = model.YearId;
+                    tblRecomendation.LawId = model.LawId;
+                    tblRecomendation.RecomendationTitle = model.Title;
                     tblRecomendation.IsActive = model.IsActive;
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                    if (model.FinalReport != null)
+                    {
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        //get file extension
+                        FileInfo fileInfo = new FileInfo(model.FinalReport.FileName);
+                        string fileName = Guid.NewGuid().ToString() + model.FinalReport.FileName;
+                        string fileNameWithPath = Path.Combine(path, fileName);
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            model.FinalReport.CopyTo(stream);
+                        }
+                        string dbPath = "/admin/Files/" + fileName;
+                    }
                     int updated = await _context.SaveChangesAsync();
                     if (updated > 0)
                     {

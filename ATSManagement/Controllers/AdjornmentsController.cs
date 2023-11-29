@@ -1,9 +1,9 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
+﻿using ATSManagement.Models;
 using ATSManagement.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -11,10 +11,10 @@ namespace ATSManagement.Controllers
     public class AdjornmentsController : Controller
     {
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public AdjornmentsController(AtsdbContext context, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        public AdjornmentsController(AtsdbContext context, INotyfService toastifyService)
         {
-            _toastNotification = toastNotification;
+            _notifyService = toastifyService;
             _context = context;
         }
 

@@ -11,7 +11,7 @@ namespace ATSManagement.ViewModels
         public List<SelectListItem>? Users { get; set; }
         [Display(Name = "Assign to")]
         [Required(ErrorMessage = "*")]
-        public Guid? UserId { get; set; }
+        public Guid[]? UserId { get; set; }
 
         public Guid? AssignedBy { get; set; }
         [Display(Name = "Inspection title")]
@@ -45,6 +45,13 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Final Letter")]
         public IFormFile? FinalReport { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? AssigneeTypeId { get; set; }
+        public IEnumerable<SelectListItem>? AssignmentTypes { get; set; }
+        [Required(ErrorMessage = "*")]
+        public Guid? TeamId { get; set; }
+
+        public IEnumerable<SelectListItem?>? Teams { get; set; }
 
 
     }

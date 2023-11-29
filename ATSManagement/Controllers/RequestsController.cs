@@ -53,7 +53,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ServiceType)
                 .Include(t => t.TeamUpprovalStatusNavigation)
-                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.DepId == null);
+                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.IsAssignedTodepartment == false||x.IsAssignedTodepartment==null);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AssignToDepartment(Guid? id)
@@ -74,6 +74,7 @@ namespace ATSManagement.Controllers
             List<TblRequestDepartmentRelation> departmentRelations;
             List<String> depHeadEmail = new List<string>();
             request.ServiceTypeId = requestModel.ServiceTypeID;
+            request.IsAssignedTodepartment = true;
             if (requestModel.DepId.Length > 0)
             {
                 departmentRelations = new List<TblRequestDepartmentRelation>();
@@ -145,7 +146,6 @@ namespace ATSManagement.Controllers
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
-                .Include(t => t.Dep)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
                 .Include(t => t.DocType)
@@ -198,7 +198,7 @@ namespace ATSManagement.Controllers
             ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.AssignedBy);
             ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblRequest.CaseTypeId);
             ViewData["CreatedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.CreatedBy);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblRequest.DepId);
+            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId");
             ViewData["DepartmentUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DepartmentUpprovalStatus);
             ViewData["DeputyUprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DeputyUprovalStatus);
             ViewData["DocTypeId"] = new SelectList(_context.TblLegalDraftingDocTypes, "DocId", "DocId", tblRequest.DocTypeId);
@@ -227,7 +227,7 @@ namespace ATSManagement.Controllers
             ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.AssignedBy);
             ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblRequest.CaseTypeId);
             ViewData["CreatedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.CreatedBy);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblRequest.DepId);
+            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblRequest);
             ViewData["DepartmentUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DepartmentUpprovalStatus);
             ViewData["DeputyUprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DeputyUprovalStatus);
             ViewData["DocTypeId"] = new SelectList(_context.TblLegalDraftingDocTypes, "DocId", "DocId", tblRequest.DocTypeId);
@@ -273,7 +273,7 @@ namespace ATSManagement.Controllers
             ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.AssignedBy);
             ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblRequest.CaseTypeId);
             ViewData["CreatedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.CreatedBy);
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepId", tblRequest.DepId);
+           
             ViewData["DepartmentUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DepartmentUpprovalStatus);
             ViewData["DeputyUprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DeputyUprovalStatus);
             ViewData["DocTypeId"] = new SelectList(_context.TblLegalDraftingDocTypes, "DocId", "DocId", tblRequest.DocTypeId);
@@ -298,7 +298,6 @@ namespace ATSManagement.Controllers
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
-                .Include(t => t.Dep)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
                 .Include(t => t.DocType)
@@ -364,7 +363,6 @@ namespace ATSManagement.Controllers
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
-                .Include(t => t.Dep)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
                 .Include(t => t.DocType)

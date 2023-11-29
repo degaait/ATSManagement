@@ -119,7 +119,10 @@
                                     @foreach (var item in Model)
                                     {
                                         var assignees = (from users in _context.TblRequestAssignees where users.RequestId == item.RequestId select users).ToList();
-
+                                        var departments = (from deps in _context.TblRequestDepartmentRelations
+                                                           join reques in _context.TblRequests on deps.RequestId equals reques.RequestId
+                                                           where reques.RequestId == item.RequestId
+                                                           select deps.Dep.DepName).ToList();
                                         <tr>
                                             <td>
                                                 @Html.Raw(item.RequestDetail)
@@ -178,7 +181,11 @@
                                                 @Html.DisplayFor(modelItem => item.DocType.DocName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                                @foreach (var deps in departments)
+                                                {
+                                                    @Html.DisplayFor(modelitem => deps)
+                                                    <br />
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Inist.Name)

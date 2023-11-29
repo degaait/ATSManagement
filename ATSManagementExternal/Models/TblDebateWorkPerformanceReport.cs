@@ -43,11 +43,15 @@ public partial class TblDebateWorkPerformanceReport
 
     public Guid? CreatedBy { get; set; }
 
+    public Guid? SubPerformanceId { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblDebatePerformanceEventType? IdNavigation { get; set; }
 
     public virtual TblMonth? Month { get; set; }
+
+    public virtual TblSubDebatePerformance? SubPerformance { get; set; }
 
     public virtual TblYear? Year { get; set; }
 }

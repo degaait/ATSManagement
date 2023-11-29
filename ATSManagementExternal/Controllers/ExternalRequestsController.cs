@@ -36,13 +36,12 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblRequests
                                                      .Include(t => t.AssignedByNavigation)
                                                      .Include(t => t.CaseType)
-                                                     .Include(t => t.Dep)
                                                      .Include(t => t.Inist)
                                                      .Include(t => t.RequestedByNavigation)
                                                      .Include(t => t.CreatedByNavigation)
                                                      .Include(x => x.ExternalRequestStatus)
                                                      .Include(x => x.ServiceType)
-                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId && x.DepId == null);
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
 
             return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
@@ -71,14 +70,13 @@ namespace ATSManagementExternal.Controllers
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.DocType)
                .Include(x => x.QuestType)
-               .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
                .Include(x => x.ExternalRequestStatus)
                 .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC" && x.InistId == user.InistId);
+               .Include(t => t.Priority).Where(x=> x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> NewLegalRequest()
@@ -91,7 +89,6 @@ namespace ATSManagementExternal.Controllers
                                    .Include(t => t.AssignedByNavigation)
                                    .Include(t => t.DocType)
                                    .Include(t => t.QuestType)
-                                   .Include(t => t.Dep)
                                    .Include(t => t.Inist)
                                    .Include(t => t.RequestedByNavigation)
                                    .Include(x => x.ExternalRequestStatus)
@@ -99,7 +96,7 @@ namespace ATSManagementExternal.Controllers
                                    .Include(x => x.DeputyUprovalStatusNavigation)
                                    .Include(y => y.TeamUpprovalStatusNavigation)
                                    .Include(t => t.Priority)
-                                   .Where(x => x.Dep.DepCode == "LSDC" && x.ExternalRequestStatus.StatusName == "New" && x.InistId == user.InistId);
+                                   .Where(x => x.ExternalRequestStatus.StatusName == "New" && x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> CompletedLegalRequest()
@@ -112,14 +109,13 @@ namespace ATSManagementExternal.Controllers
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.DocType)
                .Include(s => s.QuestType)
-               .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
                .Include(x => x.ExternalRequestStatus)
                 .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-               .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC" && x.ExternalRequestStatus.StatusName == "Completed");
+               .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "Completed");
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> PendingLegalStudies()
@@ -132,7 +128,6 @@ namespace ATSManagementExternal.Controllers
                .Include(t => t.AssignedByNavigation)
                .Include(t => t.DocType)
                .Include(s => s.QuestType)
-               .Include(t => t.Dep)
                .Include(t => t.Inist)
                .Include(t => t.RequestedByNavigation)
                .Include(x => x.ExternalRequestStatus)
@@ -150,7 +145,6 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
@@ -169,7 +163,6 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
@@ -188,7 +181,6 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
@@ -207,7 +199,6 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
                                                         .Include(t => t.CaseType)
-                                                        .Include(t => t.Dep)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
@@ -292,7 +283,7 @@ namespace ATSManagementExternal.Controllers
                 request.FullName = model.FullName;
                 request.PhoneNumber = model.PhoneNumber;
                 request.EmailAddress = model.EmailAddress;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
                 if (model.DocumentFile != null)
                 {
                     //create folder if not exist
@@ -306,7 +297,7 @@ namespace ATSManagementExternal.Controllers
                     {
                         model.DocumentFile.CopyTo(stream);
                     }
-                    string dbPath = "/Files/" + fileName;
+                    string dbPath = "/admin/Files/" + fileName;
                     request.DocTypeId = model.DocId;
                     request.DocTypeId = model.DocId;
                     documentHistory.Add(new TblDocumentHistory { DocPath = dbPath, Round = model.Round, RequestId = request.RequestId });
@@ -348,7 +339,6 @@ namespace ATSManagementExternal.Controllers
                 return View(getModel());
             }
         }
-
         public async Task<IActionResult> Appointments()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -853,7 +843,6 @@ namespace ATSManagementExternal.Controllers
             var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
             return File(bytes, contenttype, Path.GetFileName(filepath));
         }
-
         public async Task<IActionResult> AddHistory(Guid? id)
         {
             DocumentHistoryModel model = await historyModel(id);
@@ -945,13 +934,12 @@ namespace ATSManagementExternal.Controllers
             var atsdbContext = _context.TblRequests
                                                      .Include(t => t.AssignedByNavigation)
                                                      .Include(t => t.CaseType)
-                                                     .Include(t => t.Dep)
                                                      .Include(t => t.Inist)
                                                      .Include(t => t.RequestedByNavigation)
                                                      .Include(t => t.CreatedByNavigation)
                                                      .Include(x => x.ExternalRequestStatus)
                                                      .Include(x => x.ServiceType)
-                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId && x.DepId != null);
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
             return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
     }

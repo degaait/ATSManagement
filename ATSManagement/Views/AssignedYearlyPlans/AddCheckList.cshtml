@@ -10,7 +10,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Assign Inispection plans
+                        Add evaluation criteria
                     </h2>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Assign</h4>
+                            <h4 class="card-title">Evaluation criteria</h4>
                         </div>
                         <form asp-action="AddCheckList">
                             <div class="card-body">
@@ -31,13 +31,14 @@
                                     <div class="col-md-6">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="Id" />
-                                        <div class="mb-3 row">
+                                        <input type="hidden" asp-for="AssignedBy" />
+                                        <div class="mb-4 row">
                                             <label class="col-3 col-form-label">Title</label>
                                             <div class="col">
                                                 @Html.DisplayFor(model => model.PlanTitle)
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
+                                        <div class="mb-4 row">
                                             <label class="col-3 col-form-label">Evaluation criteria</label>
                                             <div class="col">
                                                 <input asp-for="EvaluationCheckLists" type="text" id="checkList" class="form-control" />

@@ -17,7 +17,7 @@ public partial class TblRequest
 
     public Guid? CreatedBy { get; set; }
 
-    public Guid? DepId { get; set; }
+    public bool? IsAssignedTodepartment { get; set; }
 
     public Guid? CaseTypeId { get; set; }
 
@@ -72,8 +72,6 @@ public partial class TblRequest
     public virtual TblCivilJusticeCaseType? CaseType { get; set; }
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
-
-    public virtual TblDepartment? Dep { get; set; }
 
     public virtual TblDecisionStatus? DepartmentUpprovalStatusNavigation { get; set; }
 
