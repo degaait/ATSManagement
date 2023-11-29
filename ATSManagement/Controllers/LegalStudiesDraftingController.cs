@@ -1,14 +1,13 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
+using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -37,7 +36,7 @@ namespace ATSManagement.Controllers
             TblRequest tblRequest;
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var userinfor = _context.TblInternalUsers.Include(c => c.Dep).Where(x => x.UserId == userId).FirstOrDefault();
-            if (userinfor.IsDeputy == true || (userinfor.Dep.DepCode == "LSDC" && userinfor.IsDepartmentHead == true)||userinfor.IsSuperAdmin==true)
+            if (userinfor.IsDeputy == true || (userinfor.Dep.DepCode == "LSDC" && userinfor.IsDepartmentHead == true) || userinfor.IsSuperAdmin == true)
             {
                 var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "LSDC").Select(a => a.RequestId).ToList();
                 foreach (var item in moreDeps)
@@ -53,7 +52,10 @@ namespace ATSManagement.Controllers
                                                                           .Include(x => x.DeputyUprovalStatusNavigation)
                                                                           .Include(y => y.TeamUpprovalStatusNavigation)
                                                                           .Include(t => t.Priority).Where(x => x.RequestId == item).FirstOrDefault();
-                    atsdbContext.Add(tblRequest);
+                    if (tblRequest != null)
+                    {
+                        atsdbContext.Add(tblRequest);
+                    }
                 }
                 return View(atsdbContext);
             }
@@ -61,8 +63,8 @@ namespace ATSManagement.Controllers
             else
             {
                 return RedirectToAction(nameof(AssignedRequests));
-            }         
-          
+            }
+
         }
         public async Task<IActionResult> TeamRequests()
         {
@@ -128,7 +130,7 @@ namespace ATSManagement.Controllers
             if (saved > 0)
             {
                 model.ActivityDetail = null;
-               await SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
+                await SendMail(assignedBody, "Adding activities notifications.", "<h3>Assigned body is adding activities via <strong> Task tacking Dashboard</strong>. Please check on the system and followup!.</h3>");
                 ViewData["Activities"] = _context.TblActivities
                     .Include(x => x.Request)
                     .Include(x => x.CreatedByNavigation)
@@ -171,7 +173,7 @@ namespace ATSManagement.Controllers
             }
 
             return View(tblCivilJustice);
-        }      
+        }
         public IActionResult Create()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -206,7 +208,7 @@ namespace ATSManagement.Controllers
 
             return View(model);
         }
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LegalStudiesDraftingModel model)
@@ -291,7 +293,7 @@ namespace ATSManagement.Controllers
                 Text = x.QuestTypeName
             }).ToList();
             return model;
-        }       
+        }
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.TblLegalStudiesDraftings == null)
@@ -341,7 +343,7 @@ namespace ATSManagement.Controllers
             return View(model);
 
 
-        }      
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(LegalStudiesDraftingModel model)
@@ -430,7 +432,7 @@ namespace ATSManagement.Controllers
 
             }
 
-        }       
+        }
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblRequests == null)
@@ -456,7 +458,7 @@ namespace ATSManagement.Controllers
 
             return View(tblCivilJustice);
         }
-       
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -483,10 +485,10 @@ namespace ATSManagement.Controllers
             LegalStudiesDraftingModel model = new LegalStudiesDraftingModel();
             TblRequest drafting = await _context.TblRequests.FindAsync(id);
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            if (drafting.RequestDetail!=null)
+            if (drafting.RequestDetail != null)
             {
                 model.RequestDetail = drafting.RequestDetail;
-            }            
+            }
             model.RequestId = id;
             model.AssignedBy = userId;
             model.AssignedDate = DateTime.Now;
@@ -496,7 +498,7 @@ namespace ATSManagement.Controllers
                 Text = x.DocName
             }).ToList();
             model.DocId = drafting.DocTypeId;
-            model.ServiceTypes = _context.TblServiceTypes.Where(x=>x.Dep.DepCode== "LSDC").Select(x => new SelectListItem
+            model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
             {
                 Value = x.ServiceTypeId.ToString(),
                 Text = x.ServiceTypeName
@@ -549,7 +551,7 @@ namespace ATSManagement.Controllers
             {
                 return BadRequest();
             }
-            
+
             if (drafting == null)
             {
                 return NotFound();
@@ -568,14 +570,14 @@ namespace ATSManagement.Controllers
                 if (model.AssignedTo.Length > 0)
                 {
                     assignees = new List<TblRequestAssignee>();
-                   
+
                     foreach (var item in model.AssignedTo)
                     {
-                        var ifExists = _context.TblRequestAssignees.Where(x => x.RequestId == model.RequestId && x.UserId==item).FirstOrDefault();
-                        if (ifExists==null)
+                        var ifExists = _context.TblRequestAssignees.Where(x => x.RequestId == model.RequestId && x.UserId == item).FirstOrDefault();
+                        if (ifExists == null)
                         {
                             assignees.Add(new TblRequestAssignee { UserId = item, RequestId = model.RequestId });
-                        }                        
+                        }
                     }
                     drafting.TblRequestAssignees = assignees;
                 }
@@ -665,7 +667,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> Archive(Guid? id)
         {
             ArchiveModel model = new ArchiveModel();
-            var request=_context.TblRequests.FindAsync(id).Result;
+            var request = _context.TblRequests.FindAsync(id).Result;
             model.RequestId = id;
             model.RequestDetail = request.RequestDetail;
             return View(model);
@@ -677,8 +679,8 @@ namespace ATSManagement.Controllers
         {
             TblRequest? tblRequest = await _context.TblRequests.FindAsync(model.RequestId);
             tblRequest.IsArchived = true;
-            int updated =await _context.SaveChangesAsync();
-            if (updated>0)
+            int updated = await _context.SaveChangesAsync();
+            if (updated > 0)
             {
                 _notifyService.Success("Request is successfully Archived");
                 return RedirectToAction(nameof(CompletedRequests));
@@ -692,7 +694,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> Replies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-           List<TblReplay>? replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
+            List<TblReplay>? replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
             RepliesModel model = new RepliesModel
             {
                 RequestId = id,
@@ -751,9 +753,10 @@ namespace ATSManagement.Controllers
             var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "LSDC").Select(a => a.RequestId).ToList();
             if (tblInternalUser.IsDeputy == true || tblInternalUser.IsSuperAdmin == true || tblInternalUser.IsDepartmentHead == true)
             {
-            
+
                 foreach (var item in moreDeps)
                 {
+
                     tblRequest = _context.TblRequests
                                                                        .Include(t => t.AssignedByNavigation)
                                                                        .Include(t => t.CaseType)
@@ -764,8 +767,11 @@ namespace ATSManagement.Controllers
                                                                        .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                                        .Include(x => x.DeputyUprovalStatusNavigation)
                                                                        .Include(y => y.TeamUpprovalStatusNavigation)
-                                                                       .Include(t => t.Priority).Where(x => x.RequestId == item&& x.ExternalRequestStatus.StatusName == "Completed").FirstOrDefault();
-                    atsdbContext.Add(tblRequest);
+                                                                       .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName == "Completed").FirstOrDefault();
+                    if (tblRequest != null)
+                    {
+                        atsdbContext.Add(tblRequest);
+                    }
 
                 }
             }
@@ -783,8 +789,12 @@ namespace ATSManagement.Controllers
                                                                        .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                                        .Include(x => x.DeputyUprovalStatusNavigation)
                                                                        .Include(y => y.TeamUpprovalStatusNavigation)
-                                                                       .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName == "Completed"&& x.ExternalRequestStatus.StatusName == "Completed" && x.AssignedTo == userId).FirstOrDefault();
-                    atsdbContext.Add(tblRequest);
+                                                                       .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName == "Completed" && x.ExternalRequestStatus.StatusName == "Completed" && x.AssignedTo == userId).FirstOrDefault();
+                    if (tblRequest != null)
+                    {
+                        atsdbContext.Add(tblRequest);
+                    }
+
 
                 }
             }
@@ -800,7 +810,7 @@ namespace ATSManagement.Controllers
 
             if (tblInternalUser.IsDeputy == true || tblInternalUser.IsSuperAdmin == true || tblInternalUser.IsDepartmentHead == true)
             {
-               
+
                 foreach (var item in moreDeps)
                 {
 
@@ -816,7 +826,10 @@ namespace ATSManagement.Controllers
                                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                                         .Include(y => y.TeamUpprovalStatusNavigation)
                                                         .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName == "In Progress").FirstOrDefault();
-                    atsdbContext.Add(tblRequest);
+                    if (tblRequest != null)
+                    {
+                        atsdbContext.Add(tblRequest);
+                    }
                 }
             }
             else
@@ -835,7 +848,10 @@ namespace ATSManagement.Controllers
                                                       .Include(x => x.DeputyUprovalStatusNavigation)
                                                       .Include(y => y.TeamUpprovalStatusNavigation)
                                                       .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName == "In Progress" && x.AssignedTo == userId).FirstOrDefault();
-                    atsdbContext.Add(tblRequest);
+                    if (tblRequest != null)
+                    {
+                        atsdbContext.Add(tblRequest);
+                    }
                 }
             }
             return View(atsdbContext);
@@ -846,8 +862,8 @@ namespace ATSManagement.Controllers
             TblRequest Request;
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblInternalUser tblInternalUser = await _context.TblInternalUsers.FindAsync(userId);
-            var assignedReq=_context.TblRequestAssignees.Where(x=>x.UserId == userId).ToList();
-        
+            var assignedReq = _context.TblRequestAssignees.Where(x => x.UserId == userId).ToList();
+
             foreach (var item in assignedReq)
             {
                 Request = new TblRequest();
@@ -865,7 +881,7 @@ namespace ATSManagement.Controllers
                 atsdbContext.Add(Request);
 
             }
-         
+
             return View(atsdbContext);
         }
         public async Task<IActionResult> UpploadFinalReport(Guid id)
@@ -964,7 +980,7 @@ namespace ATSManagement.Controllers
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
-            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed" || x.StatusName == "Report Preparation"||x.StatusName== "Data Collection").Select(x => new SelectListItem
+            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed" || x.StatusName == "Report Preparation" || x.StatusName == "Data Collection").Select(x => new SelectListItem
             {
                 Text = x.StatusName,
                 Value = x.ExternalRequestStatusId.ToString()
@@ -1096,7 +1112,7 @@ namespace ATSManagement.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblDocumentHistory tblDocument = _context.TblDocumentHistories.Where(x => x.RequestId == id).OrderBy(x => x.Round).Last();
             DocumentHistoryModel model = new DocumentHistoryModel();
-            ViewData["histories"] = _context.TblDocumentHistories.Include(x=>x.Request).Where(x => x.RequestId == id).ToList();
+            ViewData["histories"] = _context.TblDocumentHistories.Include(x => x.Request).Where(x => x.RequestId == id).ToList();
             model.RequestId = id;
             model.InternalReplyId = userId;
             if (tblDocument.Round == null)
@@ -1173,14 +1189,15 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> ArchivedRequests()
         {
             ArchiveFilterModel model = new ArchiveFilterModel();
-            model.ServiceType = _context.TblServiceTypes.Where(x=>x.DepId==Guid.Parse("159f57e9-bc26-4b6e-859e-c577ce8a86a8")).Select(x => new SelectListItem
+            model.ServiceType = _context.TblServiceTypes.Where(x => x.DepId == Guid.Parse("159f57e9-bc26-4b6e-859e-c577ce8a86a8")).Select(x => new SelectListItem
             {
                 Value = x.ServiceTypeId.ToString(),
                 Text = x.ServiceTypeName
             }).ToList();
-            model.Institution=_context.TblInistitutions.Select(x=> new SelectListItem
+            model.Institution = _context.TblInistitutions.Select(x => new SelectListItem
             {
-                Text=x.Name, Value=x.InistId.ToString()
+                Text = x.Name,
+                Value = x.InistId.ToString()
 
             }).ToList();
             model.DocumentType = _context.TblLegalDraftingDocTypes.Select(d => new SelectListItem
@@ -1285,7 +1302,7 @@ namespace ATSManagement.Controllers
                 {
                     assignees = new List<TblRequestAssignee>();
 
-                   
+
                     foreach (var item in model.AssignedTo)
                     {
                         var ifExists = _context.TblRequestAssignees.Where(x => x.RequestId == model.RequestId && x.UserId == item).FirstOrDefault();

@@ -1,8 +1,13 @@
 ﻿@model ATSManagement.ViewModels.ActivityModel
+@using Microsoft.EntityFrameworkCore
 @inject AtsdbContext _context;
 @{
     ViewData["Title"] = "Create";
-    IEnumerable<TblCivilJusticeRequestActivity> activities = ViewData["Activities"] as IEnumerable<TblCivilJusticeRequestActivity>;
+    Guid? ID = ViewBag.RequestId;
+    var activities = _context.TblActivities
+                .Include(x => x.Request)
+                .Include(x => x.CreatedByNavigation)
+                .Where(x => x.RequestId == ID).ToList();
 }
 <style type="text/css">
     .table thead th {
@@ -100,7 +105,7 @@
 
                                             <tr>
                                                 @{
-                                                    var requestName = _context.TblCivilJustices.Where(a => a.RequestId == item.RequestId).FirstOrDefault();
+                                                    var requestName = _context.TblRequests.Where(a => a.RequestId == item.RequestId).FirstOrDefault();
                                                 }
                                                 <td>
                                                     @Html.Raw(item.ActivityDetail)
@@ -115,7 +120,7 @@
                                                 <td>
                                                     @Html.Raw(requestName.RequestDetail)
                                                 </td>
-                                                <td>                                                       
+                                                <td>
                                                     <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId">Delete</a>
                                                 </td>
                                             </tr>
