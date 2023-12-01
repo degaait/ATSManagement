@@ -1,0 +1,60 @@
+﻿@model ATSManagement.ViewModels.FollowUpModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Teams
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Followups</h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="UserId" />
+                                        <input type="hidden" asp-for="RequestId" />
+                                        <div class="form-group">
+                                            <label asp-for="Message" class="control-label"></label>
+                                            <input asp-for="Message" class="form-control" />
+                                            <span asp-validation-for="Message" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Send" class="btn btn-primary" />|
+                                    <a asp-action="Index" asp-route-RequestId="@ViewBag.id">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

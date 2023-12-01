@@ -97,6 +97,8 @@ public partial class TblRequest
 
     public virtual ICollection<TblDocumentHistory> TblDocumentHistories { get; set; } = new List<TblDocumentHistory>();
 
+    public virtual ICollection<TblFollowup> TblFollowups { get; set; } = new List<TblFollowup>();
+
     public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
 
     public virtual ICollection<TblRequestAssignee> TblRequestAssignees { get; set; } = new List<TblRequestAssignee>();

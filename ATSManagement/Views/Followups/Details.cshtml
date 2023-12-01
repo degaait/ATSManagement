@@ -1,0 +1,66 @@
+﻿@model ATSManagement.Models.TblFollowup
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TblFollowup</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FromExternal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FromExternal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FromInternal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FromInternal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExternalUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExternalUser.ExterUserId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Inist)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Inist.InistId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Request)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Request.RequestId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.UserId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.FollowUpId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

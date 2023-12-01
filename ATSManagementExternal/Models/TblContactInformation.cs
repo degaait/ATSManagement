@@ -14,4 +14,6 @@ public partial class TblContactInformation
     public string? ContactPhoneNumber { get; set; }
 
     public string? ContactCountry { get; set; }
+
+    public string? FileUplaod { get; set; }
 }

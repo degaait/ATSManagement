@@ -43,9 +43,14 @@ namespace ATSManagement.Controllers
                     .Include(x => x.DeputyUprovalStatusNavigation)
                     .Include(y => y.TeamUpprovalStatusNavigation)
                     .Include(t => t.Priority).Where(x => x.RequestId == item).FirstOrDefault();
-                atsdbContext.Add(tblRequest);
+                if (tblRequest != null)
+                {
+                    atsdbContext.Add(tblRequest);
+                }
+
             }
-            return View(atsdbContext);
+            var sortedLists = atsdbContext.OrderBy(s => s.CreatedDate.Value.Date).ThenBy(c => c.CreatedDate.Value.TimeOfDay);
+            return View(sortedLists);
         }
 
         public async Task<IActionResult> TeamRequests()

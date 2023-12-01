@@ -1,0 +1,87 @@
+﻿@model ATSManagement.Models.TblFollowup
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Teams
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Followups</h4>
+                        </div>
+                        <form asp-action="Create">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="FollowUpId" />
+                                    <input type="hidden" asp-for="UserId" />
+                                    <input type="hidden" asp-for="RequestId" />
+                                    <div class="form-group">
+                                        <label asp-for="Message" class="control-label"></label>
+                                        <input asp-for="Message" class="form-control" />
+                                        <span asp-validation-for="Message" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" value="Update" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let options = {
+            selector: '#Message',
+            height: 300,
+            menubar: true,
+            statusbar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount',
+                'lists'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat',
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+        }
+        if (localStorage.getItem("tablerTheme") === 'dark') {
+            options.skin = 'oxide-dark';
+            options.content_css = 'dark';
+        }
+        tinyMCE.init(options);
+    })
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

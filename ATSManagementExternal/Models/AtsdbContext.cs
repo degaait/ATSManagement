@@ -69,6 +69,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblExternalUser> TblExternalUsers { get; set; }
 
+    public virtual DbSet<TblFollowup> TblFollowups { get; set; }
+
     public virtual DbSet<TblInistitution> TblInistitutions { get; set; }
 
     public virtual DbSet<TblInspectionInstitution> TblInspectionInstitutions { get; set; }
@@ -155,6 +157,8 @@ public partial class AtsdbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Latin1_General_CI_AS");
+
         modelBuilder.Entity<TblActivity>(entity =>
         {
             entity.HasKey(e => e.ActivityId);
@@ -750,6 +754,35 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Inist).WithMany(p => p.TblExternalUsers)
                 .HasForeignKey(d => d.InistId)
                 .HasConstraintName("FK_tbl_ExternalUser_tbl_Inistitutions");
+        });
+
+        modelBuilder.Entity<TblFollowup>(entity =>
+        {
+            entity.HasKey(e => e.FollowUpId);
+
+            entity.ToTable("tbl_Followups");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FromExternal).HasColumnName("fromExternal");
+            entity.Property(e => e.FromInternal).HasColumnName("fromInternal");
+            entity.Property(e => e.InistId).HasColumnName("InistID");
+            entity.Property(e => e.RequestId).HasColumnName("RequestID");
+
+            entity.HasOne(d => d.ExternalUser).WithMany(p => p.TblFollowups)
+                .HasForeignKey(d => d.ExternalUserId)
+                .HasConstraintName("FK_tbl_Followups_tbl_ExternalUser");
+
+            entity.HasOne(d => d.Inist).WithMany(p => p.TblFollowups)
+                .HasForeignKey(d => d.InistId)
+                .HasConstraintName("FK_tbl_Followups_tbl_Inistitutions");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TblFollowups)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK_tbl_Followups_tbl_Requests");
+
+            entity.HasOne(d => d.User).WithMany(p => p.TblFollowups)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_tbl_Followups_tbl_InternalUsers");
         });
 
         modelBuilder.Entity<TblInistitution>(entity =>

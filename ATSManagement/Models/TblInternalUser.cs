@@ -69,6 +69,8 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblDraftContractExaminationReport> TblDraftContractExaminationReports { get; set; } = new List<TblDraftContractExaminationReport>();
 
+    public virtual ICollection<TblFollowup> TblFollowups { get; set; } = new List<TblFollowup>();
+
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();

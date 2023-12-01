@@ -19,6 +19,8 @@ public partial class TblInistitution
 
     public virtual ICollection<TblExternalUser> TblExternalUsers { get; set; } = new List<TblExternalUser>();
 
+    public virtual ICollection<TblFollowup> TblFollowups { get; set; } = new List<TblFollowup>();
+
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();

@@ -37,6 +37,8 @@ public partial class TblExternalUser
 
     public virtual ICollection<TblExternalRequest> TblExternalRequests { get; set; } = new List<TblExternalRequest>();
 
+    public virtual ICollection<TblFollowup> TblFollowups { get; set; } = new List<TblFollowup>();
+
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
