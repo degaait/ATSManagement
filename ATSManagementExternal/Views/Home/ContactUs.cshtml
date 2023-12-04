@@ -23,37 +23,43 @@
                     <div class="card">
                         <div class="card-header">
                         </div>
-                        <form asp-action="ContactUs">
+                        <form asp-action="ContactUs" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
-
                                         <div class="mb-3 row" id="divAppointmentDetail">
                                             <label asp-for="ContactDetaiMessage" class=" col-2 col-form-label">Message</label>
                                             <div class="col">
-                                                <input asp-for="ContactDetaiMessage" class="form-control" />
+                                                <input asp-for="ContactDetaiMessage" required class="form-control" />
                                                 <span asp-validation-for="ContactDetaiMessage" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
                                             <label asp-for="ContactEmail" class=" col-2 col-form-label">Email Address</label>
                                             <div class="col">
-                                                <input asp-for="ContactEmail" class="form-control" />
+                                                <input asp-for="ContactEmail" required class="form-control" />
                                                 <span asp-validation-for="ContactEmail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
                                             <label asp-for="ContactPhoneNumber" class=" col-2 col-form-label">Phone Number</label>
                                             <div class="col">
-                                                <input asp-for="ContactPhoneNumber" class="form-control" />
+                                                <input asp-for="ContactPhoneNumber" required class="form-control" />
                                                 <span asp-validation-for="ContactPhoneNumber" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                        <div class="mb-3 row" id="divCountry">
                                             <label asp-for="ContactCountry" class=" col-2 col-form-label">Country</label>
                                             <div class="col">
-                                                <input asp-for="ContactCountry" class="form-control" />
+                                                <input asp-for="ContactCountry" required class="form-control" />
                                                 <span asp-validation-for="ContactCountry" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divAppointmentDetail">
+                                            <label asp-for="formFile" class=" col-2 col-form-label">Files</label>
+                                            <div class="col">
+                                                <input asp-for="formFile" required class="form-control" />
+                                                <span asp-validation-for="formFile" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -61,29 +67,10 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">
-                                        Submit
-                                    </a>                                 
+                                    <button type="submit" value="Save" class="btn btn-primary" >Save changes</button>
+                                   
                                 </div>
                             </div>
-                            <div class="modal modal-blur fade" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Terms and Conditions</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            @ViewBag.PrivacyPolicy
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </form>
                     </div>
                 </div>

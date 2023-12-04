@@ -1,17 +1,17 @@
-﻿namespace ATSManagement.Controllers
-{
-    using NToastNotify;
-    using System.Numerics;
-    using ATSManagement.Models;
-    using ATSManagement.IModels;
-    using ATSManagement.Filters;
-    using ATSManagement.ViewModels;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using NToastNotify;
+using System.Numerics;
+using ATSManagement.Models;
+using ATSManagement.IModels;
+using ATSManagement.Filters;
+using ATSManagement.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
+namespace ATSManagement.Controllers
+{
     [CheckSessionIsAvailable]
     public class InispectionPlansController : Controller
     {
@@ -33,17 +33,17 @@
             var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
             if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true)
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status).Include(s => s.Year);
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year);
                 return View(await atsdbContext.ToListAsync());
             }
             else if (users.IsTeamLeader==true)
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status).Include(s => s.Year).Include(s=>s.Team).Where(s=>s.TeamId==users.TeamId);
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s=>s.Team).Where(s=>s.TeamId==users.TeamId);
                 return View(await atsdbContext.ToListAsync());           
             }
             else
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status).Include(s=>s.TblAssignedYearlyPlans).Include(s => s.Year);
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s=>s.TblAssignedYearlyPlans).Include(s => s.Year);
                 return View(await atsdbContext.ToListAsync());
 
             }          
@@ -57,7 +57,7 @@
                 var assigned=(from items in _context.TblInspectionPlans
                               join assing in _context.TblAssignedYearlyPlans on items.InspectionPlanId equals assing.PlanId where items.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")  select items).ToList();
 
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status).Include(s => s.Year).Where(s=>s.TeamId!=null&&s.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")).ToList();
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Where(s=>s.TeamId!=null&&s.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")).ToList();
                 var filtered=atsdbContext.Intersect(assigned).ToList();
                 return View(filtered);
             }
@@ -68,7 +68,7 @@
                                 where items.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")
                                 select items).ToList();
 
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Status).Include(s => s.Year).Include(s => s.Team).Where(s => s.TeamId == users.TeamId && s.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")&&(s.IsAssignedToUser==false||s.IsAssignedToUser==null)).ToList();
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team).Where(s => s.TeamId == users.TeamId && s.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")&&(s.IsAssignedToUser==false||s.IsAssignedToUser==null)).ToList();
                 var filtered = atsdbContext.Intersect(assigned).ToList();
 
                 return View(atsdbContext);
@@ -131,7 +131,9 @@
                     tible.CreationDate = DateTime.Now;
                     tible.YearId = inispectionPlan.YearId;
                     tible.UserId = userId;
-                    tible.StatusId = _context.TblStatuses.Where(A => A.Status == "New").Select(A => A.StatusId).FirstOrDefault();
+                    tible.IsAssignedToUser = false;
+                    tible.IsAssignedTeam = false;
+                    tible.ProId = _context.TblInspectionStatuses.Where(A => A.ProstatusTitle == "New").Select(A => A.ProId).FirstOrDefault();
                     if (inispectionPlan.InistId.Length > 0)
                     {
                         plan_in = new List<TblPlanInistitution>();
@@ -458,9 +460,10 @@
             if (model.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847"))
             {
                 var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
-                var status = _context.TblStatuses.Where(p => p.Status == "Assigned to Team").FirstOrDefault();
+                var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to Team").FirstOrDefault();
                 plats.AssigneeTypeId = model.AssigneeTypeId;
-                plats.StatusId = status.StatusId;
+                plats.ProId = status.ProId;
+                plats.IsAssignedTeam = true;
                 var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
                 var teamLeader=(from items in _context.TblTeams 
                                 join users in _context.TblInternalUsers on items.TeamLeaderId equals users.UserId where items.TeamId==model.TeamId
@@ -499,7 +502,7 @@
             else
             {
                 var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
-                var status = _context.TblStatuses.Where(p => p.Status == "Assigned to user").FirstOrDefault();
+                var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to user").FirstOrDefault();
                 plats.AssigneeTypeId = model.AssigneeTypeId;
                 plats.IsAssignedToUser = true;
                 var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
@@ -515,12 +518,11 @@
                         yearlyPlan = new TblAssignedYearlyPlan();
                         yearlyPlan.AssignedBy = model.AssignedBy;
                         yearlyPlan.AssignedTo = item;
-                        yearlyPlan.ProgressStatus = status.Status;
                         yearlyPlan.AssignedDate = model.AssignedDate;
                         yearlyPlan.DueDate = model.DueDate;
                         yearlyPlan.Remark = model.Remark;
                         yearlyPlan.PlanId = model.PlanId;
-                        plats.StatusId = status.StatusId;
+                        plats.ProId = status.ProId;
                         plats.ModificationDate = DateTime.Now;
                         plats.AssigningRemark = model.Remark;
                         tblAssignedYearlyPlans.Add(yearlyPlan);
@@ -640,10 +642,10 @@
                     Value = g.UserId.ToString(),
                     Text = g.FirstName
                 }).ToList();
-                model.status = _context.TblStatuses.Where(p => p.Status == "New").Select(p => new SelectListItem
+                model.status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "New").Select(p => new SelectListItem
                 {
-                    Value = p.StatusId.ToString(),
-                    Text = p.Status.ToString()
+                    Value = p.ProId.ToString(),
+                    Text = p.ProstatusTitle.ToString()
                 }).ToList();
                 model.AssignmentTypes = _context.TblAssignementTypes.Where(s => s.AssigneeTypeId == plats.AssigneeTypeId).Select(s => new SelectListItem
                 {
@@ -675,13 +677,12 @@
             var loggedInUser = _context.TblInternalUsers.Where(p => p.UserId == userId).ToList();
             var AllUsers = _context.TblInternalUsers.ToList().Except(loggedInUser);
             var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
-            var status = _context.TblStatuses.Where(p => p.Status == "Assigned to user").FirstOrDefault();
+            var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to user").FirstOrDefault();
 
             var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
           
                 if (ModelState.IsValid)
                 {
-
                     if (ifAssigned != null)
                     {
                         _context.TblAssignedYearlyPlans.Remove(ifAssigned);
@@ -693,12 +694,11 @@
                         yearlyPlan = new TblAssignedYearlyPlan();
                         yearlyPlan.AssignedBy = model.AssignedBy;
                         yearlyPlan.AssignedTo = item;
-                        yearlyPlan.ProgressStatus = status.Status;
                         yearlyPlan.AssignedDate = model.AssignedDate;
                         yearlyPlan.DueDate = model.DueDate;
                         yearlyPlan.Remark = model.Remark;
                         yearlyPlan.PlanId = model.PlanId;
-                        plats.StatusId = status.StatusId;
+                        plats.ProId = status.ProId;
                         plats.ModificationDate = DateTime.Now;
                         plats.AssigningRemark = model.Remark;
                         tblAssignedYearlyPlans.Add(yearlyPlan);
@@ -767,7 +767,6 @@
 
             
         }
-
         private async Task SendMail(List<string> to, string subject, string body)
         {
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();

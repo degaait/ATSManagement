@@ -33,7 +33,7 @@ public partial class TblRequest
 
     public Guid? ExternalRequestStatusId { get; set; }
 
-    public Guid? TopStatus { get; set; }
+    public int? TopStatusId { get; set; }
 
     public Guid? PriorityId { get; set; }
 
@@ -66,6 +66,20 @@ public partial class TblRequest
     public string? PhoneNumber { get; set; }
 
     public Guid? TypeId { get; set; }
+
+    public string? LetterofUpproval { get; set; }
+
+    public string? SentReport { get; set; }
+
+    public bool? IsSenttoInst { get; set; }
+
+    public bool? IsReturned { get; set; }
+
+    public string? ReturningRemark { get; set; }
+
+    public DateTime? SentDate { get; set; }
+
+    public string? SendingRemark { get; set; }
 
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
@@ -110,6 +124,8 @@ public partial class TblRequest
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 
     public virtual TblDecisionStatus? TeamUpprovalStatusNavigation { get; set; }
+
+    public virtual TblTopStatus? TopStatus { get; set; }
 
     public virtual TblRequestAssignementType? Type { get; set; }
 

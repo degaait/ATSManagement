@@ -249,7 +249,6 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -379,7 +378,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> DownloadEvidenceFile(string path)
         {
             string filename = path.Substring(7);
-            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\", filename);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "admin\\", filename);
             var provider = new FileExtensionContentTypeProvider();
             if (!provider.TryGetContentType(filepath, out var contenttype))
             {

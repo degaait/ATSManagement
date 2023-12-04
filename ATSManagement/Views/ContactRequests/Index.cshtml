@@ -61,6 +61,9 @@
                                         <th>
                                             Country
                                         </th>
+                                        <th>
+                                            Files
+                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -81,13 +84,26 @@
                                                 @Html.DisplayFor(modelItem => item.ContactCountry)
                                             </td>
                                             <td>
+                                                @if (item.FileUplaod != null)
+                                                 {
+                                                    <a class="btn btn-primary" asp-action="DownloadFile" asp-controller="ContactRequests" asp-route-path="@item.FileUplaod">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                            <path d="M12 17v-6"></path>
+                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                        </svg>
+                                                    </a>
+                                                 }
+                                            </td>
+                                            <td>
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">
                                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                           
                                                             <a class="dropdown-item" asp-action="Details" asp-route-id="@item.ContactId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

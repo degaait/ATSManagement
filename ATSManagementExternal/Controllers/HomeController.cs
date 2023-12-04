@@ -50,6 +50,21 @@ namespace ATSManagementExternal.Controllers
                 tblContact.ContactEmail = model.ContactEmail;
                 tblContact.ContactDetaiMessage = model.ContactDetaiMessage;
                 tblContact.ContactCountry = model.ContactCountry;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (model.formFile != null)
+                {
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    FileInfo fileInfo = new FileInfo(model.formFile.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.formFile.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.formFile.CopyTo(stream);
+                    }
+                    string dbPath = "/admin/Files/" + fileName;
+                    tblContact.FileUplaod = dbPath;
+                }
                 _context.TblContactInformations.Add(tblContact);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)

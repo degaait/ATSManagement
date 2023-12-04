@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Models;
-
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -147,18 +148,18 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblTermsAndCondition> TblTermsAndConditions { get; set; }
 
+    public virtual DbSet<TblTopStatus> TblTopStatuses { get; set; }
+
     public virtual DbSet<TblWitnessEvidence> TblWitnessEvidences { get; set; }
 
     public virtual DbSet<TblYear> TblYears { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Latin1_General_CI_AS");
-
         modelBuilder.Entity<TblActivity>(entity =>
         {
             entity.HasKey(e => e.ActivityId);
@@ -504,9 +505,7 @@ public partial class AtsdbContext : DbContext
 
             entity.ToTable("tbl_ContactInformations");
 
-            entity.Property(e => e.ContactId)
-                .HasDefaultValueSql("(newid())")
-                .HasColumnName("ContactID");
+            entity.Property(e => e.ContactId).HasColumnName("ContactID");
             entity.Property(e => e.ContactCountry).HasMaxLength(100);
             entity.Property(e => e.ContactEmail).HasMaxLength(100);
             entity.Property(e => e.ContactPhoneNumber).HasMaxLength(50);
@@ -843,7 +842,13 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.AssigneeTypeId).HasColumnName("AssigneeTypeID");
             entity.Property(e => e.CreationDate).HasColumnType("datetime");
             entity.Property(e => e.ModificationDate).HasColumnType("datetime");
-            entity.Property(e => e.StatusId).HasColumnName("StatusID");
+            entity.Property(e => e.ReturnDate)
+                .HasColumnType("datetime")
+                .HasColumnName("returnDate");
+            entity.Property(e => e.ReturningRemark).HasColumnName("returningRemark");
+            entity.Property(e => e.SentDate)
+                .HasColumnType("datetime")
+                .HasColumnName("sentDate");
             entity.Property(e => e.TeamId).HasColumnName("TeamID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.YearId).HasColumnName("YearID");
@@ -852,9 +857,9 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.AssigneeTypeId)
                 .HasConstraintName("FK_tbl_InspectionPlans_tbl_AssignementTypes");
 
-            entity.HasOne(d => d.Status).WithMany(p => p.TblInspectionPlans)
-                .HasForeignKey(d => d.StatusId)
-                .HasConstraintName("FK_tbl_InspectionPlans_tbl_Status");
+            entity.HasOne(d => d.Pro).WithMany(p => p.TblInspectionPlans)
+                .HasForeignKey(d => d.ProId)
+                .HasConstraintName("FK_tbl_Progress_tbl_InspectionPlans");
 
             entity.HasOne(d => d.Team).WithMany(p => p.TblInspectionPlans)
                 .HasForeignKey(d => d.TeamId)
@@ -1279,7 +1284,12 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.FullName).HasMaxLength(300);
             entity.Property(e => e.PhoneNumber).HasMaxLength(50);
             entity.Property(e => e.QuestTypeId).HasColumnName("QuestTypeID");
+            entity.Property(e => e.ReturningRemark).HasColumnName("returningRemark");
+            entity.Property(e => e.SentDate)
+                .HasColumnType("date")
+                .HasColumnName("sentDate");
             entity.Property(e => e.ServiceTypeId).HasColumnName("ServiceTypeID");
+            entity.Property(e => e.TopStatusId).HasColumnName("TopStatusID");
 
             entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblRequestAssignedByNavigations)
                 .HasForeignKey(d => d.AssignedBy)
@@ -1338,6 +1348,10 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.TeamUpprovalStatusNavigation).WithMany(p => p.TblRequestTeamUpprovalStatusNavigations)
                 .HasForeignKey(d => d.TeamUpprovalStatus)
                 .HasConstraintName("FK_tbl_Requests_tbl_DecisionStatus1");
+
+            entity.HasOne(d => d.TopStatus).WithMany(p => p.TblRequests)
+                .HasForeignKey(d => d.TopStatusId)
+                .HasConstraintName("FK_tbl_Requests_tbl_Requests");
 
             entity.HasOne(d => d.Type).WithMany(p => p.TblRequests)
                 .HasForeignKey(d => d.TypeId)
@@ -1566,6 +1580,16 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.TermsId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("TermsID");
+        });
+
+        modelBuilder.Entity<TblTopStatus>(entity =>
+        {
+            entity.HasKey(e => e.TopStatusId);
+
+            entity.ToTable("tbl_TopStatus");
+
+            entity.Property(e => e.TopStatusId).HasColumnName("TopStatusID");
+            entity.Property(e => e.StatusName).HasMaxLength(350);
         });
 
         modelBuilder.Entity<TblWitnessEvidence>(entity =>

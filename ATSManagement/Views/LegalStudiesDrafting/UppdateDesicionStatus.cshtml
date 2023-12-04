@@ -44,6 +44,13 @@
                                                 <span asp-validation-for="ExternalRequestStatusID" class="text-danger"></span>
                                             </div>
                                         </div>
+                                        <div class="mb-3 row" id="divIsDeputyNeeded" style="display:@ViewBag.visble">
+                                            <label class="col-3 col-form-label">Is Depute upproval needed?</label>
+                                            <div class="col">
+                                                <input asp-for="IsDeputyApprovalNeeded" class="form-check-input m-0" type="checkbox" />
+                                                <span asp-validation-for="IsDeputyApprovalNeeded" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

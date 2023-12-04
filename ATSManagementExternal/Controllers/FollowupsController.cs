@@ -1,12 +1,14 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ATSManagementExternal.IModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
-using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+using ATSManagementExternal.IModels;
 using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Filters;
+using ATSManagementExternal.ViewModels;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {
+    [CheckSessionIsAvailable]
     public class FollowupsController : Controller
     {
         private readonly AtsdbContext _context;
@@ -77,8 +79,9 @@ namespace ATSManagementExternal.Controllers
                 TblFollowup followup = new TblFollowup();
                 followup.RequestId = model.RequestId;
                 followup.Message = model.Message;
-                followup.ExternalUserId = model.UserId;
+                followup.ExternalUserId = model.ExternalUserId;
                 followup.CreatedDate = DateTime.UtcNow;
+                followup.InistId=model.InistId;
                 followup.FromExternal = true;
                 followup.FromInternal = false;
                 _context.Add(followup);
@@ -147,7 +150,7 @@ namespace ATSManagementExternal.Controllers
                 if (updated > 0)
                 {
                     _notifyService.Success("Follow up message is successfully updated");
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", new { RequestId = tblFollowup.RequestId });
                 }
                 else
                 {

@@ -1,12 +1,14 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using ATSManagement.Models;
 using ATSManagement.IModels;
-using ATSManagement.Models;
+using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
+    [CheckSessionIsAvailable]
     public class FollowupsController : Controller
     {
         private readonly AtsdbContext _context;
@@ -155,7 +157,7 @@ namespace ATSManagement.Controllers
                 if (updated > 0)
                 {
                     _notifyService.Success("Follow up message is successfully updated");
-                    return RedirectToAction("Index", new { RequestId = model.RequestId });
+                    return RedirectToAction("Index", new { RequestId = tblFollowup.RequestId });
                 }
                 else
                 {

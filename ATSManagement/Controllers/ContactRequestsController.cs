@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
@@ -32,7 +33,7 @@ namespace ATSManagement.Controllers
         }
 
         // GET: ContactRequests/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.TblContactInformations == null)
             {
@@ -64,7 +65,6 @@ namespace ATSManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                tblContactInformation.ContactId = Guid.NewGuid();
                 _context.Add(tblContactInformation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,7 +93,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ContactId,ContactDetaiMessage,ContactEmail,ContactPhoneNumber,ContactCountry")] TblContactInformation tblContactInformation)
+        public async Task<IActionResult> Edit(int id, [Bind("ContactId,ContactDetaiMessage,ContactEmail,ContactPhoneNumber,ContactCountry")] TblContactInformation tblContactInformation)
         {
             if (id != tblContactInformation.ContactId)
             {
@@ -124,7 +124,7 @@ namespace ATSManagement.Controllers
         }
 
         // GET: ContactRequests/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.TblContactInformations == null)
             {
@@ -165,9 +165,21 @@ namespace ATSManagement.Controllers
                 return RedirectToAction(nameof(Delete), new {id=tblContactInformation.ContactId});
             }           
         }
-        private bool TblContactInformationExists(Guid id)
+        private bool TblContactInformationExists(int? id)
         {
           return (_context.TblContactInformations?.Any(e => e.ContactId == id)).GetValueOrDefault();
+        }
+        public async Task<IActionResult> DownloadFile(string path)
+        {
+            string filename = path.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "admin\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
         }
     }
 }

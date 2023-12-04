@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
 @inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Yearly Plans";
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+
 }
 <style type="text/css">
     .table thead th {
@@ -90,12 +94,13 @@
                                                      {
                                                          Name = related.Name
                                                      }).ToList();
+                                        var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.PlanTitle)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.PlanDescription)
+                                                @Html.Raw(item.PlanDescription)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CreationDate)
@@ -116,7 +121,11 @@
                                                 @Html.DisplayFor(modelItem => item.User.FirstName)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.Status.StatusWithColor)
+                                                @Html.Raw(item.Pro.StatusWithColor)
+                                                @if (team != null)
+                                                {
+                                                    <span>Team:- @team.TeamName</span>
+                                                }
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
@@ -125,21 +134,30 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
+                                                            @if (user.IsDepartmentHead == true || user.IsTeamLeader == true)
+                                                            {
+                                                                if (item.IsAssignedToUser == false && item.IsAssignedTeam == false)
+                                                                {
+                                                                    <a class="dropdown-item" asp-action="Assign" asp-route-id="@item.InspectionPlanId">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
+                                                                        </svg>&nbsp;
+                                                                        Assign tasks
+                                                                    </a>
+                                                                }
+
+                                                                <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
+                                                                    Specific plans
+                                                                </a>
+                                                            }
                                                             <a class="dropdown-item" asp-action="Index" asp-controller="InspectionInstitutions" asp-route-InspectionPlanId="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" fill-rule="evenodd"><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8" /></g></svg>&nbsp;
                                                                 Send to Institutions
                                                             </a>
-                                                            <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-                                                                Specific plans
-                                                            </a>
-                                                            <a class="dropdown-item" asp-action="Assign" asp-route-id="@item.InspectionPlanId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
-                                                                </svg>&nbsp;
-                                                                Assign tasks
-                                                            </a>
+
+
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

@@ -89,12 +89,14 @@
                                                      {
                                                          Name = related.Name
                                                      }).ToList();
+                                        var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
+
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.PlanTitle)
+                                                @Html.Raw(item.PlanTitle)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.PlanDescription)
+                                                @Html.Raw(item.PlanDescription)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CreationDate)
@@ -115,7 +117,11 @@
                                                 @Html.DisplayFor(modelItem => item.User.FirstName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Status.Status)
+                                                @Html.Raw(item.Pro.StatusWithColor)
+                                                @if (team != null)
+                                                {
+                                                    <span>Team:- @team.TeamName</span>
+                                                }
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
@@ -124,7 +130,8 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                           
+                                                            @if (item.IsAssignedToUser == false)
+                                                            {
                                                             <a class="dropdown-item" asp-action="AssignFromTeam" asp-route-id="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -132,6 +139,7 @@
                                                                 </svg>&nbsp;
                                                                 Assign task to user
                                                             </a>
+                                                            }
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

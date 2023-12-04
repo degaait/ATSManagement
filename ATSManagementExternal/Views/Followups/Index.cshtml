@@ -107,7 +107,7 @@
                                 if (item.FromExternal == true)
                                 {
                                     <div class="container">
-                                        <h3 class="time-left">You</h3>
+                                        <h3 class="time-left" style="color:dodgerblue">(You)</h3>
                                         <br />
                                         <p class="time-left">
                                             @Html.Raw(@item.Message)
@@ -129,15 +129,15 @@
                                 if (item.FromInternal == true)
                                 {
                                     <div class="container">
-                                        <h3 class="time-right">@item.ExternalUser.FirstName</h3>
+                                        <h3 class="time-right" style="color:dodgerblue">(@item.User.FirstName)</h3>
                                         <br />
-                                        <p class="time-right">
+                                        <div class="time-right">
                                             @Html.Raw(@item.Message)
                                             <br />
                                             <span class="time-right">@item.CreatedDate</span>
-                                        </p>
-                                       
-                                    </div>
+                                            </div>
+
+                                        </div>
                                 }
                             }
 

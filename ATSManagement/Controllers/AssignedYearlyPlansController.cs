@@ -1,17 +1,17 @@
-﻿namespace ATSManagement.Controllers
-{
-    using NToastNotify;
-    using ATSManagement.Models;
-    using ATSManagement.Filters;
-    using ATSManagement.IModels;
-    using ATSManagement.ViewModels;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.StaticFiles;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
+using ATSManagement.IModels;
+using ATSManagement.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
+namespace ATSManagement.Controllers
+{
     [CheckSessionIsAvailable]
     public class AssignedYearlyPlansController : Controller
     {
@@ -31,6 +31,28 @@
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
 
             var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s=>s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
+            return View(await atsdbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> OngoingPlan(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> CompletedPlans(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
+            return View(await atsdbContext.ToListAsync());
+        }
+        public async Task<IActionResult> SentPlans(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+
+            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -307,14 +329,13 @@
             model.PlanTitle = yearlyPlan.PlanTitle;
             model.Remark = assignedTasks.Remark;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
-            model.status = _context.TblStatuses.Where(a => a.Status == "Done" || a.Status == "Pending").Select(p => new SelectListItem
+            model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user"&& a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
             {
-                Value = p.StatusId.ToString(),
-                Text = p.Status,
-                Selected = p.StatusId == assignedTasks.StatusId ? true : false
+                Value = p.ProId.ToString(),
+                Text = p.ProstatusTitle,
 
             }).ToList();
-            ViewBag.StatusId = new SelectList(_context.TblStatuses.Where(a => a.Status == "Done" || a.Status == "Pending").ToList(), "StatusId", "Status", assignedTasks.StatusId);
+            ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", assignedTasks.StatusId);
 
             return View(model);
         }
@@ -331,25 +352,25 @@
 
                 TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
                 var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
-                if (model.StatusID == Guid.Parse("47fc4e29-8bff-4a7b-90d8-c58ca5b7c7e8") && assignedTasks.FinalReport == null)
+                if (model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport == null)
                 {
+                    _notifyService.Error("Before you make complete status. Please uppload final report");
                     model.Id = assignedTasks.Id;
                     model.PlanTitle = yearlyPlan.PlanTitle;
                     model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
-                    model.status = _context.TblStatuses.Where(a => a.Status == "Done" || a.Status == "Pending").Select(p => new SelectListItem
+                    model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
                     {
-                        Value = p.StatusId.ToString(),
-                        Text = p.Status
+                        Value = p.ProId.ToString(),
+                        Text = p.ProstatusTitle,
 
                     }).ToList();
-                    ViewBag.StatusId = new SelectList(_context.TblStatuses.Where(a => a.Status == "Done" || a.Status == "Pending").ToList(), "StatusId", "Status", assignedTasks.StatusId);
+                    ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
 
                     return View(model);
                 }
                 assignedTasks.ProgressStatus = model.ProgressStatus;
-                yearlyPlan.StatusId = model.StatusID;
+                yearlyPlan.ProId = model.StatusID;
                 assignedTasks.Remark = model.Remark;
-                assignedTasks.StatusId = model.StatusID;
                 int updated = _context.SaveChanges();
                 if (updated > 0)
                 {
@@ -359,12 +380,16 @@
                 }
                 else
                 {
+                    ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
+
                     _notifyService.Error("Progress isn't successfully uppdated. Please try again");
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
+                ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle",model.StatusID);
+
                 _notifyService.Error($"Error:{ex.Message} happened. Progress isn't successfully uppdated. Please try again");
                 return View(model);
             }          
@@ -378,15 +403,13 @@
             model.PlanTitle = yearlyPlan.PlanTitle;
             model.Remark = assignedTasks.Remark;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
-            model.status = _context.TblStatuses.Where(a => a.Status == "Done" || a.Status == "Pending").Select(p => new SelectListItem
+            model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
             {
-                Value = p.StatusId.ToString(),
-                Text = p.Status,
-                Selected = p.StatusId == assignedTasks.StatusId ? true : false
+                Value = p.ProId.ToString(),
+                Text = p.ProstatusTitle,
 
             }).ToList();
-            ViewBag.StatusId = new SelectList(_context.TblStatuses.Where(a => a.Status == "Done" || a.Status == "Pending").ToList(), "StatusId", "Status", assignedTasks.StatusId);
-
+            ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", yearlyPlan.ProId);
             return View(model);
         }
         [HttpPost]
@@ -395,13 +418,12 @@
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task< IActionResult> AddFinalReport(InspectionAssignModel? model)
-        {
+        {           
+            TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
+            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);            
             try
             {
-                var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
-
-                TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
-
+                var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();              
                 if (assignedTasks.EngagementLetter==null||assignedTasks.EvaluationCheckLists==null)
                 {
                     _notifyService.Error("Before Upploading final report you should add evaluation criteria and Engagement letter");
@@ -423,6 +445,7 @@
                 }
                 string dbPath = "/Files/" + fileName;
                 assignedTasks.FinalReport = dbPath;
+                yearlyPlan.FinalReport = dbPath;
                 int updated = _context.SaveChanges();
                 if (updated > 0)
                 {
@@ -433,13 +456,26 @@
                 }
                 else
                 {
+                    model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
+                    {
+                        Value = p.ProId.ToString(),
+                        Text = p.ProstatusTitle,
+
+                    }).ToList();
+                    ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", yearlyPlan.ProId);
                     _notifyService.Error("Report isn't successfully upploaded");
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
+                model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
+                {
+                    Value = p.ProId.ToString(),
+                    Text = p.ProstatusTitle,
 
+                }).ToList();
+                ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", yearlyPlan.ProId);
                 _notifyService.Error($"Error:{ex.Message} happened. Report isn't successfully upploaded");
                 return View(model);
             }

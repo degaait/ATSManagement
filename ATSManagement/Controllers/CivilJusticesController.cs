@@ -1,13 +1,13 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using ATSManagement.Models;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
-using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -52,7 +52,6 @@ namespace ATSManagement.Controllers
             var sortedLists = atsdbContext.OrderBy(s => s.CreatedDate.Value.Date).ThenBy(c => c.CreatedDate.Value.TimeOfDay);
             return View(sortedLists);
         }
-
         public async Task<IActionResult> TeamRequests()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -771,6 +770,7 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> CompletedRequests()
         {
+            TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();
             Guid? guid = _context.TblExternalRequestStatuses.Where(s => s.StatusName == "Completed").Select(s => s.ExternalRequestStatusId).FirstOrDefault();
 
             List<TblRequest>? atsdbContext = new List<TblRequest>();
@@ -788,7 +788,7 @@ namespace ATSManagement.Controllers
                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
                                                     .Include(y => y.TeamUpprovalStatusNavigation)
-                                                    .Include(t => t.Priority).Where(x => x.ExternalRequestStatusId == guid && x.RequestId == item).FirstOrDefault();
+                                                    .Include(t => t.Priority).Where(x => x.TopStatusId == tblTopStatus.TopStatusId && x.RequestId == item).FirstOrDefault();
                 if (tblRequest != null)
                 {
                     atsdbContext.Add(tblRequest);
@@ -815,7 +815,7 @@ namespace ATSManagement.Controllers
                                                       .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
                                                     .Include(y => y.TeamUpprovalStatusNavigation)
-                                                    .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName == "In Progress" && x.RequestId == item).FirstOrDefault();
+                                                    .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName != "Completed" &&x.ExternalRequestStatus.StatusName!="New" && x.RequestId == item).FirstOrDefault();
                 if (tblRequest != null)
                 {
                     atsdbContext.Add(tblRequest);
@@ -1095,7 +1095,6 @@ namespace ATSManagement.Controllers
 
             return View(tblAdjornment);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAdjorny(Guid id)
@@ -1148,6 +1147,17 @@ namespace ATSManagement.Controllers
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
+            if (user.IsDepartmentHead==true)
+            {
+                ViewBag.visible = true;
+            }
+            else
+            {
+                ViewBag.visible = false;
+            }
+            model.IsDeputyApprovalNeeded = false;
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
             model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
@@ -1164,17 +1174,23 @@ namespace ATSManagement.Controllers
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
+            TblTopStatus topStatus = _context.TblTopStatuses.Where(s => s.StatusName == "Completed").FirstOrDefault();
             if (user.IsTeamLeader == true)
             {
                 tblCivilJustice.TeamUpprovalStatus = model.DesStatusId;
             }
-            else if (user.IsDepartmentHead == true)
+            else if(user.IsDepartmentHead == true)
             {
                 tblCivilJustice.DepartmentUpprovalStatus = model.DesStatusId;
+                if (model.IsDeputyApprovalNeeded == true)
+                {
+                    tblCivilJustice.TopStatusId = topStatus.TopStatusId;
+                    tblCivilJustice.DeputyUprovalStatus=model.DesStatusId;
+                }
             }
-            else if (user.IsDeputy == true)
+            else if(user.IsDeputy == true)
             {
-                tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;
+                tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;                 
             }
             else
             {
@@ -1188,10 +1204,20 @@ namespace ATSManagement.Controllers
             int saved = await _context.SaveChangesAsync();
             if (saved > 0)
             {
+                _notifyService.Success("Upproval status changed successfully!");
                 return RedirectToAction(nameof(CompletedRequests));
             }
             else
             {
+                if (user.IsDepartmentHead == true)
+                {
+                    ViewBag.visible = true;
+                }
+                else
+                {
+                    ViewBag.visible = false;
+                }
+                _notifyService.Error("Upproval status isn't updated. Please try again");
                 model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
                 {
                     Text = x.StatusName,
@@ -1490,5 +1516,101 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
+        public async Task<IActionResult> SendToInstitution(Guid? RequestId)
+        {
+            SendModel model = new SendModel();
+            model.RequestId = RequestId;
+            return View(model);
+
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendToInstitution(SendModel sendModel)
+        {
+            try
+            {
+                string dbPath = null, FinallySentReport=null;
+                TblRequest request = _context.TblRequests.Where(s => s.RequestId == sendModel.RequestId).FirstOrDefault(); ;
+                request.SendingRemark = sendModel.SendingRemark;
+                request.IsSenttoInst = true;
+                request.SentDate = DateTime.Now;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+                //create folder if not exist
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                //get file extension
+                if (sendModel.ApprovalLetter != null)
+                {
+                    string file = Guid.NewGuid().ToString() + sendModel.ApprovalLetter.FileName;
+                    string fileWithPath = Path.Combine(path, file);
+                    using (var stream = new FileStream(fileWithPath, FileMode.Create))
+                    {
+                        sendModel.ApprovalLetter.CopyTo(stream);
+                    }
+                    dbPath = "/Files/" + file;
+                    request.LetterofUpproval = dbPath;
+                }
+                if (sendModel.FinalReport != null)
+                {
+                    string file = Guid.NewGuid().ToString() + sendModel.FinalReport.FileName;
+                    string fileWithPath = Path.Combine(path, file);
+                    using (var stream = new FileStream(fileWithPath, FileMode.Create))
+                    {
+                        sendModel.FinalReport.CopyTo(stream);
+                    }
+                    FinallySentReport = "/Files/" + file;
+                    request.SentReport = FinallySentReport;
+                }
+                int sent =await _context.SaveChangesAsync();
+                if (sent>0)
+                {
+                    _notifyService.Success("Final report is sent successfully!");
+                    return RedirectToAction(nameof(SentBackRequests));
+
+                }
+                else
+                {
+                    _notifyService.Error("Final report isn't sent successfully. Please try again ");
+                    return View(sendModel); 
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error($"Error: {ex.Message} happened. Please try again");
+                return View(sendModel);
+            }         
+
+        }
+        public async Task<IActionResult> SentBackRequests()
+        {
+            TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();           
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            TblRequest tblRequest;
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).ToList();
+            foreach (var item in moreDeps)
+            {
+                tblRequest = _context.TblRequests
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                        .Include(x => x.DeputyUprovalStatusNavigation)
+                                                        .Include(y => y.TeamUpprovalStatusNavigation)
+                                                        .Include(t => t.Priority).Where(x => x.TopStatusId == tblTopStatus.TopStatusId && x.IsSenttoInst == true && x.RequestId == item).FirstOrDefault();
+                if (tblRequest != null)
+                {
+                    atsdbContext.Add(tblRequest);
+                }
+            }
+            return View(atsdbContext);
+        }
+
     }
 }

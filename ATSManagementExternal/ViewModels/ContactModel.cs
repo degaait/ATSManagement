@@ -19,5 +19,8 @@ namespace ATSManagementExternal.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Country")]
         public string? ContactCountry { get; set;}
+        [Required(ErrorMessage = "*")]
+        [Display(Name ="File")]
+        public IFormFile? formFile { get; set; }
     }
 }

@@ -19,7 +19,7 @@ public partial class TblInspectionPlan
 
     public Guid? YearId { get; set; }
 
-    public Guid? StatusId { get; set; }
+    public Guid? ProId { get; set; }
 
     public string? AssigningRemark { get; set; }
 
@@ -29,9 +29,35 @@ public partial class TblInspectionPlan
 
     public bool? IsAssignedToUser { get; set; }
 
+    public Guid? IsUprovedByDeputy { get; set; }
+
+    public Guid? IsUpprovedbyTeam { get; set; }
+
+    public Guid? IsUpprovedbyDepartment { get; set; }
+
+    public string? FinalReport { get; set; }
+
+    public bool? FinalStatus { get; set; }
+
+    public string? SendingRemark { get; set; }
+
+    public string? ReturningRemark { get; set; }
+
+    public bool? IsSenttoInst { get; set; }
+
+    public bool? IsReturned { get; set; }
+
+    public string? SentReport { get; set; }
+
+    public bool? IsAssignedTeam { get; set; }
+
+    public DateTime? ReturnDate { get; set; }
+
+    public DateTime? SentDate { get; set; }
+
     public virtual TblAssignementType? AssigneeType { get; set; }
 
-    public virtual TblStatus? Status { get; set; }
+    public virtual TblInspectionStatus? Pro { get; set; }
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 

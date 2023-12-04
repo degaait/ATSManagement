@@ -117,6 +117,8 @@ namespace ATSManagement.ViewModels
         public Guid? TeamId { get; set; }
         public IEnumerable<SelectListItem?>? Teams { get; set; }
 
+        public bool IsDeputyApprovalNeeded {  get; set; }
+
 
     }
 }

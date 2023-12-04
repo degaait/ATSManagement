@@ -5,8 +5,6 @@ namespace ATSManagementExternal.Models;
 
 public partial class TblContactInformation
 {
-    public Guid ContactId { get; set; }
-
     public string? ContactDetaiMessage { get; set; }
 
     public string? ContactEmail { get; set; }
@@ -16,4 +14,6 @@ public partial class TblContactInformation
     public string? ContactCountry { get; set; }
 
     public string? FileUplaod { get; set; }
+
+    public int ContactId { get; set; }
 }
