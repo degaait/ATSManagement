@@ -29,7 +29,7 @@ namespace ATSManagement.Controllers
         {
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
-            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA" && (x.IsAssingedToUser == false || x.TeamId == null)).Select(a => a.RequestId).ToList();
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).ToList();
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
@@ -87,7 +87,7 @@ namespace ATSManagement.Controllers
             ViewData["Activities"] = _context.TblActivities
                  .Include(x => x.Request)
                  .Include(x => x.CreatedByNavigation)
-                 .Where(x => x.RequestId == model.RequestId).ToList();
+                 .Where(x => x.RequestId == id).ToList();
             return View(model);
         }
         [HttpPost]
@@ -719,18 +719,17 @@ namespace ATSManagement.Controllers
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
-            RepliesModel model = new RepliesModel
-            {
-                RequestId = id,
-                ReplyDate = DateTime.Now,
-                InternalReplayedBy = userId,
-            };
+            RepliesModel replies = new RepliesModel();
+            replies.RequestId= id;
+            replies.ReplyDate = DateTime.UtcNow;
+            replies.InternalReplayedBy= userId;
+            replies.IsSent = false;
             ViewData["Replies"] = _context.TblReplays
                 .Include(x => x.InternalReplayedByNavigation)
                 .Include(x => x.ExternalReplayedByNavigation)
                 .Include(x => x.Request)
                 .Where(_context => _context.RequestId == id).ToList();
-            return View(model);
+            return View(replies);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -744,24 +743,92 @@ namespace ATSManagement.Controllers
                 replay.InternalReplayedBy = model.InternalReplayedBy;
                 replay.RequestId = model.RequestId;
                 replay.ReplayDetail = model.ReplayDetail;
+                replay.IsExternal = false;
+                replay.IsInternal = true;
+                if (model.IsSent==true)
+                {
+                    replay.IsSent = true;
+                }
+                else
+                {
+                    replay.IsSent = false;
+                }
                 _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
+                    _notifyService.Success("Reply successfully added.");
                     return RedirectToAction("Replies", new { id = model.RequestId });
                 }
                 else
                 {
+                    _notifyService.Error("Reply isn't added. Please try again");
                     return View(model);
                 }
             }
             catch (Exception ex)
             {
-
+                _notifyService.Error($"Error: {ex.Message} happened. Please try again.");
                 return View(model);
             }
 
         }
+
+        public async Task<IActionResult> EditReplies(Guid? ReplyId)
+        {
+            var reply = _context.TblReplays.Where(s => s.ReplyId == ReplyId).FirstOrDefault();
+            RepliesModel repliesModel= new RepliesModel();
+            repliesModel.ReplyId = reply.ReplyId;
+            repliesModel.RequestId= reply.RequestId;
+            if (reply.IsSent==null)
+            {
+                repliesModel.IsSent = false;
+            }
+            else
+            {
+                repliesModel.IsSent= reply.IsSent;
+            }
+            repliesModel.ReplayDetail = reply.ReplayDetail;           
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> EditReplies(RepliesModel model)
+        {
+            try
+            {
+                TblReplay replay = _context.TblReplays.Find(model.ReplyId);             
+                replay.ReplayDetail = model.ReplayDetail;               
+                if (model.IsSent == true)
+                {
+                    replay.IsSent = true;
+                }
+                else
+                {
+                    replay.IsSent = false;
+                }
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Reply successfully added.");
+                    return RedirectToAction("Replies", new { id = model.RequestId });
+                }
+                else
+                {
+                    _notifyService.Error("Reply isn't added. Please try again");
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error($"Error: {ex.Message} happened. Please try again.");
+                return View(model);
+            }
+
+        }
+
         private async Task SendMail(List<string> to, string subject, string body)
         {
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
@@ -809,13 +876,15 @@ namespace ATSManagement.Controllers
                                                     .Include(t => t.AssignedByNavigation)
                                                     .Include(t => t.CaseType)
                                                     .Include(t => t.Inist)
+                                                    .Include(t=>t.TopStatus)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
                                                     .Include(x => x.ExternalRequestStatus)
+                                                    .Include(s=>s.UserUpprovalStatusNavigation)
                                                       .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
                                                     .Include(y => y.TeamUpprovalStatusNavigation)
-                                                    .Include(t => t.Priority).Where(x => x.ExternalRequestStatus.StatusName != "Completed" &&x.ExternalRequestStatus.StatusName!="New" && x.RequestId == item).FirstOrDefault();
+                                                    .Include(t => t.Priority).Where(x=>x.RequestId == item).FirstOrDefault();
                 if (tblRequest != null)
                 {
                     atsdbContext.Add(tblRequest);
@@ -857,7 +926,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> UpploadFinalReport(Guid id)
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            var detail = _context.TblCivilJustices.FindAsync(id).Result;
+            var detail = _context.TblRequests.FindAsync(id).Result;
             model.RequestId = id;
             model.CreatedDate = DateTime.UtcNow;
             model.RequestDetail = detail.RequestDetail;
@@ -869,7 +938,7 @@ namespace ATSManagement.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UpploadFinalReport(CivilJusticeExternalRequestModel model)
         {
-            TblCivilJustice civilJustice = await _context.TblCivilJustices.FindAsync(model.RequestId);
+            TblRequest civilJustice = await _context.TblRequests.FindAsync(model.RequestId);
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
 
             //create folder if not exist
@@ -889,16 +958,18 @@ namespace ATSManagement.Controllers
             int updated = _context.SaveChanges();
             if (updated > 0)
             {
+                _notifyService.Success("Report successfully upploaded");
                 return RedirectToAction(nameof(AssignedRequests));
             }
             else
             {
+                _notifyService.Error("Report isn't successfully uploaded. Please try again");
                 return View(model);
             }
         }
         public async Task<IActionResult> AddAdjornyDates(Guid? id)
         {
-            ViewData["Adjornies"] = _context.TblAdjornments.ToList();
+            ViewData["Adjornies"] = _context.TblAdjornments.Include(X=>X.Request).Where(x=>x.RequestId==id).ToList();
             AjornyDateModel model = new AjornyDateModel();
             model.RequestId = id;
             model.CreatedDate = DateTime.UtcNow;
@@ -918,7 +989,7 @@ namespace ATSManagement.Controllers
             tblAdjornment.CreatedBy = userId;
             _context.TblAdjornments.Add(tblAdjornment);
             int saved = _context.SaveChanges();
-            ViewData["Adjornies"] = _context.TblAdjornments.ToList();
+            ViewData["Adjornies"] = _context.TblAdjornments.Include(X => X.Request).Where(x => x.RequestId == ajornyDateModel.RequestId).ToList();
             if (saved > 0)
             {
                 return View(ajornyDateModel);
@@ -932,7 +1003,7 @@ namespace ATSManagement.Controllers
             model.RequestId = id;
             model.CreatedDate = DateTime.UtcNow;
             model.CreatedBy = userId;
-            ViewData["evidences"] = _context.TblWitnessEvidences.Include(x => x.Request).ToList();
+            ViewData["evidences"] = _context.TblWitnessEvidences.Include(X=>X.Request).Where(x => x.RequestId==id).ToList();
             if (id == null)
             {
                 return NotFound();
@@ -983,7 +1054,7 @@ namespace ATSManagement.Controllers
             evidence.EvidenceFiles = dbPath;
             _context.TblWitnessEvidences.Add(evidence);
             int saved = _context.SaveChanges();
-            ViewData["evidences"] = _context.TblWitnessEvidences.Include(x => x.Request).ToList();
+            ViewData["evidences"] = _context.TblWitnessEvidences.Include(X => X.Request).Where(x => x.RequestId == evidenceModel.RequestId).ToList();
             if (saved > 0)
             {
                 return View(evidenceModel);
@@ -1118,7 +1189,7 @@ namespace ATSManagement.Controllers
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
-            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed").Select(x => new SelectListItem
+            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName != "New"&& x.StatusName != "Assigned to user" && x.StatusName != "Assigned to team").Select(x => new SelectListItem
             {
                 Text = x.StatusName,
                 Value = x.ExternalRequestStatusId.ToString()
@@ -1131,7 +1202,17 @@ namespace ATSManagement.Controllers
         {
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
             TblDecisionStatus status = _context.TblDecisionStatuses.Where(x => x.StatusName == "Waiting for Upproval").FirstOrDefault();
+            if (model.ExternalRequestStatusID==Guid.Parse("2521c2b7-a886-439b-b4ba-6c0167d74940")&& tblCivilJustice.FinalReport==null)
+            {
+                _notifyService.Error("Before you make complete status. Please uppload final report");
+                model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed").Select(x => new SelectListItem
+                {
+                    Text = x.StatusName,
+                    Value = x.ExternalRequestStatusId.ToString()
+                }).ToList();
+                return View(model);
 
+            }
             tblCivilJustice.ExternalRequestStatusId = model.ExternalRequestStatusID;
             tblCivilJustice.TeamUpprovalStatus = status.DesStatusId;
             tblCivilJustice.DepartmentUpprovalStatus = status.DesStatusId;
@@ -1151,11 +1232,11 @@ namespace ATSManagement.Controllers
             TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
             if (user.IsDepartmentHead==true)
             {
-                ViewBag.visible = true;
+                ViewBag.visible ="visible";
             }
             else
             {
-                ViewBag.visible = false;
+                ViewBag.visible = "none";
             }
             model.IsDeputyApprovalNeeded = false;
             model.RequestDetail = tblCivilJustice.RequestDetail;
@@ -1190,7 +1271,8 @@ namespace ATSManagement.Controllers
             }
             else if(user.IsDeputy == true)
             {
-                tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;                 
+                tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;
+                tblCivilJustice.TopStatusId = topStatus.TopStatusId;
             }
             else
             {
@@ -1205,7 +1287,7 @@ namespace ATSManagement.Controllers
             if (saved > 0)
             {
                 _notifyService.Success("Upproval status changed successfully!");
-                return RedirectToAction(nameof(CompletedRequests));
+                return RedirectToAction(nameof(PendingRequests));
             }
             else
             {
@@ -1535,12 +1617,9 @@ namespace ATSManagement.Controllers
                 request.SendingRemark = sendModel.SendingRemark;
                 request.IsSenttoInst = true;
                 request.SentDate = DateTime.Now;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-                //create folder if not exist
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");               
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-
-                //get file extension
                 if (sendModel.ApprovalLetter != null)
                 {
                     string file = Guid.NewGuid().ToString() + sendModel.ApprovalLetter.FileName;
@@ -1568,15 +1647,12 @@ namespace ATSManagement.Controllers
                 {
                     _notifyService.Success("Final report is sent successfully!");
                     return RedirectToAction(nameof(SentBackRequests));
-
                 }
                 else
                 {
                     _notifyService.Error("Final report isn't sent successfully. Please try again ");
                     return View(sendModel); 
                 }
-
-
             }
             catch (Exception ex)
             {

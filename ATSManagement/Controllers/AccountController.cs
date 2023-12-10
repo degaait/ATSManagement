@@ -45,7 +45,7 @@ namespace ATSManagement.Controllers
 
                 if (userinfo != null)
                 {
-                    LoginModels _loginCredentials = _context.TblInternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password).Select(x => new LoginModels
+                    LoginModels _loginCredentials = _context.TblInternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password||(x.EmailAddress==collection.UserName)).Select(x => new LoginModels
                     {
                         UserName = x.UserName,
                         DepName = x.Dep.DepName,

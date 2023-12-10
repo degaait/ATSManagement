@@ -42,7 +42,59 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+                            <div class="col-12">
+                                <div class="row row-cards">
+                                    <div class="col-sm-6 col-lg-6">
+                                        <div class="card card-sm" style="color: white; background: cadetblue">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto">
+                                                            <span class="bg-primary text-white avatar">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg> </span>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="font-weight-medium">
+                                                                ( @ViewBag.openRecos)</div>
+                                                            <div class="text-muted">
+                                                                Open status
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6">
+                                        <div class="card card-sm">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto">
+                                                            <span class="bg-primary text-white avatar">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg></span>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="font-weight-medium">
+                                                                (@ViewBag.closedStatus) 
+                                                            </div>
+                                                            <div class="text-muted">
+                                                                Closed status
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card">
+                                
                                 <div class="card-body">
                                     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
                                 </div>
@@ -62,22 +114,36 @@
                                                     @Html.Raw(item.RecomendationTitle)
                                                 </button>
                                             </h2>
-                                            <div id="collapse-@id" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
+                                            <div id="collapse-@id" class="accordion-collapse collapse" style="padding-left:30px" data-bs-parent="#accordion-example">
                                                 @Html.Raw(item.Recomendation)
-                                                <div class="accordion-body pt-0">
-                                                    @item.Inist.Name
+                                                <div class="accordion-body pt-0" style="display:flex">
                                                     @if (item.Recostatus.Status == "Open")
                                                     {
-                                                        <p style="color:dodgerblue">
-                                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>
+                                                        <p style="color:dodgerblue; margin-right:10px">
+                                                            (
+                                                            <strong>@Html.Raw(@item.Recostatus.Status)</strong>)
                                                         </p>
                                                     }
                                                     else
                                                     {
-                                                        <p style="color:red">
+                                                        <p style="color: red; margin-right: 10px">
+                                                            (
                                                             <strong>@Html.Raw(@item.Recostatus.Status)</strong>
+                                                            )
                                                         </p>
                                                     }
+                                                    @item.Inist.Name
+                                                <a asp-action="DownloadEvidenceFile" style="margin-left:20px" asp-controller="Recomendations" asp-route-path="@item.ReportPath">
+                                                   ( @item.Year.Year
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                        <path d="M12 17v-6"></path>
+                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                    </svg>
+                                                    )
+                                                </a>
                                                 </div>
                                             </div>
                                         </div>

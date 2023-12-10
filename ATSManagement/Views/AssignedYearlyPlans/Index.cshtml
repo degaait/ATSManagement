@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblAssignedYearlyPlan>
-
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Yearly Plans";
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+
 }
 
 <style type="text/css">
@@ -78,7 +82,7 @@
                                             Progress status
                                         </th>
                                         <th>
-                                           Assigned by
+                                            Assigned by
                                         </th>
                                         <th></th>
                                     </tr>
@@ -86,6 +90,10 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        var status = (from items in ats.TblInspectionPlans join pros in ats.TblInspectionStatuses on items.ProId equals pros.ProId where items.InspectionPlanId == item.PlanId select new
+                                        {
+                                            statusWithColor=pros.StatusWithColor
+                                        }).FirstOrDefault();
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Plan.PlanTitle)
@@ -124,7 +132,7 @@
                                                 @Html.DisplayFor(modelItem => item.Plan.AssigningRemark)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Status.Status)
+                                                @Html.Raw( status.statusWithColor)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)

@@ -52,9 +52,6 @@
                                             Created Date
                                         </th>
                                         <th>
-                                            Created by
-                                        </th>
-                                        <th>
                                             Assigned date
                                         </th>
                                         <th>
@@ -116,10 +113,6 @@
                                                 @Html.DisplayFor(modelItem => item.CreatedDate)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
-                                            </td>
-                                            <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedDate)
                                             </td>
                                             <td>
@@ -148,7 +141,8 @@
                                                 @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.TopStatus)
+                                                
+                                                @Html.Raw(item.TopStatus.StatusName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
@@ -188,12 +182,12 @@
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
                                                                         Replies
                                                                     </a>
-                                                                    <a class="dropdown-item" asp-action="UppdateDesicionStatus" asp-route-id="@item.RequestId">
+                                                                    <a class="dropdown-item" asp-action="SendToInstitution" asp-route-RequestId="@item.RequestId">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                             <path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
                                                                         </svg>
-                                                                        Uppdate Upproval Status
+                                                                        Send back
                                                                     </a>
                                                                     <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -239,17 +233,7 @@
                                                                             <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                         </svg> &nbsp;Detail
                                                                     </a>
-                                                                    <a class="dropdown-item" asp-controller="Followups" asp-action="Index" asp-route-RequestId="@item.RequestId">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                            <path d="M13 5h8"></path>
-                                                                            <path d="M13 9h5"></path>
-                                                                            <path d="M13 15h8"></path>
-                                                                            <path d="M13 19h5"></path>
-                                                                            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                        </svg> &nbsp;Follow Up
-                                                                    </a>
+                                                                  
                                                                 }
                                                           
 

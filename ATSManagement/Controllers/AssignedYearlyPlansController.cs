@@ -34,27 +34,7 @@ namespace ATSManagement.Controllers
             return View(await atsdbContext.ToListAsync());
         }
 
-        public async Task<IActionResult> OngoingPlan(Guid? id)
-        {
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-
-            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
-            return View(await atsdbContext.ToListAsync());
-        }
-        public async Task<IActionResult> CompletedPlans(Guid? id)
-        {
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-
-            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
-            return View(await atsdbContext.ToListAsync());
-        }
-        public async Task<IActionResult> SentPlans(Guid? id)
-        {
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-
-            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
-            return View(await atsdbContext.ToListAsync());
-        }
+       
 
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -349,7 +329,7 @@ namespace ATSManagement.Controllers
             try
             {
                 var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
-
+                var desicionStatus=_context.TblDecisionStatuses.Where(s=>s.StatusName== "Waiting for Upproval").FirstOrDefault();
                 TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
                 var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
                 if (model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport == null)
@@ -368,23 +348,50 @@ namespace ATSManagement.Controllers
 
                     return View(model);
                 }
-                assignedTasks.ProgressStatus = model.ProgressStatus;
-                yearlyPlan.ProId = model.StatusID;
-                assignedTasks.Remark = model.Remark;
-                int updated = _context.SaveChanges();
-                if (updated > 0)
+                else if(model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport != null)
                 {
-                    await SendMail(emails, "Notification from Task Tracking Dashboard", "Expert uppdated progress status for his assigned task. Please review on system.");
-                    _notifyService.Success("Progress is successfully updated.");
-                    return RedirectToAction("Index");
+                    assignedTasks.ProgressStatus = model.ProgressStatus;
+                    yearlyPlan.IsUserUproved = _context.TblDecisionStatuses.Where(s => s.StatusName == "Upproved").Select(s => s.DesStatusId).FirstOrDefault(); ;
+                    yearlyPlan.IsUpprovedbyDepartment = desicionStatus.DesStatusId;
+                    yearlyPlan.IsUpprovedbyTeam = desicionStatus.DesStatusId;
+                    yearlyPlan.IsUprovedByDeputy = desicionStatus.DesStatusId;
+                    yearlyPlan.ProId = model.StatusID;
+                    assignedTasks.Remark = model.Remark;
+                    int updated = _context.SaveChanges();
+                    if (updated > 0)
+                    {
+                        await SendMail(emails, "Notification from Task Tracking Dashboard", "Expert uppdated progress status for his assigned task. Please review on system.");
+                        _notifyService.Success("Progress is successfully updated.");
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
+
+                        _notifyService.Error("Progress isn't successfully uppdated. Please try again");
+                        return View(model);
+                    }
                 }
                 else
                 {
-                    ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
+                    yearlyPlan.ProId = model.StatusID;
+                    assignedTasks.Remark = model.Remark;
+                    int updated = _context.SaveChanges();
+                    if (updated > 0)
+                    {
+                        await SendMail(emails, "Notification from Task Tracking Dashboard", "Expert uppdated progress status for his assigned task. Please review on system.");
+                        _notifyService.Success("Progress is successfully updated.");
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
 
-                    _notifyService.Error("Progress isn't successfully uppdated. Please try again");
-                    return View(model);
+                        _notifyService.Error("Progress isn't successfully uppdated. Please try again");
+                        return View(model);
+                    }
                 }
+              
             }
             catch (Exception ex)
             {

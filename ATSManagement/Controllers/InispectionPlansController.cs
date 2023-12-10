@@ -26,7 +26,6 @@ namespace ATSManagement.Controllers
             _contextAccessor = contextAccessor;
             _mail = mail;
         }
-
         public async Task<IActionResult> Index()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -43,25 +42,90 @@ namespace ATSManagement.Controllers
             }
             else
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s=>s.TblAssignedYearlyPlans).Include(s => s.Year);
-                return View(await atsdbContext.ToListAsync());
+                _notifyService.Error("You have no access to this page");
+                return RedirectToAction(nameof(Index), nameof(AssignedYearlyPlansController));
 
             }          
         }
-        public async Task<IActionResult> TeamPlans()
+
+        public async Task<IActionResult> OngoingPlan(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
+            if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true|| users.IsTeamLeader == true)
+            {
+                var atsdbContext = _context.TblInspectionPlans
+                    .Include(t => t.User)
+                    .Include(T => T.Pro)
+                    .Include(s => s.Year)
+                    .Include(s=>s.IsUpprovedbyDepartmentNavigation)
+                    .Include(s=>s.IsUpprovedbyTeamNavigation)
+                    .Include(s => s.IsUprovedByDeputyNavigation)
+                    .Include(s=>s.IsUserUprovedNavigation).Where(s =>  s.Pro.ProstatusTitle != "New"&&(s.FinalStatus == false ||s.FinalStatus==null));
+                return View(await atsdbContext.ToListAsync());
+            }
+            else if (users.IsTeamLeader == true)
+            {
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team)
+                    .Include(s => s.IsUpprovedbyDepartmentNavigation)
+                    .Include(s => s.IsUpprovedbyTeamNavigation)
+                    .Include(s => s.IsUprovedByDeputyNavigation)
+                    .Include(s => s.IsUserUprovedNavigation).Where(s => s.TeamId == users.TeamId&& s.Pro.ProstatusTitle != "Completed" && s.Pro.ProstatusTitle != "New");
+                return View(await atsdbContext.ToListAsync());
+            }
+            else
+            {
+                _notifyService.Error("You have no access to this page");
+                return RedirectToAction(nameof(Index), nameof(AssignedYearlyPlansController));
+
+            }
+        }
+        public async Task<IActionResult> CompletedPlans(Guid? id)
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
             if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true)
             {
-                var assigned=(from items in _context.TblInspectionPlans
-                              join assing in _context.TblAssignedYearlyPlans on items.InspectionPlanId equals assing.PlanId where items.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")  select items).ToList();
-
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Where(s=>s.TeamId!=null&&s.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")).ToList();
-                var filtered=atsdbContext.Intersect(assigned).ToList();
-                return View(filtered);
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Where(s => s.FinalStatus == true);
+                return View(await atsdbContext.ToListAsync());
             }
-           else if (users.IsTeamLeader == true)
+            else if (users.IsTeamLeader == true)
+            {
+                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team).Where(s => s.TeamId == users.TeamId&& s.FinalStatus == true);
+                return View(await atsdbContext.ToListAsync());
+            }
+            else
+            {
+                _notifyService.Error("You have no access to this page");
+                return RedirectToAction(nameof(Index), nameof(AssignedYearlyPlansController));
+
+            }
+        }
+        public async Task<IActionResult> SentPlans(Guid? id)
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
+            if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true)
+            {
+                var atsdbContext = _context.TblSentInspections.Include(t => t.SentByNavigation).Include(T => T.RepliedByNavigation).Include(s => s.Inst);
+                return View(await atsdbContext.ToListAsync());
+            }
+            else if (users.IsTeamLeader == true)
+            {
+                var atsdbContext = _context.TblSentInspections.Include(t => t.SentByNavigation).Include(T => T.RepliedByNavigation).Include(s => s.Inst);
+                return View(await atsdbContext.ToListAsync());
+            }
+            else
+            {
+                _notifyService.Error("You have no access to this page");
+                return RedirectToAction(nameof(Index),nameof(HomeController));
+            }
+        }
+        public async Task<IActionResult> TeamPlans()
+        {
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
+            if(users.IsTeamLeader == true)
             {
                 var assigned = (from items in _context.TblInspectionPlans
                                 join assing in _context.TblAssignedYearlyPlans on items.InspectionPlanId equals assing.PlanId
@@ -113,7 +177,6 @@ namespace ATSManagement.Controllers
 
             return View(plan);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InispectionPlan inispectionPlan)
@@ -501,13 +564,13 @@ namespace ATSManagement.Controllers
             }
             else
             {
+              
                 var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
                 var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to user").FirstOrDefault();
                 plats.AssigneeTypeId = model.AssigneeTypeId;
                 plats.IsAssignedToUser = true;
                 var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
-                if (ModelState.IsValid)
-                {
+               
                     if (ifAssigned != null)
                     {
                         _context.TblAssignedYearlyPlans.Remove(ifAssigned);
@@ -515,7 +578,8 @@ namespace ATSManagement.Controllers
                     }
                     foreach (var item in model.UserId)
                     {
-                        yearlyPlan = new TblAssignedYearlyPlan();
+                    var usersTeam = _context.TblInternalUsers.Find(model.UserId);
+                    yearlyPlan = new TblAssignedYearlyPlan();
                         yearlyPlan.AssignedBy = model.AssignedBy;
                         yearlyPlan.AssignedTo = item;
                         yearlyPlan.AssignedDate = model.AssignedDate;
@@ -559,33 +623,7 @@ namespace ATSManagement.Controllers
                         }).ToList();
                         return View(model);
                     }     
-                }
-                else
-                {
-                    _notifyService.Error("Assingment isn't successfull. Please and try again");
-                    model.Users = AllUsers.Select(g => new SelectListItem
-                    {
-                        Value = g.UserId.ToString(),
-                        Text = g.FirstName
-                    }).ToList();
-                    model.status = _context.TblStatuses.Where(p => p.Status == "New").Select(p => new SelectListItem
-                    {
-                        Value = p.StatusId.ToString(),
-                        Text = p.Status.ToString()
-                    }).ToList();
-                    model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
-                    {
-                        Value = s.AssigneeTypeId.ToString(),
-                        Text = s.AssigneeType.ToString()
-                    }).ToList();
-                    model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "FLIM").Select(s => new SelectListItem
-                    {
-                        Value = s.TeamId.ToString(),
-                        Text = s.TeamName,
-                    }).ToList();
-                    return View(model);
-                }
-
+              
             }  
         }
         public async Task<IActionResult> AssignFromTeam(Guid? id)
@@ -772,6 +810,258 @@ namespace ATSManagement.Controllers
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
+        }
+
+        public async Task<IActionResult> UppdateDesicionStatus(Guid? id)
+        {
+            InspectionAssignModel model = new InspectionAssignModel();
+            var plaDetail=_context.TblInspectionPlans.Where(s=>s.InspectionPlanId==id).FirstOrDefault();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
+            model.PlanId=id;
+            model.PlanTitle = plaDetail.PlanTitle;
+            model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
+            {
+                Text = x.StatusName,
+                Value = x.DesStatusId.ToString()
+            }).ToList();
+            if (user.IsDepartmentHead == true)
+            {
+                ViewBag.visible = "visible";
+            }
+            else
+            {
+                ViewBag.visible = "none";
+            }
+            model.IsDeputyApprovalNeeded = false;
+
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UppdateDesicionStatus(InspectionAssignModel model)
+        {
+            var yearlyPlan = _context.TblInspectionPlans.Find(model.PlanId);
+            var status = _context.TblInspectionStatuses.Where(s => s.ProstatusTitle == "Completed").FirstOrDefault();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
+            TblTopStatus topStatus = _context.TblTopStatuses.Where(s => s.StatusName == "Completed").FirstOrDefault();
+            var desicionStatus = _context.TblDecisionStatuses.Where(s => s.StatusName == "Upproved").FirstOrDefault();
+           
+            
+            if (user.IsTeamLeader == true)
+            {
+                yearlyPlan.IsUpprovedbyTeam = model.DesStatusId;
+            }
+            else if (user.IsDepartmentHead == true)
+            {
+                yearlyPlan.IsUpprovedbyDepartment = model.DesStatusId;
+                if (model.IsDeputyApprovalNeeded == true)
+                {
+                    if (model.DesStatusId == desicionStatus.DesStatusId)
+                    {
+                        yearlyPlan.FinalStatus = true;
+
+                    }
+                    yearlyPlan.ProId = status.ProId;
+                    yearlyPlan.IsUprovedByDeputy = model.DesStatusId;
+                }
+            }
+            else if (user.IsDeputy == true)
+            {
+                if (model.DesStatusId == desicionStatus.DesStatusId)
+                {
+                    yearlyPlan.FinalStatus = true;
+                }
+                yearlyPlan.IsUprovedByDeputy = model.DesStatusId;
+                yearlyPlan.ProId = status.ProId;              
+            }
+            else
+            {
+                model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
+                {
+                    Text = x.StatusName,
+                    Value = x.DesStatusId.ToString()
+                }).ToList();
+                return View(model);
+            }
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                _notifyService.Success("Upproval status changed successfully!");
+                return RedirectToAction(nameof(OngoingPlan));
+            }
+            else
+            {
+                if (user.IsDepartmentHead == true)
+                {
+                    ViewBag.visible = true;
+                }
+                else
+                {
+                    ViewBag.visible = false;
+                }
+                _notifyService.Error("Upproval status isn't updated. Please try again");
+                model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
+                {
+                    Text = x.StatusName,
+                    Value = x.DesStatusId.ToString()
+                }).ToList();
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> SendToInstitutions(Guid? InspectionPlanId)
+        {
+            InspectionAssignModel model = new InspectionAssignModel();
+            var plaDetail=_context.TblInspectionPlans.Where(s=>s.InspectionPlanId== InspectionPlanId).FirstOrDefault();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
+            model.PlanId=InspectionPlanId;
+            model.ExpectedReplyDate=DateTime.Now.AddDays(20);
+            model.Insititutions = _context.TblInistitutions.Select(s => new SelectListItem
+            {
+                Value = s.InistId.ToString(),
+                Text = s.Name.ToString()
+            }).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendToInstitutions(InspectionAssignModel model)
+        {
+            TblSentInspection? yearlyPlan =  new TblSentInspection();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            
+            yearlyPlan.SentDate = DateTime.Now;
+            yearlyPlan.SentBy = userId;
+            yearlyPlan.ExpectedReplyDate = model.ExpectedReplyDate;
+            yearlyPlan.InstId = model.InistId;
+            yearlyPlan.SendingRemark = model.SendingRemark;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);            
+            FileInfo fileInfo = new FileInfo(model.SentReport.FileName);
+            string fileName = Guid.NewGuid().ToString() + model.SentReport.FileName;
+            string fileNameWithPath = Path.Combine(path, fileName);
+            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                model.SentReport.CopyTo(stream);
+            }
+            string dbPath = "/Files/" + fileName;
+            yearlyPlan.SentReport = dbPath;
+            FileInfo fileInfos = new FileInfo(model.OfficialLetter.FileName);
+            string fileNames = Guid.NewGuid().ToString() + model.OfficialLetter.FileName;
+            string fileNameWithPaths = Path.Combine(path, fileNames);
+            using (var stream = new FileStream(fileNameWithPaths, FileMode.Create))
+            {
+                model.OfficialLetter.CopyTo(stream);
+            }
+            string dbPaths = "/Files/" + fileNames;
+            yearlyPlan.OfficialLetter=dbPaths;
+            _context.TblSentInspections.Add(yearlyPlan);
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                _notifyService.Success("Reccomendation is sent successfully!");
+                return RedirectToAction(nameof(OngoingPlan));
+            }
+            else
+            {                
+                _notifyService.Error("Recomendation isn't sent. Please try again");               
+                return View(model);
+            }
+        }
+        public async Task<IActionResult> Responses(int RecId)
+        {
+            InspectionReplyModel model= new InspectionReplyModel();
+            ViewData["Replies"] = _context.TblInspectionReplyes.Include(s => s.Rec).Include(s=>s.InternalUserNavigation).Include(s=>s.ExternalUserNavigation).Where(s => s.RecId == RecId).OrderByDescending(s=>s.ReplyId).ToList();
+            model.RecId = RecId;
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Responses(InspectionReplyModel replyModel)
+        {
+            List<string> emails = new List<string>();
+            var infor=(from items in _context.TblSentInspections 
+                                             join insts in _context.TblInspectionPlans on items.InspectionPlanId equals insts.InspectionPlanId
+                                             join tekuan in _context.TblInistitutions on items.InstId equals tekuan.InistId 
+                                             join users in _context.TblExternalUsers on tekuan.InistId equals users.InistId
+                                             where items.RecId==replyModel.RecId
+                                             select new
+                                               {
+                                                   users.Email
+                                               }).ToList();
+            foreach (var item in infor)
+            {
+                emails.Add(item.Email);
+            }
+            InspectionReplyModel model = new InspectionReplyModel();
+            model.RecId = replyModel.RecId;
+            TblInspectionReplye replys = new TblInspectionReplye();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));            
+            replys.RecoDetail = replyModel.ResponseDetail;
+            replys.DateCreated = DateTime.Now;
+            replys.RecId= replyModel.RecId;
+            replys.IsInternal = true;
+            replys.IsExternal = false;
+            replys.InternalUser = userId;
+            _context.TblInspectionReplyes.Add(replys);
+            int sent = _context.SaveChanges();
+            if (sent > 0)
+            {
+                ViewData["Replies"] = _context.TblInspectionReplyes.Include(s => s.Rec).Include(s => s.InternalUserNavigation).Include(s => s.ExternalUserNavigation).Where(s => s.RecId == replyModel.RecId).OrderByDescending(s => s.ReplyId).ToList();
+                await SendMail(emails, "", "");
+                _notifyService.Success("Recomendation response is successfully replied");
+                return View(model);
+            }
+            else{
+                ViewData["Replies"] = _context.TblInspectionReplyes.Include(s => s.Rec).Include(s => s.InternalUserNavigation).Include(s => s.ExternalUserNavigation).Where(s => s.RecId == replyModel.RecId).OrderByDescending(s => s.ReplyId).ToList();
+                _notifyService.Error("Recomendation response isn't succeesfully replied. Please try again");
+                return View(replyModel);
+            }
+        }
+
+        public async Task<IActionResult> EditResponses(int ReplyId)
+        {
+            var reply = _context.TblInspectionReplyes.Find(ReplyId);
+            InspectionReplyModel replyModel = new InspectionReplyModel();
+            replyModel.ReplyId = ReplyId;
+            replyModel.RecId = reply.RecId;
+            replyModel.ResponseDetail = reply.RecoDetail;
+
+            return View(replyModel);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditResponses(InspectionReplyModel replyModel)
+        {
+            try
+            {
+                var reply = _context.TblInspectionReplyes.Find(replyModel.ReplyId);
+
+                reply.RecoDetail = replyModel.ResponseDetail;
+                int updated = _context.SaveChanges();
+                if (updated > 0)
+                {
+                    _notifyService.Success("Reply is uppdated successfully");
+                    return RedirectToAction(nameof(Responses), new { RecId = replyModel.RecId });
+
+                }
+                _notifyService.Error("Reply ism't updated successfully. Please try again");
+                return View(replyModel);
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error($"Error:{ex.Message} happened. Reply isn't updated successfully. Please try again");
+                return View(replyModel);
+            }
+
         }
     }
 }

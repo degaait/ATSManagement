@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using NToastNotify;
+using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc;
 using ATSManagementExternal.Models;
 using ATSManagementExternal.IModels;
@@ -31,17 +32,20 @@ namespace ATSManagementExternal.Controllers
 
         public async Task<IActionResult> Index()
         {
+            TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();
+
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
             var atsdbContext = _context.TblRequests
                                                      .Include(t => t.AssignedByNavigation)
                                                      .Include(t => t.CaseType)
                                                      .Include(t => t.Inist)
+                                                     .Include(t =>  t.TopStatus)
                                                      .Include(t => t.RequestedByNavigation)
                                                      .Include(t => t.CreatedByNavigation)
                                                      .Include(x => x.ExternalRequestStatus)
                                                      .Include(x => x.ServiceType)
-                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId&&x.TopStatusId!= tblTopStatus.TopStatusId);
 
             return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
@@ -226,8 +230,7 @@ namespace ATSManagementExternal.Controllers
             return View(tblExternalRequest);
         }
         public IActionResult Create()
-        {
-            
+        {        
             return View(getModel());
         }
         [HttpPost]
@@ -236,6 +239,7 @@ namespace ATSManagementExternal.Controllers
         {
             try
             {
+                
                 TblRequest request = new TblRequest();
                 List<TblDocumentHistory> documentHistory = new List<TblDocumentHistory>();
                 List<TblRequestPriorityQuestionsRelation> relations = new List<TblRequestPriorityQuestionsRelation>();
@@ -303,26 +307,38 @@ namespace ATSManagementExternal.Controllers
                     documentHistory.Add(new TblDocumentHistory { DocPath = dbPath, Round = model.Round, RequestId = request.RequestId });
                     request.TblDocumentHistories = documentHistory;
                 }
-                if (model.PrioritiesQues != null)
+                var selected = model.PrioritiesQues.Where(s => s.IsSelected == true).ToList();
+
+                if (selected.Count != 0)
                 {
-                    foreach (var item in model.PrioritiesQues)
+                    request.PriorityId = _context.TblPriorities.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).Select(x => x.PriorityId).FirstOrDefault();
+                    foreach (var item in selected)
                     {
                         if (item.IsSelected == true)
                         {
-                            relations.Add(new TblRequestPriorityQuestionsRelation { RequestId = request.RequestId, PriorityQueId = item.PriorityQueId });
-                            request.PriorityId = _context.TblPriorities.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).Select(x => x.PriorityId).FirstOrDefault();
-                        }
-                        else
-                        {
-                            request.PriorityId = Guid.Parse("79fa9e18-c973-40d4-b77d-1d5d31ded31f");
-                        }
+                            relations.Add(new TblRequestPriorityQuestionsRelation { RequestId = request.RequestId, PriorityQueId = item.PriorityQueId });                            
+                        }                       
                     }
                     request.TblRequestPriorityQuestionsRelations = relations;
+                }
+                else
+                {
+                    request.PriorityId = Guid.Parse("79fa9e18-c973-40d4-b77d-1d5d31ded31f");
                 }
                 _context.TblRequests.Add(request);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
+                    var existingRequ=_context.TblRounds.Where(s=>s.RequestIid==request.RequestId).FirstOrDefault();
+                    TblRound roundS=new TblRound();
+                    roundS.RequestIid = request.RequestId;
+                    if (existingRequ!=null)
+                    {
+                        roundS.RoundNumber = existingRequ.RoundNumber + 1;
+                    }
+                    roundS.RoundNumber = 1;
+                    _context.TblRounds.Add(roundS);
+                    _context.SaveChanges();
                     _notifyService.Success("Your request is submitted Successfully. Responsive body is notified by email");
                     await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
                     return RedirectToAction(nameof(Index));
@@ -477,6 +493,42 @@ namespace ATSManagementExternal.Controllers
                 IsSelected = false
             }).ToList();
             model.TermsAndCondionts= _context.TblTermsAndConditions.Select(s => s.Details).FirstOrDefault();
+            List<CompletedRequests> completeds = new List<CompletedRequests>();
+            CompletedRequests completedRequests1;
+            List<RoundModel> modelr = new List<RoundModel>
+            {
+                new RoundModel
+                {
+                    RoundTypeId = 1,
+                    Name = "New"
+                },
+                new RoundModel
+                {
+                    Name = "Continuation",
+                    RoundTypeId = 2,
+                }
+            };
+
+            var completedRequests = _context.TblRequests.Where(x => x.IsArchived == true).ToList();
+
+            foreach (var item in completedRequests)
+            {
+                completedRequests1 = new CompletedRequests();
+                completedRequests1.RequestDetail = item.RequestDetail;
+                completedRequests1.CompleteRequestID = item.RequestId;
+                completeds.Add(completedRequests1);
+            }
+
+            model.RoundTypes = modelr.Select(s => new SelectListItem
+            {
+                Text = s.Name.ToString(),
+                Value = s.RoundTypeId.ToString()
+            }).ToList();
+            model.CompletedRequests = completeds.Select(s => new SelectListItem
+            {
+                Text = s.RequestDetail.ToString(),
+                Value = s.CompleteRequestID.ToString()
+            }).ToList();
             return model;
         }
         public async Task<IActionResult> Edit(Guid? id)
@@ -495,7 +547,6 @@ namespace ATSManagementExternal.Controllers
             model.ExterUserId = tblExternalRequest.ExterUserId;
             model.IntId = tblExternalRequest.IntId;
             model.RequestedDate = tblExternalRequest.RequestedDate;
-            model.RequestId = tblExternalRequest.RequestId;
             model.RequestDetail = tblExternalRequest.RequestDetail;
             return View(model);
         }
@@ -579,56 +630,7 @@ namespace ATSManagementExternal.Controllers
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
-        }
-        public async Task<IActionResult> Replies(Guid? id)
-        {
-            Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var replays = await _context.TblReplays.Where(a => a.RequestId == id&&a.IsSent==true).ToListAsync();
-            RepliesModel model = new RepliesModel
-            {
-                RequestId = id,
-                ReplyDate = DateTime.Now,
-                ExternalReplayedBy = userId,
-            };
-            ViewData["Replies"] = _context.TblReplays
-                .Include(x => x.InternalReplayedByNavigation)
-                .Include(x => x.ExternalReplayedByNavigation)
-                .Include(x => x.Request)
-                .Where(y => y.RequestId == id && y.IsSent == true).ToList();
-            return View(model);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
-        public async Task<IActionResult> Replies(RepliesModel model)
-        {
-            try
-            {
-                TblReplay replay = new();
-                replay.ReplyDate = DateTime.Now;
-                replay.ExternalReplayedBy = model.ExternalReplayedBy;
-                replay.RequestId = model.RequestId;
-                replay.ReplayDetail = model.ReplayDetail;
-                replay.IsSent = true;
-                _context.TblReplays.Add(replay);
-                int saved = await _context.SaveChangesAsync();
-                if (saved > 0)
-                {
-                    _notifyService.Success("Reply submitted");
-                    return RedirectToAction("Replies", new { id = model.RequestId });
-                }
-                else
-                {
-                    _notifyService.Error("Reply isn't subbmitted. Please try again");
-                    return View(model);
-                }
-            }
-            catch (Exception ex)
-            {
-                _notifyService.Error("Reply isn't subbmitted because of " + ex.Message + ". Please try again");
-                return View(model);
-            }
-        }
+        }    
         public async Task<IActionResult> LegalReplies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -941,6 +943,163 @@ namespace ATSManagementExternal.Controllers
                                                      .Include(x => x.ServiceType)
                                                      .Include(t => t.Priority).Where(x => x.InistId == instName.InistId);
             return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
+        }
+        public async Task<IActionResult> SentBackRequests()
+        {
+            TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
+            TblRequest tblRequest;
+            var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).ToList();
+            foreach (var item in moreDeps)
+            {
+                tblRequest = _context.TblRequests
+                                                        .Include(t => t.AssignedByNavigation)
+                                                        .Include(t => t.CaseType)
+                                                        .Include(t => t.Inist)
+                                                        .Include(t => t.RequestedByNavigation)
+                                                        .Include(t => t.CreatedByNavigation)
+                                                        .Include(x => x.ExternalRequestStatus)
+                                                        .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                        .Include(x => x.DeputyUprovalStatusNavigation)
+                                                        .Include(y => y.TeamUpprovalStatusNavigation)
+                                                        .Include(t => t.Priority).Where(x => x.TopStatusId == tblTopStatus.TopStatusId && x.IsSenttoInst == true && x.RequestId == item &&x.InistId== instName.InistId).FirstOrDefault();
+                if (tblRequest != null)
+                {
+                    atsdbContext.Add(tblRequest);
+                }
+            }
+            return View(atsdbContext);
+        }
+        public async Task<IActionResult> Replies(Guid? id)
+        {
+            Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var replays = await _context.TblReplays.Where(a => a.RequestId == id && a.IsSent == true).ToListAsync();
+            RepliesModel model = new RepliesModel
+            {
+                RequestId = id,
+                ReplyDate = DateTime.Now,
+                ExternalReplayedBy = userId,
+            };
+            ViewData["Replies"] = _context.TblReplays
+                .Include(x => x.InternalReplayedByNavigation)
+                .Include(x => x.ExternalReplayedByNavigation)
+                .Include(x => x.Request)
+                .Where(y => y.RequestId == id && y.IsSent == true).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Replies(RepliesModel model)
+        {
+            try
+            {
+                TblReplay replay = new();
+                replay.ReplyDate = DateTime.Now;
+                replay.ExternalReplayedBy = model.ExternalReplayedBy;
+                replay.RequestId = model.RequestId;
+                replay.ReplayDetail = model.ReplayDetail;
+                replay.IsExternal = true;
+                replay.IsInternal = false;
+                replay.IsSent = true;
+                _context.TblReplays.Add(replay);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Reply submitted");
+                    return RedirectToAction("Replies", new { id = model.RequestId });
+                }
+                else
+                {
+                    _notifyService.Error("Reply isn't subbmitted. Please try again");
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error("Reply isn't subbmitted because of " + ex.Message + ". Please try again");
+                return View(model);
+            }
+        }
+        public async Task<IActionResult> EditReplies(Guid? ReplyId)
+        {
+            Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var reply = _context.TblReplays.Find(ReplyId);
+            RepliesModel model = new RepliesModel
+            {
+                ReplyId = ReplyId,
+                RequestId=reply.RequestId,
+                ReplayDetail=reply.ReplayDetail,
+                ReplyDate = DateTime.Now,
+                ExternalReplayedBy = userId,
+            };
+            ViewData["Replies"] = _context.TblReplays
+                .Include(x => x.InternalReplayedByNavigation)
+                .Include(x => x.ExternalReplayedByNavigation)
+                .Include(x => x.Request)
+                .Where(y => y.RequestId == reply.RequestId && y.IsSent == true).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> EditReplies(RepliesModel model)
+        {
+            try
+            {
+                TblReplay replay = _context.TblReplays.Find(model.ReplyId);
+                replay.ReplyDate = DateTime.Now;               
+                replay.ReplayDetail = model.ReplayDetail;
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Reply updated");
+                    return RedirectToAction("Replies", new { id = model.RequestId });
+                }
+                else
+                {
+                    _notifyService.Error("Reply isn't subbmitted. Please try again");
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error("Reply isn't subbmitted because of " + ex.Message + ". Please try again");
+                return View(model);
+            }
+        }
+        public JsonResult GetDoctypes(Guid? ServiceTypeID)
+        {
+            List<DocTypes> docList = new List<DocTypes>();
+            DocTypes type;
+            Guid doctype = Guid.Parse("fc11e673-474a-4cb9-b59b-1fa876c9b2b2");
+            if (ServiceTypeID==Guid.Parse("f935dcd1-2651-4c64-947c-0a877f652fb5"))
+            {
+              var  subcategoryModels = (from items in _context.TblLegalDraftingDocTypes where items.DocId == doctype select items).ToList();
+                foreach (var item in subcategoryModels)
+                {
+                    type = new DocTypes();
+                    type.DocId = item.DocId;
+                    type.DocName = item.DocName;
+                    docList.Add(type);
+                }
+                return Json(new SelectList(docList, "DocId", "DocName"));
+            }
+            else
+            {
+              var  subcategoryModels = (from items in _context.TblLegalDraftingDocTypes where items.DocId != doctype select items).ToList();
+                foreach (var item in subcategoryModels)
+                {
+                    type = new DocTypes();
+                    type.DocId = item.DocId;
+                    type.DocName = item.DocName;
+                    docList.Add(type);
+                }
+                return Json(new SelectList(docList, "DocId", "DocName"));
+            }
+
         }
     }
 }

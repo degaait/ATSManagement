@@ -74,9 +74,15 @@
                                         <th>
                                             Inpection year
                                         </th>
-
                                         <th>
                                             Created by
+                                        </th>
+                                        <th>
+                                            Assigned to
+                                          
+                                        </th>
+                                        <th>
+                                            Final report
                                         </th>
                                         <th>
                                             Task status
@@ -87,6 +93,7 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+
                                         var instr = (from ints in ats.TblPlanInistitutions
                                                      join related in ats.TblInistitutions on ints.InistId equals related.InistId
                                                      where ints.PlanId == item.InspectionPlanId
@@ -95,6 +102,12 @@
                                                          Name = related.Name
                                                      }).ToList();
                                         var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
+                                        var users = (from items in ats.TblAssignedYearlyPlans
+                                                     join plans in ats.TblInspectionPlans on items.PlanId equals plans.InspectionPlanId
+                                                     join assignee in ats.TblInternalUsers on items.AssignedTo equals assignee.UserId
+                                                     where items.PlanId == item.InspectionPlanId
+                                                     select assignee).ToList();
+
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.PlanTitle)
@@ -119,6 +132,33 @@
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.User.FirstName)
+                                            </td>
+                                            <td>
+                                                @if (users != null)
+                                                {
+                                                    foreach (var collectiontem in users)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => collectiontem.FirstName)
+                                                        @Html.DisplayFor(modelItem => collectiontem.MidleName)
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.FinalReport != null)
+                                                {
+                                                    <a class="btn btn-primary" asp-action="DownloadFile" asp-route-path="@item.FinalReport">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                            <path d="M12 17v-6"></path>
+                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                        </svg>
+                                                        Download
+                                                    </a>
+                                                }
+
                                             </td>
                                             <td>
                                                 @Html.Raw(item.Pro.StatusWithColor)
@@ -152,12 +192,6 @@
                                                                     Specific plans
                                                                 </a>
                                                             }
-                                                            <a class="dropdown-item" asp-action="Index" asp-controller="InspectionInstitutions" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" fill-rule="evenodd"><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8" /></g></svg>&nbsp;
-                                                                Send to Institutions
-                                                            </a>
-
-
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

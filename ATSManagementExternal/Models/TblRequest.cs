@@ -121,6 +121,8 @@ public partial class TblRequest
 
     public virtual ICollection<TblRequestPriorityQuestionsRelation> TblRequestPriorityQuestionsRelations { get; set; } = new List<TblRequestPriorityQuestionsRelation>();
 
+    public virtual ICollection<TblRound> TblRounds { get; set; } = new List<TblRound>();
+
     public virtual ICollection<TblWitnessEvidence> TblWitnessEvidences { get; set; } = new List<TblWitnessEvidence>();
 
     public virtual TblDecisionStatus? TeamUpprovalStatusNavigation { get; set; }

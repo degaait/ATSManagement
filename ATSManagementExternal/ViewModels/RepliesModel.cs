@@ -4,7 +4,7 @@ namespace ATSManagementExternal.ViewModels
 {
     public class RepliesModel
     {
-        public Guid ReplyId { get; set; }
+        public Guid? ReplyId { get; set; }
         [Display(Name = "Reply")]
         [Required(ErrorMessage = "*")]
         [DataType(DataType.MultilineText)]

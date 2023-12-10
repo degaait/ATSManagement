@@ -31,6 +31,20 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
+                                        <div class="mb-3 row" id="divRoundTypes">
+                                            <label asp-for="RoundTypeId" class=" col-2 col-form-label">Request Round</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.RoundTypeId, new SelectList(Model.RoundTypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="RoundTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divCompletedRequests" style="display:none">
+                                            <label asp-for="CompleteRequestID" class=" col-2 col-form-label">Select requests</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.CompleteRequestID, new SelectList(Model.CompletedRequests, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="CompleteRequestID" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                         <div class="mb-3 row" id="divRequestDetail">
                                             <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
                                             <div class="col">
@@ -52,13 +66,6 @@
                                                 <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divCasetype" style="display:none">
-                                            <label asp-for="CaseTypeId" class=" col-2 col-form-label">Case types</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.CaseTypeId, new SelectList(Model.CaseTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="CaseTypeId" class="text-danger"></span>
-                                            </div>
-                                        </div>
                                         <div class="mb-3 row" id="divDocType" style="display:none">
                                             <label asp-for="DocId" class=" col-2 col-form-label">Document type</label>
                                             <div class="col">
@@ -66,13 +73,6 @@
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        @*<div class="mb-3 row" id="divQuestType" style="display:none">
-                                                <label asp-for="QuestTypeId" class=" col-2 col-form-label">Question types</label>
-                                                <div class="col">
-                                                    @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                    <span asp-validation-for="QuestTypeId" class="text-danger"></span>
-                                                </div>
-                                            </div>*@
                                         <div class="mb-3 row" id="DivDocumentFile">
                                             <label class="col-3 col-form-label">Document file</label>
                                             <div class="col">
@@ -211,29 +211,52 @@
             tinyMCE.init(options);
         })
     </script>
+    
     <script type="text/javascript">
         $(function () {
             $(document).ready(function () {
-
                 $("#ServiceTypeID").change(function () {
                     var value = $("#ServiceTypeID").val();
-                    // alert(value);
+                    var url = '@Url.Content("~/")' + "ExternalRequests/GetDoctypes";
+                    var ddlsource = "#ServiceTypeID";
+                    $.getJSON(url, { ServiceTypeID: $(ddlsource).val() }, function (data) {
+                        var items = '';
+                        $("#DocId").empty();
+                        $.each(data, function (i, subcategory) {
+                            items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
+                        });
+                        $('#DocId').html(items);
+                    });
+                   
                     if (value == "F935DCD1-2651-4C64-947C-0A877F652FB5" ||
                         value == "ACB92222-4872-4A9D-8EDB-8BCD5317129A" ||
                         value == "6E00B0EA-7B4D-40C4-8289-A566FE16E88E" ||
                         value == "92FC1FC5-95D2-4250-98FB-0BA862F6DB02" ||
                         value == "C792938C-7952-488C-A23E-1A27F8B2B8E6") {
                         $("#divDocType").show();
-                        $("#divQuestType").show();
+                        $("#priorityQuestionType").hide();
                     }
                     else {
                         $("#divDocType").hide();
-                        $("#divQuestType").hide();
                         $("#priorityQuestionType").show();
                     }
                 });
 
             });
         });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#RoundTypeId").change(function () {
+                var orderId = $("#RoundTypeId").val();
+                if (orderId == "2") {
+                    $("#divCompletedRequests").show();
+                }
+                else {
+                    $("#divCompletedRequests").hide();
+                }     
+            });
+        });
+
     </script>
 }

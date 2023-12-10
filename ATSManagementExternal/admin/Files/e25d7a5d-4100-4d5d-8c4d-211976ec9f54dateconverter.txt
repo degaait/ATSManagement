@@ -1,0 +1,13 @@
+PublishDate = CASE 
+								WHEN DATEDIFF(mi, PublishDate,GETDATE()) <= 1    THEN N'1 ደቂቃ በፊት' 
+								WHEN DATEDIFF(mi, PublishDate,GETDATE()) > 1  AND DATEDIFF(mi,PublishDate,GETDATE()) <= 60  THEN CONVERT(NVARCHAR, DATEDIFF(mi, PublishDate,GETDATE()))  + N' ደቂቃ በፊት' 
+								WHEN DATEDIFF(hh, PublishDate,GETDATE()) <= 1  THEN  CONVERT(NVARCHAR, DATEDIFF(hh, PublishDate,GETDATE()))  + N' ሰዓት በፊት' 
+								WHEN DATEDIFF(hh, PublishDate,GETDATE()) > 1  AND DATEDIFF(hh, PublishDate,GETDATE()) <= 24  THEN  CONVERT(NVARCHAR, DATEDIFF(hh, PublishDate,GETDATE()))  + N' ሰዓት በፊት' 
+								WHEN DATEDIFF(dd, PublishDate,GETDATE()) <= 1  THEN  CONVERT(NVARCHAR, DATEDIFF(dd, PublishDate,GETDATE()))  + N' ቀን በፊት' 
+								WHEN DATEDIFF(dd, PublishDate,GETDATE()) > 1  AND DATEDIFF(dd, PublishDate,GETDATE()) <= 7  THEN  CONVERT(NVARCHAR, DATEDIFF(dd, PublishDate,GETDATE()))  + N' ቀን በፊት' 
+								WHEN DATEDIFF(ww, PublishDate,GETDATE()) <= 1  THEN  CONVERT(NVARCHAR, DATEDIFF(ww, PublishDate,GETDATE()))  + N' ሳምንት በፍት' 
+								WHEN DATEDIFF(ww, PublishDate,GETDATE()) > 1  AND DATEDIFF(ww, PublishDate,GETDATE()) <= 4  THEN CONVERT(NVARCHAR, DATEDIFF(ww, PublishDate,GETDATE()))  + N' ሳምንት በፍት' 
+								WHEN DATEDIFF(mm,PublishDate,GETDATE()) <= 1  THEN  CONVERT(NVARCHAR, DATEDIFF(mm, PublishDate,GETDATE()))  + N' ወር በፍት' 
+								WHEN DATEDIFF(mm, PublishDate,GETDATE()) > 1  AND DATEDIFF(mm, PublishDate,GETDATE()) <= 12  THEN  CONVERT(NVARCHAR, DATEDIFF(mm, PublishDate,GETDATE()))  + N' ወር በፍት' 
+								WHEN DATEDIFF(yy, PublishDate,GETDATE()) <= 1  THEN  CONVERT(NVARCHAR, DATEDIFF(yy, PublishDate,GETDATE()))  + N' አመት በፊት' 
+								WHEN DATEDIFF(yy, PublishDate,GETDATE()) > 1  THEN  CONVERT(NVARCHAR, DATEDIFF(yy, PublishDate,GETDATE()))  + N' አመት በፊት' END, 

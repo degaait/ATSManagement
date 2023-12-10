@@ -85,8 +85,22 @@ namespace ATSManagementExternal.ViewModels
         [Required(ErrorMessage = "*")]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
         public string? PhoneNumber { get; set; }
+        public string? TermsAndCondionts { get; set; }
 
-        public string TermsAndCondionts { get; set; }
+        public Guid? CompleteRequestID { get; set; }
+        public List<SelectListItem>? CompletedRequests { get; set; }
+        public List<SelectListItem>? RoundTypes { get; set; }
+        public int RoundTypeId { get; set; }
+    }
+    public class RoundModel
+    {
+        public int RoundTypeId { get; set; }
+        public string? Name { get; set; }
 
+    }
+    public class CompletedRequests
+    {
+        public Guid CompleteRequestID { get; set;}
+        public string? RequestDetail { get; set; }
     }
 }

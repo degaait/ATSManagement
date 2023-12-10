@@ -75,6 +75,8 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();
 
+    public virtual ICollection<TblInspectionReplye> TblInspectionReplyes { get; set; } = new List<TblInspectionReplye>();
+
     public virtual ICollection<TblInstotutionMonitoringReport> TblInstotutionMonitoringReports { get; set; } = new List<TblInstotutionMonitoringReport>();
 
     public virtual ICollection<TblLegalAdviceReport> TblLegalAdviceReports { get; set; } = new List<TblLegalAdviceReport>();
@@ -98,6 +100,8 @@ public partial class TblInternalUser
     public virtual ICollection<TblRequestAssignee> TblRequestAssignees { get; set; } = new List<TblRequestAssignee>();
 
     public virtual ICollection<TblRequest> TblRequestCreatedByNavigations { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblSentInspection> TblSentInspections { get; set; } = new List<TblSentInspection>();
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 

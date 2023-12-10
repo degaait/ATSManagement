@@ -43,16 +43,31 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "Required")]
         public Guid? StatusID { get; set; }
 
-        [Display(Name = "Final Letter")]
+        [Display(Name = "Final Report")]
         public IFormFile? FinalReport { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? AssigneeTypeId { get; set; }
         public IEnumerable<SelectListItem>? AssignmentTypes { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? TeamId { get; set; }
-
         public IEnumerable<SelectListItem?>? Teams { get; set; }
 
+        [Display(Name = "Plan status")]
+        public Guid? DesStatusId { get; set; }
 
+        [Display(Name = "Status")]
+        public List<SelectListItem>? DesicionStatus { get; set; }
+
+        public bool IsDeputyApprovalNeeded { get; set; }
+
+        [Display(Name = "Final of final Letter")]
+        public IFormFile? SentReport { get; set; }
+        [Display(Name = "Official letter")]
+        public IFormFile? OfficialLetter { get; set; }
+        public string? SendingRemark { get; set; }
+
+        public Guid? InistId { get; set; }
+        public IEnumerable<SelectListItem>? Insititutions { get; set; }
+        public DateTime? ExpectedReplyDate { get; internal set; }
     }
 }

@@ -88,6 +88,9 @@
                                             Team upproved
                                         </th>
                                         <th>
+                                            Department upproved
+                                        </th>
+                                        <th>
                                             Deputy upproved
                                         </th>
                                         <th>
@@ -151,6 +154,9 @@
 
                                             </td>
                                             <td>
+                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                            </td>
+                                            <td>
                                                 @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
@@ -167,7 +173,7 @@
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @if (assigneess!=null)
+                                                @if (assigneess != null)
                                                 {
                                                     foreach (var assignees in assigneess)
                                                     {
@@ -213,7 +219,7 @@
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
                                                                         Replies
                                                                     </a>
-                                                                  
+
                                                                 }
                                                             }
                                                             <a class="dropdown-item" asp-action="AddHistory" asp-route-id="@item.RequestId">

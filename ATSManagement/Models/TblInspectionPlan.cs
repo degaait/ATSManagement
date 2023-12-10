@@ -55,13 +55,27 @@ public partial class TblInspectionPlan
 
     public DateTime? SentDate { get; set; }
 
+    public Guid? IsUserUproved { get; set; }
+
+    public string? OfficialLetter { get; set; }
+
     public virtual TblAssignementType? AssigneeType { get; set; }
+
+    public virtual TblDecisionStatus? IsUpprovedbyDepartmentNavigation { get; set; }
+
+    public virtual TblDecisionStatus? IsUpprovedbyTeamNavigation { get; set; }
+
+    public virtual TblDecisionStatus? IsUprovedByDeputyNavigation { get; set; }
+
+    public virtual TblDecisionStatus? IsUserUprovedNavigation { get; set; }
 
     public virtual TblInspectionStatus? Pro { get; set; }
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
+
+    public virtual ICollection<TblSentInspection> TblSentInspections { get; set; } = new List<TblSentInspection>();
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 

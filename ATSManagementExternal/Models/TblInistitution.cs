@@ -30,4 +30,6 @@ public partial class TblInistitution
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
 
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblSentInspection> TblSentInspections { get; set; } = new List<TblSentInspection>();
 }

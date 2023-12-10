@@ -41,6 +41,8 @@ public partial class TblExternalUser
 
     public virtual ICollection<TblInspectionInstitution> TblInspectionInstitutions { get; set; } = new List<TblInspectionInstitution>();
 
+    public virtual ICollection<TblInspectionReplye> TblInspectionReplyes { get; set; } = new List<TblInspectionReplye>();
+
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
@@ -48,4 +50,6 @@ public partial class TblExternalUser
     public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
 
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblSentInspection> TblSentInspections { get; set; } = new List<TblSentInspection>();
 }

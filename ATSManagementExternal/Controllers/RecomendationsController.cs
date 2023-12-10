@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using ATSManagementExternal.Models;
 using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagementExternal.Controllers
@@ -14,15 +15,14 @@ namespace ATSManagementExternal.Controllers
     public class RecomendationsController : Controller
     {
         private readonly AtsdbContext _context;
-
         public RecomendationsController(AtsdbContext context)
         {
             _context = context;
-        }
-
-        // GET: Recomendations
+        }        
         public async Task<IActionResult> Index()
         {
+            ViewBag.openRecos=_context.TblRecomendations.Include(s=>s.Recostatus).Where(s=>s.Recostatus.Status=="Open").ToList().Count();
+            ViewBag.closedStatus= _context.TblRecomendations.Include(s => s.Recostatus).Where(s => s.Recostatus.Status == "Closed").ToList().Count();
             CollectionModel collectionModel = GetModel(); 
             
             List<DataPoint> dataPointss = new List<DataPoint>();
@@ -44,7 +44,6 @@ namespace ATSManagementExternal.Controllers
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPointss);
             return View(collectionModel);
         }
-
         private CollectionModel GetModel()
         {
             CollectionModel collectionModel = new CollectionModel();
@@ -76,10 +75,12 @@ namespace ATSManagementExternal.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(CollectionModel collectionModel)
         {
+            ViewBag.openRecos = _context.TblRecomendations.Include(s => s.Recostatus).Where(s => s.Recostatus.Status == "Open").ToList().Count();
+            ViewBag.closedStatus = _context.TblRecomendations.Include(s => s.Recostatus).Where(s => s.Recostatus.Status == "Closed").ToList().Count();
             CollectionModel model = GetModel();
             List<DataPoint> dataPointss = new List<DataPoint>();
-            if (collectionModel.RecostatusId != Guid.Empty ||collectionModel.InistId == Guid.Empty|| 
-                collectionModel.YearId == Guid.Empty||
+            if (collectionModel.RecostatusId != Guid.Empty &&collectionModel.InistId == Guid.Empty&& 
+                collectionModel.YearId == Guid.Empty&&
                 collectionModel.LawId == Guid.Empty)
             {
                 var recomendations = (from item in _context.TblRecomendations
@@ -119,7 +120,6 @@ namespace ATSManagementExternal.Controllers
                     dataPointss.Add(new DataPoint(item.Instition, item.Number));
                 }
             }
-
             else if (collectionModel.RecostatusId != Guid.Empty && 
                 collectionModel.InistId != Guid.Empty &&
                 collectionModel.YearId != Guid.Empty &&
@@ -258,8 +258,6 @@ namespace ATSManagementExternal.Controllers
                     dataPointss.Add(new DataPoint(item.Instition, item.Number));
                 }
             }
-          
-
             else if (collectionModel.RecostatusId == Guid.Empty &&
                collectionModel.InistId == Guid.Empty &&
                collectionModel.YearId != Guid.Empty &&
@@ -447,6 +445,139 @@ namespace ATSManagementExternal.Controllers
                     dataPointss.Add(new DataPoint(item.Instition, item.Number));
                 }
             }
+            else if (collectionModel.RecostatusId == Guid.Empty &&
+              collectionModel.InistId == Guid.Empty &&
+              collectionModel.YearId == Guid.Empty &&
+              collectionModel.LawId == Guid.Empty)
+            {
+                var recomendations = (from item in _context.TblRecomendations
+                                      join ints in _context.TblInistitutions on item.InistId equals ints.InistId
+                                      join years in _context.TblYears on item.YearId equals years.YearId
+                                      join status in _context.TblRecomendationStatuses on item.RecostatusId equals status.RecostatusId
+                                      group item by item.Inist.Name into g
+                                      select new
+                                      {
+                                          Instition = g.Key,
+                                          Number = g.Count(),
+                                      }).ToList();
+                foreach (var item in recomendations)
+                {
+                    dataPointss.Add(new DataPoint(item.Instition, item.Number));
+                }
+            }
+            else if (collectionModel.RecostatusId != Guid.Empty &&
+              collectionModel.InistId == Guid.Empty &&
+              collectionModel.YearId != Guid.Empty &&
+              collectionModel.LawId == Guid.Empty)
+            {
+                var recomendations = (from item in _context.TblRecomendations
+                                      join ints in _context.TblInistitutions on item.InistId equals ints.InistId
+                                      join years in _context.TblYears on item.YearId equals years.YearId
+                                      join status in _context.TblRecomendationStatuses on item.RecostatusId equals status.RecostatusId
+                                      join laws in _context.TblInspectionLaws on item.LawId equals laws.LawId
+                                      where  item.RecostatusId == collectionModel.RecostatusId
+                                      && years.YearId == collectionModel.YearId
+                                      group item by item.Inist.Name into g
+                                      select new
+                                      {
+                                          Instition = g.Key,
+                                          Number = g.Count(),
+                                      }).ToList();
+                foreach (var item in recomendations)
+                {
+                    dataPointss.Add(new DataPoint(item.Instition, item.Number));
+                }
+            }
+            else if (collectionModel.RecostatusId == Guid.Empty &&
+              collectionModel.InistId == Guid.Empty &&
+              collectionModel.YearId == Guid.Empty &&
+              collectionModel.LawId != Guid.Empty)
+            {
+                var recomendations = (from item in _context.TblRecomendations
+                                      join ints in _context.TblInistitutions on item.InistId equals ints.InistId
+                                      join years in _context.TblYears on item.YearId equals years.YearId
+                                      join status in _context.TblRecomendationStatuses on item.RecostatusId equals status.RecostatusId
+                                      join laws in _context.TblInspectionLaws on item.LawId equals laws.LawId
+                                      where laws.LawId == collectionModel.LawId
+                                      group item by item.Inist.Name into g
+                                      select new
+                                      {
+                                          Instition = g.Key,
+                                          Number = g.Count(),
+                                      }).ToList();
+                foreach (var item in recomendations)
+                {
+                    dataPointss.Add(new DataPoint(item.Instition, item.Number));
+                }
+            }
+            else if (collectionModel.RecostatusId == Guid.Empty &&
+              collectionModel.InistId != Guid.Empty &&
+              collectionModel.YearId == Guid.Empty &&
+              collectionModel.LawId != Guid.Empty)
+            {
+                var recomendations = (from item in _context.TblRecomendations
+                                      join ints in _context.TblInistitutions on item.InistId equals ints.InistId
+                                      join years in _context.TblYears on item.YearId equals years.YearId
+                                      join status in _context.TblRecomendationStatuses on item.RecostatusId equals status.RecostatusId
+                                      join laws in _context.TblInspectionLaws on item.LawId equals laws.LawId
+                                      where laws.LawId == collectionModel.LawId &&ints.InistId==collectionModel.InistId
+                                      group item by item.Inist.Name into g
+                                      select new
+                                      {
+                                          Instition = g.Key,
+                                          Number = g.Count(),
+                                      }).ToList();
+                foreach (var item in recomendations)
+                {
+                    dataPointss.Add(new DataPoint(item.Instition, item.Number));
+                }
+            }
+            else if (collectionModel.RecostatusId == Guid.Empty &&
+              collectionModel.InistId == Guid.Empty &&
+              collectionModel.YearId != Guid.Empty &&
+              collectionModel.LawId != Guid.Empty)
+            {
+                var recomendations = (from item in _context.TblRecomendations
+                                      join ints in _context.TblInistitutions on item.InistId equals ints.InistId
+                                      join years in _context.TblYears on item.YearId equals years.YearId
+                                      join status in _context.TblRecomendationStatuses on item.RecostatusId equals status.RecostatusId
+                                      join laws in _context.TblInspectionLaws on item.LawId equals laws.LawId
+                                      where laws.LawId == collectionModel.LawId && years.YearId == collectionModel.YearId
+                                      group item by item.Inist.Name into g
+                                      select new
+                                      {
+                                          Instition = g.Key,
+                                          Number = g.Count(),
+                                      }).ToList();
+                foreach (var item in recomendations)
+                {
+                    dataPointss.Add(new DataPoint(item.Instition, item.Number));
+                }
+            }
+            else if (collectionModel.RecostatusId != Guid.Empty &&
+              collectionModel.InistId == Guid.Empty &&
+              collectionModel.YearId != Guid.Empty &&
+              collectionModel.LawId != Guid.Empty)
+            {
+                var recomendations = (from item in _context.TblRecomendations
+                                      join ints in _context.TblInistitutions on item.InistId equals ints.InistId
+                                      join years in _context.TblYears on item.YearId equals years.YearId
+                                      join status in _context.TblRecomendationStatuses on item.RecostatusId equals status.RecostatusId
+                                      join laws in _context.TblInspectionLaws on item.LawId equals laws.LawId
+                                      where laws.LawId == collectionModel.LawId 
+                                      &&status.RecostatusId==collectionModel.RecostatusId                                      
+                                      && years.YearId == collectionModel.YearId
+                                      group item by item.Inist.Name into g
+                                      select new
+                                      {
+                                          Instition = g.Key,
+                                          Number = g.Count(),
+                                      }).ToList();
+                foreach (var item in recomendations)
+                {
+                    dataPointss.Add(new DataPoint(item.Instition, item.Number));
+                }
+            }
             else
             {
                 var recomendations = (from item in _context.TblRecomendations
@@ -598,10 +729,21 @@ namespace ATSManagementExternal.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool TblRecomendationExists(Guid id)
         {
           return (_context.TblRecomendations?.Any(e => e.RecoId == id)).GetValueOrDefault();
+        }
+        public async Task<IActionResult> DownloadEvidenceFile(string path)
+        {
+            string filename = path.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
         }
     }
 }

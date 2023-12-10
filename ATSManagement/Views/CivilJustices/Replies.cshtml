@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    IEnumerable<TblCivilJusticeRequestReply> replyes = ViewData["Replies"] as IEnumerable<TblCivilJusticeRequestReply>;
+    IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
 }
 <style type="text/css">
     .table thead th {
@@ -11,7 +11,58 @@
         font-size: .825rem !important;
         font-weight: bolder;
     }
+
+    /* Chat containers */
+    .container {
+        border: 2px solid #dedede;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    /* Darker chat container */
+    .darker {
+        border-color: #ccc;
+        background-color: #ddd;
+    }
+
+    /* Clear floats */
+    .container::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    /* Style images */
+    .container img {
+        float: left;
+        max-width: 60px;
+        width: 100%;
+        margin-right: 0px;
+        border-radius: 50%;
+    }
+
+        /* Style the right image */
+        .container img.right {
+            float: right;
+            margin-left: 0px;
+            margin-right: 0;
+        }
+
+    /* Style time text */
+    .time-right {
+        float: right;
+        color: #aaa;
+    }
+
+    /* Style time text */
+    .time-left {
+        float: left;
+        color: #999;
+    }
 </style>
+
 <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <div class="page-wrapper">
     <!-- Page header -->
@@ -57,6 +108,13 @@
                                                 <span asp-validation-for="ReplyDate" class="text-danger"></span>
                                             </div>
                                         </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="IsSent" class=" col-2 col-form-label">You want to send to institutions?</label>
+                                            <div class="col">
+                                                <input asp-for="IsSent" type="checkbox" class="form-check" />
+                                                <span asp-validation-for="IsSent" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -76,57 +134,58 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <table class="table table-bordered" id="role">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Reply Details
-                                            </th>
-                                            <th>
-                                                Date time
-                                            </th>
-                                            <th>
-                                                Replied by
-                                            </th>
-                                            <th>
-                                                Admin user
-                                            </th>
-                                            <th>
-                                                Request
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in replyes)
-                                        {
+                                @foreach (var item in replyes)
+                                {
+                                    if (item.IsInternal == true)
+                                    {
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
 
-                                            <tr>
-                                                <td>
-                                                    @Html.Raw(item.ReplayDetail)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ReplyDate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedByNavigation.FirstName)
-                                                    @Html.DisplayFor(modelItem => item.ExternalReplayedByNavigation.MiddleName)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.InternalReplayedByNavigation.FirstName)
-                                                    @Html.DisplayFor(modelItem => item.InternalReplayedByNavigation.MidleName)
-                                                </td>
-                                                <td>
-                                                    @Html.Raw(item.Request.RequestDetail)
-                                                </td>
-                                                <td>
-                                                    
-                                                    <a asp-action="Delete" asp-route-id="@item.ReplyId">Delete</a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="container">
+                                                        <h3 class="time-left" style="color:dodgerblue">(You)</h3>
+                                                        <br />
+                                                        <p class="time-left">
+                                                            @Html.Raw(@item.ReplayDetail)
+                                                            <br />
+                                                            <span class="time-left">@item.ReplyDate</span>
+                                                        </p>
+                                                        <br />
+                                                        <a class="dropdown-item time-right" asp-action="Edit" asp-route-id="@item.ReplyId">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                                <path d="M13.5 6.5l4 4"></path>
+                                                                <path d="M16 19h6"></path>
+                                                                <path d="M19 16v6"></path>
+                                                            </svg>&nbsp;  Edit
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    if (item.IsExternal == true)
+                                    {
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="container">
+                                                        <h3 class="time-right" style="color:dodgerblue">(@item.ExternalReplayedByNavigation.FirstName)</h3>
+                                                        <br />
+                                                        <div class="time-right">
+                                                            @Html.Raw(@item.ReplayDetail)
+                                                            <br />
+                                                            <span class="time-right">@item.ReplyDate</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>

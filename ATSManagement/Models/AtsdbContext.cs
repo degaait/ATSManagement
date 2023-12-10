@@ -81,6 +81,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblInspectionPlan> TblInspectionPlans { get; set; }
 
+    public virtual DbSet<TblInspectionReplye> TblInspectionReplyes { get; set; }
+
     public virtual DbSet<TblInspectionStatus> TblInspectionStatuses { get; set; }
 
     public virtual DbSet<TblInstotutionMonitoringReport> TblInstotutionMonitoringReports { get; set; }
@@ -134,6 +136,10 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblRequestType> TblRequestTypes { get; set; }
 
     public virtual DbSet<TblRole> TblRoles { get; set; }
+
+    public virtual DbSet<TblRound> TblRounds { get; set; }
+
+    public virtual DbSet<TblSentInspection> TblSentInspections { get; set; }
 
     public virtual DbSet<TblServiceType> TblServiceTypes { get; set; }
 
@@ -858,6 +864,22 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.AssigneeTypeId)
                 .HasConstraintName("FK_tbl_InspectionPlans_tbl_AssignementTypes");
 
+            entity.HasOne(d => d.IsUpprovedbyDepartmentNavigation).WithMany(p => p.TblInspectionPlanIsUpprovedbyDepartmentNavigations)
+                .HasForeignKey(d => d.IsUpprovedbyDepartment)
+                .HasConstraintName("FK_tbl_InspectionPlans_tbl_DecisionStatus");
+
+            entity.HasOne(d => d.IsUpprovedbyTeamNavigation).WithMany(p => p.TblInspectionPlanIsUpprovedbyTeamNavigations)
+                .HasForeignKey(d => d.IsUpprovedbyTeam)
+                .HasConstraintName("FK_tbl_InspectionPlans_tbl_DecisionStatus1");
+
+            entity.HasOne(d => d.IsUprovedByDeputyNavigation).WithMany(p => p.TblInspectionPlanIsUprovedByDeputyNavigations)
+                .HasForeignKey(d => d.IsUprovedByDeputy)
+                .HasConstraintName("FK_tbl_InspectionPlans_tbl_DecisionStatus2");
+
+            entity.HasOne(d => d.IsUserUprovedNavigation).WithMany(p => p.TblInspectionPlanIsUserUprovedNavigations)
+                .HasForeignKey(d => d.IsUserUproved)
+                .HasConstraintName("FK_tbl_InspectionPlans_tbl_DecisionStatus3");
+
             entity.HasOne(d => d.Pro).WithMany(p => p.TblInspectionPlans)
                 .HasForeignKey(d => d.ProId)
                 .HasConstraintName("FK_tbl_Progress_tbl_InspectionPlans");
@@ -873,6 +895,27 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Year).WithMany(p => p.TblInspectionPlans)
                 .HasForeignKey(d => d.YearId)
                 .HasConstraintName("FK_tbl_Years_tbl_InspectionPlans");
+        });
+
+        modelBuilder.Entity<TblInspectionReplye>(entity =>
+        {
+            entity.HasKey(e => e.ReplyId);
+
+            entity.ToTable("tbl_InspectionReplyes");
+
+            entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+            entity.HasOne(d => d.ExternalUserNavigation).WithMany(p => p.TblInspectionReplyes)
+                .HasForeignKey(d => d.ExternalUser)
+                .HasConstraintName("FK_tbl_InspectionReplyes_tbl_ExternalUser");
+
+            entity.HasOne(d => d.InternalUserNavigation).WithMany(p => p.TblInspectionReplyes)
+                .HasForeignKey(d => d.InternalUser)
+                .HasConstraintName("FK_tbl_InspectionReplyes_tbl_InternalUsers1");
+
+            entity.HasOne(d => d.Rec).WithMany(p => p.TblInspectionReplyes)
+                .HasForeignKey(d => d.RecId)
+                .HasConstraintName("FK_tbl_InspectionReplyes_tbl_SentInspections");
         });
 
         modelBuilder.Entity<TblInspectionStatus>(entity =>
@@ -1463,6 +1506,49 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.RoleId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("RoleID");
+        });
+
+        modelBuilder.Entity<TblRound>(entity =>
+        {
+            entity.HasKey(e => e.RoundId);
+
+            entity.ToTable("tbl_Rounds");
+
+            entity.Property(e => e.RoundId).HasColumnName("RoundID");
+            entity.Property(e => e.RequestIid).HasColumnName("RequestIID");
+
+            entity.HasOne(d => d.RequestI).WithMany(p => p.TblRounds)
+                .HasForeignKey(d => d.RequestIid)
+                .HasConstraintName("FK_tbl_Rounds_tbl_Requests");
+        });
+
+        modelBuilder.Entity<TblSentInspection>(entity =>
+        {
+            entity.HasKey(e => e.RecId);
+
+            entity.ToTable("tbl_SentInspections");
+
+            entity.Property(e => e.RecId).HasColumnName("RecID");
+            entity.Property(e => e.ExpectedReplyDate).HasColumnType("date");
+            entity.Property(e => e.InstId).HasColumnName("InstID");
+            entity.Property(e => e.RespondedDate).HasColumnType("datetime");
+            entity.Property(e => e.SentDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.InspectionPlan).WithMany(p => p.TblSentInspections)
+                .HasForeignKey(d => d.InspectionPlanId)
+                .HasConstraintName("FK_tbl_SentInspections_tbl_InspectionPlans");
+
+            entity.HasOne(d => d.Inst).WithMany(p => p.TblSentInspections)
+                .HasForeignKey(d => d.InstId)
+                .HasConstraintName("FK_tbl_SentInspections_tbl_Inistitutions");
+
+            entity.HasOne(d => d.RepliedByNavigation).WithMany(p => p.TblSentInspections)
+                .HasForeignKey(d => d.RepliedBy)
+                .HasConstraintName("FK_tbl_SentInspections_tbl_ExternalUser");
+
+            entity.HasOne(d => d.SentByNavigation).WithMany(p => p.TblSentInspections)
+                .HasForeignKey(d => d.SentBy)
+                .HasConstraintName("FK_tbl_SentInspections_tbl_InternalUsers");
         });
 
         modelBuilder.Entity<TblServiceType>(entity =>

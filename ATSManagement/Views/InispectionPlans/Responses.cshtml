@@ -1,0 +1,237 @@
+﻿@model ATSManagement.ViewModels.InspectionReplyModel
+@{
+    ViewData["Title"] = "Response";
+    IEnumerable<TblInspectionReplye> replyes = ViewData["Replies"] as IEnumerable<TblInspectionReplye>;
+}
+
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+
+    /* Chat containers */
+    .container {
+        border: 2px solid #dedede;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    /* Darker chat container */
+    .darker {
+        border-color: #ccc;
+        background-color: #ddd;
+    }
+
+    /* Clear floats */
+    .container::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    /* Style images */
+    .container img {
+        float: left;
+        max-width: 60px;
+        width: 100%;
+        margin-right: 0px;
+        border-radius: 50%;
+    }
+
+        /* Style the right image */
+        .container img.right {
+            float: right;
+            margin-left: 0px;
+            margin-right: 0;
+        }
+
+    /* Style time text */
+    .time-right {
+        float: right;
+        color: #aaa;
+    }
+
+    /* Style time text */
+    .time-left {
+        float: left;
+        color: #999;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<!-- Page header -->
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Response
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <form asp-action="Responses" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input asp-for="RecId" type="hidden" class="form-control" />
+
+                                        <div class="mb-3 row" id="divRequestDetail">
+                                            <label asp-for="ResponseDetail" class=" col-2 col-form-label">Reply Detail</label>
+                                            <div class="col">
+                                                <input asp-for="ResponseDetail" class="form-control" />
+                                                <span asp-validation-for="ResponseDetail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="Send" class="btn btn-primary" />
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Replies</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var item in replyes)
+                                {
+                                    if (item.IsExternal == true)
+                                    {
+                                        <div class="col-12">
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    <div class="container">
+                                                        <h3 class="time-left" style="color:dodgerblue">(@item.ExternalUserNavigation.FirstName)</h3>
+                                                        <br />
+                                                        <p class="time-left">
+                                                            @Html.Raw(@item.RecoDetail)
+                                                            <br />
+                                                            <span class="time-left">@item.DateCreated</span>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    if (item.IsInternal == true)
+                                    {
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="container">
+                                                        <h3 class="time-right" style="color:dodgerblue">(You)</h3>
+                                                        <br />
+                                                        <p class="time-right">
+                                                            @Html.Raw(@item.RecoDetail)
+                                                            <br />
+                                                            <span class="time-right">@item.DateCreated</span>
+                                                        </p>
+                                                        <br />
+                                                        <a class="dropdown-item time-right" asp-action="EditResponses" asp-route-ReplyId="@item.ReplyId">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                                <path d="M13.5 6.5l4 4"></path>
+                                                                <path d="M16 19h6"></path>
+                                                                <path d="M19 16v6"></path>
+                                                            </svg>&nbsp;  Edit
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ResponseDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#AppointmentDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+
+}

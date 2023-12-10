@@ -1,0 +1,180 @@
+﻿@model IEnumerable<ATSManagementExternal.Models.TblSentInspection>
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
+@{
+    ViewData["Title"] = "Yearly Plans";
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Yearly Inispection plans
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a asp-action="Create" asp-controller="InispectionPlans" class="btn btn-primary d-none d-sm-inline-block">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Create new
+                    </a>
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Plans</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <table class="table table-bordered" id="role">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Message description
+                                        </th>
+                                        <th>
+                                            Sent Date
+                                        </th>
+                                        <th>
+                                            Sent by
+                                        </th>
+                                        <th>
+                                            Responded by
+                                        </th>
+                                        <th>
+                                            Recommendation file
+                                        </th>
+                                        <th>
+                                            Attached official letter
+                                        </th>
+                                        <th>
+                                            Responded Date
+                                        </th>
+                                        <th>Expected response date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.SendingRemark)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SentDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SentByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.SentByNavigation.MidleName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RepliedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.RepliedByNavigation.MiddleName)
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="Inspections" asp-route-path="@item.SentReport">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                        <path d="M12 17v-6"></path>
+                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                    </svg>
+                                                    Download
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="Inspections" asp-route-path="@item.OfficialLetter">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                        <path d="M12 17v-6"></path>
+                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                    </svg>
+                                                    Download
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RespondedDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ExpectedReplyDate)
+                                            </td>
+                                            <td>
+                                                <div class="btn-list flex-nowrap">
+                                                    <div class="dropdown">
+                                                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                                            Actions
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" asp-action="Reply" asp-route-RecId="@item.RecId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
+                                                                Reply
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script type="text/javascript">
+        var dp = $("#Date").datepicker({
+            format: "dd/mm/yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true
+        });
+        dp.on('changeDate', function (e) {
+            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
+        });
+    </script>
+}
+
