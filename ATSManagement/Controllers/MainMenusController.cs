@@ -54,7 +54,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MenuId,MenuName,MenuDescription")] TblMainMenu tblMainMenu)
+        public async Task<IActionResult> Create([Bind("MenuId,MenuName,MenuDescription,MenuNameAmharic")] TblMainMenu tblMainMenu)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("MenuId,MenuName,MenuDescription")] TblMainMenu tblMainMenu)
+        public async Task<IActionResult> Edit(Guid id, [Bind("MenuId,MenuName,MenuDescription,MenuNameAmharic")] TblMainMenu tblMainMenu)
         {
             if (id != tblMainMenu.MenuId)
             {

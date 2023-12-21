@@ -29,7 +29,6 @@ namespace ATSManagementExternal.Controllers
             _contextAccessor = contextAccessor;
             _mail = mail;
         }
-
         public async Task<IActionResult> Index()
         {
             TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();
@@ -238,8 +237,7 @@ namespace ATSManagementExternal.Controllers
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
         {
             try
-            {
-                
+            {                
                 TblRequest request = new TblRequest();
                 List<TblDocumentHistory> documentHistory = new List<TblDocumentHistory>();
                 List<TblRequestPriorityQuestionsRelation> relations = new List<TblRequestPriorityQuestionsRelation>();
@@ -273,7 +271,6 @@ namespace ATSManagementExternal.Controllers
                         return View(getModel());
                     }
                 }
-
                 request.RequestDetail = model.RequestDetail;
                 request.InistId = model.IntId;
                 request.RequestedBy = userId;
@@ -290,10 +287,8 @@ namespace ATSManagementExternal.Controllers
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
                 if (model.DocumentFile != null)
                 {
-                    //create folder if not exist
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
-                    //get file extension
                     FileInfo fileInfo = new FileInfo(model.DocumentFile.FileName);
                     string fileName = Guid.NewGuid().ToString() + model.DocumentFile.FileName;
                     string fileNameWithPath = Path.Combine(path, fileName);
@@ -303,12 +298,10 @@ namespace ATSManagementExternal.Controllers
                     }
                     string dbPath = "/admin/Files/" + fileName;
                     request.DocTypeId = model.DocId;
-                    request.DocTypeId = model.DocId;
                     documentHistory.Add(new TblDocumentHistory { DocPath = dbPath, Round = model.Round, RequestId = request.RequestId });
                     request.TblDocumentHistories = documentHistory;
                 }
                 var selected = model.PrioritiesQues.Where(s => s.IsSelected == true).ToList();
-
                 if (selected.Count != 0)
                 {
                     request.PriorityId = _context.TblPriorities.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).Select(x => x.PriorityId).FirstOrDefault();
@@ -1004,6 +997,22 @@ namespace ATSManagementExternal.Controllers
                 replay.IsExternal = true;
                 replay.IsInternal = false;
                 replay.IsSent = true;
+                string? dbPath = null;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");                
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                if (model.Attachement != null)
+                {
+                    FileInfo fileInfo = new FileInfo(model.Attachement.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.Attachement.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.Attachement.CopyTo(stream);
+                    }
+                    dbPath = "/admin/Files/" + fileName;
+                    replay.Attachment = dbPath;
+                }
                 _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
@@ -1052,6 +1061,22 @@ namespace ATSManagementExternal.Controllers
                 TblReplay replay = _context.TblReplays.Find(model.ReplyId);
                 replay.ReplyDate = DateTime.Now;               
                 replay.ReplayDetail = model.ReplayDetail;
+                string? dbPath = null;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                if (model.Attachement != null)
+                {
+                    FileInfo fileInfo = new FileInfo(model.Attachement.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.Attachement.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.Attachement.CopyTo(stream);
+                    }
+                    dbPath = "/admin/Files/" + fileName;
+                    replay.Attachment = dbPath;
+                }
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
@@ -1099,6 +1124,19 @@ namespace ATSManagementExternal.Controllers
                 }
                 return Json(new SelectList(docList, "DocId", "DocName"));
             }
+
+        }
+        public IActionResult PDFViewerNewTab(string? filePath)
+        {
+            return File(System.IO.File.ReadAllBytes(filePath),"application/pdf");
+        }
+        public IActionResult priveweier(string filePath)
+        {
+            using (FileStream fileStream=System.IO.File.Create(filePath))
+            {
+                fileStream.Flush();
+            }
+            return View();
 
         }
     }

@@ -1,4 +1,7 @@
 ﻿@model ATSManagement.ViewModels.InispectionPlan
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "Create";
@@ -26,7 +29,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Create</h4>
                         </div>
-                        <form asp-action="Create">
+                        <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-10">
@@ -65,6 +68,13 @@
                                             <div class="col">
                                                 <input asp-for="CreationDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreationDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Attachement</label>
+                                            <div class="col">
+                                                <input asp-for="Attachement" class="form-file-button" type="file" readonly />
+                                                <span asp-validation-for="Attachement" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>

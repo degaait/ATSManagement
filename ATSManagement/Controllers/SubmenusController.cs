@@ -60,7 +60,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Submenu,Controller,Action,RoleId,MenuId,IsActive,IsDeleted,DepId")] TblSubmenu tblSubmenu)
+        public async Task<IActionResult> Create([Bind("Id,Submenu,Controller,Action,RoleId,MenuId,IsActive,IsDeleted,DepId,SubmenuAmharic")] TblSubmenu tblSubmenu)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Submenu,Controller,Action,RoleId,MenuId,IsActive,IsDeleted,DepId")] TblSubmenu tblSubmenu)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Submenu,Controller,Action,RoleId,MenuId,IsActive,IsDeleted,DepId,SubmenuAmharic")] TblSubmenu tblSubmenu)
         {
             if (id != tblSubmenu.Id)
             {

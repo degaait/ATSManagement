@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblTeam
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -39,6 +41,13 @@
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
+                                            <label asp-for="TeamNameAmharic" class="col-3 col-form-label">Team Name(በአማርኛ)</label>
+                                            <div class="col">
+                                                <input asp-for="TeamNameAmharic" class="form-control" />
+                                                <span asp-validation-for="TeamNameAmharic" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4 row">
                                             <label asp-for="DepId" class="col-3 col-form-label">Department</label>
                                             <div class="col">
                                                 <select asp-for="DepId" class="form-control" asp-items="ViewBag.DepId"></select>
@@ -74,6 +83,6 @@
     <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
 
-    }
+}
 }
 

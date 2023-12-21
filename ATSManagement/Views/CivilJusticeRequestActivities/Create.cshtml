@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblCivilJusticeRequestActivity
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -24,11 +26,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="RequestId" class="col-2 col-form-label"></label>
-                <select asp-for="RequestId" class ="form-control" asp-items="ViewBag.RequestId"></select>
+                <select asp-for="RequestId" class="form-control" asp-items="ViewBag.RequestId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CreatedBy" class="col-2 col-form-label"></label>
-                <select asp-for="CreatedBy" class ="form-control" asp-items="ViewBag.CreatedBy"></select>
+                <select asp-for="CreatedBy" class="form-control" asp-items="ViewBag.CreatedBy"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

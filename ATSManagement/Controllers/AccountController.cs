@@ -2,9 +2,14 @@
 using System.Text.Json;
 using ATSManagement.Models;
 using ATSManagement.Security;
+using ATSManagement.Services;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -12,12 +17,14 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IToastNotification _toastNotification;
-        public AccountController(AtsdbContext context, IHttpContextAccessor contextAccessor, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        private LanguageService _localization;
+        public AccountController(AtsdbContext context, IHttpContextAccessor contextAccessor, INotyfService notyfService, LanguageService languageService)
         {
-            _toastNotification = toastNotification;
+            _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
+            _localization = languageService;
 
         }
 
@@ -27,7 +34,13 @@ namespace ATSManagement.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            LoginModels models = new LoginModels();
+            models.Languages = _context.TblLanguages.Select(s => new SelectListItem
+            {
+                Value = s.LangId.ToString(),
+                Text = s.Language.ToString()
+            }).ToList();
+            return View(models);
         }
 
         // POST: LoginController/Create
@@ -35,6 +48,19 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginModels collection)
         {
+            string culture = null;
+            if (collection.LangId==1)
+            {
+                culture = "en-US";
+            }
+            else
+            {
+                culture = "am";
+            }
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+               CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+               new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+
             bool isExist = false;
             List<MenuModels> _menus = new List<MenuModels>();
             if (collection.Password != null && collection.UserName != null)
@@ -56,36 +82,76 @@ namespace ATSManagement.Controllers
                     }).FirstOrDefault();
                     if (userinfo.IsSuperAdmin == true)
                     {
-                        _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                        if (culture=="am")
                         {
-                            MainMenuId = x.Menu.MenuId,
-                            MainMenuName = x.Menu.MenuName,
-                            SubMenuId = x.Id,
-                            SubMenuName = x.Submenu,
-                            ControllerName = x.Controller,
-                            ActionName = x.Action,
-                            DepId = x.RoleId,
-                            DepName = x.Dep.DepName,
-                            DisplayOrder = x.Menu.DisplayOrder,
-                            Class_SVC = x.Menu.ClassSvg
-                        }).OrderBy(p => p.DisplayOrder).ToList();
+                            _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                            {
+                                MainMenuId = x.Menu.MenuId,
+                                MainMenuName = x.Menu.MenuNameAmharic,
+                                SubMenuId = x.Id,
+                                SubMenuName = x.SubmenuAmharic,
+                                ControllerName = x.Controller,
+                                ActionName = x.Action,
+                                DepId = x.RoleId,
+                                DepName = x.Dep.DepNameAmharic,
+                                DisplayOrder = x.Menu.DisplayOrder,
+                                Class_SVC = x.Menu.ClassSvg
+                            }).OrderBy(p => p.DisplayOrder).ToList();
+                        }
+                        else
+                        {
+                            _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                            {
+                                MainMenuId = x.Menu.MenuId,
+                                MainMenuName = x.Menu.MenuName,
+                                SubMenuId = x.Id,
+                                SubMenuName = x.Submenu,
+                                ControllerName = x.Controller,
+                                ActionName = x.Action,
+                                DepId = x.RoleId,
+                                DepName = x.Dep.DepName,
+                                DisplayOrder = x.Menu.DisplayOrder,
+                                Class_SVC = x.Menu.ClassSvg
+                            }).OrderBy(p => p.DisplayOrder).ToList();
+                        }
+                      
                     }
                     else
                     {
                         // Get the login user details and bind it to LoginModels class  
-                        _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+
+                        if (culture == "am")
                         {
-                            MainMenuId = x.Menu.MenuId,
-                            MainMenuName = x.Menu.MenuName,
-                            SubMenuId = x.Id,
-                            SubMenuName = x.Submenu,
-                            ControllerName = x.Controller,
-                            ActionName = x.Action,
-                            DepId = x.RoleId,
-                            DepName = x.Dep.DepName,
-                            DisplayOrder = x.Menu.DisplayOrder,
-                            Class_SVC = x.Menu.ClassSvg
-                        }).OrderBy(p => p.DisplayOrder).ToList();
+                            _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                            {
+                                MainMenuId = x.Menu.MenuId,
+                                MainMenuName = x.Menu.MenuNameAmharic,
+                                SubMenuId = x.Id,
+                                SubMenuName = x.SubmenuAmharic,
+                                ControllerName = x.Controller,
+                                ActionName = x.Action,
+                                DepId = x.RoleId,
+                                DepName = x.Dep.DepNameAmharic,
+                                DisplayOrder = x.Menu.DisplayOrder,
+                                Class_SVC = x.Menu.ClassSvg
+                            }).OrderBy(p => p.DisplayOrder).ToList();
+                        }
+                        else
+                        {
+                            _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                            {
+                                MainMenuId = x.Menu.MenuId,
+                                MainMenuName = x.Menu.MenuName,
+                                SubMenuId = x.Id,
+                                SubMenuName = x.Submenu,
+                                ControllerName = x.Controller,
+                                ActionName = x.Action,
+                                DepId = x.RoleId,
+                                DepName = x.Dep.DepName,
+                                DisplayOrder = x.Menu.DisplayOrder,
+                                Class_SVC = x.Menu.ClassSvg
+                            }).OrderBy(p => p.DisplayOrder).ToList();
+                        }
                     }
                     //Get the Menu details from entity and bind it in MenuModels list.  
                     //SetAuthCookie(_loginCredentials.UserName, false); // set the formauthentication cookie  
@@ -98,15 +164,28 @@ namespace ATSManagement.Controllers
                     _contextAccessor.HttpContext.Session.SetString("userId", _loginCredentials.UserId.ToString());
                     _contextAccessor.HttpContext.Session.SetString("DepName", _loginCredentials.DepName.ToString());
                     return RedirectToAction("Index", "Home");
+                   // return Redirect(Request.Headers["Referer"].ToString());
                 }
                 else
                 {
+                    _notifyService.Error(_localization.Getkey("user_not_found").Value);
+                    collection.Languages = _context.TblLanguages.Select(s => new SelectListItem
+                    {
+                        Value = s.LangId.ToString(),
+                        Text = s.Language
+                    }).ToList();
                     return View(collection);
                 }
-
             }
             else
             {
+                _notifyService.Error(_localization.Getkey("user_not_found").Value);
+
+                collection.Languages = _context.TblLanguages.Select(s => new SelectListItem
+                {
+                    Value = s.LangId.ToString(),
+                    Text = s.Language
+                }).ToList();
                 return View(collection);
             }
         }

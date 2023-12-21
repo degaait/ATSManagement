@@ -1,4 +1,7 @@
-﻿@{
+﻿@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -44,7 +47,7 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    New Requests
+                                                    @_localization.Getkey("new_request")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -83,7 +86,7 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    High Priority Requests
+                                                    @_localization.Getkey("high_priority_request")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -117,7 +120,7 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    Internal Users
+                                                    @_localization.Getkey("internal_users")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -151,7 +154,7 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    External Users
+                                                    @_localization.Getkey("externl_users")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -185,7 +188,7 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    Total Institutions
+                                                    @_localization.Getkey("total_institutions")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -220,7 +223,8 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    Total Inspections
+                                                    @_localization.Getkey("total_inspections")
+                                                    
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -256,7 +260,7 @@
                                         <div class="col">
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    Total Requests for CJAD Department
+                                                    @_localization.Getkey("total_inspections_from_CJAD")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">
@@ -294,7 +298,7 @@
 
                                             <div class="font-weight-medium">
                                                 <h3>
-                                                    Total Requests for LSDC Department
+                                                    @_localization.Getkey("total_requests_from_LSDC")
                                                 </h3>
                                             </div>
                                             <div class="text-muted">

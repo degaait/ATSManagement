@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Followups</h4>
                         </div>
-                        <form asp-action="Create">
+                        <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -39,6 +39,13 @@
                                             <div class="col">
                                                 <input asp-for="Message" class="form-control" />
                                                 <span asp-validation-for="Message" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Attachement" class="col-2 col-form-label">Attachement</label>
+                                            <div class="col">
+                                                <input asp-for="Attachement" class="form-file" type="file" />
+                                                <span asp-validation-for="Attachement" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>

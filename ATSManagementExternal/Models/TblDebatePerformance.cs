@@ -9,5 +9,7 @@ public partial class TblDebatePerformance
 
     public string? PreformanceName { get; set; }
 
+    public string? PerformanceNameEnglish { get; set; }
+
     public virtual ICollection<TblSubDebatePerformance> TblSubDebatePerformances { get; set; } = new List<TblSubDebatePerformance>();
 }

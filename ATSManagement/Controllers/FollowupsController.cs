@@ -89,7 +89,7 @@ namespace ATSManagement.Controllers
                 followup.CreatedDate = DateTime.UtcNow;
                 followup.FromExternal = false;
                 followup.FromInternal = true;
-                _context.Add(followup);
+                _context.TblFollowups.Add(followup);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
@@ -172,7 +172,6 @@ namespace ATSManagement.Controllers
             }
         }
 
-        // GET: Followups/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.TblFollowups == null)

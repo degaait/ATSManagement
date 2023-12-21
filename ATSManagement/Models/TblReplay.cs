@@ -23,6 +23,8 @@ public partial class TblReplay
 
     public bool? IsExternal { get; set; }
 
+    public string? Attachment { get; set; }
+
     public virtual TblExternalUser? ExternalReplayedByNavigation { get; set; }
 
     public virtual TblInternalUser? InternalReplayedByNavigation { get; set; }

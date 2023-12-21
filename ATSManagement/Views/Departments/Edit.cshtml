@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblDepartment
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Edit";
 }
@@ -38,6 +40,13 @@
                                             <div class="col">
                                                 <input asp-for="DepName" class="form-control" />
                                                 <span asp-validation-for="DepName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="DepNameAmharic" class="col-3 col-form-label">Department name (Amharic)</label>
+                                            <div class="col">
+                                                <input asp-for="DepNameAmharic" class="form-control" />
+                                                <span asp-validation-for="DepNameAmharic" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>

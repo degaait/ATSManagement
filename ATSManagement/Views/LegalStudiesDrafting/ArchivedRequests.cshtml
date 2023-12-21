@@ -1,26 +1,30 @@
 ﻿@model ATSManagement.ViewModels.ArchiveFilterModel;
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
     ViewData["Title"] = "Requests";
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
-    
-    var requestLists =(from item in ats.TblRequests
-                       join doctype in ats.TblLegalDraftingDocTypes on item.DocTypeId equals doctype.DocId
-                       join priority in ats.TblPriorities on item.PriorityId equals priority.PriorityId
-                       join serviceType in ats.TblServiceTypes on item.ServiceTypeId equals serviceType.ServiceTypeId
-                       join insts in ats.TblInspectionInstitutions on item.InistId equals insts.InstitutionId select new
-                       {
-                           CreatedDate=item.CreatedDate,
-                           DocType=item.DocType,
-                           DocumentFile=item.DocumentFile,
-                           ServiceType=item.ServiceType,
-                           RequestId=item.RequestId,
-                           RequestDetail=item.RequestDetail,
-                           Inist=insts.Institution,
-                           Priority=priority
-                       });
+
+    var requestLists = (from item in ats.TblRequests
+                        join doctype in ats.TblLegalDraftingDocTypes on item.DocTypeId equals doctype.DocId
+                        join priority in ats.TblPriorities on item.PriorityId equals priority.PriorityId
+                        join serviceType in ats.TblServiceTypes on item.ServiceTypeId equals serviceType.ServiceTypeId
+                        join insts in ats.TblInspectionInstitutions on item.InistId equals insts.InstitutionId
+                        select new
+                        {
+                            CreatedDate = item.CreatedDate,
+                            DocType = item.DocType,
+                            DocumentFile = item.DocumentFile,
+                            ServiceType = item.ServiceType,
+                            RequestId = item.RequestId,
+                            RequestDetail = item.RequestDetail,
+                            Inist = insts.Institution,
+                            Priority = priority
+                        });
 }
 <style type="text/css">
     .table thead th {
@@ -37,10 +41,10 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                   Archived Requests
+                    Archived Requests
                 </h2>
             </div>
-           
+
         </div>
     </div>
 </div>
@@ -55,40 +59,40 @@
                         <form asp-action="ArchiveRequests" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                   
-                                        <div class="col-md-6">
-                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                            <div class="mb-3 row">
-                                                <label asp-for="Year" class="col-3 col-form-label">Year</label>
-                                                <div class="col">
-                                                    <input asp-for="Year" class="form-control" />
-                                                    <span asp-validation-for="Year" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row" id="divServiceType">
-                                                <label asp-for="DoctypeId" class="col-3 col-form-label">Document types</label>
-                                                <div class="col">
-                                                    @Html.DropDownListFor(model => model.DoctypeId, new SelectList(Model.DocumentType, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                    <span asp-validation-for="DoctypeId" class="text-danger"></span>
-                                                </div>
+
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Year" class="col-3 col-form-label">Year</label>
+                                            <div class="col">
+                                                <input asp-for="Year" class="form-control" />
+                                                <span asp-validation-for="Year" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3 row" id="divServiceType">
-                                                <label asp-for="ServiceTypeId" class=" col-3 col-form-label">Service types</label>
-                                                <div class="col">
-                                                    @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceType, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                    <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
-                                                </div>
+                                        <div class="mb-3 row" id="divServiceType">
+                                            <label asp-for="DoctypeId" class="col-3 col-form-label">Document types</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.DoctypeId, new SelectList(Model.DocumentType, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="DoctypeId" class="text-danger"></span>
                                             </div>
-                                            <div class="mb-3 row" id="divServiceType">
-                                                <label asp-for="InstId" class=" col-3 col-form-label">Institutions</label>
-                                                <div class="col">
-                                                    @Html.DropDownListFor(model => model.InstId, new SelectList(Model.Institution, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                    <span asp-validation-for="InstId" class="text-danger"></span>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3 row" id="divServiceType">
+                                            <label asp-for="ServiceTypeId" class=" col-3 col-form-label">Service types</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceType, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
                                             </div>
-                                      
+                                        </div>
+                                        <div class="mb-3 row" id="divServiceType">
+                                            <label asp-for="InstId" class=" col-3 col-form-label">Institutions</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.InstId, new SelectList(Model.Institution, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="InstId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -124,11 +128,11 @@
                                         <th>
                                             Assigned to
                                         </th>
-                                        
+
                                         <th>
                                             Priority
                                         </th>
-                                       
+
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -182,7 +186,7 @@
                                             <td>
                                                 @Html.Raw(item.Priority.PriorityNameWithColor)
                                             </td>
-                                        
+
 
 
                                             <td>

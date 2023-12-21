@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.RepliesModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
@@ -126,7 +128,7 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

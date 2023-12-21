@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Edit";
 }

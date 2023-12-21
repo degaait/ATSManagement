@@ -87,7 +87,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Create</h4>
                         </div>
-                        <form asp-action="Replies">
+                        <form asp-action="Replies" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
@@ -107,6 +107,13 @@
                                             <div class="col">
                                                 <input asp-for="ReplyDate" readonly class="form-control" />
                                                 <span asp-validation-for="ReplyDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Attachement" class="col-2 col-form-label">Attachment</label>
+                                            <div class="col">
+                                                <input asp-for="Attachement" type="file" class="form-file-button" />
+                                                <span asp-validation-for="Attachement" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -139,12 +146,16 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="container">
-                                                        <h3 class="time-left" style="color:dodgerblue">(You)</h3>
+                                                        <h3 class="time-right" style="color:dodgerblue">(You)</h3>
                                                         <br />
-                                                        <p class="time-left">
+                                                        <p class="time-right">
                                                             @Html.Raw(@item.ReplayDetail)
                                                             <br />
-                                                            <span class="time-left">@item.ReplyDate</span>
+                                                            <span class="time-right">@item.ReplyDate</span>
+                                                            @if (item.Attachment != null)
+                                                             {
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                             }
                                                         </p>
                                                         <br />
                                                         <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
@@ -166,18 +177,23 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-md-6">
-
-                                                </div>
-                                                <div class="col-md-6">
                                                     <div class="container">
-                                                        <h3 class="time-right" style="color:dodgerblue">(@item.ExternalReplayedByNavigation.FirstName)</h3>
+                                                        <h3 class="time-left" style="color:dodgerblue">(@item.InternalReplayedByNavigation.FirstName)</h3>
                                                         <br />
-                                                        <div class="time-right">
+                                                        <div class="time-left">
                                                             @Html.Raw(@item.ReplayDetail)
                                                             <br />
-                                                            <span class="time-right">@item.ReplyDate</span>
+                                                            <span class="time-left">@item.ReplyDate</span>
+                                                            @if (item.Attachment != null)
+                                                            {
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+
+                                                            }
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-6">
+
                                                 </div>
                                             </div>
                                         </div>

@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.RepliesModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
@@ -151,9 +153,13 @@
                                                             @Html.Raw(@item.ReplayDetail)
                                                             <br />
                                                             <span class="time-left">@item.ReplyDate</span>
+                                                            @if (item.Attachment != null)
+                                                            {
+                                                                <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                            }
                                                         </p>
                                                         <br />
-                                                        <a class="dropdown-item time-right" asp-action="Edit" asp-route-id="@item.ReplyId">
+                                                        <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                 <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
@@ -179,6 +185,10 @@
                                                             @Html.Raw(@item.ReplayDetail)
                                                             <br />
                                                             <span class="time-right">@item.ReplyDate</span>
+                                                            @if (item.Attachment != null)
+                                                            {
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>

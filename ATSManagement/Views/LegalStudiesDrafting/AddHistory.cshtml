@@ -1,4 +1,7 @@
 ﻿@model ATSManagement.ViewModels.DocumentHistoryModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AtsdbContext ats;
 @{
     ViewData["Title"] = "Create";

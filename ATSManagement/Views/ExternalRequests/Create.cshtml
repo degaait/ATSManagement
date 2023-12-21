@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -63,16 +65,16 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divCaseType" style="display:none">
-                                            <label asp-for="ServiceTypeID" class=" col-2 col-form-label">Casy type</label>
+                                            <label asp-for="ServiceTypeId" class=" col-2 col-form-label">Casy type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpCasetypes" })
-                                                <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
+                                                @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpCasetypes" })
+                                                <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divDoctype" style="display:none">
                                             <label asp-for="DocId" class=" col-2 col-form-label">Document type</label>
                                             <div class="col">
-                                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "lsCaseType" })
+                                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "lsCaseType" })
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>

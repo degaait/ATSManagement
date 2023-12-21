@@ -1,9 +1,14 @@
 using NToastNotify;
+using System.Reflection;
+using System.Globalization;
 using ATSManagementExternal.Models;
+using Microsoft.Extensions.Options;
 using ATSManagementExternal.IModels;
 using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.Services;
 using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.FileProviders;
 using AspNetCoreHero.ToastNotification.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +23,24 @@ builder.Services.AddDbContext<AtsdbContext>(options =>
                 errorNumbersToAdd: null);
         });
 
+});
+builder.Services.AddSingleton<LanguageService>();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options => {
+    options.DataAnnotationLocalizerProvider = (type, factory) => {
+        var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+        return factory.Create("ShareResource", assemblyName.Name);
+    };
+});
+builder.Services.Configure<RequestLocalizationOptions>(options => {
+    var supportedCultures = new List<CultureInfo> {
+        new CultureInfo("am"),
+        new CultureInfo("en-US")
+    };
+    options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 });
 // Add services to the container.
 builder.Services.AddServerSideBlazor(); // Add support for Blazor
@@ -48,19 +71,23 @@ builder.Services.AddNotyf(config =>
 });
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+                   Path.Combine(builder.Environment.ContentRootPath, "admin")),
+    RequestPath = "/admin"
+});
 app.UseSession();
 app.UseRouting();
-
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseAuthorization();
 app.UseNToastNotify();
 app.UseNotyf();
@@ -68,5 +95,4 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();

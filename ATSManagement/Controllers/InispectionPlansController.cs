@@ -1,4 +1,5 @@
-﻿using NToastNotify;
+﻿using System.IO;
+using NToastNotify;
 using System.Numerics;
 using ATSManagement.Models;
 using ATSManagement.IModels;
@@ -6,9 +7,11 @@ using ATSManagement.Filters;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace ATSManagement.Controllers
 {
@@ -19,12 +22,14 @@ namespace ATSManagement.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
         private readonly INotyfService _notifyService;
-        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, INotyfService notyfService)
+        IHostingEnvironment _hostingEnvironment=null;
+        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, INotyfService notyfService, IHostingEnvironment hostingEnvironment)
         {
             _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mail;
+            _hostingEnvironment = hostingEnvironment;
         }
         public async Task<IActionResult> Index()
         {
@@ -206,6 +211,24 @@ namespace ATSManagement.Controllers
                         }
                         tible.TblPlanInistitutions = plan_in;
                     }
+                    string? dbPath = null;
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+                    //create folder if not exist
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    if (inispectionPlan.Attachement != null)
+                    {
+                        //get file extension
+                        FileInfo fileInfo = new FileInfo(inispectionPlan.Attachement.FileName);
+                        string fileName = Guid.NewGuid().ToString() + inispectionPlan.Attachement.FileName;
+                        string fileNameWithPath = Path.Combine(path, fileName);
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            inispectionPlan.Attachement.CopyTo(stream);
+                        }
+                        dbPath = "/Files/" + fileName;
+                        tible.Attachement = dbPath;
+                    }                    
                     _context.TblInspectionPlans.Add(tible);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
@@ -517,7 +540,7 @@ namespace ATSManagement.Controllers
             TblAssignedYearlyPlan yearlyPlan;
             List<TblAssignedYearlyPlan> tblAssignedYearlyPlans = new List<TblAssignedYearlyPlan>();
             List<String> depHeadEmail = new List<string>();
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+           Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var loggedInUser = _context.TblInternalUsers.Where(p => p.UserId == userId).ToList();
             var AllUsers = _context.TblInternalUsers.ToList().Except(loggedInUser);
             if (model.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847"))
@@ -578,9 +601,9 @@ namespace ATSManagement.Controllers
                     }
                     foreach (var item in model.UserId)
                     {
-                    var usersTeam = _context.TblInternalUsers.Find(model.UserId);
+                    var usersTeam = _context.TblInternalUsers.Find(item);
                     yearlyPlan = new TblAssignedYearlyPlan();
-                        yearlyPlan.AssignedBy = model.AssignedBy;
+                        yearlyPlan.AssignedBy = userId;
                         yearlyPlan.AssignedTo = item;
                         yearlyPlan.AssignedDate = model.AssignedDate;
                         yearlyPlan.DueDate = model.DueDate;
@@ -1010,6 +1033,24 @@ namespace ATSManagement.Controllers
             replys.IsInternal = true;
             replys.IsExternal = false;
             replys.InternalUser = userId;
+            string? dbPath = null;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+            //create folder if not exist
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            if (replyModel.Attachement != null)
+            {
+                //get file extension
+                FileInfo fileInfo = new FileInfo(replyModel.Attachement.FileName);
+                string fileName = Guid.NewGuid().ToString() + replyModel.Attachement.FileName;
+                string fileNameWithPath = Path.Combine(path, fileName);
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    replyModel.Attachement.CopyTo(stream);
+                }
+                dbPath = "/Files/" + fileName;
+                replys.Attachement = dbPath;
+            }
             _context.TblInspectionReplyes.Add(replys);
             int sent = _context.SaveChanges();
             if (sent > 0)
@@ -1044,8 +1085,25 @@ namespace ATSManagement.Controllers
             try
             {
                 var reply = _context.TblInspectionReplyes.Find(replyModel.ReplyId);
-
                 reply.RecoDetail = replyModel.ResponseDetail;
+                string? dbPath = null;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+                //create folder if not exist
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                if (replyModel.Attachement != null)
+                {
+                    //get file extension
+                    FileInfo fileInfo = new FileInfo(replyModel.Attachement.FileName);
+                    string fileName = Guid.NewGuid().ToString() + replyModel.Attachement.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        replyModel.Attachement.CopyTo(stream);
+                    }
+                    dbPath = "/Files/" + fileName;
+                    reply.Attachement = dbPath;
+                }
                 int updated = _context.SaveChanges();
                 if (updated > 0)
                 {
@@ -1062,6 +1120,22 @@ namespace ATSManagement.Controllers
                 return View(replyModel);
             }
 
+        }
+        public IActionResult PDFViewerNewTab(string? filePath)
+        {
+            return File(System.IO.File.ReadAllBytes(filePath), "application/pdf");
+        }
+        public async Task<IActionResult> priveweier(string attachment)
+        {
+            string filename = attachment.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
         }
     }
 }

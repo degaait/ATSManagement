@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblExternalRequest>
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Index";
 }

@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblRequest>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IHttpContextAccessor httpsSession;
-    @inject AtsdbContext ats;
+@inject AtsdbContext ats;
 @{
     ViewData["Title"] = "Requests";
     //Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
@@ -81,9 +84,6 @@
                                             Assigned to
                                         </th>
                                         <th>
-                                            Case type
-                                        </th>
-                                        <th>
                                             Department
                                         </th>
                                         <th>
@@ -137,7 +137,11 @@
                                                 @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.TopStatus)
+                                                @if (item.TopStatus != null)
+                                                {
+                                                    @Html.Raw(item.TopStatus.StatusName)
+                                                }
+
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
@@ -146,12 +150,9 @@
                                             <td>
                                                 @foreach (var assignees in assigneess)
                                                 {
-                                                    @Html.DisplayFor(modelItem => assignees.EmailAddress) 
+                                                    @Html.DisplayFor(modelItem => assignees.EmailAddress)
                                                     <br />
                                                 }
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
                                             </td>
                                             <td>
                                                 <label>Civil Justice Administration</label>
@@ -166,16 +167,8 @@
                                             <td>
                                                 @if (item.FinalReport != null)
                                                 {
-                                                    <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.FinalReport">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                            <path d="M12 17v-6"></path>
-                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                        </svg>
-                                                        Download
-                                                    </a>
+                                                    <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.FinalReport">View file</a>
+
                                                 }
                                             </td>
                                             <td>
@@ -207,7 +200,7 @@
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
                                                                 </svg>&nbsp;
-                                                                Add Activity
+                                                                Progress Activity
                                                             </a>
                                                             <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;

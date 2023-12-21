@@ -61,7 +61,7 @@ namespace ATSManagement.ViewModels
         public List<SelectListItem>? Priorities { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public Guid? ServiceTypeID { get; set; }
+        public Guid? ServiceTypeId { get; set; }
 
         [Display(Name = "Service types")]
         public List<SelectListItem>? ServiceTypes { get; set; }
@@ -72,7 +72,7 @@ namespace ATSManagement.ViewModels
         public DateTime? RequestedDate { get; set; }
         [Display(Name = "Document type")]
         public Guid? DocId { get; set; }
-        public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
+        public List<SelectListItem>? LegalStadiesDocumenttypes { get; set; }
         [Display(Name = "Question type")]
 
         public Guid? QuestTypeId { get; set; }

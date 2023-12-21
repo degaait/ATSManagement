@@ -13,6 +13,10 @@ public partial class TblDecisionStatus
 
     public string? StatusWithColor { get; set; }
 
+    public string? StatusNameAmharic { get; set; }
+
+    public string? StatusWithColorAmharic { get; set; }
+
     public virtual ICollection<TblCivilJustice> TblCivilJusticeDepartmentUpprovalStatusNavigations { get; set; } = new List<TblCivilJustice>();
 
     public virtual ICollection<TblCivilJustice> TblCivilJusticeDeputyUprovalStatusNavigations { get; set; } = new List<TblCivilJustice>();

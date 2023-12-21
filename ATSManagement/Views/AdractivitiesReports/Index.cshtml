@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblAdractivitiesReport>
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "የ ADR ስራዎች አፈፃፀም ሪፖርት ";
 }

@@ -77,7 +77,9 @@
                                         <th>
                                             Responded Date
                                         </th>
-                                        <th>Expected response date</th>
+                                        <th>
+                                            Expected response date
+                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -100,28 +102,16 @@
                                                 @Html.DisplayFor(modelItem => item.RepliedByNavigation.MiddleName)
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="Inspections" asp-route-path="@item.SentReport">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                        <path d="M12 17v-6"></path>
-                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                    </svg>
-                                                    Download
-                                                </a>
+                                                @if (item.SentReport != null)
+                                                {
+                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.SentReport">View file</a>
+                                                }
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="Inspections" asp-route-path="@item.OfficialLetter">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                        <path d="M12 17v-6"></path>
-                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                    </svg>
-                                                    Download
-                                                </a>
+                                                @if (item.OfficialLetter != null)
+                                                {
+                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.OfficialLetter">View file</a>
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.RespondedDate)

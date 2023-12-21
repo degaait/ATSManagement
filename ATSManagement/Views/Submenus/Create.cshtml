@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblSubmenu
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -36,6 +38,13 @@
                                             <div class="col">
                                                 <input asp-for="Submenu" class="form-control" />
                                                 <span asp-validation-for="Submenu" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="SubmenuAmharic" class="col-3 col-form-label">Title(Amharic)</label>
+                                            <div class="col">
+                                                <input asp-for="SubmenuAmharic" class="form-control" />
+                                                <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">

@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.FollowUpModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -40,6 +42,13 @@
                                                 <span asp-validation-for="Message" class="text-danger"></span>
                                             </div>
                                         </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Attachement" class="col-2 col-form-label">Attachement</label>
+                                            <div class="col">
+                                                <input asp-for="Attachement" class="form-control" />
+                                                <span asp-validation-for="Attachement" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -58,30 +67,30 @@
 </div>
 @section Scripts {
     <script>
- document.addEventListener("DOMContentLoaded", function () {
-     let options = {
-         selector: '#Message',
-         height: 300,
-         menubar: true,
-         statusbar: false,
-         plugins: [
-             'advlist autolink lists link image charmap print preview anchor',
-             'searchreplace visualblocks code fullscreen',
-             'insertdatetime media table paste code help wordcount',
-             'lists'
-         ],
-         toolbar: 'undo redo | formatselect | ' +
-             'bold italic backcolor | alignleft aligncenter ' +
-             'alignright alignjustify | bullist numlist outdent indent | ' +
-             'removeformat',
-         content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
-     }
-     if (localStorage.getItem("tablerTheme") === 'dark') {
-         options.skin = 'oxide-dark';
-         options.content_css = 'dark';
-     }
-     tinyMCE.init(options);
- })
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Message',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

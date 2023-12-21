@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblRequest>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
@@ -199,7 +202,7 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             @if (assigneess.Count == 0)
                                                             {
-                                                                if (user.IsDepartmentHead == true || user.IsSuperAdmin == true||user.IsTeamLeader==true)
+                                                                if (user.IsDepartmentHead == true || user.IsSuperAdmin == true || user.IsTeamLeader == true)
                                                                 {
                                                                     <a class="dropdown-item" asp-action="AssignFromTeam" asp-route-id="@item.RequestId">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -215,10 +218,6 @@
 
                                                                 }
                                                             }
-                                                            <a class="dropdown-item" asp-action="AddHistory" asp-route-id="@item.RequestId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                                Add HIstory
-                                                            </a>
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

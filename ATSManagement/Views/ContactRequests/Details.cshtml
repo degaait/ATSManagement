@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblContactInformation
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Details";
 }
@@ -58,11 +60,11 @@
                             <div class="d-flex">
                                 <a asp-action="Index">Back to List</a>
                             </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 

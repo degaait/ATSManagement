@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblLegalAdviceReport
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }

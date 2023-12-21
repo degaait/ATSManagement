@@ -54,7 +54,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InistId,Name,Description")] TblInistitution tblInistitution)
+        public async Task<IActionResult> Create([Bind("InistId,Name,Description,NameAmharic")] TblInistitution tblInistitution)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("InistId,Name,Description")] TblInistitution tblInistitution)
+        public async Task<IActionResult> Edit(Guid id, [Bind("InistId,Name,Description,NameAmharic")] TblInistitution tblInistitution)
         {
             if (id != tblInistitution.InistId)
             {

@@ -1,4 +1,7 @@
 ﻿@model ATSManagement.ViewModels.AjornyDateModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AtsdbContext _context;
 @{
     ViewData["Title"] = "Updated task progress status";
@@ -80,7 +83,7 @@
                                             </th>
                                             <th>
                                                 Adjornment Date
-                                                
+
                                             </th>
                                             <th></th>
                                         </tr>
@@ -90,7 +93,7 @@
                                         {
 
                                             <tr>
-                                              
+
                                                 <td>
                                                     @Html.Raw(item.WhatIsDone)
                                                 </td>
@@ -98,7 +101,7 @@
                                                     @Html.DisplayFor(modelItem => item.AdjorneyDate)
                                                 </td>
                                                 <td>
-                                                   
+
                                                     <a asp-action="DeleteAdjorny" asp-route-id="@item.AdjoryId">Delete</a>
                                                 </td>
                                             </tr>

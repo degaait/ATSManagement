@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AtsdbContext ats;
 @inject IHttpContextAccessor httpsSession;
 @{
@@ -60,10 +63,10 @@
                                             Title
                                         </th>
                                         <th>
-                                            Description
+                                            Creation date
                                         </th>
                                         <th>
-                                            Creation date
+                                            Attachement
                                         </th>
                                         <th>
                                             Targeted Inistitutions
@@ -79,7 +82,7 @@
                                         </th>
                                         <th>
                                             Assigned to
-                                          
+
                                         </th>
                                         <th>
                                             Final report
@@ -110,13 +113,30 @@
 
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.PlanTitle)
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.PlanDescription)
+                                                <p>
+                                                    @Html.DisplayFor(modelItem => item.PlanTitle)
+                                                    <a class="dropdown-item" style="color:darkblue" asp-action="Details" asp-route-id="@item.InspectionPlanId">Read more...</a>
+                                                </p>
+
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.CreationDate)
+                                            </td>
+                                            <td>
+                                                @if (item.Attachement != null)
+                                                {
+                                                    <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" target="_blank" asp-route-path="@item.Attachement">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                            <path d="M12 17v-6"></path>
+                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                        </svg>
+                                                        View
+                                                    </a>
+
+                                                }
                                             </td>
                                             <td>
                                                 @foreach (var items in instr)
@@ -146,8 +166,7 @@
                                             <td>
                                                 @if (item.FinalReport != null)
                                                 {
-                                                    <a class="btn btn-primary" asp-action="DownloadFile" asp-route-path="@item.FinalReport">
-
+                                                    <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.FinalReport">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -155,10 +174,9 @@
                                                             <path d="M12 17v-6"></path>
                                                             <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
                                                         </svg>
-                                                        Download
+                                                        View
                                                     </a>
                                                 }
-
                                             </td>
                                             <td>
                                                 @Html.Raw(item.Pro.StatusWithColor)
@@ -187,10 +205,6 @@
                                                                     </a>
                                                                 }
 
-                                                                <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-                                                                    Specific plans
-                                                                </a>
                                                             }
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -236,7 +250,6 @@
 </div>
 
 @section scripts{
-
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
         new DataTable('#role', {

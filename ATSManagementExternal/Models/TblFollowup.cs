@@ -23,6 +23,8 @@ public partial class TblFollowup
 
     public bool? FromInternal { get; set; }
 
+    public string? Attachment { get; set; }
+
     public virtual TblExternalUser? ExternalUser { get; set; }
 
     public virtual TblInistitution? Inist { get; set; }

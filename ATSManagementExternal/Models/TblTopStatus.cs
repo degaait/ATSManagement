@@ -9,5 +9,7 @@ public partial class TblTopStatus
 
     public string? StatusName { get; set; }
 
+    public string? StatusNameAmharic { get; set; }
+
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 }

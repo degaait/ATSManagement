@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblCivilJusticeRequestReply
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -19,11 +21,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="RequestId" class="col-2 col-form-label"></label>
-                <select asp-for="RequestId" class ="form-control" asp-items="ViewBag.RequestId"></select>
+                <select asp-for="RequestId" class="form-control" asp-items="ViewBag.RequestId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="InternalReplayedBy" class="col-2 col-form-label"></label>
-                <select asp-for="InternalReplayedBy" class ="form-control" asp-items="ViewBag.InternalReplayedBy"></select>
+                <select asp-for="InternalReplayedBy" class="form-control" asp-items="ViewBag.InternalReplayedBy"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ReplyDate" class="col-2 col-form-label"></label>
@@ -32,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ExternalReplayedBy" class="col-2 col-form-label"></label>
-                <select asp-for="ExternalReplayedBy" class ="form-control" asp-items="ViewBag.ExternalReplayedBy"></select>
+                <select asp-for="ExternalReplayedBy" class="form-control" asp-items="ViewBag.ExternalReplayedBy"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

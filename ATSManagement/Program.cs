@@ -1,9 +1,14 @@
 using NToastNotify;
+using System.Reflection;
 using ATSManagement.Models;
+using System.Globalization;
 using ATSManagement.IModels;
 using ATSManagement.Services;
+using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.FileProviders;
 using AspNetCoreHero.ToastNotification.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +22,24 @@ builder.Services.AddDbContext<AtsdbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(5),
                 errorNumbersToAdd: null);
         });
+});
+builder.Services.AddSingleton<LanguageService>();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options => {
+    options.DataAnnotationLocalizerProvider = (type, factory) => {
+        var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+        return factory.Create("ShareResource", assemblyName.Name);
+    };
+});
+builder.Services.Configure<RequestLocalizationOptions>(options => {
+    var supportedCultures = new List<CultureInfo> {
+        new CultureInfo("am"),
+        new CultureInfo("en-US")
+    };
+    options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 });
 // Add services to the container.
 builder.Services.AddServerSideBlazor(); // Add support for Blazor
@@ -56,9 +79,21 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//                   Path.Combine(builder.Environment.ContentRootPath, "admin")),
+//    RequestPath = "/admin"
+//});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+                   Path.Combine(builder.Environment.ContentRootPath, "Files")),
+    RequestPath = "/Files"
+});
 app.UseSession();
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseRouting();
-
 app.UseAuthorization();
 app.UseNToastNotify();
 app.UseNotyf();
@@ -66,7 +101,4 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-
-
-
 app.Run();
