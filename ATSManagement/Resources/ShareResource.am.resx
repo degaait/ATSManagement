@@ -121,6 +121,10 @@
     <value>የአማርኛ ስም</value>
     <comment>የአማርኛ ስም</comment>
   </data>
+  <data name="annual_plan" xml:space="preserve">
+    <value>ዓመታዊ ዕቅድ</value>
+    <comment>ዓመታዊ ዕቅድ</comment>
+  </data>
   <data name="are_you_sure_todelete" xml:space="preserve">
     <value>እርግጠኛ ነዎት ይህን መሰረዝ ይፈልጋሉ?</value>
     <comment>እርግጠኛ ነዎት ይህን መሰረዝ ይፈልጋሉ?</comment>
@@ -313,9 +317,33 @@
     <value>የአገልግሎት ዓይነት</value>
     <comment>የአገልግሎት ዓይነት</comment>
   </data>
+  <data name="specific_plans" xml:space="preserve">
+    <value>የተወሰኑ እቅዶች</value>
+    <comment>የተወሰኑ እቅዶች</comment>
+  </data>
   <data name="status" xml:space="preserve">
     <value>ሁኔታ</value>
     <comment>ሁኔታ</comment>
+  </data>
+  <data name="submenus" xml:space="preserve">
+    <value>ንዑስ-ሜኑዎች</value>
+    <comment>ንዑስ-ሜኑዎች</comment>
+  </data>
+  <data name="teams" xml:space="preserve">
+    <value>ቡድኖች</value>
+    <comment>ቡድኖች</comment>
+  </data>
+  <data name="team_leader" xml:space="preserve">
+    <value>የቡድን መሪ</value>
+    <comment>የቡድን መሪ</comment>
+  </data>
+  <data name="team_name" xml:space="preserve">
+    <value>ስም (እንግሊዘኛ)</value>
+    <comment>የቡድን ስም</comment>
+  </data>
+  <data name="team_name_amharic" xml:space="preserve">
+    <value>ስም (አማርኛ)</value>
+    <comment>ስም (አማርኛ)</comment>
   </data>
   <data name="team_upproval_status" xml:space="preserve">
     <value>የቡድን ማጽደቅ ሁኔታ</value>
@@ -356,6 +384,10 @@
   <data name="user_not_found" xml:space="preserve">
     <value>የይለፍ ቃል ውይም ኢ_ሜይል አልተገኘም። እንደገና ይሞክሩ</value>
     <comment>የይለፍ ቃል ውይም ኢ_ሜይል አልተገኘም። እንደገና ይሞክሩ</comment>
+  </data>
+  <data name="view_file" xml:space="preserve">
+    <value>ፋይል ይመልከቱ</value>
+    <comment>ፋይል ይመልከቱ</comment>
   </data>
   <data name="year" xml:space="preserve">
     <value>ዓመት</value>

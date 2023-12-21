@@ -121,6 +121,10 @@
     <value>Name (አማርኛ)</value>
     <comment>Name (አማርኛ)</comment>
   </data>
+  <data name="annual_plan" xml:space="preserve">
+    <value>Annual Plans</value>
+    <comment>Annual Plans</comment>
+  </data>
   <data name="are_you_sure_todelete" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
     <comment>Are you sure you want to delete this?</comment>
@@ -265,6 +269,10 @@
     <value>Name</value>
     <comment>Name</comment>
   </data>
+  <data name="name_amharic" xml:space="preserve">
+    <value>Name (አማርኛ)</value>
+    <comment>Name (አማርኛ)</comment>
+  </data>
   <data name="new_request" xml:space="preserve">
     <value>New Request</value>
     <comment>New Request</comment>
@@ -313,9 +321,33 @@
     <value>Service type</value>
     <comment>Service type</comment>
   </data>
+  <data name="specific_plans" xml:space="preserve">
+    <value>Specific Plans</value>
+    <comment>Specific Plans</comment>
+  </data>
   <data name="status" xml:space="preserve">
     <value>Status</value>
     <comment>Status</comment>
+  </data>
+  <data name="submenus" xml:space="preserve">
+    <value>Sub-Menus</value>
+    <comment>Sub-Menus</comment>
+  </data>
+  <data name="teams" xml:space="preserve">
+    <value>Teams</value>
+    <comment>Teams</comment>
+  </data>
+  <data name="team_leader" xml:space="preserve">
+    <value>Team Leader</value>
+    <comment>Team Leader</comment>
+  </data>
+  <data name="team_name" xml:space="preserve">
+    <value>Team Name</value>
+    <comment>Team Name</comment>
+  </data>
+  <data name="team_name_amharic" xml:space="preserve">
+    <value>Team Name (Amharic)</value>
+    <comment>Team Name (Amharic)</comment>
   </data>
   <data name="team_upproval_status" xml:space="preserve">
     <value>Team Upproval status</value>
@@ -356,6 +388,10 @@
   <data name="user_not_found" xml:space="preserve">
     <value>User not found. Please try again</value>
     <comment>User not found. Please try again</comment>
+  </data>
+  <data name="view_file" xml:space="preserve">
+    <value>View file</value>
+    <comment>View file</comment>
   </data>
   <data name="year" xml:space="preserve">
     <value>Year</value>
