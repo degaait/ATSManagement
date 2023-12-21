@@ -34,11 +34,13 @@ namespace ATSManagement.Controllers
             {
                 tblRequest = _context.TblRequests
                     .Include(t => t.AssignedByNavigation)
-                    .Include(t => t.CaseType)
                     .Include(t => t.Inist)
+                    .Include(s=>s.TopStatus)
+                    .Include(s=>s.ServiceType)
                     .Include(t => t.RequestedByNavigation)
                     .Include(t => t.CreatedByNavigation)
                     .Include(x => x.ExternalRequestStatus)
+                    .Include (x => x.UserUpprovalStatusNavigation)
                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                     .Include(x => x.DeputyUprovalStatusNavigation)
                     .Include(y => y.TeamUpprovalStatusNavigation)
@@ -63,7 +65,6 @@ namespace ATSManagement.Controllers
             {
                 tblRequest = _context.TblRequests
                     .Include(t => t.AssignedByNavigation)
-                    .Include(t => t.CaseType)
                     .Include(t => t.Inist)
                     .Include(t => t.RequestedByNavigation)
                     .Include(t => t.CreatedByNavigation)
@@ -192,7 +193,7 @@ namespace ATSManagement.Controllers
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.CreatedBy = model.CreatedBy;
                 tblCivilJustice.CreatedDate = DateTime.Now;
-                tblCivilJustice.CaseTypeId = model.ServiceTypeID;
+                tblCivilJustice.CaseTypeId = model.ServiceTypeId;
                 tblCivilJustice.InistId = model.InistId;
                 tblCivilJustice.PriorityId = model.PriorityId;
                 tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
@@ -292,7 +293,7 @@ namespace ATSManagement.Controllers
                 Value = s.ServiceTypeId.ToString(),
                 Text = s.ServiceTypeName
             }).ToList();
-            model.ServiceTypeID = tblCivilJustice.CaseTypeId;
+            model.ServiceTypeId = tblCivilJustice.CaseTypeId;
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
             model.CreatedDate = tblCivilJustice.CreatedDate;
@@ -315,7 +316,7 @@ namespace ATSManagement.Controllers
                 TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
                 tblCivilJustice.RequestDetail = model.RequestDetail;
                 tblCivilJustice.PriorityId = model.PriorityId;
-                tblCivilJustice.CaseTypeId = model.ServiceTypeID;
+                tblCivilJustice.CaseTypeId = model.ServiceTypeId;
                 tblCivilJustice.InistId = model.InistId;
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)
@@ -400,7 +401,6 @@ namespace ATSManagement.Controllers
 
             return View(tblCivilJustice);
         }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -448,7 +448,7 @@ namespace ATSManagement.Controllers
                 Text = s.TeamName,
                 Value = s.TeamId.ToString(),
             }).ToList();
-            model.ServiceTypeID = drafting.ServiceTypeId;
+            model.ServiceTypeId = drafting.ServiceTypeId;
             model.AssignedTos = _context.TblInternalUsers.Where(s => s.Dep.DepCode == "CVA").Select(x => new SelectListItem
             {
                 Value = x.UserId.ToString(),
@@ -496,7 +496,7 @@ namespace ATSManagement.Controllers
                             Value = s.ServiceTypeId.ToString(),
                             Text = s.ServiceTypeName
                         }).ToList();
-                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.ServiceTypeId = drafting.ServiceTypeId;
                         model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                         {
                             Text = s.AssigneeType.ToString(),
@@ -544,7 +544,7 @@ namespace ATSManagement.Controllers
                             Value = s.ServiceTypeId.ToString(),
                             Text = s.ServiceTypeName
                         }).ToList();
-                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.ServiceTypeId = drafting.ServiceTypeId;
                         model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                         {
                             Text = s.AssigneeType.ToString(),
@@ -588,7 +588,7 @@ namespace ATSManagement.Controllers
                             Value = s.ServiceTypeId.ToString(),
                             Text = s.ServiceTypeName
                         }).ToList();
-                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.ServiceTypeId = drafting.ServiceTypeId;
                         model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                         {
                             Text = s.AssigneeType.ToString(),
@@ -650,7 +650,7 @@ namespace ATSManagement.Controllers
                             Value = s.ServiceTypeId.ToString(),
                             Text = s.ServiceTypeName
                         }).ToList();
-                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.ServiceTypeId = drafting.ServiceTypeId;
                         model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                         {
                             Text = s.AssigneeType.ToString(),
@@ -687,7 +687,7 @@ namespace ATSManagement.Controllers
                     Value = s.ServiceTypeId.ToString(),
                     Text = s.ServiceTypeName
                 }).ToList();
-                model.ServiceTypeID = drafting.ServiceTypeId;
+                model.ServiceTypeId = drafting.ServiceTypeId;
                 model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                 {
                     Text = s.AssigneeType.ToString(),
@@ -771,25 +771,23 @@ namespace ATSManagement.Controllers
                 _notifyService.Error($"Error: {ex.Message} happened. Please try again.");
                 return View(model);
             }
-
         }
-
         public async Task<IActionResult> EditReplies(Guid? ReplyId)
         {
             var reply = _context.TblReplays.Where(s => s.ReplyId == ReplyId).FirstOrDefault();
             RepliesModel repliesModel= new RepliesModel();
             repliesModel.ReplyId = reply.ReplyId;
             repliesModel.RequestId= reply.RequestId;
-            if (reply.IsSent==null)
+            if (reply.IsSent==null||reply.IsSent==false)
             {
                 repliesModel.IsSent = false;
             }
             else
             {
-                repliesModel.IsSent= reply.IsSent;
+                repliesModel.IsSent= true;
             }
             repliesModel.ReplayDetail = reply.ReplayDetail;           
-            return View();
+            return View(repliesModel);
         }
 
         [HttpPost]
@@ -828,7 +826,6 @@ namespace ATSManagement.Controllers
             }
 
         }
-
         private async Task SendMail(List<string> to, string subject, string body)
         {
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
@@ -847,10 +844,11 @@ namespace ATSManagement.Controllers
             {
                 tblRequest = _context.TblRequests
                                                     .Include(t => t.AssignedByNavigation)
-                                                    .Include(t => t.CaseType)
+                                                    
                                                     .Include(t => t.Inist)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
+                                                    .Include(t=>t.TopStatus)
                                                     .Include(x => x.ExternalRequestStatus)
                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
@@ -874,7 +872,7 @@ namespace ATSManagement.Controllers
             {
                 tblRequest = _context.TblRequests
                                                     .Include(t => t.AssignedByNavigation)
-                                                    .Include(t => t.CaseType)
+                                                    
                                                     .Include(t => t.Inist)
                                                     .Include(t=>t.TopStatus)
                                                     .Include(t => t.RequestedByNavigation)
@@ -908,8 +906,8 @@ namespace ATSManagement.Controllers
                 Request = new TblRequest();
                 Request = _context.TblRequests
              .Include(t => t.AssignedByNavigation)
-             .Include(t => t.CaseType)
              .Include(t => t.Inist)
+             .Include(s=>s.TopStatus)
              .Include(t => t.RequestedByNavigation)
              .Include(t => t.CreatedByNavigation)
              .Include(x => x.ExternalRequestStatus)
@@ -1002,7 +1000,14 @@ namespace ATSManagement.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             model.RequestId = id;
             model.CreatedDate = DateTime.UtcNow;
-            model.CreatedBy = userId;
+            model.CreatedBy = userId;           
+
+            List<SelectListItem> myList = new List<SelectListItem>();
+            var data = new[]{
+                 new SelectListItem{ Value="1",Text="Documentary"},
+                 new SelectListItem{ Value="2",Text="Witness"},
+             };
+            model.EvidenceTypes = data.ToList();
             ViewData["evidences"] = _context.TblWitnessEvidences.Include(X=>X.Request).Where(x => x.RequestId==id).ToList();
             if (id == null)
             {
@@ -1430,7 +1435,7 @@ namespace ATSManagement.Controllers
                 Text = s.TeamName,
                 Value = s.TeamId.ToString(),
             }).ToList();
-            model.ServiceTypeID = drafting.ServiceTypeId;
+            model.ServiceTypeId = drafting.ServiceTypeId;
             model.AssignedTos = _context.TblInternalUsers.Where(s => s.Dep.DepCode == "CVA").Select(x => new SelectListItem
             {
                 Value = x.UserId.ToString(),
@@ -1472,7 +1477,6 @@ namespace ATSManagement.Controllers
             }
             try
             {
-
                 departmentRelation.IsAssingedToUser = true;
                 drafting.DueDate = model.DueDate;
                 drafting.AssignedDate = model.AssignedDate;
@@ -1503,7 +1507,7 @@ namespace ATSManagement.Controllers
                         Value = s.ServiceTypeId.ToString(),
                         Text = s.ServiceTypeName
                     }).ToList();
-                    model.ServiceTypeID = drafting.ServiceTypeId;
+                    model.ServiceTypeId = drafting.ServiceTypeId;
                     model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                     {
                         Text = s.AssigneeType.ToString(),
@@ -1539,7 +1543,7 @@ namespace ATSManagement.Controllers
                         Value = s.ServiceTypeId.ToString(),
                         Text = s.ServiceTypeName
                     }).ToList();
-                    model.ServiceTypeID = drafting.ServiceTypeId;
+                    model.ServiceTypeId = drafting.ServiceTypeId;
                     model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
                     {
                         Text = s.AssigneeType.ToString(),
@@ -1576,7 +1580,7 @@ namespace ATSManagement.Controllers
                     Value = s.ServiceTypeId.ToString(),
                     Text = s.ServiceTypeName
                 }).ToList();
-                model.ServiceTypeID = drafting.ServiceTypeId;
+                model.ServiceTypeId = drafting.ServiceTypeId;
                 model.Deparments = _context.TblDepartments.Select(x => new SelectListItem
                 {
                     Value = x.DepId.ToString(),

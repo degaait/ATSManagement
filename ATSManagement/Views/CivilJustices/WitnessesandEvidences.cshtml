@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblWitnessEvidence>
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Evidences and Witnesses";
 }
@@ -18,11 +20,11 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Witnesses and Evidences 
+                    Witnesses and Evidences
                 </h2>
             </div>
             <!-- Page title actions -->
-        
+
         </div>
     </div>
 </div>

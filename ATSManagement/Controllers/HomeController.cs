@@ -3,6 +3,7 @@ using System.Diagnostics;
 using ATSManagement.Models;
 using ATSManagement.IModels;
 using ATSManagement.Filters;
+using ATSManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
@@ -16,12 +17,14 @@ namespace ATSManagement.Controllers
         private readonly IMailService _mail;
         private readonly AtsdbContext _context;
         private readonly INotyfService _notifyService;
-        public HomeController(ILogger<HomeController> logger, IMailService mail, AtsdbContext atsdbContext, INotyfService notyfService)
+        private LanguageService _localization;
+        public HomeController(ILogger<HomeController> logger, IMailService mail, AtsdbContext atsdbContext, INotyfService notyfService, LanguageService localization)
         {
             _notifyService = notyfService;
             _logger = logger;
             _mail = mail;
             _context = atsdbContext;
+            _localization = localization;
         }
         public async Task<IActionResult> Index(String? type,string? message)
         {

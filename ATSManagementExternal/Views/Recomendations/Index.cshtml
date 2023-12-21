@@ -44,57 +44,57 @@
                         <div class="col-md-12">
                             <div class="col-12">
                                 <div class="row row-cards">
-                                    <div class="col-sm-6 col-lg-6">
-                                        <div class="card card-sm" style="color: white; background: cadetblue">
-                                            <div class="card-body">
-                                                <div class="row align-items-center">
+                                    
+                                        <div class="col-sm-6 col-lg-6">
+                                            <div class="card card-sm" style="color: white; background: cadetblue">
+                                                <div class="card-body">
                                                     <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <span class="bg-primary text-white avatar">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg> </span>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="font-weight-medium">
-                                                                ( @ViewBag.openRecos)</div>
-                                                            <div class="text-muted">
-                                                                Open status
+                                                        <div class="row align-items-center">
+                                                            <div class="col-auto">
+                                                                <span class="bg-primary text-white avatar">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="font-weight-medium">
+                                                                    ( @ViewBag.openRecos)
+                                                                </div>
+                                                                <div class="font-weight-medium">
+                                                                    Open status
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </div>
-                                    <div class="col-sm-6 col-lg-6">
-                                        <div class="card card-sm">
-                                            <div class="card-body">
-                                                <div class="row align-items-center">
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6">
+                                            <div class="card card-sm" style="color: white; background: cadetblue">
+                                                <div class="card-body">
                                                     <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <span class="bg-primary text-white avatar">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg></span>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="font-weight-medium">
-                                                                (@ViewBag.closedStatus) 
+                                                        <div class="row align-items-center">
+                                                            <div class="col-auto">
+                                                                <span class="bg-primary text-white avatar">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg>
+                                                                </span>
                                                             </div>
-                                                            <div class="text-muted">
-                                                                Closed status
+                                                            <div class="col">
+                                                                <div class="font-weight-medium">
+                                                                    (@ViewBag.closedStatus)
+                                                                </div>
+                                                                <div class="font-weight-medium">
+                                                                    Closed status
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
-                                
+                            <div class="card">                                
                                 <div class="card-body">
                                     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
                                 </div>
@@ -161,7 +161,6 @@
                         <div class="card">
                             <div class="card-body">
                                 @Html.DropDownListFor(model => model.RecostatusId, new SelectList(Model.tblRecomendationsStatus, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select" , @id = "ddlStatus" })
-
                             </div>
                         </div>
                     </div>
@@ -170,7 +169,6 @@
                     <div class="card">
                         <div class="card-body">
                             @Html.DropDownListFor(model => model.YearId, new SelectList(Model.tblYears, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlYears" })
-
                         </div>
                     </div>
                 </div>
@@ -179,7 +177,6 @@
                     <div class="card">
                         <div class="card-body">
                             @Html.DropDownListFor(model => model.InistId, new SelectList(Model.tblInistitutions, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlInistitutions" })
-
                         </div>
                     </div>
                 </div>
@@ -188,7 +185,6 @@
                     <div class="card">
                         <div class="card-body">
                             @Html.DropDownListFor(model => model.LawId, new SelectList(Model.tblInspectionLaws, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlInspectionLaws" })
-
                         </div>
                     </div>
                 </div>

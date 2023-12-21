@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblAppointment
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -19,11 +21,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="InistId" class="col-2 col-form-label"></label>
-                <select asp-for="InistId" class ="form-control" asp-items="ViewBag.InistId"></select>
+                <select asp-for="InistId" class="form-control" asp-items="ViewBag.InistId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="RequestedBy" class="col-2 col-form-label"></label>
-                <select asp-for="RequestedBy" class ="form-control" asp-items="ViewBag.RequestedBy"></select>
+                <select asp-for="RequestedBy" class="form-control" asp-items="ViewBag.RequestedBy"></select>
             </div>
             <div class="form-group">
                 <label asp-for="DescusionFinalComeup" class="col-2 col-form-label"></label>

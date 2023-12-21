@@ -23,6 +23,8 @@ public partial class TblSubmenu
 
     public Guid? DepId { get; set; }
 
+    public string? SubmenuAmharic { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual TblMainMenu? Menu { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
 {
@@ -17,8 +18,6 @@ namespace ATSManagement.ViewModels
         public string? UserFullName { get; set; }
         public string? ModuleName { get; set; }
         public Guid? Id { get; set; }
-
-
         [Required(ErrorMessage = "*")]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
@@ -28,5 +27,7 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "Confirmation Password is required.")]
         [Compare("NewPassword", ErrorMessage = "New password and Confirmation password must match.")]
         public string? ConfirmPassword { get; set; }
+        public int? LangId { get; set; }
+        public IEnumerable<SelectListItem>? Languages { get; set; }
     }
 }

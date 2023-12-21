@@ -13,5 +13,6 @@
         public Guid? UserId { get; set; }
 
         public Guid? ExternalUserId { get; set; }
+        public IFormFile? Attachement { get; set; }
     }
 }

@@ -21,6 +21,8 @@ public partial class TblInspectionReplye
 
     public DateTime? DateCreated { get; set; }
 
+    public string? Attachement { get; set; }
+
     public virtual TblExternalUser? ExternalUserNavigation { get; set; }
 
     public virtual TblInternalUser? InternalUserNavigation { get; set; }

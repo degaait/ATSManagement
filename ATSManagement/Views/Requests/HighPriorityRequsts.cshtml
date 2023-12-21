@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblRequest>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
-    ViewData["Title"] = "Requests";
+    ViewData["Title"] = @_localization.Getkey("requests");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 }
@@ -21,7 +24,8 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                   High Priority Requests
+                    @_localization.Getkey("high_priority_request")
+                   
                 </h2>
             </div>
             <!-- Page title actions -->
@@ -30,7 +34,7 @@
                     <a asp-action="Create" asp-controller="ExternalRequests" class="btn btn-primary d-none d-sm-inline-block">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Create new
+                        @_localization.Getkey("requests")
                     </a>
                     <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -49,7 +53,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Requests</h4>
+                        <h4 class="card-title">@_localization.Getkey("requests")</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -57,35 +61,35 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Detail
+                                            @_localization.Getkey("Detail")
                                         </th>
                                         <th>
-                                            Created Date
+                                            @_localization.Getkey("CreatedDate")
                                         </th>
 
                                         <th>
-                                            Assignment Remark
+                                            @_localization.Getkey("assingment_remark")
                                         </th>
                                         <th>
-                                            Progress status
+                                            @_localization.Getkey("progress_status")
                                         </th>
                                         <th>
-                                            Priority
+                                            @_localization.Getkey("priority")
+                                        </th>
+                                        <th>
+                                            @_localization.Getkey("serviceType")
                                         </th>
 
                                         <th>
-                                            Service type
+                                            @_localization.Getkey("doctype")
+                                        </th>
+                                        <th>
+                                            @_localization.Getkey("institution")
+                                        </th>
+                                        <th>
+                                            @_localization.Getkey("external_User")
                                         </th>
 
-                                        <th>
-                                            Document type
-                                        </th>
-                                        <th>
-                                            Inistitution
-                                        </th>
-                                        <th>
-                                            External User
-                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -124,7 +128,7 @@
                                                 {
                                                     foreach (var paths in documents)
                                                     {
-                                                        <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="Requests" asp-route-path="@paths.DocPath">
+                                                        <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
 
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -133,7 +137,7 @@
                                                                 <path d="M12 17v-6"></path>
                                                                 <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
                                                             </svg>
-                                                            Download
+                                                            View file
                                                         </a>
                                                     }
 

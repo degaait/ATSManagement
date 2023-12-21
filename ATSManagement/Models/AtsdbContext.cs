@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
-
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -89,6 +88,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblInternalUser> TblInternalUsers { get; set; }
 
+    public virtual DbSet<TblLanguage> TblLanguages { get; set; }
+
     public virtual DbSet<TblLegalAdviceReport> TblLegalAdviceReports { get; set; }
 
     public virtual DbSet<TblLegalAdviceServantType> TblLegalAdviceServantTypes { get; set; }
@@ -162,9 +163,12 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblYear> TblYears { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-4Q37K4F;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
-
+    {
+        var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        var configSection = configBuilder.GetSection("ConnectionStrings");
+        var connectionString = configSection["ATSDB"] ?? null;
+        optionsBuilder.UseSqlServer(connectionString);
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblActivity>(entity =>
@@ -354,6 +358,7 @@ public partial class AtsdbContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("AssigneeTypeID");
             entity.Property(e => e.AssigneeType).HasMaxLength(150);
+            entity.Property(e => e.AssigneeTypeAmharic).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblCivilJustice>(entity =>
@@ -587,6 +592,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.DesStatusId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.StatusDescription).HasMaxLength(350);
             entity.Property(e => e.StatusName).HasMaxLength(250);
+            entity.Property(e => e.StatusNameAmharic).HasMaxLength(350);
         });
 
         modelBuilder.Entity<TblDepartment>(entity =>
@@ -720,6 +726,7 @@ public partial class AtsdbContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.StatusName).HasMaxLength(250);
+            entity.Property(e => e.StatusNameAmharic).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblExternalSubmenu>(entity =>
@@ -977,6 +984,17 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.Team).WithMany(p => p.TblInternalUsers)
                 .HasForeignKey(d => d.TeamId)
                 .HasConstraintName("FK_tbl_InternalUsers_tbl_Teams");
+        });
+
+        modelBuilder.Entity<TblLanguage>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("tbl_Languages");
+
+            entity.Property(e => e.LangId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("LangID");
         });
 
         modelBuilder.Entity<TblLegalAdviceReport>(entity =>

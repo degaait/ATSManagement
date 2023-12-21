@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AtsdbContext ats;
 @inject IHttpContextAccessor httpsSession;
 @{
@@ -153,11 +156,11 @@
                                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
                                                             Actions
                                                         </button>
-                                                        <div class="dropdown-menu dropdown-menu-end">    
-                                                                <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-                                                                    Specific plans
-                                                                </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
+                                                                Specific plans
+                                                            </a>
                                                             <a class="dropdown-item" asp-action="SendToInstitutions" asp-controller="InispectionPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" fill-rule="evenodd"><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8" /></g></svg>&nbsp;
                                                                 Send to Institutions
@@ -182,7 +185,7 @@
                                                                     <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                 </svg> &nbsp; Detail
                                                             </a>
-                                                           
+
                                                         </div>
                                                     </div>
                                                 </div>

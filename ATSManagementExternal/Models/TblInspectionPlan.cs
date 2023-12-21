@@ -59,6 +59,8 @@ public partial class TblInspectionPlan
 
     public string? OfficialLetter { get; set; }
 
+    public string? Attachement { get; set; }
+
     public virtual TblAssignementType? AssigneeType { get; set; }
 
     public virtual TblDecisionStatus? IsUpprovedbyDepartmentNavigation { get; set; }

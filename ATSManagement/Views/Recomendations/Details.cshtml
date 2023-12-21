@@ -1,7 +1,9 @@
 ﻿@model ATSManagement.Models.TblRecomendation
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @_localization.Getkey("Recomendations") + " Detail";
 }
 
 <div class="page-wrapper">
@@ -11,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Recomendations
+                        @_localization.Getkey("Recomendations")
                     </h2>
                 </div>
             </div>
@@ -24,56 +26,56 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Details</h4>
+                            <h4 class="card-title">@_localization.Getkey("Detail")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                       Recomendation Detail
+                                        @_localization.Getkey("Detail")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.Recomendation)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        Status
+                                        @_localization.Getkey("status")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Recostatus.Status)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        Year
+                                        @_localization.Getkey("year")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Year)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        Created by
+                                        @_localization.Getkey("created_by")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)
                                     </dd>       `
                                     <dt class="col-sm-2">
-                                        Creation Date
+                                        @_localization.Getkey("CreatedDate")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatinDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                       Modified Date
+                                        @_localization.Getkey("modificationDate")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.ModifyDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        IsActive?
+                                        @_localization.Getkey("IsActive")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.IsActive)
                                     </dd>
                                     <dt class="col-sm-2">
-                                       Institutions
+                                        @_localization.Getkey("institution")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Inist.Name)
@@ -83,8 +85,8 @@
                         </div>
                         <div class="card-footer text-end">
                             <div class="d-flex">
-                                <a asp-action="Edit" asp-route-id="@Model?.RecoId">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
+                                <a asp-action="Edit" asp-route-id="@Model?.RecoId">@_localization.Getkey("edit")</a> |
+                                <a asp-action="Index">@_localization.Getkey("backlist")</a>
                             </div>
                         </div>
                     </div>

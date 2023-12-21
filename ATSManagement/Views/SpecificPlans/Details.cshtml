@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblSpecificPlan
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Details";
 }
@@ -73,10 +75,10 @@
                                 <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">Back to List</a>
                             </div>
                         </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 

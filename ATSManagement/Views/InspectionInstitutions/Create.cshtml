@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblInspectionInstitution
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -12,54 +14,54 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="RequestStatus" class=" col-2 col-form-label"></label>
                 <input asp-for="RequestStatus" class="form-control" />
                 <span asp-validation-for="RequestStatus" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="RecomendationDetail" class=" col-2 col-form-label"></label>
                 <input asp-for="RecomendationDetail" class="form-control" />
                 <span asp-validation-for="RecomendationDetail" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="RecomendationFeedBack" class=" col-2 col-form-label"></label>
                 <input asp-for="RecomendationFeedBack" class="form-control" />
                 <span asp-validation-for="RecomendationFeedBack" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="RequestedDate" class=" col-2 col-form-label"></label>
                 <input asp-for="RequestedDate" class="form-control" />
                 <span asp-validation-for="RequestedDate" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="ExpectedResponseDate" class=" col-2 col-form-label"></label>
                 <input asp-for="ExpectedResponseDate" class="form-control" />
                 <span asp-validation-for="ExpectedResponseDate" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="InstitutionId" class=" col-2 col-form-label"></label>
-                <select asp-for="InstitutionId" class ="form-control" asp-items="ViewBag.InstitutionId"></select>
+                <select asp-for="InstitutionId" class="form-control" asp-items="ViewBag.InstitutionId"></select>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="ResponseStatus" class=" col-2 col-form-label"></label>
                 <input asp-for="ResponseStatus" class="form-control" />
                 <span asp-validation-for="ResponseStatus" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="ReComendationFile" class=" col-2 col-form-label"></label>
                 <input asp-for="ReComendationFile" class="form-control" />
                 <span asp-validation-for="ReComendationFile" class="text-danger"></span>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="SubmittedBy" class=" col-2 col-form-label"></label>
-                <select asp-for="SubmittedBy" class ="form-control" asp-items="ViewBag.SubmittedBy"></select>
+                <select asp-for="SubmittedBy" class="form-control" asp-items="ViewBag.SubmittedBy"></select>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <label asp-for="ReturnedBy" class=" col-2 col-form-label"></label>
-                <select asp-for="ReturnedBy" class ="form-control" asp-items="ViewBag.ReturnedBy"></select>
+                <select asp-for="ReturnedBy" class="form-control" asp-items="ViewBag.ReturnedBy"></select>
             </div>
-              <div class="mb-3 row">
+            <div class="mb-3 row">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

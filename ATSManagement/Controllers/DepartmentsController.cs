@@ -51,7 +51,7 @@ namespace ATSManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepId,DepName")] TblDepartment tblDepartment)
+        public async Task<IActionResult> Create([Bind("DepId,DepName,DepNameAmharic")] TblDepartment tblDepartment)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DepId,DepName")] TblDepartment tblDepartment)
+        public async Task<IActionResult> Edit(Guid id, [Bind("DepId,DepName,DepNameAmharic")] TblDepartment tblDepartment)
         {
             if (id != tblDepartment.DepId)
             {
@@ -150,7 +150,6 @@ namespace ATSManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool TblDepartmentExists(Guid id)
         {
             return (_context.TblDepartments?.Any(e => e.DepId == id)).GetValueOrDefault();

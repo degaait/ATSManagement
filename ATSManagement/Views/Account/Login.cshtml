@@ -39,20 +39,24 @@
                         <div class="card card-md">
                             <div class="card-body">
                                 <h2 class="h2 text-center mb-4">Login to your account</h2>
-                                <div asp-validation-summary="All"></div>
+                                <div asp-validation-summary="All" class="text-danger"></div>
                                 <form asp-action="Login" method="post" asp-antiforgery="true">
-
+                                    <div class="mb-3">
+                                        <label asp-for="LangId" class="form-label">Language</label>
+                                        <div class="col">
+                                            @Html.DropDownListFor(model => model.LangId, new SelectList(Model.Languages, "Value", "Text"), new { @class = "form-select" })
+                                            <span asp-validation-for="LangId" class="text-danger"></span>
+                                        </div>
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label">Email address</label>
                                         <input asp-for="UserName" class="form-control" placeholder="username" />
                                         <span asp-validation-for="UserName" class="text-danger"></span>
                                     </div>
+
                                     <div class="mb-2">
                                         <label class="form-label">
                                             Password
-                                            <span class="form-label-description">
-                                                <a href="./forgot-password.html">I forgot password</a>
-                                            </span>
                                         </label>
                                         <div class="input-group input-group-flat">
                                             <input asp-for="Password" class="form-control" placeholder="password" autocomplete="off" type="password" />

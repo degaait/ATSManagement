@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblAssignedYearlyPlan>
 @inject AtsdbContext ats;
 @inject IHttpContextAccessor httpsSession;
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Yearly Plans";
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
@@ -90,10 +93,13 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        var status = (from items in ats.TblInspectionPlans join pros in ats.TblInspectionStatuses on items.ProId equals pros.ProId where items.InspectionPlanId == item.PlanId select new
-                                        {
-                                            statusWithColor=pros.StatusWithColor
-                                        }).FirstOrDefault();
+                                        var status = (from items in ats.TblInspectionPlans
+                                                      join pros in ats.TblInspectionStatuses on items.ProId equals pros.ProId
+                                                      where items.InspectionPlanId == item.PlanId
+                                                      select new
+                                                      {
+                                                          statusWithColor = pros.StatusWithColor
+                                                      }).FirstOrDefault();
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Plan.PlanTitle)
@@ -132,7 +138,7 @@
                                                 @Html.DisplayFor(modelItem => item.Plan.AssigningRemark)
                                             </td>
                                             <td>
-                                                @Html.Raw( status.statusWithColor)
+                                                @Html.Raw(status.statusWithColor)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
@@ -145,6 +151,10 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.PlanId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
+                                                                Specific plans
+                                                            </a>
                                                             <a class="dropdown-item" asp-action="AddCheckList" asp-route-id="@item.Id">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

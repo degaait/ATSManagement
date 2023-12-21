@@ -11,6 +11,8 @@ public partial class TblServiceType
 
     public Guid? DepId { get; set; }
 
+    public string? ServiceTypeNameAmharic { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();

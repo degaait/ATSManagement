@@ -15,5 +15,7 @@ public partial class TblExternalMainMenu
 
     public string? ClassSvg { get; set; }
 
+    public string? MenuNameAmharic { get; set; }
+
     public virtual ICollection<TblExternalSubmenu> TblExternalSubmenus { get; set; } = new List<TblExternalSubmenu>();
 }

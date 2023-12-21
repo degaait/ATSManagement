@@ -21,6 +21,8 @@ public partial class TblExternalSubmenu
 
     public Guid? DepId { get; set; }
 
+    public string? SubmenuAmharic { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual TblExternalMainMenu? Menu { get; set; }

@@ -83,7 +83,7 @@ namespace ATSManagement.Controllers
                 Value = s.ServiceTypeId.ToString(),
                 Text = s.ServiceTypeName
             }).ToList();
-            model.LegalStadiesCasetypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
+            model.LegalStadiesDocumenttypes = _context.TblLegalDraftingDocTypes.Select(s => new SelectListItem
             {
                 Value = s.DocId.ToString(),
                 Text = s.DocName
@@ -121,7 +121,7 @@ namespace ATSManagement.Controllers
                     tblCivilJustice.RequestDetail = model.RequestDetail;
                     tblCivilJustice.InistId = model.InistId;
                     tblCivilJustice.CreatedBy = userId;
-                    tblCivilJustice.ServiceTypeId = model.ServiceTypeID;
+                    tblCivilJustice.ServiceTypeId = model.ServiceTypeId;
                     tblCivilJustice.ExternalRequestStatusId = statusiD;
                     tblCivilJustice.CreatedDate = DateTime.Now;
                     tblCivilJustice.DepartmentUpprovalStatus = decision.DesStatusId;
@@ -168,7 +168,6 @@ namespace ATSManagement.Controllers
                     if (saved > 0)
                     {
                         await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
-
                         return RedirectToAction(nameof(LegalStudies));
                     }
                     else

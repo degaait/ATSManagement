@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Uppdate progress status";
 }
@@ -62,5 +64,5 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+}
 

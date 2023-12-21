@@ -216,19 +216,34 @@ namespace ATSManagementExternal.Controllers
             replys.IsExternal = true;
             replys.RecId= replyModel.RecId;
             replys.ExternalUser = userId;
+            string? dbPath = null;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            if (model.Attachement != null)
+            {
+                FileInfo fileInfo = new FileInfo(model.Attachement.FileName);
+                string fileName = Guid.NewGuid().ToString() + model.Attachement.FileName;
+                string fileNameWithPath = Path.Combine(path, fileName);
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    model.Attachement.CopyTo(stream);
+                }
+                dbPath = "/admin/Files/" + fileName;
+                replys.Attachement = dbPath;
+            }
             _context.TblInspectionReplyes.Add(replys);
             int sent = _context.SaveChanges();
             if (sent>0)
             {
                 ViewData["Replies"] = _context.TblInspectionReplyes.Include(s => s.Rec).Include(s => s.InternalUserNavigation).Include(s => s.ExternalUserNavigation).Where(s => s.RecId == replyModel.RecId).OrderByDescending(s => s.ReplyId).ToList();
-
                 await SendMail(deputyEmail, "","");
                 _notifyService.Success("Recomendation response is successfully replied");
                 return View(model);
             }
+            else
             {
                 ViewData["Replies"] = _context.TblInspectionReplyes.Include(s => s.Rec).Include(s => s.InternalUserNavigation).Include(s => s.ExternalUserNavigation).Where(s => s.RecId == replyModel.RecId).OrderByDescending(s => s.ReplyId).ToList();
-
                 _notifyService.Error("Recomendation response isn't succeesfully replied. Please try again");
                 return View(replyModel);
             }
@@ -254,27 +269,41 @@ namespace ATSManagementExternal.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditReply(ReplyModel replyModel)
+        public async Task<IActionResult> EditReply(ReplyModel model)
         {
             try
             {
-                var reply = _context.TblInspectionReplyes.Find(replyModel.ReplyId);
-
-                reply.RecoDetail = replyModel.ResponseDetail;
+                var reply = _context.TblInspectionReplyes.Find(model.ReplyId);
+                string? dbPath = null;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                if (model.Attachement != null)
+                {
+                    FileInfo fileInfo = new FileInfo(model.Attachement.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.Attachement.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.Attachement.CopyTo(stream);
+                    }
+                    dbPath = "/admin/Files/" + fileName;
+                    reply.Attachement = dbPath;
+                }
+                reply.RecoDetail = model.ResponseDetail;
                 int updated = _context.SaveChanges();
                 if (updated > 0)
                 {
                     _notifyService.Success("Reply is uppdated successfully");
-                    return RedirectToAction(nameof(Reply), new { RecId = replyModel.RecId });
-
+                    return RedirectToAction(nameof(Reply), new { RecId = model.RecId });
                 }
                 _notifyService.Error("Reply ism't updated successfully. Please try again");
-                return View(replyModel);
+                return View(model);
             }
             catch (Exception ex)
             {
                 _notifyService.Error($"Error:{ex.Message} happened. Reply isn't updated successfully. Please try again");
-                return View(replyModel);
+                return View(model);
             }
           
         }

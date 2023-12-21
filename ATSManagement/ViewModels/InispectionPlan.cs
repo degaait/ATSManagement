@@ -28,7 +28,8 @@ namespace ATSManagement.ViewModels
         public List<SelectListItem>? Inistitutions { get; set; }
         [Required(ErrorMessage = "Required")]
         public Guid[] InistId { get; set; }
+        public IFormFile? Attachement { get; set; }
 
- 
+
     }
 }

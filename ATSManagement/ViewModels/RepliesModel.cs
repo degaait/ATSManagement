@@ -16,6 +16,7 @@ namespace ATSManagement.ViewModels
         public DateTime? ReplyDate { get; set; }
         public Guid? ExternalReplayedBy { get; set; }
         public IEnumerable<TblCivilJusticeRequestReply>? Replies { get; }
-        public bool? IsSent { get; set; }
+        public bool IsSent { get; set; }
+        public IFormFile? Attachement { get; set; }
     }
 }

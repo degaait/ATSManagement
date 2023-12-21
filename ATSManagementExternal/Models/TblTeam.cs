@@ -15,6 +15,8 @@ public partial class TblTeam
 
     public string? TeamDescription { get; set; }
 
+    public string? TeamNameAmharic { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();

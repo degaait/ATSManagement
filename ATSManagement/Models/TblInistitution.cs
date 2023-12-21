@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
-
 public partial class TblInistitution
 {
     public Guid InistId { get; set; }
@@ -10,6 +9,7 @@ public partial class TblInistitution
     public string? Name { get; set; }
 
     public string? Description { get; set; }
+    public string? NameAmharic { get; set; }
 
     public virtual ICollection<TblAppointment> TblAppointments { get; set; } = new List<TblAppointment>();
 

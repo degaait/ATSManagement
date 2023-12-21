@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblRequest>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
@@ -188,8 +191,7 @@
                                                 <br />
                                                 @if (item.DocumentFile != null)
                                                 {
-                                                    <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.DocumentFile">
-
+                                                    <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.DocumentFile">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -197,7 +199,7 @@
                                                             <path d="M12 17v-6"></path>
                                                             <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
                                                         </svg>
-                                                        Download
+                                                        View File
                                                     </a>
                                                 }
                                             </td>

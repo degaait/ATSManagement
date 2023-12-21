@@ -1,5 +1,8 @@
 ﻿@model ATSManagement.ViewModels.ActivityModel
 @inject AtsdbContext _context;
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
     IEnumerable<TblActivity> activities = ViewData["Activities"] as IEnumerable<TblActivity>;
@@ -99,7 +102,7 @@
                                         {
 
                                             <tr>
-                                               
+
                                                 <td>
                                                     @Html.Raw(item.ActivityDetail)
                                                 </td>

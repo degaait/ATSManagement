@@ -14,5 +14,6 @@
         public DateTime? RespondedDate { get; set; }
         public Guid? SentBy { get; set; }
         public int ReplyId { get; set; }
+        public IFormFile? Attachement { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblFollowup>
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Index";
 }
@@ -101,7 +103,7 @@
                     <div class="card-body">
                         <div class="row">
                             @foreach (var item in Model)
-                             {
+                            {
                                 if (item.FromInternal == true)
                                 {
                                     <div class="col-12">
@@ -116,6 +118,10 @@
                                                         @Html.Raw(@item.Message)
                                                         <br />
                                                         <span class="time-left">@item.CreatedDate</span>
+                                                        @if (item.Attachment != null)
+                                                        {
+                                                            <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                        }
                                                     </p>
                                                     <br />
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.FollowUpId">
@@ -146,6 +152,11 @@
                                                         <span class="time-left">@Html.Raw(@item.Message)</span>
                                                         <br />
                                                         <span class="time-left">@item.CreatedDate</span>
+                                                        @if (item.Attachment != null)
+                                                        {
+                                                            <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                        }
+
                                                     </div>
                                                     <br />
                                                 </div>
@@ -156,7 +167,7 @@
                                         </div>
                                     </div>
                                 }
-                             }
+                            }
                         </div>
                     </div>
                 </div>

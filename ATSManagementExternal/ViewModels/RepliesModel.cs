@@ -17,6 +17,7 @@ namespace ATSManagementExternal.ViewModels
         public DateTime? ReplyDate { get; set; }
 
         public Guid? ExternalReplayedBy { get; set; }
+        public IFormFile? Attachement { get; set; }
 
     }
 }

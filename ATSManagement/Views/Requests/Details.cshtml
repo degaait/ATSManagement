@@ -1,162 +1,155 @@
 ﻿@model ATSManagement.Models.TblRequest
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @_localization.Getkey("Detail");
 }
 
-<h1>Details</h1>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("requests")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <dl class="row">
+                                    <dt class="col-sm-2">
+                                        <label asp-for="RequestDetail" class="col-form-label-m">@_localization.Getkey("Detail")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.Raw(Model.RequestDetail)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="CreatedDate" class="col-form-label-m">@_localization.Getkey("CreatedDate")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.CreatedDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="CreatedBy" class="col-form-label-m">@_localization.Getkey("user")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedDate" class="col-form-label-m">@_localization.Getkey("assignmentDate")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssignedDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("dueDate")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.DueDate)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("assingment_remark")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssingmentRemark)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("progress_status")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        <div class="col-sm-2">
+                                            @if (Model.ExternalRequestStatusId != null)
+                                            {
+                                                @Html.Raw(Model.ExternalRequestStatus.StatusWithColor)
+                                            }
+                                        </div>
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="TopStatus" class="col-form-label-m">@_localization.Getkey("final_status")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.TopStatus)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedBy" class="col-form-label-m">@_localization.Getkey("Assigned_by")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.AssignedByNavigation.FirstName)
+                                        @Html.DisplayFor(model => model.AssignedByNavigation.MidleName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="AssignedTo" class="col-form-label-m">@_localization.Getkey("Assigned_by")</label>
+                                    </dt>
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.CaseType)
+                                        <label asp-for="AssignedTo" class="col-form-label-m">@_localization.Getkey("serviceType")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.CaseType.CaseTypeName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="InistId" class="col-form-label-m">@_localization.Getkey("institution")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.Inist.Name)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="RequestedBy" class="col-form-label-m">@_localization.Getkey("FocalPerson")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
+                                        @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="TeamUpprovalStatus" class="col-form-label-m">@_localization.Getkey("team_upproval_status")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        <div class="col-sm-2">
+                                            @Html.Raw(Model.TeamUpprovalStatusNavigation.StatusWithColor)
+                                        </div>
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DepartmentUpprovalStatus" class="col-form-label-m">@_localization.Getkey("department_upproval_status")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        <div class="col-sm-2">
+                                            @Html.Raw(Model.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                        </div>
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="DeputyUprovalStatus" class="col-form-label-m">@_localization.Getkey("deputy_upproval_status")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        <div class="col-sm-2">
+                                            @Html.Raw(Model.DeputyUprovalStatusNavigation.StatusWithColor)
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <div class="d-flex">
+                                <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>TblRequest</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestDetail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestDetail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DueDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssingmentRemark)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssingmentRemark)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedTo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedTo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TopStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TopStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FinalReport)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FinalReport)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DocumentFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DocumentFile)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestRound)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestRound)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedByNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedByNavigation.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaseType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaseType.CaseTypeId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedByNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByNavigation.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartmentUpprovalStatusNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartmentUpprovalStatusNavigation.DesStatusId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeputyUprovalStatusNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeputyUprovalStatusNavigation.DesStatusId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DocType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DocType.DocId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExternalRequestStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExternalRequestStatus.ExternalRequestStatusId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Inist)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Inist.InistId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Priority.PriorityId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuestType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuestType.QuestTypeId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestedByNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RequestedByNavigation.ExterUserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ServiceType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ServiceType.ServiceTypeId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TeamUpprovalStatusNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TeamUpprovalStatusNavigation.DesStatusId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserUpprovalStatusNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserUpprovalStatusNavigation.DesStatusId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.RequestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>

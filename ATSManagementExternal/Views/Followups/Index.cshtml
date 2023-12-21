@@ -118,6 +118,10 @@
                                                         @Html.Raw(@item.Message)
                                                         <br />
                                                         <span class="time-left">@item.CreatedDate</span>
+                                                        @if (item.Attachment != null)
+                                                        {
+                                                            <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                        }
                                                     </p>
                                                     <br />
                                                     <a class="dropdown-item time-right" asp-action="Edit" asp-route-id="@item.FollowUpId">
@@ -143,11 +147,15 @@
                                             <div class="col-md-6">
                                                 <div class="container">
                                                     <h3 class="time-right" style="color:dodgerblue">(@item.User.FirstName)</h3>
-                                                    <br />
+                                                    <br/>
                                                     <div class="time-right">
                                                         @Html.Raw(@item.Message)
-                                                        <br />
+                                                        <br/>
                                                         <span class="time-right">@item.CreatedDate</span>
+                                                        @if (item.Attachment != null)
+                                                        {
+                                                            <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                        }
                                                     </div>
 
                                                 </div>

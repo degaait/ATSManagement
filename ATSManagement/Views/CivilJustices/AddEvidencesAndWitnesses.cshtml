@@ -1,4 +1,7 @@
 ﻿@model ATSManagement.ViewModels.WitnessEvidenceModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AtsdbContext _context;
 @{
     ViewData["Title"] = "Updated task progress status";
@@ -42,7 +45,13 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="RequestId" />
                                         <input type="hidden" asp-for="CreatedBy" />
-
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">Evidence types</label>
+                                            <div class="col">
+                                                <input asp-for="WitnessesName" class="form-control" />
+                                                <span asp-validation-for="WitnessesName" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                         <div class="mb-3 row">
                                             <label class="col-3 col-form-label">Witness name</label>
                                             <div class="col">
@@ -110,7 +119,7 @@
                                         @foreach (var item in activities)
                                         {
 
-                                            <tr>                                                
+                                            <tr>
                                                 <td>
                                                     @Html.Raw(item.Request.RequestDetail)
                                                 </td>
@@ -150,7 +159,7 @@
                                                 <td>
                                                     @Html.Raw(item.Request.RequestDetail)
                                                 </td>
-                                                <td>                                                 
+                                                <td>
                                                     <a asp-action="DeleteWitness" asp-route-id="@item.WitnessId">Delete</a>
                                                 </td>
                                             </tr>

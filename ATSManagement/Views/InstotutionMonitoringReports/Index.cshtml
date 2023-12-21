@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblInstotutionMonitoringReport>
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Index";
 }
@@ -54,17 +56,17 @@
                             <table class="table table-striped table-bordered" id="role">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" >
+                                        <th rowspan="2">
                                             ጉብኝት የተደረገበት ተቋም
                                         </th>
                                         <th colspan="3">
                                             የተመረመሩ ጉዳዮች ቁጥር
                                         </th>
-                                       
+
                                         <th colspan="3">
                                             የገንዘብ መጠን
                                         </th>
-                                       
+
                                         <th rowspan="2">
                                             ምርመራ
                                         </th>
@@ -72,7 +74,7 @@
                                             የላኪው ስም
                                         </th>
                                         <th rowspan="2">
-                                          ወር
+                                            ወር
                                         </th>
                                         <th rowspan="2">
                                             ዓመት
@@ -80,12 +82,12 @@
                                         <th rowspan="2"></th>
                                     </tr>
                                     <tr>
-                                       
+
                                         <th>
                                             ውል
                                         </th>
                                         <th>
-                                           ADR
+                                            ADR
                                         </th>
                                         <th>
                                             ክርክር
@@ -99,7 +101,7 @@
                                         <th>
                                             ክርክር
                                         </th>
-                                      
+
                                     </tr>
                                 </thead>
                                 <tbody>

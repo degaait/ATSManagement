@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.UserModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Edit";
 }
@@ -147,9 +149,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-           // var items = "<option value='00000000-0000-0000-0000-000000000000'>--Select--</option>";
-           // $('#drpTeam').html(items);           
-     });
+            // var items = "<option value='00000000-0000-0000-0000-000000000000'>--Select--</option>";
+            // $('#drpTeam').html(items);
+        });
     </script>
     <script type="text/javascript">
   $(document).ready(function () {

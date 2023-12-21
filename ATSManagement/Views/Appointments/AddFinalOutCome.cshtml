@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.AppointmentModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Edit";
 }
@@ -10,7 +12,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                       Appointment final outcome
+                        Appointment final outcome
                     </h2>
                 </div>
             </div>
@@ -57,7 +59,7 @@
                                             <label asp-for="FinalOutCome" class=" col-2 col-form-label">Meeting Outcome</label>
                                             <div class="col">
 
-                                                <input asp-for="FinalOutCome" class="form-control"  />
+                                                <input asp-for="FinalOutCome" class="form-control" />
                                                 <span asp-validation-for="FinalOutCome" class="text-danger"></span>
                                             </div>
                                         </div>

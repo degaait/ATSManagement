@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.ViewModels.InspectionAssignModel
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
 }
@@ -135,23 +137,23 @@
 
 
     <script type="text/javascript">
-                $(function () {
-                    $(document).ready(function () {
+        $(function () {
+            $(document).ready(function () {
 
-                        $("#AssigneeTypeId").change(function () {
-                            var value = $("#AssigneeTypeId").val();
-                            // alert(value);
-                            if (value == "BDFB6C89-FB2A-45F9-82F1-D56A3A396847" ) {
-                                $("#divTeams").show();
-                                $("#divUsers").hide();
-                            }
-                            else {
-                                $("#divTeams").hide();
-                                $("#divUsers").show();
-                            }
-                        });
+                $("#AssigneeTypeId").change(function () {
+                    var value = $("#AssigneeTypeId").val();
+                    // alert(value);
+                    if (value == "BDFB6C89-FB2A-45F9-82F1-D56A3A396847") {
+                        $("#divTeams").show();
+                        $("#divUsers").hide();
+                    }
+                    else {
+                        $("#divTeams").hide();
+                        $("#divUsers").show();
+                    }
+                });
 
-                    });
             });
+        });
     </script>
 }

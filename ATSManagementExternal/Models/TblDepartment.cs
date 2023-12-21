@@ -11,6 +11,8 @@ public partial class TblDepartment
 
     public string? DepCode { get; set; }
 
+    public string? DepNameAmharic { get; set; }
+
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
 
     public virtual ICollection<TblExternalRequest> TblExternalRequests { get; set; } = new List<TblExternalRequest>();

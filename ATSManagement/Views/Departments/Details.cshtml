@@ -1,5 +1,7 @@
 ﻿@model ATSManagement.Models.TblDepartment
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Details";
 }
@@ -42,10 +44,10 @@
                                 <a asp-action="Index">Back to List</a>
                             </div>
                         </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 

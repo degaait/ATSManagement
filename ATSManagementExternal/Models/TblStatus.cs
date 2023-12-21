@@ -11,5 +11,9 @@ public partial class TblStatus
 
     public string? StatusWithColor { get; set; }
 
+    public string? StatusAmharic { get; set; }
+
+    public string? StatusWithColorAmharic { get; set; }
+
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 }

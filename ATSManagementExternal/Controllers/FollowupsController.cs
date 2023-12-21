@@ -84,7 +84,23 @@ namespace ATSManagementExternal.Controllers
                 followup.InistId=model.InistId;
                 followup.FromExternal = true;
                 followup.FromInternal = false;
-                _context.Add(followup);
+                string? dbPath = null;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                if (model.Attachement != null)
+                {
+                    FileInfo fileInfo = new FileInfo(model.Attachement.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.Attachement.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.Attachement.CopyTo(stream);
+                    }
+                    dbPath = "/admin/Files/" + fileName;
+                    followup.Attachment = dbPath;
+                }
+                _context.TblFollowups.Add(followup);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
@@ -144,7 +160,22 @@ namespace ATSManagementExternal.Controllers
             }
             try
             {
-
+                string? dbPath = null;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                if (model.Attachement != null)
+                {
+                    FileInfo fileInfo = new FileInfo(model.Attachement.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.Attachement.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.Attachement.CopyTo(stream);
+                    }
+                    dbPath = "/admin/Files/" + fileName;
+                    tblFollowup.Attachment = dbPath;
+                }
                 tblFollowup.Message = model.Message;
                 int updated = await _context.SaveChangesAsync();
                 if (updated > 0)

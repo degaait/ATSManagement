@@ -11,5 +11,7 @@ public partial class TblPriorityQuestion
 
     public string? QuestDescription { get; set; }
 
+    public string? QuestionsNameAmharic { get; set; }
+
     public virtual ICollection<TblRequestPriorityQuestionsRelation> TblRequestPriorityQuestionsRelations { get; set; } = new List<TblRequestPriorityQuestionsRelation>();
 }

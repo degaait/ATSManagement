@@ -9,5 +9,7 @@ public partial class TblRequestAssignementType
 
     public string? TypeName { get; set; }
 
+    public string? TypeNameAmharic { get; set; }
+
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();
 }

@@ -1,17 +1,17 @@
-﻿namespace ATSManagement.Controllers
-{
-    using System;
-    using System.Linq;
-    using ATSManagement.Models;
-    using ATSManagement.IModels;
-    using ATSManagement.Filters;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using System;
+using System.Linq;
+using ATSManagement.Models;
+using ATSManagement.IModels;
+using ATSManagement.Filters;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
+namespace ATSManagement.Controllers
+{
     [CheckSessionIsAvailable]
     public class TeamsController : Controller
     {
@@ -55,7 +55,7 @@
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamId,TeamName,DepId,TeamLeaderId,TeamDescription")] TblTeam tblTeam)
+        public async Task<IActionResult> Create([Bind("TeamId,TeamName,DepId,TeamLeaderId,TeamDescription,TeamNameAmharic")] TblTeam tblTeam)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("TeamId,TeamName,DepId,TeamLeaderId,TeamDescription")] TblTeam tblTeam)
+        public async Task<IActionResult> Edit(Guid id, [Bind("TeamId,TeamName,DepId,TeamLeaderId,TeamDescription,TeamNameAmharic")] TblTeam tblTeam)
         {
             if (id != tblTeam.TeamId)
             {
