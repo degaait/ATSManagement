@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @_localization.Getkey("Details");
 }
 
 <h1>Details</h1>

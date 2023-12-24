@@ -25,12 +25,12 @@
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
                     <a asp-action="Create" asp-controller="InternalUsers" class="btn btn-primary d-none d-sm-inline-block">
-                        
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                         @_localization.Getkey("CreateNew")
                     </a>
                     <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                       
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                     </a>
                 </div>
@@ -55,25 +55,16 @@
                                             @_localization.Getkey("first_name")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("middle_name")                                            
+                                            @_localization.Getkey("middle_name")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("last_name")                                            
+                                            @_localization.Getkey("last_name")
                                         </th>
                                         <th>
                                             @_localization.Getkey("email_address")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("isTeam")
-                                        </th>
-                                        <th>
                                             @_localization.Getkey("user_name")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("department")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("teams")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -94,17 +85,9 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.EmailAddress)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsTeamLeader)
-                                            </td>
+                                           
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.UserName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Dep.DepName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Team.TeamName)
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
@@ -113,7 +96,7 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.UserId">
+                                                            <a class="dropdown-item" asp-action="EditAdminUser" asp-route-id="@item.UserId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>

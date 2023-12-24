@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = @_localization.Getkey("institution")+": Delete";
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Inispection plans
+                        @_localization.Getkey("institution")
                     </h2>
                 </div>
             </div>
@@ -26,19 +26,25 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title btn-danger">Are you sure you want to delete this?</h4>
+                            <h4 class="card-title btn-danger">@_localization.Getkey("are_you_sure_todelete")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="Name" class="col-form-label-m">Name</label>
+                                        <label asp-for="Name" class="col-form-label-m">@_localization.Getkey("name")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Name)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="Description" class="col-form-label-m">Description</label>
+                                        <label asp-for="Name" class="col-form-label-m">@_localization.Getkey("name_amharic")</label>
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.NameAmharic)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        <label asp-for="Description" class="col-form-label-m">@_localization.Getkey("Description")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Description)
@@ -50,8 +56,8 @@
                             <div class="d-flex">
                                 <form asp-action="Delete">
                                     <input type="hidden" asp-for="InistId" />
-                                    <input type="submit" value="Delete" class="btn btn-danger" /> &nbsp;
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> &nbsp;
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </form>
                             </div>
                         </div>

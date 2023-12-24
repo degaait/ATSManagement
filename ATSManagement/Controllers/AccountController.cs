@@ -49,126 +49,180 @@ namespace ATSManagement.Controllers
         public IActionResult Login(LoginModels collection)
         {
             string culture = null;
-            if (collection.LangId==1)
+            string userInformation = null;
+            try
             {
-                culture = "en-US";
-            }
-            else
-            {
-                culture = "am";
-            }
-            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
-               CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-               new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
-            bool isExist = false;
-            List<MenuModels> _menus = new List<MenuModels>();
-            if (collection.Password != null && collection.UserName != null)
-            {
-                string realPas = PawwordEncryption.DecryptPasswordBase64String("MTIzNDU2");
-                string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
-                TblInternalUser userinfo = (from items in _context.TblInternalUsers where (items.UserName == collection.UserName && items.Password == password)||(items.EmailAddress==collection.UserName &&items.Password==password)  select items).FirstOrDefault();
-
-                if (userinfo != null)
+                if (collection.LangId == 1)
                 {
-                    LoginModels _loginCredentials = _context.TblInternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password||(x.EmailAddress==collection.UserName)).Select(x => new LoginModels
-                    {
-                        UserName = x.UserName,
-                        DepName = x.Dep.DepName,
-                        DepId = x.DepId,
-                        UserId = x.UserId,
-                        UserFullName = x.FirstName + " " + x.MidleName + " " + x.LastName,
+                    culture = "en-US";
+                }
+                else
+                {
+                    culture = "am";
+                }
+                Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                   CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                   new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
-                    }).FirstOrDefault();
-                    if (userinfo.IsSuperAdmin == true)
+                bool isExist = false;
+                List<MenuModels> _menus = new List<MenuModels>();
+                if (collection.Password != null && collection.UserName != null)
+                {
+                    string realPas = PawwordEncryption.DecryptPasswordBase64String("MTIzNDU2");
+                    string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
+                    TblInternalUser userinfo = (from items in _context.TblInternalUsers where (items.UserName == collection.UserName && items.Password == password) || (items.EmailAddress == collection.UserName && items.Password == password) select items).FirstOrDefault();
+
+                    if (userinfo != null)
                     {
-                        if (culture=="am")
+                        LoginModels _loginCredentials = _context.TblInternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password || (x.EmailAddress == collection.UserName)).Select(x => new LoginModels
                         {
-                            _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                            UserName = x.UserName,
+                            DepName = x.Dep.DepName,
+                            DepNameAmharic = x.Dep.DepNameAmharic,
+                            DepId = x.DepId,
+                            UserId = x.UserId,
+                            UserFullName = x.FirstName + " " + x.MidleName,
+
+                        }).FirstOrDefault();
+                        if (userinfo.IsSuperAdmin == true)
+                        {
+                            if (culture == "am")
                             {
-                                MainMenuId = x.Menu.MenuId,
-                                MainMenuName = x.Menu.MenuNameAmharic,
-                                SubMenuId = x.Id,
-                                SubMenuName = x.SubmenuAmharic,
-                                ControllerName = x.Controller,
-                                ActionName = x.Action,
-                                DepId = x.RoleId,
-                                DepName = x.Dep.DepNameAmharic,
-                                DisplayOrder = x.Menu.DisplayOrder,
-                                Class_SVC = x.Menu.ClassSvg
-                            }).OrderBy(p => p.DisplayOrder).ToList();
+                                _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                                {
+                                    MainMenuId = x.Menu.MenuId,
+                                    MainMenuName = x.Menu.MenuNameAmharic,
+                                    SubMenuId = x.Id,
+                                    SubMenuName = x.SubmenuAmharic,
+                                    ControllerName = x.Controller,
+                                    ActionName = x.Action,
+                                    DepId = x.RoleId,
+                                    DepName = x.Dep.DepName,
+                                    DepNameAmharic = x.Dep.DepNameAmharic,
+                                    DisplayOrder = x.Menu.DisplayOrder,
+                                    Class_SVC = x.Menu.ClassSvg
+                                }).OrderBy(p => p.DisplayOrder).ToList();
+                            }
+                            else
+                            {
+                                _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                                {
+                                    MainMenuId = x.Menu.MenuId,
+                                    MainMenuName = x.Menu.MenuName,
+                                    SubMenuId = x.Id,
+                                    SubMenuName = x.Submenu,
+                                    ControllerName = x.Controller,
+                                    ActionName = x.Action,
+                                    DepId = x.RoleId,
+                                    DepName = x.Dep.DepName,
+                                    DepNameAmharic = x.Dep.DepNameAmharic,
+                                    DisplayOrder = x.Menu.DisplayOrder,
+                                    Class_SVC = x.Menu.ClassSvg
+                                }).OrderBy(p => p.DisplayOrder).ToList();
+                            }
+
                         }
                         else
                         {
-                            _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                            // Get the login user details and bind it to LoginModels class  
+
+                            if (culture == "am")
                             {
-                                MainMenuId = x.Menu.MenuId,
-                                MainMenuName = x.Menu.MenuName,
-                                SubMenuId = x.Id,
-                                SubMenuName = x.Submenu,
-                                ControllerName = x.Controller,
-                                ActionName = x.Action,
-                                DepId = x.RoleId,
-                                DepName = x.Dep.DepName,
-                                DisplayOrder = x.Menu.DisplayOrder,
-                                Class_SVC = x.Menu.ClassSvg
-                            }).OrderBy(p => p.DisplayOrder).ToList();
+                                _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                                {
+                                    MainMenuId = x.Menu.MenuId,
+                                    MainMenuName = x.Menu.MenuNameAmharic,
+                                    SubMenuId = x.Id,
+                                    SubMenuName = x.SubmenuAmharic,
+                                    ControllerName = x.Controller,
+                                    ActionName = x.Action,
+                                    DepId = x.RoleId,
+                                    DepName = x.Dep.DepName,
+                                    DepNameAmharic = x.Dep.DepNameAmharic,
+                                    DisplayOrder = x.Menu.DisplayOrder,
+                                    Class_SVC = x.Menu.ClassSvg
+                                }).OrderBy(p => p.DisplayOrder).ToList();
+                            }
+                            else
+                            {
+                                _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                                {
+                                    MainMenuId = x.Menu.MenuId,
+                                    MainMenuName = x.Menu.MenuName,
+                                    SubMenuId = x.Id,
+                                    SubMenuName = x.Submenu,
+                                    ControllerName = x.Controller,
+                                    ActionName = x.Action,
+                                    DepId = x.RoleId,
+                                    DepName = x.Dep.DepName,
+                                    DepNameAmharic = x.Dep.DepNameAmharic,
+                                    DisplayOrder = x.Menu.DisplayOrder,
+                                    Class_SVC = x.Menu.ClassSvg
+                                }).OrderBy(p => p.DisplayOrder).ToList();
+                            }
                         }
-                      
+                        //Get the Menu details from entity and bind it in MenuModels list.  
+                        //SetAuthCookie(_loginCredentials.UserName, false); // set the formauthentication cookie  
+                        string menusString = JsonSerializer.Serialize(_menus);
+                        string loginCredentials = JsonSerializer.Serialize(_loginCredentials);
+                        _contextAccessor.HttpContext.Session.SetString("MenuMaster", menusString);
+                        _contextAccessor.HttpContext.Session.SetString("LoginCredentials", loginCredentials);
+                        _contextAccessor.HttpContext.Session.SetString("UserName", _loginCredentials.UserName);
+                        _contextAccessor.HttpContext.Session.SetString("UserFullname", _loginCredentials.UserFullName);
+                        _contextAccessor.HttpContext.Session.SetString("userId", _loginCredentials.UserId.ToString());
+                        if (userinfo.IsSuperAdmin == true)
+                        {
+                            if (culture == "am")
+                            {
+                                userInformation = "የሲይቴም አስተዳደር";
+                            }
+                            else
+                            {
+                                userInformation = "System Administrator";
+                            }
+                        }
+                        else if (userinfo.IsDeputy == true)
+                        {
+                            if (culture == "am")
+                            {
+                                userInformation = "ሚኒስቴር ደረጃ";
+                            }
+                            else
+                            {
+                                userInformation = "Deputy";
+                            }
+                        }
+                        else
+                        {
+                            if (culture == "am")
+                            {
+                                userInformation = _loginCredentials.DepNameAmharic.ToString();
+                            }
+                            else
+                            {
+                                userInformation = _loginCredentials.DepName.ToString();
+                            }
+                        }
+                        _contextAccessor.HttpContext.Session.SetString("DepName", userInformation);
+                        return RedirectToAction("Index", "Home");
+                        // return Redirect(Request.Headers["Referer"].ToString());
                     }
                     else
                     {
-                        // Get the login user details and bind it to LoginModels class  
-
-                        if (culture == "am")
+                        _notifyService.Error(_localization.Getkey("user_not_found").Value);
+                        collection.Languages = _context.TblLanguages.Select(s => new SelectListItem
                         {
-                            _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
-                            {
-                                MainMenuId = x.Menu.MenuId,
-                                MainMenuName = x.Menu.MenuNameAmharic,
-                                SubMenuId = x.Id,
-                                SubMenuName = x.SubmenuAmharic,
-                                ControllerName = x.Controller,
-                                ActionName = x.Action,
-                                DepId = x.RoleId,
-                                DepName = x.Dep.DepNameAmharic,
-                                DisplayOrder = x.Menu.DisplayOrder,
-                                Class_SVC = x.Menu.ClassSvg
-                            }).OrderBy(p => p.DisplayOrder).ToList();
-                        }
-                        else
-                        {
-                            _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
-                            {
-                                MainMenuId = x.Menu.MenuId,
-                                MainMenuName = x.Menu.MenuName,
-                                SubMenuId = x.Id,
-                                SubMenuName = x.Submenu,
-                                ControllerName = x.Controller,
-                                ActionName = x.Action,
-                                DepId = x.RoleId,
-                                DepName = x.Dep.DepName,
-                                DisplayOrder = x.Menu.DisplayOrder,
-                                Class_SVC = x.Menu.ClassSvg
-                            }).OrderBy(p => p.DisplayOrder).ToList();
-                        }
+                            Value = s.LangId.ToString(),
+                            Text = s.Language
+                        }).ToList();
+                        return View(collection);
                     }
-                    //Get the Menu details from entity and bind it in MenuModels list.  
-                    //SetAuthCookie(_loginCredentials.UserName, false); // set the formauthentication cookie  
-                    string menusString = JsonSerializer.Serialize(_menus);
-                    string loginCredentials = JsonSerializer.Serialize(_loginCredentials);
-                    _contextAccessor.HttpContext.Session.SetString("MenuMaster", menusString);
-                    _contextAccessor.HttpContext.Session.SetString("LoginCredentials", loginCredentials);
-                    _contextAccessor.HttpContext.Session.SetString("UserName", _loginCredentials.UserName);
-                    _contextAccessor.HttpContext.Session.SetString("UserFullname", _loginCredentials.UserFullName);
-                    _contextAccessor.HttpContext.Session.SetString("userId", _loginCredentials.UserId.ToString());
-                    _contextAccessor.HttpContext.Session.SetString("DepName", _loginCredentials.DepName.ToString());
-                    return RedirectToAction("Index", "Home");
-                   // return Redirect(Request.Headers["Referer"].ToString());
                 }
                 else
                 {
                     _notifyService.Error(_localization.Getkey("user_not_found").Value);
+
                     collection.Languages = _context.TblLanguages.Select(s => new SelectListItem
                     {
                         Value = s.LangId.ToString(),
@@ -177,10 +231,10 @@ namespace ATSManagement.Controllers
                     return View(collection);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _notifyService.Error(_localization.Getkey("user_not_found").Value);
 
+                _notifyService.Error($"Error:{ex.Message} happened"+_localization.Getkey("user_not_found").Value);
                 collection.Languages = _context.TblLanguages.Select(s => new SelectListItem
                 {
                     Value = s.LangId.ToString(),
@@ -188,6 +242,8 @@ namespace ATSManagement.Controllers
                 }).ToList();
                 return View(collection);
             }
+
+       
         }
         public IActionResult Logout()
         {
@@ -214,10 +270,7 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-            var tblUser = await _context.TblInternalUsers
-                                        .Include(t => t.Dep)
-                                        .Include(t => t.TblInspectionPlans)
-                                        .FirstOrDefaultAsync(m => m.UserId == id);
+            var tblUser = await _context.TblInternalUsers.FirstOrDefaultAsync(m => m.UserId == id);
             if (tblUser == null)
             {
                 return NotFound();
@@ -248,6 +301,8 @@ namespace ATSManagement.Controllers
                     return View(loginModels);
                 }
             }
+            ViewBag.Error = "User doesn't found!. Please try again";
+
             return View();
         }
 

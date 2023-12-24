@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = _localization.Getkey("annual_plans")+":Details";
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Inistitutions
+                        _localization.Getkey("annual_plans")
                     </h2>
                 </div>
             </div>
@@ -26,43 +26,42 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title btn-danger">Details</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="PlanTitle" class="col-form-label-m">Title</label>
+                                        <label asp-for="PlanTitle" class="col-form-label-m">@_localization.Getkey("title")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.PlanTitle)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="PlanDescription" class="col-form-label-m">Description</label>
+                                        <label asp-for="PlanDescription" class="col-form-label-m">@_localization.Getkey("Description")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.PlanDescription)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreationDate" class="col-form-label-m">Creation date</label>
+                                        <label asp-for="CreationDate" class="col-form-label-m">@_localization.Getkey("CreatedDate")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreationDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="ModificationDate" class="col-form-label-m">Modification date</label>
+                                        <label asp-for="ModificationDate" class="col-form-label-m">@_localization.Getkey("modificationDate")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.ModificationDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="YearId" class="col-form-label-m">Inspection Year</label>
+                                        <label asp-for="YearId" class="col-form-label-m">@_localization.Getkey("inspection_year") </label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Year.Year)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="User" class="col-form-label-m">Created by</label>
+                                        <label asp-for="User" class="col-form-label-m">@_localization.Getkey("created_by") </label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.MidleName)
@@ -72,8 +71,8 @@
                         </div>
                         <div class="card-footer text-end">
                             <div class="d-flex">
-                                <a asp-action="Edit" asp-route-id="@Model?.InspectionPlanId">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
+                                <a asp-action="Edit" asp-route-id="@Model?.InspectionPlanId">@_localization.Getkey("edit")</a> |
+                                <a asp-action="Index">@_localization.Getkey("baclist")</a>
                             </div>
                         </div>
                     </div>

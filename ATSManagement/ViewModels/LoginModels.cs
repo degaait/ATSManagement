@@ -15,6 +15,7 @@ namespace ATSManagement.ViewModels
         public string? Password { get; set; }
         public Guid? DepId { get; set; }
         public string? DepName { get; set; }
+        public string? DepNameAmharic { get; set; }
         public string? UserFullName { get; set; }
         public string? ModuleName { get; set; }
         public Guid? Id { get; set; }

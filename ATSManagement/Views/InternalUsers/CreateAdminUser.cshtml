@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = @_localization.Getkey("users")+" Create";
+    ViewData["Title"] = "Create";
 }
 
 <div class="page-wrapper">
@@ -26,6 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <h4 class="card-title">Create</h4>
                         </div>
                         <form asp-action="Create">
                             <div class="card-body">
@@ -61,18 +62,6 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="DepId" class="col-3 col-form-label">@_localization.Getkey("department")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Departments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="TeamID" class="col-3 col-form-label">Team</label>
-                                            <div class="col">
-                                                <select asp-for="TeamID" class="form-select" id="drpTeam" asp-items="@(new SelectList(string.Empty,"TeamId","TeamName"))"></select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
                                             <label asp-for="PhoneNumber" class="col-3 col-form-label">@_localization.Getkey("phone_number")</label>
                                             <div class="col">
                                                 <input asp-for="PhoneNumber" class="form-control" />
@@ -87,43 +76,28 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("isActive")</label>
+                                            <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("isactive")</label>
                                             <div class="col">
                                                 <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
-                                                <span asp-validation-for="IsActive" class="text-danger"></span>
+                                                <span asp-validation-for="IsActive"  class="text-danger"></span>
                                             </div>
-                                        </div>
+                                        </div>                                       
                                         <div class="mb-3 row">
-                                            <label asp-for="specialRoles" class="col-3 col-form-label">@_localization.Getkey("special_roles")</label>
+                                            <label asp-for="IsSuperAdmin" class="col-3 col-form-label">@_localization.Getkey("isSuperadmin")</label>
                                             <div class="col">
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="IsDeputy" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isDeputy")</span>
-                                                </label>
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" checked value="IsDepartmentHead" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isDepartment") </span>
-                                                </label>
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="IsTeamLeader" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isTeam")</span>
-                                                </label>
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="DefaultUser" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isDefaultUser")</span>
-                                                </label>
-                                                <span asp-validation-for="specialRoles" class="text-danger"></span>
+                                                <input asp-for="IsSuperAdmin" type="checkbox" readonly class="form-check-input m-0" />
+                                                <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="Password" class="col-3 col-form-label">@_localization.Getkey("password")</label>
+                                            <label asp-for="Password" class="col-3 col-form-label">Password</label>
                                             <div class="col">
                                                 <input asp-for="Password" required class="form-control" />
                                                 <span asp-validation-for="Password" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="ConfirmPassword" class="col-3 col-form-label">@_localization.Getkey("confirm_password") </label>
+                                            <label asp-for="ConfirmPassword" class="col-3 col-form-label">Configrm Password</label>
                                             <div class="col">
                                                 <input asp-for="ConfirmPassword" required class="form-control" />
                                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -134,8 +108,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                                    <input type="submit" value="Create" class="btn btn-primary" />|
+                                    <a asp-action="Index">Back to List</a>
                                 </div>
                             </div>
                         </form>
@@ -145,31 +119,10 @@
         </div>
     </div>
 </div>
-@section Scripts { var items = "<option value='00000000-0000-0000-0000-000000000000'>--Select--</option>";
-    $('#drpTeam').html(items);
+@section Scripts { 
+   
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-
-        });
-    </script>
-    <script type="text/javascript">
-     $(document).ready(function () {
-         $('#DepId').change(function () {
-             var url = '@Url.Content("~/")' + "InternalUsers/GetTeams";
-             var ddlsource = "#DepId";
-             $.getJSON(url, { DepId: $(ddlsource).val() }, function (data) {
-                 var items = '';
-                 $("#drpTeam").empty();
-                 $.each(data, function (i, subcategory) {
-                     items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
-                 });
-                 $('#drpTeam').html(items);
-             });
-         });
-     });
-    </script>
+   
 }

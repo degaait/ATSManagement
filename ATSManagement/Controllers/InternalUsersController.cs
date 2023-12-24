@@ -1,15 +1,15 @@
-﻿namespace ATSManagement.Controllers
-{
-    using NToastNotify;
-    using ATSManagement.Models;
-    using ATSManagement.Filters;
-    using ATSManagement.Security;
-    using ATSManagement.ViewModels;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using NToastNotify;
+using ATSManagement.Models;
+using ATSManagement.Filters;
+using ATSManagement.Security;
+using ATSManagement.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
+namespace ATSManagement.Controllers
+{
     [CheckSessionIsAvailable]
     public class InternalUsersController : Controller
     {
@@ -62,7 +62,7 @@
             TblInternalUser tblInternalUser = new TblInternalUser();
             try
             {
-                if (userModel.IsSuperAdmin== false || userModel.specialRoles.ToString() != "IsDeputy")
+                if (userModel.specialRoles.ToString() != "IsDeputy")
                 {
                     if (userModel.DepId==null)
                     {
@@ -125,13 +125,16 @@
                         tblInternalUser.TeamId = userModel.TeamID;
                     }
                     _context.Add(tblInternalUser);
-                    int saved = await _context.SaveChangesAsync();
-                   
+                    int saved = await _context.SaveChangesAsync();                   
                     if (saved > 0)
                     {
-                        TblTeam tblTeam = _context.TblTeams.Find(userModel.TeamID);
-                        tblTeam.TeamLeaderId = tblInternalUser.UserId;
-                        await _context.SaveChangesAsync();
+                        if (userModel.specialRoles.ToString() != "IsDepartmentHead"&& userModel.specialRoles.ToString() != "IsDeputy")
+                        {
+                            TblTeam tblTeam = _context.TblTeams.Find(userModel.TeamID);
+                            tblTeam.TeamLeaderId = tblInternalUser.UserId;
+                            await _context.SaveChangesAsync();
+                        }
+                        
                         _notifyService.Success("User created successfully");
                         return RedirectToAction(nameof(Index));
                     }
@@ -439,5 +442,154 @@
             subcategoryModels = (from items in _context.TblTeams where items.DepId == DepId select items).ToList();
             return Json(new SelectList(subcategoryModels, "TeamId", "TeamName"));
         }
+
+        public IActionResult CreateAdminUser()
+        {
+            UserModel user = new UserModel();
+          
+            user.IsActive = true;
+            user.IsSuperAdmin = true;
+            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName");
+            return View(user);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAdminUser(UserModel userModel)
+        {
+            TblInternalUser tblInternalUser = new TblInternalUser();
+            try
+            {               
+                if (ModelState.IsValid)
+                {
+                    tblInternalUser.UserId = Guid.NewGuid();
+                    tblInternalUser.IsSuperAdmin = true;
+                    tblInternalUser.IsDeputy = false;
+                    tblInternalUser.IsDepartmentHead = false;
+                    tblInternalUser.IsTeamLeader = false;
+                    tblInternalUser.IsDefaultUser = false;                    
+                    tblInternalUser.FirstName = userModel.FirstName;
+                    tblInternalUser.LastName = userModel.LastName;
+                    tblInternalUser.IsActive = userModel.IsActive;
+                    tblInternalUser.MidleName = userModel.MiddleName;
+                    tblInternalUser.PhoneNumber = userModel.PhoneNumber;
+                    tblInternalUser.UserName = userModel.UserName;
+                    tblInternalUser.Password = PawwordEncryption.EncryptPasswordBase64Strig(userModel.Password);
+                    tblInternalUser.EmailAddress = userModel.EmailAddress;
+                    
+                    _context.TblInternalUsers.Add(tblInternalUser);
+                    int saved = await _context.SaveChangesAsync();
+
+                    if (saved > 0)
+                    {                       
+                        _notifyService.Success("User created successfully");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _notifyService.Error("User isn't created succefully. Please try again");                        
+                        return View(userModel);
+                    }
+                }
+                else
+                {
+                    _notifyService.Error("User isn't created succefully. Please fill all neccessary fields and try again");                   
+                    return View(userModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error($"Error:{ex.Message} happened. Please try again");             
+                return View(userModel);
+            }
+        }
+        public async Task<IActionResult> AdminUsers()
+        {
+            var atsdbContext = _context.TblInternalUsers.Where(s=>s.IsSuperAdmin==true);
+            return View(await atsdbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> EditAdminUser(Guid? id)
+        {
+            UserModel userModel = new UserModel();
+
+            if (id == null || _context.TblInternalUsers == null)
+            {
+                return NotFound();
+            }
+
+            var tblInternalUser = await _context.TblInternalUsers.FindAsync(id);
+            userModel.PhoneNumber = tblInternalUser.PhoneNumber;
+            userModel.UserName = tblInternalUser.UserName;
+            userModel.LastName = tblInternalUser.LastName;
+            userModel.MiddleName = tblInternalUser.MidleName;
+            userModel.EmailAddress = tblInternalUser.EmailAddress;
+            userModel.FirstName = tblInternalUser.FirstName;           
+            userModel.UserId = tblInternalUser.UserId; 
+            userModel.IsSuperAdmin=tblInternalUser.IsSuperAdmin;
+            userModel.IsActive= tblInternalUser.IsActive;
+            if (tblInternalUser == null)
+            {
+                return NotFound();
+            }
+            return View(userModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAdminUser(UserModel userModel)
+        {
+            TblInternalUser tblInternalUser = await _context.TblInternalUsers.FindAsync(userModel.UserId);
+            if (tblInternalUser == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {                   
+                    tblInternalUser.DepId = userModel.DepId;
+                    tblInternalUser.FirstName = userModel.FirstName;
+                    tblInternalUser.LastName = userModel.LastName;
+                    tblInternalUser.MidleName = userModel.MiddleName;
+                    tblInternalUser.PhoneNumber = userModel.PhoneNumber;
+                    tblInternalUser.UserName = userModel.UserName;
+                    tblInternalUser.EmailAddress = userModel.EmailAddress;
+                    tblInternalUser.IsActive = userModel.IsActive;
+                    tblInternalUser.IsSuperAdmin = userModel.IsSuperAdmin;                   
+                    _context.Update(tblInternalUser);
+                    int updated = await _context.SaveChangesAsync();
+                    if (updated > 0)
+                    {                     
+                        _notifyService.Success("User susccessfully updated");
+                        return RedirectToAction(nameof(AdminUsers));
+                    }
+                    else
+                    {
+                        _notifyService.Error("User isn't successfully updated. Please try again");
+                       return View(userModel);
+                    }
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    ViewBag.error = ex.Message;
+                    if (!TblInternalUserExists(tblInternalUser.UserId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _notifyService.Error($"Error: {ex.Message}. Please try again");
+
+                    }
+                   return View(userModel);
+                }
+            }
+            else
+            {
+                _notifyService.Information("Uppdate isn't successfull. Please fill all neccessary field and try again.");
+               return View(userModel);
+            }
+
+        }
+
     }
 }

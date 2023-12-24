@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @_localization.Getkey("submenus") + " Details";
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Sub Menus
+                        @_localization.Getkey("submenus")
                     </h2>
                 </div>
             </div>
@@ -26,19 +26,18 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Details</h4>
+                            <h4 class="card-title"> @_localization.Getkey("Detail")</h4>
                         </div>
                         <div class="card-body">
                             <dl class="row">
                                 <dt class="col-sm-2">
-                                    <label asp-for="Submenu" class="col-form-label-m">Title</label>
+                                    <label asp-for="Submenu" class="col-form-label-m"> @_localization.Getkey("title")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.Submenu)
                                 </dd>
                                 <dt class="col-sm-2">
                                     <label asp-for="Controller" class="col-form-label-m">Controller</label>
-
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.Controller)
@@ -51,19 +50,19 @@
                                     @Html.DisplayFor(model => model.Action)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="IsActive" class="col-form-label-m">IsActive?</label>
+                                    <label asp-for="IsActive" class="col-form-label-m"> @_localization.Getkey("isactive")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.IsActive)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="DepId" class="col-form-label-m">Department:</label>
+                                    <label asp-for="DepId" class="col-form-label-m">@_localization.Getkey("department")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.Dep.DepName)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="MenuId" class="col-form-label-m">Action</label>
+                                    <label asp-for="MenuId" class="col-form-label-m">@_localization.Getkey("main_menu")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.Menu.MenuName)
@@ -72,8 +71,8 @@
                         </div>
                         <div class="card-footer text-end">
                             <div class="d-flex">
-                                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
+                                <a asp-action="Edit" asp-route-id="@Model?.Id">@_localization.Getkey("edit")</a> |
+                                <a asp-action="Index">@_localization.Getkey("backlist")</a>
                             </div>
                         </div>
                     </div>

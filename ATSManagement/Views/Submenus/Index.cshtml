@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @_localization.Getkey("submenus");
 }
 <style type="text/css">
     .table thead th {
@@ -20,7 +20,8 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Sub Menus
+                    @_localization.Getkey("submenus")
+
                 </h2>
             </div>
             <!-- Page title actions -->
@@ -48,7 +49,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Sub Menus</h4>
+                        <h4 class="card-title">
+                            @_localization.Getkey("submenus")
+                        </h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -56,10 +59,10 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Title
+                                            @_localization.Getkey("title")
                                         </th>
                                         <th>
-                                            Title (አማርኛ)
+                                            @_localization.Getkey("title_amharic")
                                         </th>
                                         <th>
                                             Controller
@@ -68,16 +71,16 @@
                                             Action
                                         </th>
                                         <th>
-                                            IsActive?
+                                            @_localization.Getkey("isactive")
                                         </th>
                                         <th>
-                                            IsDeleted?
+                                            @_localization.Getkey("isDeleted")
                                         </th>
                                         <th>
-                                            Department
+                                            @_localization.Getkey("department")                                            
                                         </th>
                                         <th>
-                                            Main menu
+                                            @_localization.Getkey("main_menu")
                                         </th>
                                         <th></th>
                                     </tr>

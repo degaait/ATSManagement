@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @_localization.Getkey("appointment_Date")+ ": Appointment final outcome";
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -12,7 +12,8 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Appointment final outcome
+                        
+                        @_localization.Getkey("add_appointment_result")
                     </h2>
                 </div>
             </div>
@@ -25,7 +26,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Add</h4>
                         </div>
                         <form asp-action="AssignToUser">
                             <div class="card-body">
@@ -34,21 +34,21 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="AppointmentID" />
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">Appointment Detail</label>
+                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">@_localization.Getkey("Details")</label>
                                             <div class="col">
                                                 @Html.Raw(Model.AppointmentDetail)
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="CreatedDate" class=" col-2 col-form-label">Requested Date Date</label>
+                                            <label asp-for="CreatedDate" class=" col-2 col-form-label">@_localization.Getkey("RequestedDate")</label>
                                             <div class="col">
                                                 <input asp-for="CreatedDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDate" class=" col-2 col-form-label">Appointment Date</label>
+                                            <label asp-for="AppointmentDate" class=" col-2 col-form-label">@_localization.Getkey("appointment_Date") </label>
                                             <div class="col">
 
                                                 <input asp-for="AppointmentDate" class="calendar-date" readonly />
@@ -56,7 +56,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="FinalOutCome" class=" col-2 col-form-label">Meeting Outcome</label>
+                                            <label asp-for="FinalOutCome" class=" col-2 col-form-label">@_localization.Getkey("meeting_outcome") </label>
                                             <div class="col">
 
                                                 <input asp-for="FinalOutCome" class="form-control" />
@@ -68,8 +68,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Submit" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>

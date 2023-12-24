@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Response";
+    ViewData["Title"] = _localization.Getkey("annual_plans");
     IEnumerable<TblInspectionReplye> replyes = ViewData["Replies"] as IEnumerable<TblInspectionReplye>;
 }
 
@@ -74,7 +74,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Response
+                        @_localization.Getkey("response")
                     </h2>
                 </div>
             </div>
@@ -94,14 +94,14 @@
                                         <input asp-for="RecId" type="hidden" class="form-control" />
 
                                         <div class="mb-3 row" id="divRequestDetail">
-                                            <label asp-for="ResponseDetail" class=" col-2 col-form-label">Reply Detail</label>
+                                            <label asp-for="ResponseDetail" class=" col-2 col-form-label">@_localization.Getkey("Details")</label>
                                             <div class="col">
                                                 <input asp-for="ResponseDetail" class="form-control" />
                                                 <span asp-validation-for="ResponseDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divRequestDetail">
-                                            <label asp-for="Attachement" class=" col-2 col-form-label">Attachment</label>
+                                            <label asp-for="Attachement" class=" col-2 col-form-label">@_localization.Getkey("attachment")</label>
                                             <div class="col">
                                                 <input asp-for="Attachement" class="form-control" />
                                                 <span asp-validation-for="Attachement" class="text-danger"></span>
@@ -112,15 +112,15 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Send" class="btn btn-primary" />
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Replies</h4>
+                            <h4 class="card-title">@_localization.Getkey("replies")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -158,7 +158,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="container">
-                                                        <h3 class="time-right" style="color:dodgerblue">(You)</h3>
+                                                        <h3 class="time-right" style="color:dodgerblue">@_localization.Getkey("you")</h3>
                                                         <br />
                                                         <p class="time-right">
                                                             @Html.Raw(@item.RecoDetail)
@@ -173,7 +173,7 @@
                                                                 <path d="M13.5 6.5l4 4"></path>
                                                                 <path d="M16 19h6"></path>
                                                                 <path d="M19 16v6"></path>
-                                                            </svg>&nbsp;  Edit
+                                                            </svg>&nbsp;  @_localization.Getkey("edit")
                                                         </a>
                                                     </div>
                                                 </div>

@@ -100,14 +100,12 @@
                                                 @Html.DisplayFor(modelItem => item.InspectionPlan.PlanTitle)
                                             </td>
                                             <td>
-
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">
                                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SpecificPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -158,17 +156,6 @@
             deferRender: true,
             scrollCollapse: true,
             scroller: true,
-        });
-    </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
         });
     </script>
 }

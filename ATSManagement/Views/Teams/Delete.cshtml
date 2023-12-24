@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = @_localization.Getkey("teams")+" Delete";
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Team
+                        @_localization.Getkey("teams")
                     </h2>
                 </div>
             </div>
@@ -26,31 +26,31 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Are you sure you want to delete this?</h4>
+                            <h4 class="card-title">@_localization.Getkey("are_you_sure_todelete")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        Team Name
+                                        @_localization.Getkey("team_name")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.TeamName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        Description
+                                        @_localization.Getkey("Description")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.TeamDescription)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        Department
+                                        @_localization.Getkey("department")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Dep.DepName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        Team Leader
+                                        @_localization.Getkey("team_leader")
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.TeamLeader.FirstName)
@@ -63,8 +63,8 @@
                             <div class="d-flex">
                                 <form asp-action="Delete">
                                     <input type="hidden" asp-for="TeamId" />
-                                    <input type="submit" value="Delete" class="btn btn-danger" /> |
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> |
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </form>
                             </div>
                         </div>

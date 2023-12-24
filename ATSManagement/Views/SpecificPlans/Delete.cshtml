@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = @_localization.Getkey("specific_plans")+" Delete";
 }
 <div class="page-wrapper">
     <!-- Page header -->

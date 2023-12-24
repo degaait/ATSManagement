@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] =@_localization.Getkey("followups");
 }
 
 <style type="text/css">
@@ -71,7 +71,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Folloups
+                    @_localization.Getkey("followups")
                 </h2>
             </div>
             <div class="col-auto ms-auto d-print-none">
@@ -79,7 +79,7 @@
                     <a asp-action="Create" asp-controller="Followups" asp-route-RequestId="@ViewBag.id" class="btn btn-primary d-none d-sm-inline-block">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Add new
+                        @_localization.Getkey("CreateNew")
                     </a>
                     <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -98,7 +98,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Follow Ups</h4>
+                        <h4 class="card-title">@_localization.Getkey("followups")</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -112,7 +112,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="container">
-                                                    <h3 class="time-left" style="color:dodgerblue">(You)</h3>
+                                                    <h3 class="time-left" style="color:dodgerblue">@_localization.Getkey("you")</h3>
                                                     <br />
                                                     <p class="time-left">
                                                         @Html.Raw(@item.Message)
@@ -131,7 +131,7 @@
                                                             <path d="M13.5 6.5l4 4"></path>
                                                             <path d="M16 19h6"></path>
                                                             <path d="M19 16v6"></path>
-                                                        </svg>&nbsp;  Edit
+                                                        </svg>&nbsp;  @_localization.Getkey("edit")
                                                     </a>
                                                 </div>
                                             </div>
@@ -154,7 +154,7 @@
                                                         <span class="time-left">@item.CreatedDate</span>
                                                         @if (item.Attachment != null)
                                                         {
-                                                            <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                            <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
                                                         }
 
                                                     </div>

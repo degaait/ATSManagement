@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @_localization.Getkey("Detail");
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Team
+                        @_localization.Getkey("teams")
                     </h2>
                 </div>
             </div>
@@ -26,30 +26,30 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Details</h4>
+                            <h4 class="card-title"> @_localization.Getkey("Detail")</h4>
                         </div>
                         <div class="card-body">
                             <dl class="row">
                                 <dt class="col-sm-2">
-                                    Team Name
+                                    @_localization.Getkey("team_name")
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.TeamName)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    Description
+                                    @_localization.Getkey("Description")
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.TeamDescription)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    Department
+                                    @_localization.Getkey("department")
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.Dep.DepName)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    Team Leader
+                                    @_localization.Getkey("team_leader")
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.TeamLeader.FirstName)
@@ -59,8 +59,8 @@
                         </div>
                         <div class="card-footer text-end">
                             <div class="d-flex">
-                                <a asp-action="Edit" asp-route-id="@Model?.TeamId">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
+                                <a asp-action="Edit" asp-route-id="@Model?.TeamId">@_localization.Getkey("edit")</a> |
+                                <a asp-action="Index">@_localization.Getkey("backlist")</a>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = @_localization.Getkey("submenus")+" Delete";
 }
 
 <div class="page-wrapper">
@@ -13,33 +13,31 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Sub Menus
+                        @_localization.Getkey("submenus")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Are you sure you want to delete this?</h4>
+                            <h4 class="card-title">@_localization.Getkey("are_you_sure_todelete")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="Submenu" class="col-form-label-m">Title</label>
+                                        <label asp-for="Submenu" class="col-form-label-m"> @_localization.Getkey("title")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Submenu)
                                     </dd>
                                     <dt class="col-sm-2">
                                         <label asp-for="Controller" class="col-form-label-m">Controller</label>
-
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Controller)
@@ -52,19 +50,19 @@
                                         @Html.DisplayFor(model => model.Action)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="IsActive" class="col-form-label-m">IsActive?</label>
+                                        <label asp-for="IsActive" class="col-form-label-m"> @_localization.Getkey("isactive")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.IsActive)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DepId" class="col-form-label-m">Department:</label>
+                                        <label asp-for="DepId" class="col-form-label-m">@_localization.Getkey("department")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Dep.DepName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="MenuId" class="col-form-label-m">Action</label>
+                                        <label asp-for="MenuId" class="col-form-label-m">@_localization.Getkey("main_menu")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Menu.MenuName)
@@ -76,8 +74,8 @@
                             <div class="d-flex">
                                 <form asp-action="Delete">
                                     <input type="hidden" asp-for="Id" />
-                                    <input type="submit" value="Delete" class="btn btn-danger" /> |
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> 
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </form>
                             </div>
                         </div>

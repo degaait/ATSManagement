@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="add_appointment_result" xml:space="preserve">
+    <value>Add Appointment reasult</value>
+    <comment>Add Appointment reasult</comment>
+  </data>
+  <data name="add_participants" xml:space="preserve">
+    <value>Add Parcipants</value>
+    <comment>Add Parcipants</comment>
+  </data>
   <data name="amharic_name" xml:space="preserve">
     <value>Name (አማርኛ)</value>
     <comment>Name (አማርኛ)</comment>
@@ -124,6 +132,14 @@
   <data name="annual_plan" xml:space="preserve">
     <value>Annual Plans</value>
     <comment>Annual Plans</comment>
+  </data>
+  <data name="appointment" xml:space="preserve">
+    <value>Appointments</value>
+    <comment>Appointments</comment>
+  </data>
+  <data name="appointment_Date" xml:space="preserve">
+    <value>Appointment Date</value>
+    <comment>Appointment Date</comment>
   </data>
   <data name="are_you_sure_todelete" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
@@ -145,6 +161,14 @@
     <value>Assignment Date</value>
     <comment>Assignment Date</comment>
   </data>
+  <data name="Assignment_Type" xml:space="preserve">
+    <value>Assignment Type</value>
+    <comment>Assignment Type</comment>
+  </data>
+  <data name="Assign_Inispection_plans" xml:space="preserve">
+    <value>Assign Inispection plans</value>
+    <comment>Assign Inispection plans</comment>
+  </data>
   <data name="assign_todepartment" xml:space="preserve">
     <value>Assign To Department</value>
     <comment>Assign To Department</comment>
@@ -153,9 +177,21 @@
     <value>Assignment Remark</value>
     <comment>Assignment Remark</comment>
   </data>
+  <data name="attachment" xml:space="preserve">
+    <value>Attachment</value>
+    <comment>Attachment</comment>
+  </data>
   <data name="backlist" xml:space="preserve">
     <value>Back to List</value>
     <comment>Back to List</comment>
+  </data>
+  <data name="confirm_password" xml:space="preserve">
+    <value>Confirm Password</value>
+    <comment>Confirm Password</comment>
+  </data>
+  <data name="country" xml:space="preserve">
+    <value>Country</value>
+    <comment>Country</comment>
   </data>
   <data name="CreatedDate" xml:space="preserve">
     <value>Created Date</value>
@@ -177,9 +213,17 @@
     <value>Department</value>
     <comment>Department</comment>
   </data>
+  <data name="department_approval" xml:space="preserve">
+    <value>Department approval</value>
+    <comment>Department approval</comment>
+  </data>
   <data name="department_upproval_status" xml:space="preserve">
     <value>Department Upproval status</value>
     <comment>Department Upproval status</comment>
+  </data>
+  <data name="Deputy_aproval" xml:space="preserve">
+    <value>Deputy approval</value>
+    <comment>Deputy approval</comment>
   </data>
   <data name="deputy_upproval_status" xml:space="preserve">
     <value>Deputy Upproval status</value>
@@ -197,6 +241,10 @@
     <value>Document type</value>
     <comment>Document type</comment>
   </data>
+  <data name="documentation" xml:space="preserve">
+    <value>Documentation</value>
+    <comment>Documentation</comment>
+  </data>
   <data name="dueDate" xml:space="preserve">
     <value>Due Date</value>
     <comment>Due Date</comment>
@@ -204,6 +252,10 @@
   <data name="edit" xml:space="preserve">
     <value>Edit</value>
     <comment>Edit</comment>
+  </data>
+  <data name="Engagement_letter" xml:space="preserve">
+    <value>Engagement letter</value>
+    <comment>Engagement letter</comment>
   </data>
   <data name="english_name" xml:space="preserve">
     <value>Name</value>
@@ -213,29 +265,69 @@
     <value>Evaluation Year</value>
     <comment>Evaluation Year</comment>
   </data>
+  <data name="Evaluation_criteria" xml:space="preserve">
+    <value>Evaluation criteria</value>
+    <comment>Evaluation criteria</comment>
+  </data>
+  <data name="Expected response date" xml:space="preserve">
+    <value>Expected response date</value>
+    <comment>Expected response date</comment>
+  </data>
   <data name="external_User" xml:space="preserve">
     <value>External User</value>
     <comment>External User</comment>
+  </data>
+  <data name="external_users" xml:space="preserve">
+    <value>External Users</value>
+    <comment>External Users</comment>
   </data>
   <data name="externl_users" xml:space="preserve">
     <value>External Users</value>
     <comment>External Users</comment>
   </data>
+  <data name="files" xml:space="preserve">
+    <value>Files</value>
+    <comment>Files</comment>
+  </data>
   <data name="final_report" xml:space="preserve">
     <value>Final Report</value>
     <comment>Final Report</comment>
+  </data>
+  <data name="final_result" xml:space="preserve">
+    <value>Final Result</value>
+    <comment>Final Result</comment>
   </data>
   <data name="final_status" xml:space="preserve">
     <value>Final Status</value>
     <comment>Final Status</comment>
   </data>
+  <data name="first_name" xml:space="preserve">
+    <value>First Name</value>
+    <comment>First Name</comment>
+  </data>
   <data name="FocalPerson" xml:space="preserve">
     <value>Focal Person</value>
     <comment>Focal Person</comment>
   </data>
+  <data name="followups" xml:space="preserve">
+    <value>Follow Ups</value>
+    <comment>Follow Ups</comment>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Help</value>
+    <comment>Help</comment>
+  </data>
   <data name="high_priority_request" xml:space="preserve">
     <value>High Priority Request</value>
     <comment>Hign Priority Request</comment>
+  </data>
+  <data name="home" xml:space="preserve">
+    <value>Home</value>
+    <comment>Home</comment>
+  </data>
+  <data name="inspection_laws" xml:space="preserve">
+    <value>Inspection Laws</value>
+    <comment>Inspection Laws</comment>
   </data>
   <data name="inspection_year" xml:space="preserve">
     <value>Inspection Year</value>
@@ -253,13 +345,57 @@
     <value>IsActive?</value>
     <comment>IsActive?</comment>
   </data>
+  <data name="isDefaultUser" xml:space="preserve">
+    <value>Default User</value>
+    <comment>Default User</comment>
+  </data>
+  <data name="isDeleted" xml:space="preserve">
+    <value>isDeleted?</value>
+    <comment>isDeleted?</comment>
+  </data>
+  <data name="isDepartment" xml:space="preserve">
+    <value>Is Department head?</value>
+    <comment>Is Department head?</comment>
+  </data>
+  <data name="isDeputy" xml:space="preserve">
+    <value>isDeputy?</value>
+    <comment>isDeputy?</comment>
+  </data>
+  <data name="isSuperadmin" xml:space="preserve">
+    <value>Is Superadmin?</value>
+    <comment>Is Superadmin?</comment>
+  </data>
+  <data name="isTeam" xml:space="preserve">
+    <value>Is Team Leader?</value>
+    <comment>Is Team Leader?</comment>
+  </data>
+  <data name="last_name" xml:space="preserve">
+    <value>Last Name</value>
+    <comment>Last Name</comment>
+  </data>
+  <data name="Laws_Description" xml:space="preserve">
+    <value>Laws_Description</value>
+    <comment>Laws_Description</comment>
+  </data>
   <data name="main_menu" xml:space="preserve">
     <value>Main Menu</value>
     <comment>Main Menu</comment>
   </data>
+  <data name="meeting_outcome" xml:space="preserve">
+    <value>Meeting Outcome</value>
+    <comment>Meeting Outcome</comment>
+  </data>
   <data name="menus" xml:space="preserve">
     <value>Menus</value>
     <comment>Menus</comment>
+  </data>
+  <data name="message" xml:space="preserve">
+    <value>Message</value>
+    <comment>Message</comment>
+  </data>
+  <data name="middle_name" xml:space="preserve">
+    <value>Middle Name</value>
+    <comment>Middle Name</comment>
   </data>
   <data name="modificationDate" xml:space="preserve">
     <value>Modification date</value>
@@ -273,9 +409,37 @@
     <value>Name (አማርኛ)</value>
     <comment>Name (አማርኛ)</comment>
   </data>
+  <data name="new_password" xml:space="preserve">
+    <value>New Password</value>
+    <comment>New Password</comment>
+  </data>
   <data name="new_request" xml:space="preserve">
     <value>New Request</value>
     <comment>New Request</comment>
+  </data>
+  <data name="no_need_deputy_approval" xml:space="preserve">
+    <value>Isn't Depute upproval needed?</value>
+    <comment>Isn't Depute upproval needed?</comment>
+  </data>
+  <data name="Official_Letter" xml:space="preserve">
+    <value>Official Letter</value>
+    <comment>Official Letter</comment>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Old Password</value>
+    <comment>Old Password</comment>
+  </data>
+  <data name="other_Requests" xml:space="preserve">
+    <value>Other request</value>
+    <comment>Other request</comment>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Password</comment>
+  </data>
+  <data name="phone_number" xml:space="preserve">
+    <value>Phone Number</value>
+    <comment>Phone Number</comment>
   </data>
   <data name="priority" xml:space="preserve">
     <value>Priority</value>
@@ -292,6 +456,26 @@
   <data name="recomendation_laws" xml:space="preserve">
     <value>Recommendation Laws</value>
     <comment>Recomendation Laws</comment>
+  </data>
+  <data name="Recommendation_file" xml:space="preserve">
+    <value>Recommendation file</value>
+    <comment>Recommendation file</comment>
+  </data>
+  <data name="Refence_Articles" xml:space="preserve">
+    <value>Refence Articles</value>
+    <comment>Refence Articles</comment>
+  </data>
+  <data name="remark" xml:space="preserve">
+    <value>Remarks</value>
+    <comment>Remarks</comment>
+  </data>
+  <data name="replies" xml:space="preserve">
+    <value>Replies</value>
+    <comment>Replies</comment>
+  </data>
+  <data name="reply" xml:space="preserve">
+    <value>Reply</value>
+    <comment>Reply</comment>
   </data>
   <data name="RequestDetail" xml:space="preserve">
     <value>Request Detail</value>
@@ -313,13 +497,49 @@
     <value>Requests</value>
     <comment>Requests</comment>
   </data>
+  <data name="Responded_Date" xml:space="preserve">
+    <value>Responded Date</value>
+    <comment>Responded Date</comment>
+  </data>
+  <data name="response" xml:space="preserve">
+    <value>Response</value>
+    <comment>Response</comment>
+  </data>
   <data name="save" xml:space="preserve">
     <value>Save</value>
     <comment>Save</comment>
   </data>
+  <data name="send" xml:space="preserve">
+    <value>Send</value>
+    <comment>Send</comment>
+  </data>
+  <data name="Send_Evaluations_to_Institutions" xml:space="preserve">
+    <value>Send Evaluations to Institutions</value>
+    <comment>Send Evaluations to Institutions</comment>
+  </data>
+  <data name="Send_to_Institutions" xml:space="preserve">
+    <value>Send to Institutions</value>
+    <comment>Send to Institutions</comment>
+  </data>
+  <data name="sent_by" xml:space="preserve">
+    <value>Sent By</value>
+    <comment>Sent By</comment>
+  </data>
+  <data name="sent_date" xml:space="preserve">
+    <value>Sent Date</value>
+    <comment>Sent Date</comment>
+  </data>
+  <data name="sent_reccomendation" xml:space="preserve">
+    <value>Sent Recomendation</value>
+    <comment>Sent Recomendation</comment>
+  </data>
   <data name="serviceType" xml:space="preserve">
     <value>Service type</value>
     <comment>Service type</comment>
+  </data>
+  <data name="special_roles" xml:space="preserve">
+    <value>Special Roles</value>
+    <comment>Special Roles</comment>
   </data>
   <data name="specific_plans" xml:space="preserve">
     <value>Specific Plans</value>
@@ -332,6 +552,14 @@
   <data name="submenus" xml:space="preserve">
     <value>Sub-Menus</value>
     <comment>Sub-Menus</comment>
+  </data>
+  <data name="targeted_institutions" xml:space="preserve">
+    <value>Targeted Inistitutions</value>
+    <comment>Targeted Inistitutions</comment>
+  </data>
+  <data name="task_status" xml:space="preserve">
+    <value>Task Status</value>
+    <comment>Task Status</comment>
   </data>
   <data name="teams" xml:space="preserve">
     <value>Teams</value>
@@ -353,9 +581,17 @@
     <value>Team Upproval status</value>
     <comment>Team Upproval status</comment>
   </data>
+  <data name="Team_Uproval" xml:space="preserve">
+    <value>Team approval</value>
+    <comment>Team aproval</comment>
+  </data>
   <data name="title" xml:space="preserve">
     <value>Title</value>
     <comment>Title</comment>
+  </data>
+  <data name="title_amharic" xml:space="preserve">
+    <value>Title (Amharic)</value>
+    <comment>Title (Amharic)</comment>
   </data>
   <data name="total_inspections" xml:space="preserve">
     <value>Total Inspections</value>
@@ -381,13 +617,33 @@
     <value>Update</value>
     <comment>Update</comment>
   </data>
+  <data name="Uppdate_progress_status" xml:space="preserve">
+    <value>Uppdate progress status</value>
+    <comment>Uppdate progress status</comment>
+  </data>
+  <data name="Uppdate_Upproval_Status" xml:space="preserve">
+    <value>Uppdate approval Status</value>
+    <comment>Uppdate approval Status</comment>
+  </data>
   <data name="user" xml:space="preserve">
     <value>Expert</value>
     <comment>Expert</comment>
   </data>
+  <data name="users" xml:space="preserve">
+    <value>Users</value>
+    <comment>Users</comment>
+  </data>
+  <data name="user_name" xml:space="preserve">
+    <value>User Name</value>
+    <comment>User Name</comment>
+  </data>
   <data name="user_not_found" xml:space="preserve">
     <value>User not found. Please try again</value>
     <comment>User not found. Please try again</comment>
+  </data>
+  <data name="User_Uproval" xml:space="preserve">
+    <value>User aproval</value>
+    <comment>User aproval</comment>
   </data>
   <data name="view_file" xml:space="preserve">
     <value>View file</value>
@@ -396,5 +652,9 @@
   <data name="year" xml:space="preserve">
     <value>Year</value>
     <comment>Year</comment>
+  </data>
+  <data name="you" xml:space="preserve">
+    <value>(You)</value>
+    <comment>(You)</comment>
   </data>
 </root>

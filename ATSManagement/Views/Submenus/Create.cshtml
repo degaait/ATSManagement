@@ -41,13 +41,6 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="SubmenuAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
-                                            <div class="col">
-                                                <input asp-for="SubmenuAmharic" class="form-control" />
-                                                <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
                                             <label asp-for="Controller" class="col-3 col-form-label">Controller</label>
                                             <div class="col">
                                                 <input asp-for="Controller" class="form-control" />
@@ -79,14 +72,20 @@
                                             <div class="col">
                                                 <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
                                             </div>
+                                        </div><div class="mb-3 row">
+                                            <label asp-for="SubmenuAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
+                                            <div class="col">
+                                                <input asp-for="SubmenuAmharic" class="form-control" />
+                                                <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Create" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>
@@ -96,8 +95,6 @@
         </div>
     </div>
 </div>
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @_localization.Getkey("institution")+": Edit";
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Inistitutions
+                        @_localization.Getkey("institution")
                     </h2>
                 </div>
             </div>
@@ -26,7 +26,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Edit</h4>
                         </div>
                         <form asp-action="Edit">
                             <div class="card-body">
@@ -35,21 +34,21 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="InistId" />
                                         <div class="mb-3 row">
-                                            <label asp-for="Name" class="col-3 col-form-label">Name</label>
+                                            <label asp-for="Name" class="col-3 col-form-label">@_localization.Getkey("name")</label>
                                             <div class="col">
                                                 <input asp-for="Name" class="form-control" />
                                                 <span asp-validation-for="Name" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="NameAmharic" class="col-3 col-form-label">Name (አማርኛ)</label>
+                                            <label asp-for="NameAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
                                             <div class="col">
                                                 <input asp-for="NameAmharic" class="form-control" />
                                                 <span asp-validation-for="NameAmharic" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="Description" class="col-3 col-form-label"></label>
+                                            <label asp-for="Description" class="col-3 col-form-label">@_localization.Getkey("Description")</label>
                                             <div class="col">
                                                 <input asp-for="Description" class="form-control" />
                                                 <span asp-validation-for="Description" class="text-danger"></span>
@@ -60,8 +59,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Save" class="btn btn-primary" />
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>
