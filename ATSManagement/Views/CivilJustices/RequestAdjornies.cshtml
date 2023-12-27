@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = _localization.Getkey("adjournment") + ":-Index";
 }
 <style type="text/css">
     .table thead th {
@@ -20,7 +20,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Adjournies dates activities
+                    @_localization.Getkey("adjournment")
                 </h2>
             </div>
             <!-- Page title actions -->
@@ -43,19 +43,19 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Adjourny Date
+                                            @_localization.Getkey("adjournment_date")
                                         </th>
                                         <th>
-                                            What is done
+                                            @_localization.Getkey("what_is_done")
                                         </th>
                                         <th>
-                                            Created Date
+                                            @_localization.Getkey("CreatedDate")
                                         </th>
                                         <th>
-                                            Created by
+                                            @_localization.Getkey("created_by")
                                         </th>
                                         <th>
-                                            Request Detail
+                                            @_localization.Getkey("requests")
                                         </th>
                                     </tr>
                                 </thead>

@@ -3,9 +3,8 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = _localization.Getkey("requests")+":Details";
 }
-
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -13,7 +12,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Requests
+                        @_localization.Getkey("requests")
                     </h2>
                 </div>
             </div>
@@ -26,51 +25,51 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title btn-danger">Detail Information</h4>
+                            <h4 class="card-title btn-danger">@_localization.Getkey("requests")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="RequestDetail" class="col-form-label-m">Request detail</label>
+                                        <label asp-for="RequestDetail" class="col-form-label-m">  @_localization.Getkey("Details")</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.RequestDetail)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedDate" class="col-form-label-m">Request Date</label>
+                                        <label asp-for="CreatedDate" class="col-form-label-m">@_localization.Getkey("CreatedDate")</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedBy" class="col-form-label-m">User</label>
+                                        <label asp-for="CreatedBy" class="col-form-label-m">@_localization.Getkey("user")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedDate" class="col-form-label-m">When did assigned to user</label>
+                                        <label asp-for="AssignedDate" class="col-form-label-m">@_localization.Getkey("user")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssignedDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">Due date</label>
+                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("duedate")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.DueDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">Assignment Remark</label>
+                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("assignmentDate")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssingmentRemark)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">Progress status</label>
+                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("progress_status")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         <div class="col-sm-2">
@@ -82,37 +81,37 @@
                                     </dd>
 
                                     <dt class="col-sm-2">
-                                        <label asp-for="TopStatus" class="col-form-label-m">Final Status?</label>
+                                        <label asp-for="TopStatus" class="col-form-label-m">@_localization.Getkey("final_status")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.TopStatus)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedBy" class="col-form-label-m">Assigned by</label>
+                                        <label asp-for="AssignedBy" class="col-form-label-m">@_localization.Getkey("Assigned_by")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssignedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.AssignedByNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedTo" class="col-form-label-m">Assigned to</label>
+                                        <label asp-for="AssignedTo" class="col-form-label-m">@_localization.Getkey("Assigned_to")</label>
                                     </dt>
                                     <dt class="col-sm-2">
                                         @Html.DisplayNameFor(model => model.CaseType)
-                                        <label asp-for="AssignedTo" class="col-form-label-m">Case type</label>
+                                        <label asp-for="AssignedTo" class="col-form-label-m">@_localization.Getkey("serviceType")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CaseType.CaseTypeName)
                                     </dd>
                                     
                                     <dt class="col-sm-2">
-                                        <label asp-for="InistId" class="col-form-label-m">Inistitution</label>
+                                        <label asp-for="InistId" class="col-form-label-m">@_localization.Getkey("institution")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Inist.Name)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="RequestedBy" class="col-form-label-m">Focal Person</label>
+                                        <label asp-for="RequestedBy" class="col-form-label-m">@_localization.Getkey("institution")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)

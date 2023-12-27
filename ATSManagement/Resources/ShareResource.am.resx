@@ -121,9 +121,21 @@
     <value>የስብሰባ ውጤት አስገባ</value>
     <comment>የስብሰባ ውጤት አስገባ</comment>
   </data>
+  <data name="Add_final_report" xml:space="preserve">
+    <value>የመጨረሻ ሪፖርት ጨምር</value>
+    <comment>የመጨረሻ ሪፖርት ጨምር</comment>
+  </data>
   <data name="add_participants" xml:space="preserve">
     <value>ተሳታፊዎችን አስገባ</value>
     <comment>ተሳታፊዎችን አስገባ</comment>
+  </data>
+  <data name="adjournment" xml:space="preserve">
+    <value>የፍርድ ቤት ቀጠሮ</value>
+    <comment>የፍርድ ቤት ቀጠሮ</comment>
+  </data>
+  <data name="adjournment_date" xml:space="preserve">
+    <value>የፍርድ ቤት ቀጠሮ ቀን</value>
+    <comment>የፍርድ ቤት ቀጠሮ ቀን</comment>
   </data>
   <data name="amharic_name" xml:space="preserve">
     <value>የአማርኛ ስም</value>
@@ -145,6 +157,14 @@
     <value>የቀጠሮ ቀን</value>
     <comment>የቀጠሮ ቀን</comment>
   </data>
+  <data name="Archive" xml:space="preserve">
+    <value>ወደ ማህደር ላክ</value>
+    <comment>ወደ ማህደር ላክ</comment>
+  </data>
+  <data name="Archived_Requests" xml:space="preserve">
+    <value>በማህደር የተቀመጡ ጥያቄዎች</value>
+    <comment>በማህደር የተቀመጡ ጥያቄዎች</comment>
+  </data>
   <data name="are_you_sure_todelete" xml:space="preserve">
     <value>እርግጠኛ ነዎት ይህን መሰረዝ ይፈልጋሉ?</value>
     <comment>እርግጠኛ ነዎት ይህን መሰረዝ ይፈልጋሉ?</comment>
@@ -156,6 +176,10 @@
   <data name="Assigned_by" xml:space="preserve">
     <value>የመደበው አካል</value>
     <comment>የመደበው አካል</comment>
+  </data>
+  <data name="Assigned_Requests" xml:space="preserve">
+    <value>የተመደቡ ጥያቄዎች</value>
+    <comment>የተመደቡ ጥያቄዎች</comment>
   </data>
   <data name="Assigned_to" xml:space="preserve">
     <value>የተመደበለት ባለሙያ</value>
@@ -189,6 +213,10 @@
     <value>ይመለሱ</value>
     <comment>ይመለሱ</comment>
   </data>
+  <data name="completed_Requests" xml:space="preserve">
+    <value>የተጠናቀቁ ጥያቄዎች</value>
+    <comment>የተጠናቀቁ ጥያቄዎች</comment>
+  </data>
   <data name="confirm_password" xml:space="preserve">
     <value>የይለፍ ቃል ያረጋግጡ</value>
     <comment>የይለፍ ቃል ያረጋግጡ</comment>
@@ -208,6 +236,14 @@
   <data name="CreateNew" xml:space="preserve">
     <value>አዲስ ጨምር</value>
     <comment>አዲስ ጨምር</comment>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>ቀን</value>
+    <comment>ቀን</comment>
+  </data>
+  <data name="datetime" xml:space="preserve">
+    <value>ቀንና ሰዓት</value>
+    <comment>ቀንና ሰዓት</comment>
   </data>
   <data name="delete" xml:space="preserve">
     <value>ሰርዝ</value>
@@ -238,8 +274,8 @@
     <comment>ማብራሪያ</comment>
   </data>
   <data name="Detail" xml:space="preserve">
-    <value>ዝርዝር</value>
-    <comment>ዝርዝር</comment>
+    <value>የጉዳይ መግለጫ</value>
+    <comment>የጉዳይ መግለጫ</comment>
   </data>
   <data name="doctype" xml:space="preserve">
     <value>የሰነድ አይነት</value>
@@ -250,8 +286,8 @@
     <comment>ሰነዶች</comment>
   </data>
   <data name="dueDate" xml:space="preserve">
-    <value>የሚያበቃበት ቀን </value>
-    <comment>የሚያበቃበት ቀን</comment>
+    <value>የሚጠበቀው የመለኪያ ቀን</value>
+    <comment>የሚጠበቀው የመለኪያ ቀን</comment>
   </data>
   <data name="edit" xml:space="preserve">
     <value>አርትዕ</value>
@@ -276,6 +312,14 @@
   <data name="Evaluation_criteria" xml:space="preserve">
     <value>የግምገማ መስፈርቶች</value>
     <comment>የግምገማ መስፈርቶች</comment>
+  </data>
+  <data name="Evidence_File" xml:space="preserve">
+    <value>ማስረጃ ፋይል</value>
+    <comment>ማስረጃ ፋይል</comment>
+  </data>
+  <data name="Evidence_Videos" xml:space="preserve">
+    <value>ማስረጃ ተንቀሳቃሽ ምስል</value>
+    <comment>ማስረጃ ተንቀሳቃሽ ምስል</comment>
   </data>
   <data name="Expected_response_date" xml:space="preserve">
     <value>ምላሽ የሚጠበቅበት ቀን</value>
@@ -385,6 +429,10 @@
     <value>የሕግ መግለጫ</value>
     <comment>የሕግ መግለጫ</comment>
   </data>
+  <data name="Letter_of_Upproval" xml:space="preserve">
+    <value>የማጽደቅያ ዳብዳቤ</value>
+    <comment>የማጽደቅያ ዳብዳቤ</comment>
+  </data>
   <data name="main_menu" xml:space="preserve">
     <value>ዋና ሜኑ</value>
     <comment>ዋና ሜኑ</comment>
@@ -445,6 +493,10 @@
     <value>የይለፍ ቃል</value>
     <comment>የይለፍ ቃል</comment>
   </data>
+  <data name="pending_requests" xml:space="preserve">
+    <value>በመሰራት ላይ ያሉ ጥያቄዎች</value>
+    <comment>በመሰራት ላይ ያሉ ጥያቄዎች</comment>
+  </data>
   <data name="phone_number" xml:space="preserve">
     <value>ስልክ ቁጥር</value>
     <comment>ስልክ ቁጥር</comment>
@@ -452,6 +504,10 @@
   <data name="priority" xml:space="preserve">
     <value>ቅድሚያ</value>
     <comment>ቅድሚያ</comment>
+  </data>
+  <data name="Progress_Activities" xml:space="preserve">
+    <value>የሂደት እንቅስቃሴዎች</value>
+    <comment>የሂደት እንቅስቃሴዎች</comment>
   </data>
   <data name="progress_status" xml:space="preserve">
     <value>የሂደት ሁኔታ</value>
@@ -509,6 +565,10 @@
     <value>ጥያቄዎች</value>
     <comment>ጥያቄዎች</comment>
   </data>
+  <data name="Requests_sent_back_to_Inistitutions" xml:space="preserve">
+    <value>ጥያቄዎች ወደ ተቋማት ተልከዋል</value>
+    <comment>ጥያቄዎች ወደ ተቋማት ተልከዋል</comment>
+  </data>
   <data name="Responded_by" xml:space="preserve">
     <value>ምላሽ የሰጠው አካል</value>
     <comment>ምላሽ የሰጠው አካል</comment>
@@ -528,6 +588,14 @@
   <data name="send" xml:space="preserve">
     <value>ላክ</value>
     <comment>ላክ</comment>
+  </data>
+  <data name="Sending_Remark" xml:space="preserve">
+    <value>የመለክያ አስተያየት </value>
+    <comment>የመለክያ አስተያየት</comment>
+  </data>
+  <data name="send_back" xml:space="preserve">
+    <value>መልሰህ ላክ</value>
+    <comment>መልሰህ ላክ</comment>
   </data>
   <data name="Send_Evaluations_to_Institutions" xml:space="preserve">
     <value>ግምገማዎችን ወደ ተቋማት ይላኩ</value>
@@ -592,6 +660,10 @@
   <data name="team_name_amharic" xml:space="preserve">
     <value>ስም (አማርኛ)</value>
     <comment>ስም (አማርኛ)</comment>
+  </data>
+  <data name="team_requests" xml:space="preserve">
+    <value>የቡድን ጥያቄዎች</value>
+    <comment>የቡድን ጥያቄዎች</comment>
   </data>
   <data name="team_upproval_status" xml:space="preserve">
     <value>የቡድን ማጽደቅ ሁኔታ</value>
@@ -661,9 +733,25 @@
     <value>የተጠቃሚ ማጽደቅ</value>
     <comment>የተጠቃሚ ማጽደቅ</comment>
   </data>
+  <data name="video" xml:space="preserve">
+    <value>ተንቀሳቃሽ ምስል</value>
+    <comment>ተንቀሳቃሽ ምስል</comment>
+  </data>
   <data name="view_file" xml:space="preserve">
     <value>ፋይል ይመልከቱ</value>
     <comment>ፋይል ይመልከቱ</comment>
+  </data>
+  <data name="what_is_done" xml:space="preserve">
+    <value>ምንድነው የተሰራው/የሚሰራው</value>
+    <comment>ምንድነው የተሰራው/የሚሰራው</comment>
+  </data>
+  <data name="Witnesses_and_Evidences" xml:space="preserve">
+    <value>ምስክሮች እና ማስረጃዎች</value>
+    <comment>ምስክሮች እና ማስረጃዎች</comment>
+  </data>
+  <data name="witnessName" xml:space="preserve">
+    <value>ምስክር</value>
+    <comment>ምስክር</comment>
   </data>
   <data name="year" xml:space="preserve">
     <value>ዓመት</value>
@@ -672,5 +760,9 @@
   <data name="you" xml:space="preserve">
     <value>አንተ</value>
     <comment>አንተ</comment>
+  </data>
+  <data name="you_want_tosend_inst" xml:space="preserve">
+    <value>ወደ ተቋማት መላክ ይፈልጋሉ?</value>
+    <comment>ወደ ተቋማት መላክ ይፈልጋሉ?</comment>
   </data>
 </root>

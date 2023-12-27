@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ATSManagement.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
@@ -101,8 +102,6 @@ namespace ATSManagement.ViewModels
         public string? FullName { get; set; }
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Email id is required")]
-        [RegularExpression(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z",
-                            ErrorMessage = "Please enter a valid email address")]
         public string? EmailAddress { get; set; }
         [DataType(DataType.PhoneNumber)]
         [Display(Name ="Phone Numebr")]
@@ -116,9 +115,52 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         public Guid? TeamId { get; set; }
         public IEnumerable<SelectListItem?>? Teams { get; set; }
-
         public bool IsDeputyApprovalNeeded {  get; set; }
+        [Display(Name = "Round")]
+        public int? Round;
+        public Guid? TypeId { get; set; }
 
+        [Display(Name = "Request types")]
+        public List<SelectListItem>? RequestTypes { get; set; }
+        [Display(Name = "Request Date")]
+        [DataType(DataType.DateTime)]
+        public DateTime? AppointmentDate { get; set; }
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "External User")]
+        public IEnumerable<TblExternalUser>? ExterUser { get; set; }
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Institutions")]
+        public Guid? IntId { get; set; }
+        public List<SelectListItem>? LegalStadiesCasetypes { get; set; }
+        public Guid? CaseTypeId { get; set; }
+
+        [Display(Name = "Case types")]
+        public List<SelectListItem>? CaseTypes { get; set; }
+        
+        [Required(ErrorMessage = "*")]
+        public Guid? ServiceTypeID { get; set; }
+        [Display(Name = "Document File")]
+        public IFormFile DocumentFile { get; set; }
+        [Display(Name = "Addional Questions")]
+        public List<CheckBoxItem>? PrioritiesQues { get; set; }
+        public string? TermsAndCondionts { get; set; }
+        public Guid? CompleteRequestID { get; set; }
+        public List<SelectListItem>? CompletedRequests { get; set; }
+        public List<SelectListItem>? RoundTypes { get; set; }
+        public int RoundTypeId { get; set; }
+    }
+    public class RoundModel
+    {
+        public int RoundTypeId { get; set; }
+        public string? Name { get; set; }
 
     }
+    public class CompletedRequests
+    {
+        public Guid CompleteRequestID { get; set; }
+        public string? RequestDetail { get; set; }
+    }
+
+
+
 }

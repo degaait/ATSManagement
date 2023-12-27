@@ -121,9 +121,21 @@
     <value>Add Appointment reasult</value>
     <comment>Add Appointment reasult</comment>
   </data>
+  <data name="Add_final_report" xml:space="preserve">
+    <value>Add final report</value>
+    <comment>Add final report</comment>
+  </data>
   <data name="add_participants" xml:space="preserve">
     <value>Add Parcipants</value>
     <comment>Add Parcipants</comment>
+  </data>
+  <data name="adjournment" xml:space="preserve">
+    <value>Adjournments</value>
+    <comment>Adjournments</comment>
+  </data>
+  <data name="adjournment_date" xml:space="preserve">
+    <value>Adjournement Date</value>
+    <comment>Adjournement Date</comment>
   </data>
   <data name="amharic_name" xml:space="preserve">
     <value>Name (አማርኛ)</value>
@@ -141,6 +153,14 @@
     <value>Appointment Date</value>
     <comment>Appointment Date</comment>
   </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Archive</value>
+    <comment>Archive</comment>
+  </data>
+  <data name="Archived_Requests" xml:space="preserve">
+    <value>Archived Requests</value>
+    <comment>Archived Requests</comment>
+  </data>
   <data name="are_you_sure_todelete" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
     <comment>Are you sure you want to delete this?</comment>
@@ -152,6 +172,10 @@
   <data name="Assigned_by" xml:space="preserve">
     <value>Assigned by</value>
     <comment>Assigned by</comment>
+  </data>
+  <data name="Assigned_Requests" xml:space="preserve">
+    <value>Assigned Requests</value>
+    <comment>Assigned Requests</comment>
   </data>
   <data name="Assigned_to" xml:space="preserve">
     <value>Assigned to</value>
@@ -185,6 +209,10 @@
     <value>Back to List</value>
     <comment>Back to List</comment>
   </data>
+  <data name="completed_Requests" xml:space="preserve">
+    <value>Completed Requests</value>
+    <comment>Completed Requests</comment>
+  </data>
   <data name="confirm_password" xml:space="preserve">
     <value>Confirm Password</value>
     <comment>Confirm Password</comment>
@@ -204,6 +232,14 @@
   <data name="CreateNew" xml:space="preserve">
     <value>Create New</value>
     <comment>Create New</comment>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>Datetime</value>
+    <comment>Datetime</comment>
+  </data>
+  <data name="datetime" xml:space="preserve">
+    <value>Date time</value>
+    <comment>Date time</comment>
   </data>
   <data name="delete" xml:space="preserve">
     <value>Delete</value>
@@ -234,8 +270,8 @@
     <comment>Description</comment>
   </data>
   <data name="Detail" xml:space="preserve">
-    <value>Details</value>
-    <comment>Details</comment>
+    <value>Case Description</value>
+    <comment>Case Description</comment>
   </data>
   <data name="doctype" xml:space="preserve">
     <value>Document type</value>
@@ -246,7 +282,7 @@
     <comment>Documentation</comment>
   </data>
   <data name="dueDate" xml:space="preserve">
-    <value>Due Date</value>
+    <value>Anticipated date of Delivery </value>
     <comment>Due Date</comment>
   </data>
   <data name="edit" xml:space="preserve">
@@ -268,6 +304,10 @@
   <data name="Evaluation_criteria" xml:space="preserve">
     <value>Evaluation criteria</value>
     <comment>Evaluation criteria</comment>
+  </data>
+  <data name="Evidence_File" xml:space="preserve">
+    <value>Evidence File</value>
+    <comment>Evidence File</comment>
   </data>
   <data name="Expected response date" xml:space="preserve">
     <value>Expected response date</value>
@@ -298,8 +338,8 @@
     <comment>Final Result</comment>
   </data>
   <data name="final_status" xml:space="preserve">
-    <value>Final Status</value>
-    <comment>Final Status</comment>
+    <value>Result</value>
+    <comment>Result</comment>
   </data>
   <data name="first_name" xml:space="preserve">
     <value>First Name</value>
@@ -377,6 +417,10 @@
     <value>Laws_Description</value>
     <comment>Laws_Description</comment>
   </data>
+  <data name="Letter_of_Upproval" xml:space="preserve">
+    <value>Letter of Upproval</value>
+    <comment>Letter of Upproval</comment>
+  </data>
   <data name="main_menu" xml:space="preserve">
     <value>Main Menu</value>
     <comment>Main Menu</comment>
@@ -437,6 +481,10 @@
     <value>Password</value>
     <comment>Password</comment>
   </data>
+  <data name="Pending_Requests" xml:space="preserve">
+    <value>Pending Requests</value>
+    <comment>Pending Requests</comment>
+  </data>
   <data name="phone_number" xml:space="preserve">
     <value>Phone Number</value>
     <comment>Phone Number</comment>
@@ -444,6 +492,10 @@
   <data name="priority" xml:space="preserve">
     <value>Priority</value>
     <comment>Priority</comment>
+  </data>
+  <data name="Progress_Activities" xml:space="preserve">
+    <value>Progress Activities</value>
+    <comment>Progress Activities</comment>
   </data>
   <data name="progress_status" xml:space="preserve">
     <value>Progress status</value>
@@ -497,6 +549,10 @@
     <value>Requests</value>
     <comment>Requests</comment>
   </data>
+  <data name="Requests_sent_back_to_Inistitutions" xml:space="preserve">
+    <value>Requests sent back to Inistitutions</value>
+    <comment>Requests sent back to Inistitutions</comment>
+  </data>
   <data name="Responded_Date" xml:space="preserve">
     <value>Responded Date</value>
     <comment>Responded Date</comment>
@@ -512,6 +568,14 @@
   <data name="send" xml:space="preserve">
     <value>Send</value>
     <comment>Send</comment>
+  </data>
+  <data name="Sending_Remark" xml:space="preserve">
+    <value>Sending Remark</value>
+    <comment>Sending Remark</comment>
+  </data>
+  <data name="send_back" xml:space="preserve">
+    <value>Send Back</value>
+    <comment>Send Back</comment>
   </data>
   <data name="Send_Evaluations_to_Institutions" xml:space="preserve">
     <value>Send Evaluations to Institutions</value>
@@ -576,6 +640,10 @@
   <data name="team_name_amharic" xml:space="preserve">
     <value>Team Name (Amharic)</value>
     <comment>Team Name (Amharic)</comment>
+  </data>
+  <data name="team_requests" xml:space="preserve">
+    <value>Team Requests</value>
+    <comment>Team Requests</comment>
   </data>
   <data name="team_upproval_status" xml:space="preserve">
     <value>Team Upproval status</value>
@@ -645,9 +713,25 @@
     <value>User aproval</value>
     <comment>User aproval</comment>
   </data>
+  <data name="video" xml:space="preserve">
+    <value>Videos</value>
+    <comment>Videos</comment>
+  </data>
   <data name="view_file" xml:space="preserve">
     <value>View file</value>
     <comment>View file</comment>
+  </data>
+  <data name="what_is_done" xml:space="preserve">
+    <value>What is Done?</value>
+    <comment>What is Done?</comment>
+  </data>
+  <data name="Witnesses_and_Evidences" xml:space="preserve">
+    <value>Witnesses and Evidences</value>
+    <comment>Witnesses and Evidences</comment>
+  </data>
+  <data name="witnessName" xml:space="preserve">
+    <value>Witneses Name</value>
+    <comment>Witneses Name</comment>
   </data>
   <data name="year" xml:space="preserve">
     <value>Year</value>
@@ -656,5 +740,9 @@
   <data name="you" xml:space="preserve">
     <value>(You)</value>
     <comment>(You)</comment>
+  </data>
+  <data name="you_want_tosend_inst" xml:space="preserve">
+    <value>You want to send to institutions?</value>
+    <comment>You want to send to institutions?</comment>
   </data>
 </root>

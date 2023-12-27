@@ -502,6 +502,7 @@ namespace ATSManagement.Controllers
             }
             else
             {
+                
                 model.PlanTitle = plats.PlanTitle;
                 model.AssignedBy = userId;
                 model.Users = AllUsers.Select(g => new SelectListItem

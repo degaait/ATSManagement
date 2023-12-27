@@ -111,6 +111,14 @@ namespace ATSManagement.Controllers
                     {
                         tblInternalUser.IsDefaultUser = false;
                     }
+                    if (userModel.specialRoles.ToString() == "IsSecretary")
+                    {
+                        tblInternalUser.IsSecretary = true;
+                    }
+                    else
+                    {
+                        tblInternalUser.IsSecretary = false;
+                    }
                     tblInternalUser.FirstName = userModel.FirstName;
                     tblInternalUser.LastName = userModel.LastName;
                     tblInternalUser.IsActive = userModel.IsActive;

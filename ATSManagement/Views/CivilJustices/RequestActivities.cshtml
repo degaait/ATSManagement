@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = _localization.Getkey("Progress_Activities") + ":-Index";
 }
 
 <style type="text/css">
@@ -21,7 +21,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Progress activities
+                    @_localization.Getkey("Progress_Activities")+":-Index";
                 </h2>
             </div>
             <!-- Page title actions -->
@@ -44,16 +44,16 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Detail
+                                            @_localization.Getkey("Detail")
                                         </th>
                                         <th>
-                                            Added Date
+                                            @_localization.Getkey("datetime")
                                         </th>
                                         <th>
-                                            Created by
+                                            @_localization.Getkey("created_by")
                                         </th>
                                         <th>
-                                            Request
+                                            @_localization.Getkey("requests")
                                         </th>
                                     </tr>
                                 </thead>

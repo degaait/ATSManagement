@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = _localization.Getkey("Progress_Activities")+ ":Edit";
 }
 
 <div class="page-wrapper">
@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Your Requests
+                        @_localization.Getkey("Progress_Activities")
                     </h2>
                 </div>
             </div>
@@ -26,7 +26,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Create</h4>
                         </div>
                         <form asp-action="Edit">
                             <div class="card-body">
@@ -35,7 +34,7 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="RequestId" />
                                         <div class="mb-3 row">
-                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail Detail</label>
+                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">@_localization.Getkey("Details")</label>
                                             <div class="col">
                                                 <input asp-for="RequestDetail" class="form-control" />
                                                 <span asp-validation-for="RequestDetail" class="text-danger"></span>

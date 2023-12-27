@@ -112,6 +112,10 @@
                                                     <input asp-for="specialRoles" type="radio" value="DefaultUser" class="form-check-input" />
                                                     <span class="form-check-label">@_localization.Getkey("isDefaultUser")</span>
                                                 </label>
+                                                <label class="form-check">
+                                                    <input asp-for="specialRoles" type="radio" value="IsSecretary" class="form-check-input" />
+                                                    <span class="form-check-label">IsSecretary?</span>
+                                                </label>
                                                 <span asp-validation-for="specialRoles" class="text-danger"></span>
                                             </div>
                                         </div>

@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Uppdate progress status";
+    ViewData["Title"] = _localization.Getkey("Uppdate_progress_status");
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -12,7 +12,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Uppdate progress status
+                        @_localization.Getkey("Uppdate_progress_status")
                     </h2>
                 </div>
             </div>
@@ -34,13 +34,13 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="RequestId" />
                                         <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Title</label>
+                                            <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
                                             <div class="col">
                                                 @Html.Raw(Model.RequestDetail)
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Status</label>
+                                            <label class="col-3 col-form-label">@_localization.Getkey("status")</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.ExternalRequestStatusID, new SelectList(Model.ExternalStatus, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="ExternalRequestStatusID" class="text-danger"></span>
@@ -51,8 +51,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Uppdate" class="btn btn-primary" />|
-                                    <a asp-action="AssignedRequests">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />|
+                                    <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>

@@ -65,6 +65,8 @@ namespace ATSManagement.ViewModels
         IsTeamLeader,
         [DataMember(Name = "Is Default User?")]
         DefaultUser,
+        [DataMember(Name = "Is Secretary?")]
+        IsSecretary,
     }
 
 }

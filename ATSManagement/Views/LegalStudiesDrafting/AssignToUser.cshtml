@@ -3,7 +3,8 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Edit";
+
+    ViewData["Title"] = _localization.Getkey("assign")+":Edit";
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -12,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        UnAssigned Request
+                        @_localization.Getkey("assign")
                     </h2>
                 </div>
             </div>
@@ -36,7 +37,7 @@
                                         <input type="hidden" asp-for="AssignedBy" />
                                         <input type="hidden" asp-for="CreatedBy" />
                                         <div class="mb-4 row">
-                                            <label asp-for="RequestDetail" class="col-3 col-form-label">Request Detail</label>
+                                            <label asp-for="RequestDetail" class="col-3 col-form-label">@_localization.Getkey("Detail")</label>
                                             <div class="col">
                                                 @if (Model.RequestDetail != null)
                                                 {
@@ -46,63 +47,63 @@
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="AssignedDate" class=" col-3 col-form-label">Assignment Date</label>
+                                            <label asp-for="AssignedDate" class=" col-3 col-form-label">@_localization.Getkey("assignmentDate")</label>
                                             <div class="col">
                                                 <input asp-for="AssignedDate" class="form-control" readonly />
                                                 <span asp-validation-for="AssignedDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="DueDate" class=" col-3 col-form-label">Due Date</label>
+                                            <label asp-for="DueDate" class=" col-3 col-form-label">@_localization.Getkey("duedate")</label>
                                             <div class="col">
                                                 <input asp-for="DueDate" class="form-control" />
                                                 <span asp-validation-for="DueDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="AssigneeTypeId" class="col-3 col-form-label">Assignment type</label>
+                                            <label asp-for="AssigneeTypeId" class="col-3 col-form-label">@_localization.Getkey("Assignment_Type")</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.AssigneeTypeId, new SelectList(Model.AssignmentTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="AssigneeTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row" id="divTeams" style="display:none">
-                                            <label asp-for="TeamId" class="col-3 col-form-label">Teams</label>
+                                            <label asp-for="TeamId" class="col-3 col-form-label">@_localization.Getkey("Team")</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.TeamId, new SelectList(Model.Teams, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="TeamId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row" id="divUsers" style="display:none">
-                                            <label asp-for="AssignedTo" class="col-3 col-form-label">Responsible User</label>
+                                            <label asp-for="AssignedTo" class="col-3 col-form-label">@_localization.Getkey("user")</label>
                                             <div class="col">
                                                 @Html.ListBoxFor(model => model.AssignedTo, new MultiSelectList(Model.AssignedTos, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
                                                 <span asp-validation-for="AssignedTo" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="DocId" class="col-3 col-form-label">Document type</label>
+                                            <label asp-for="DocId" class="col-3 col-form-label">@_localization.Getkey("doctype")</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="DocId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="ServiceTypeID" class="col-3 col-form-label">Service type</label>
+                                            <label asp-for="ServiceTypeID" class="col-3 col-form-label">@_localization.Getkey("serviceType")</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="Priorities" class="col-3 col-form-label">Priority</label>
+                                            <label asp-for="Priorities" class="col-3 col-form-label">@_localization.Getkey("priority")</label>
                                             <div class="col">
                                                 @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                                 <span asp-validation-for="PriorityId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-4 row">
-                                            <label asp-for="AssingmentRemark" class="col-3 col-form-label">Assignment Remark</label>
+                                            <label asp-for="AssingmentRemark" class="col-3 col-form-label">@_localization.Getkey("assingment_remark")</label>
                                             <div class="col">
                                                 @Html.EditorFor(model => model.AssingmentRemark, new { htmlAttributes = new { @class = "form-control" } })
                                                 <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
@@ -114,8 +115,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Assign" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("assign")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>
@@ -184,7 +185,7 @@
 
                 $("#AssigneeTypeId").change(function () {
                     var value = $("#AssigneeTypeId").val();
-                    alert(value);
+                    
                     if (value == "BDFB6C89-FB2A-45F9-82F1-D56A3A396847") {
                         $("#divTeams").show();
                         $("#divUsers").hide();

@@ -27,7 +27,6 @@ namespace ATSManagement.Controllers
             _localization = languageService;
 
         }
-
         public IActionResult Index()
         {
             return View();

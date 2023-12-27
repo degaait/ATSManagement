@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = _localization.Getkey("Details") + ":Create";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
 }
 <style type="text/css">
@@ -73,7 +73,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Request Replys
+                        @_localization.Getkey("Details")
                     </h2>
                 </div>
             </div>
@@ -86,7 +86,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Create</h4>
                         </div>
                         <form asp-action="Replies">
                             <div class="card-body">
@@ -97,21 +96,21 @@
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <input asp-for="InternalReplayedBy" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">Reply</label>
+                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">@_localization.Getkey("reply")</label>
                                             <div class="col">
                                                 <input asp-for="ReplayDetail" class="form-control" />
                                                 <span asp-validation-for="ReplayDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">Date</label>
+                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">@_localization.Getkey("datetime")</label>
                                             <div class="col">
                                                 <input asp-for="ReplyDate" readonly class="form-control" />
                                                 <span asp-validation-for="ReplyDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="IsSent" class=" col-2 col-form-label">You want to send to institutions?</label>
+                                            <label asp-for="IsSent" class=" col-2 col-form-label">@_localization.Getkey("Send_to_Institutions") </label>
                                             <div class="col">
                                                 <input asp-for="IsSent" type="checkbox" class="form-check" />
                                                 <span asp-validation-for="IsSent" class="text-danger"></span>
@@ -122,8 +121,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Reply" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>
@@ -132,7 +131,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Replies</h4>
+                            <h4 class="card-title">@_localization.Getkey("replies")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -147,7 +146,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="container">
-                                                        <h3 class="time-left" style="color:dodgerblue">(You)</h3>
+                                                        <h3 class="time-left" style="color:dodgerblue">@_localization.Getkey("you")</h3>
                                                         <br />
                                                         <p class="time-left">
                                                             @Html.Raw(@item.ReplayDetail)
@@ -155,7 +154,7 @@
                                                             <span class="time-left">@item.ReplyDate</span>
                                                             @if (item.Attachment != null)
                                                             {
-                                                                <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                                <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
                                                             }
                                                         </p>
                                                         <br />
@@ -166,7 +165,7 @@
                                                                 <path d="M13.5 6.5l4 4"></path>
                                                                 <path d="M16 19h6"></path>
                                                                 <path d="M19 16v6"></path>
-                                                            </svg>&nbsp;  Edit
+                                                            </svg>&nbsp;  @_localization.Getkey("edit")
                                                         </a>
                                                     </div>
                                                 </div>
@@ -187,7 +186,7 @@
                                                             <span class="time-right">@item.ReplyDate</span>
                                                             @if (item.Attachment != null)
                                                             {
-                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
                                                             }
                                                         </div>
                                                     </div>

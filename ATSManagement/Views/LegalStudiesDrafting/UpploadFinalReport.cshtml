@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Add final report";
+    ViewData["Title"] = _localization.Getkey("Add_final_report");
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -12,7 +12,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Add final report
+                        @_localization.Getkey("Add_final_report")
                     </h2>
                 </div>
             </div>
@@ -25,7 +25,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Upload</h4>
                         </div>
                         <form asp-action="UpploadFinalReport" method="post" enctype="multipart/form-data">
                             <div class="card-body">
@@ -34,13 +33,13 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="RequestId" />
                                         <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Title</label>
+                                            <label class="col-3 col-form-label"> @_localization.Getkey("title")</label>
                                             <div class="col">
                                                 @Html.Raw(Model.RequestDetail)
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Report file</label>
+                                            <label class="col-3 col-form-label"> @_localization.Getkey("attachment")</label>
                                             <div class="col">
                                                 <input asp-for="finalReport" type="file" class="form-file-button" />
                                                 <span asp-validation-for="finalReport" class="text-danger"></span>
@@ -51,8 +50,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Upload" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>

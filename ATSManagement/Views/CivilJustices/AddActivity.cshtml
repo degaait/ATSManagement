@@ -5,7 +5,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject AtsdbContext _context;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = _localization.Getkey("Progress_Activities");
     Guid? ID = ViewBag.RequestId;
     var activities = _context.TblActivities
                 .Include(x => x.Request)
@@ -28,7 +28,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Assignee Activities
+                        @_localization.Getkey("Progress_Activities");
                     </h2>
                 </div>
             </div>
@@ -41,7 +41,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Create</h4>
                         </div>
                         <form asp-action="AddActivity">
                             <div class="card-body">
@@ -52,14 +51,14 @@
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <input asp-for="CreatedBy" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="ActivityDetail" class=" col-2 col-form-label">Activity</label>
+                                            <label asp-for="ActivityDetail" class=" col-2 col-form-label">@_localization.Getkey("Progress_Activities")</label>
                                             <div class="col">
                                                 <input asp-for="ActivityDetail" class="form-control" />
                                                 <span asp-validation-for="ActivityDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AddedDate" class=" col-2 col-form-label">Date</label>
+                                            <label asp-for="AddedDate" class=" col-2 col-form-label">@_localization.Getkey("datetime")</label>
                                             <div class="col">
                                                 <input asp-for="AddedDate" readonly class="form-control" />
                                                 <span asp-validation-for="AddedDate" class="text-danger"></span>
@@ -70,8 +69,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Add" class="btn btn-primary" />|
-                                    <a asp-action="AssignedRequests">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                                    <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>
@@ -80,7 +79,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Activities List</h4>
+                            <h4 class="card-title"> @_localization.Getkey("Progress_Activities")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -88,16 +87,16 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                Reply Details
+                                                @_localization.Getkey("Details")
                                             </th>
                                             <th>
-                                                Date time
+                                                @_localization.Getkey("datetime")
                                             </th>
                                             <th>
-                                                Assignee
+                                                @_localization.Getkey("user")
                                             </th>
                                             <th>
-                                                Request
+                                                @_localization.Getkey("request")
                                             </th>
                                             <th></th>
                                         </tr>
@@ -124,7 +123,7 @@
                                                     @Html.Raw(requestName.RequestDetail)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId">Delete</a>
+                                                    <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId"> @_localization.Getkey("delete")</a>
                                                 </td>
                                             </tr>
                                         }

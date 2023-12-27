@@ -59,7 +59,6 @@ namespace ATSManagement.Controllers
                 }
                 return View(atsdbContext);
             }
-
             else
             {
                 return RedirectToAction(nameof(AssignedRequests));
@@ -92,7 +91,6 @@ namespace ATSManagement.Controllers
                 }
                 return View(atsdbContext);
             }
-
             else
             {
                 return RedirectToAction(nameof(AssignedRequests));

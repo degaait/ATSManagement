@@ -503,7 +503,6 @@ namespace ATSManagementExternal.Controllers
             };
 
             var completedRequests = _context.TblRequests.Where(x => x.IsArchived == true).ToList();
-
             foreach (var item in completedRequests)
             {
                 completedRequests1 = new CompletedRequests();
@@ -511,7 +510,6 @@ namespace ATSManagementExternal.Controllers
                 completedRequests1.CompleteRequestID = item.RequestId;
                 completeds.Add(completedRequests1);
             }
-
             model.RoundTypes = modelr.Select(s => new SelectListItem
             {
                 Text = s.Name.ToString(),

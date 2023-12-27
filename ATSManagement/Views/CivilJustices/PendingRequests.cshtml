@@ -5,7 +5,7 @@
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
-    ViewData["Title"] = "Requests";
+    ViewData["Title"] = _localization.Getkey("pending_requests");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 }
@@ -25,7 +25,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    On going Requests
+                    @_localization.Getkey("pending_requests")
                 </h2>
             </div>
         </div>
@@ -39,7 +39,6 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Requests</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -47,52 +46,52 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Detail
+                                            @_localization.Getkey("Detail")
                                         </th>
                                         <th>
-                                            Created Date
+                                            @_localization.Getkey("CreatedDate")
                                         </th>
                                         <th>
-                                            Assigned date
+                                            @_localization.Getkey("assignmentDate")
                                         </th>
                                         <th>
-                                            Due date
+                                            @_localization.Getkey("dueDate")
                                         </th>
                                         <th>
-                                            Assignment Remark
+                                            @_localization.Getkey("assingment_remark")
                                         </th>
                                         <th>
-                                            Progress status
+                                            @_localization.Getkey("progress_status")
                                         </th>
                                         <th>
-                                            Priority
+                                            @_localization.Getkey("priority")
                                         </th>
                                         <th>
-                                            Team upproved
+                                            @_localization.Getkey("Team_Uproval")
                                         </th>
                                         <th>
-                                            Department upproved
+                                            @_localization.Getkey("department_approval")
                                         </th>
                                         <th>
-                                            Deputy upproved
+                                            @_localization.Getkey("Deputy_aproval")
                                         </th>
                                         <th>
-                                            Final status
+                                            @_localization.Getkey("final_status")
                                         </th>
                                         <th>
-                                            Assigned by
+                                            @_localization.Getkey("Assigned_by")
                                         </th>
                                         <th>
-                                            Assigned to
+                                            @_localization.Getkey("Assigned_to")
                                         </th>
                                         <th>
-                                            Department
+                                            @_localization.Getkey("department")
                                         </th>
                                         <th>
-                                            Inistitution
+                                            @_localization.Getkey("institution")
                                         </th>
                                         <th>
-                                            External User
+                                            @_localization.Getkey("external_users")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -179,14 +178,14 @@
                                                             {
                                                                 <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                                    Replies
+                                                                    @_localization.Getkey("replies")
                                                                 </a>
                                                                 <a class="dropdown-item" asp-action="UppdateDesicionStatus" asp-route-id="@item.RequestId">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                         <path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
                                                                     </svg>&nbsp;
-                                                                    Uppdate Upproval Status
+                                                                    @_localization.Getkey("Uppdate_progress_status")
                                                                 </a>
                                                                 <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -197,7 +196,7 @@
                                                                         <path d="M13 19h5"></path>
                                                                         <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                         <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                    </svg> &nbsp;Progress Activities
+                                                                    </svg> &nbsp;@_localization.Getkey("Progress_Activities")
                                                                 </a>
                                                                 <a class="dropdown-item" asp-action="RequestAdjornies" asp-route-id="@item.RequestId">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -208,7 +207,7 @@
                                                                         <path d="M13 19h5"></path>
                                                                         <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                         <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                    </svg> &nbsp;Adjornies
+                                                                    </svg> &nbsp;@_localization.Getkey("adjournment")
                                                                 </a>
                                                                 <a class="dropdown-item" asp-action="WitnessesandEvidences" asp-route-id="@item.RequestId">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -219,7 +218,7 @@
                                                                         <path d="M13 19h5"></path>
                                                                         <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                         <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                    </svg> &nbsp;Witnesses and Evidences
+                                                                    </svg> &nbsp;@_localization.Getkey("Witnesses_and_Evidences")
                                                                 </a>
                                                                 <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -230,7 +229,7 @@
                                                                         <path d="M13 19h5"></path>
                                                                         <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                         <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                    </svg> &nbsp;Detail
+                                                                    </svg> &nbsp;@_localization.Getkey("Detail")
                                                                 </a>
                                                             }
 

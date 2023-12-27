@@ -32,9 +32,9 @@ namespace ATSManagementExternal.Controllers
             List<MenuModels> _menus = new List<MenuModels>();
             if (collection.Password != null && collection.UserName != null)
             {
-                string realPas = PawwordEncryption.DecryptPasswordBase64String("MTIzNDU2");
+              
                 string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
-                TblExternalUser userinfo = (from items in _context.TblExternalUsers where items.UserName == collection.UserName && items.Password == password select items).FirstOrDefault();
+                TblExternalUser userinfo = (from items in _context.TblExternalUsers where (items.UserName == collection.UserName && items.Password == password)|| (items.Email == collection.UserName && items.Password == password) select items).FirstOrDefault();
 
                 if (userinfo != null)
                 {
