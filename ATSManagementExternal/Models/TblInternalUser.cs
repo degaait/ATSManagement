@@ -37,6 +37,8 @@ public partial class TblInternalUser
 
     public bool? IsDefaultUser { get; set; }
 
+    public bool? IsSecretary { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual ICollection<TblActivity> TblActivities { get; set; } = new List<TblActivity>();

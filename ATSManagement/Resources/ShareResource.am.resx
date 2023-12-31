@@ -585,6 +585,10 @@
     <value>አስቀምጥ</value>
     <comment>አስቀምጥ</comment>
   </data>
+  <data name="secretary" xml:space="preserve">
+    <value>ጸሓፊ</value>
+    <comment>ጸሓፊ</comment>
+  </data>
   <data name="send" xml:space="preserve">
     <value>ላክ</value>
     <comment>ላክ</comment>

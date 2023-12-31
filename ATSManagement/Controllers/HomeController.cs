@@ -40,7 +40,7 @@ namespace ATSManagement.Controllers
             ViewBag.HighPriorityRequests = _context.TblRequests.Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73")).ToList().Count;
             ViewBag.RequestsFromeCJAD = _context.TblRequestDepartmentRelations.Include(x=>x.Dep).Where(x => x.Dep.DepCode == "CVA").ToList().Count;
             ViewBag.RequestFromLegalStudies = _context.TblRequestDepartmentRelations.Include(x => x.Dep).Where(x => x.Dep.DepCode == "LSDC").ToList().Count;
-            // await SendMail();
+            ViewBag.ReturnedRequests=_context.TblRequests.Where(s=>s.IsSenttoInst==true).ToList().Count;           
             return View();
         }
 

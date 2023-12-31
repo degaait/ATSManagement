@@ -15,5 +15,7 @@ public partial class TblMainMenu
 
     public string? ClassSvg { get; set; }
 
+    public string? MenuNameAmharic { get; set; }
+
     public virtual ICollection<TblSubmenu> TblSubmenus { get; set; } = new List<TblSubmenu>();
 }

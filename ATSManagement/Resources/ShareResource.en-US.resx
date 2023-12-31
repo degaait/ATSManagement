@@ -565,6 +565,10 @@
     <value>Save</value>
     <comment>Save</comment>
   </data>
+  <data name="secretary" xml:space="preserve">
+    <value>Secretary</value>
+    <comment>Secretary</comment>
+  </data>
   <data name="send" xml:space="preserve">
     <value>Send</value>
     <comment>Send</comment>

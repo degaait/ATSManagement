@@ -13,7 +13,6 @@
         font-weight: bolder;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <!-- Page header -->
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -173,13 +172,20 @@
 </div>
 @section scripts{
 
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
-        new DataTable('#role', {
-            deferRender: true,
-            scrollCollapse: true,
-            scroller: true,
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
         });
+
     </script>
     <script type="text/javascript">
         var dp = $("#Date").datepicker({

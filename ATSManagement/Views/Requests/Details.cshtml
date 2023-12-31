@@ -30,115 +30,46 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <dl class="row">
-                                    <dt class="col-sm-2">
-                                        <label asp-for="RequestDetail" class="col-form-label-m">@_localization.Getkey("Detail")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.Raw(Model.RequestDetail)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="CreatedDate" class="col-form-label-m">@_localization.Getkey("CreatedDate")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.CreatedDate)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="CreatedBy" class="col-form-label-m">@_localization.Getkey("user")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="AssignedDate" class="col-form-label-m">@_localization.Getkey("assignmentDate")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.AssignedDate)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("dueDate")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.DueDate)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("assingment_remark")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.AssingmentRemark)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">@_localization.Getkey("progress_status")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        <div class="col-sm-2">
-                                            @if (Model.ExternalRequestStatusId != null)
-                                            {
-                                                @Html.Raw(Model.ExternalRequestStatus.StatusWithColor)
-                                            }
+                                <div class="accordion" id="accordion-example">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading-1">
+                                            <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                                Request from @Html.DisplayFor(model => model.Inist.Name)
+                                            </button>
+                                        </h2>
+                                        <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
+                                            <div class="accordion-body pt-0">
+                                                <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>. This request is created by
+                                                @{
+                                                    if (Model.CreatedBy != Guid.Empty)
+                                                    {
+                                                        <strong>Secretary</strong>
+                                                        @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
+                                                        @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
+                                                    }
+                                                    else if (Model.RequestedBy != Guid.Empty)
+                                                    {
+                                                        <strong>Externa User</strong>
+                                                        @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                        @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
+                                                    }
+
+                                                    if (Model.ExternalRequestStatusId != null)
+                                                    {
+                                                        <label>
+                                                            Currently the status of request this request is at
+                                                            <strong>
+
+                                                                @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
+                                                            </strong>
+                                                            </label>
+                                                        }
+
+                                                }
+                                            </div>
                                         </div>
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="TopStatus" class="col-form-label-m">@_localization.Getkey("final_status")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.TopStatus)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="AssignedBy" class="col-form-label-m">@_localization.Getkey("Assigned_by")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.AssignedByNavigation.FirstName)
-                                        @Html.DisplayFor(model => model.AssignedByNavigation.MidleName)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="AssignedTo" class="col-form-label-m">@_localization.Getkey("Assigned_by")</label>
-                                    </dt>
-                                    <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.CaseType)
-                                        <label asp-for="AssignedTo" class="col-form-label-m">@_localization.Getkey("serviceType")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.CaseType.CaseTypeName)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="InistId" class="col-form-label-m">@_localization.Getkey("institution")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Inist.Name)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="RequestedBy" class="col-form-label-m">@_localization.Getkey("FocalPerson")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
-                                        @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="TeamUpprovalStatus" class="col-form-label-m">@_localization.Getkey("team_upproval_status")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        <div class="col-sm-2">
-                                            @Html.Raw(Model.TeamUpprovalStatusNavigation.StatusWithColor)
-                                        </div>
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="DepartmentUpprovalStatus" class="col-form-label-m">@_localization.Getkey("department_upproval_status")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        <div class="col-sm-2">
-                                            @Html.Raw(Model.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                        </div>
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="DeputyUprovalStatus" class="col-form-label-m">@_localization.Getkey("deputy_upproval_status")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        <div class="col-sm-2">
-                                            @Html.Raw(Model.DeputyUprovalStatusNavigation.StatusWithColor)
-                                        </div>
-                                    </dd>
-                                </dl>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer text-end">

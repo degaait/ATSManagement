@@ -2678,7 +2678,7 @@ progress {
   line-height: 1.4285714286;
 }
 
-.col-form-label-m {
+.col-form-label {
   padding-top: calc(0.5rem + var(--tblr-border-width));
   padding-bottom: calc(0.5rem + var(--tblr-border-width));
   font-size: 1.25rem;

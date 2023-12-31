@@ -39,6 +39,8 @@
     </style>
     <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet" />
 </head>
 <body class="layout-fluid">
     <script src="~/dist/js/demo-theme.min.js?1684106062" type="text/javascript" asp-append-version="true"></script>
@@ -110,8 +112,9 @@
                                                         <a href="#" class="list-group-item-actions show">
                                                             <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                                                            </svg>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -190,7 +193,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
                                         </span>
                                         <span class="nav-link-title">
-                                            @_localization.Getkey("home")                                            
+                                            @_localization.Getkey("home")
                                         </span>
                                     </a>
                                 </li>
@@ -241,7 +244,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-action="Documentation" asp-controller="Help" target="_blank" rel="noopener">
-                                            @_localization.Getkey("documentation")                                           
+                                            @_localization.Getkey("documentation")
                                         </a>
                                     </div>
                                 </li>
@@ -360,6 +363,14 @@
     <script src="~/dist/libs/litepicker/dist/litepicker.js?1684106062" defer></script>
     <script src="~/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062" defer></script>
     <script src="~/dist/libs/tinymce/tinymce.min.js?1684106062" defer></script>
+
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("NToastNotify")

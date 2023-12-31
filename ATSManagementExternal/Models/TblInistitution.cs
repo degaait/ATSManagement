@@ -11,6 +11,8 @@ public partial class TblInistitution
 
     public string? Description { get; set; }
 
+    public string? NameAmharic { get; set; }
+
     public virtual ICollection<TblAppointment> TblAppointments { get; set; } = new List<TblAppointment>();
 
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();

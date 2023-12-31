@@ -32,28 +32,28 @@
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="ActivityDetail" class="col-form-label-m">@_localization.Getkey("Details")</label>
+                                        <label asp-for="ActivityDetail" class="col-form-label">@_localization.Getkey("Details")</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.ActivityDetail)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AddedDate" class="col-form-label-m">@_localization.Getkey("datetime")</label>
+                                        <label asp-for="AddedDate" class="col-form-label">@_localization.Getkey("datetime")</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AddedDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedByNavigation" class="col-form-label-m"> @_localization.Getkey("created_by")</label>
+                                        <label asp-for="CreatedByNavigation" class="col-form-label"> @_localization.Getkey("created_by")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedByNavigation" class="col-form-label-m"> @_localization.Getkey("requests")</label>
+                                        <label asp-for="CreatedByNavigation" class="col-form-label"> @_localization.Getkey("requests")</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.Request.RequestDetail)

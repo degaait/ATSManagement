@@ -5,7 +5,6 @@
 @{
     ViewData["Title"] = @_localization.Getkey("users");
 }
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <style type="text/css">
     .table thead th {
         text-transform: capitalize !important;
@@ -25,12 +24,12 @@
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
                     <a asp-action="Create" asp-controller="InternalUsers" class="btn btn-primary d-none d-sm-inline-block">
-                        
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                         @_localization.Getkey("CreateNew")
                     </a>
                     <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                       
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                     </a>
                 </div>
@@ -55,10 +54,10 @@
                                             @_localization.Getkey("first_name")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("middle_name")                                            
+                                            @_localization.Getkey("middle_name")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("last_name")                                            
+                                            @_localization.Getkey("last_name")
                                         </th>
                                         <th>
                                             @_localization.Getkey("email_address")
@@ -158,14 +157,20 @@
 
 @section scripts{
 
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
-        new DataTable('#role', {
-            deferRender: true,
-            scrollCollapse: true,
-            scroller: true,
 
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
         });
+
     </script>
 
 }

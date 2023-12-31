@@ -75,6 +75,8 @@ public partial class TblInspectionPlan
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 
+    public virtual ICollection<TblPlanCatagory> TblPlanCatagories { get; set; } = new List<TblPlanCatagory>();
+
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
 
     public virtual ICollection<TblSentInspection> TblSentInspections { get; set; } = new List<TblSentInspection>();

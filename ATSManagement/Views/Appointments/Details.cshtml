@@ -31,39 +31,39 @@
                         <div class="card-body">
                             <dl class="row">
                                 <dt class="col-sm-2">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m"> @_localization.Getkey("Details")</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label"> @_localization.Getkey("Details")</label>
 
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.Raw(Model.AppointmentDetail)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m"> @_localization.Getkey("meeting_outcome")</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label"> @_localization.Getkey("meeting_outcome")</label>
 
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.DescusionFinalComeup)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("CreatedDate")</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label">@_localization.Getkey("CreatedDate")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.CreatedDate)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("appointment_Date")</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label">@_localization.Getkey("appointment_Date")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.AppointmentDate)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("institution")</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label">@_localization.Getkey("institution")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.Inist.Name)
                                 </dd>
                                 <dt class="col-sm-2">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("RequestedUser")</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label">@_localization.Getkey("RequestedUser")</label>
                                 </dt>
                                 <dd class="col-sm-10">
                                     @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)

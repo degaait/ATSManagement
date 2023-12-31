@@ -130,27 +130,33 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.TblActivities == null)
+            if (id == null || _context.TblRequests == null)
             {
                 return NotFound();
             }
 
-            var tblCivilJustice = await _context.TblRequests
+            var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
-                .Include(t => t.Inist)
-                .Include(t => t.RequestedByNavigation)
+                .Include(t => t.CreatedByNavigation)
+                .Include(t => t.DepartmentUpprovalStatusNavigation)
+                .Include(t => t.DeputyUprovalStatusNavigation)
+                .Include(t => t.DocType)
                 .Include(t => t.ExternalRequestStatus)
-                .Include(x => x.DepartmentUpprovalStatusNavigation)
-                .Include(x => x.DeputyUprovalStatusNavigation)
-                .Include(y => y.TeamUpprovalStatusNavigation)
+                .Include(t => t.Inist)
+                .Include(t => t.Priority)
+                .Include(t => t.QuestType)
+                .Include(t => t.RequestedByNavigation)
+                .Include(t => t.ServiceType)
+                .Include(t => t.TeamUpprovalStatusNavigation)
+                .Include(t => t.UserUpprovalStatusNavigation)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
-            if (tblCivilJustice == null)
+            if (tblRequest == null)
             {
                 return NotFound();
             }
 
-            return View(tblCivilJustice);
+            return View(tblRequest);
         }
         public IActionResult Create()
         {
@@ -789,7 +795,6 @@ namespace ATSManagement.Controllers
             repliesModel.ReplayDetail = reply.ReplayDetail;           
             return View(repliesModel);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -843,8 +848,7 @@ namespace ATSManagement.Controllers
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
-                                                    .Include(t => t.AssignedByNavigation)
-                                                    
+                                                    .Include(t => t.AssignedByNavigation)                                                    
                                                     .Include(t => t.Inist)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
@@ -871,15 +875,14 @@ namespace ATSManagement.Controllers
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
-                                                    .Include(t => t.AssignedByNavigation)
-                                                    
+                                                    .Include(t => t.AssignedByNavigation)                                                    
                                                     .Include(t => t.Inist)
                                                     .Include(t=>t.TopStatus)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
                                                     .Include(x => x.ExternalRequestStatus)
                                                     .Include(s=>s.UserUpprovalStatusNavigation)
-                                                      .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                                    .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
                                                     .Include(y => y.TeamUpprovalStatusNavigation)
                                                     .Include(t => t.Priority).Where(x=>x.RequestId == item).FirstOrDefault();
@@ -905,16 +908,16 @@ namespace ATSManagement.Controllers
             {
                 Request = new TblRequest();
                 Request = _context.TblRequests
-             .Include(t => t.AssignedByNavigation)
-             .Include(t => t.Inist)
-             .Include(s=>s.TopStatus)
-             .Include(t => t.RequestedByNavigation)
-             .Include(t => t.CreatedByNavigation)
-             .Include(x => x.ExternalRequestStatus)
-             .Include(x => x.DepartmentUpprovalStatusNavigation)
-             .Include(x => x.DeputyUprovalStatusNavigation)
-             .Include(y => y.TeamUpprovalStatusNavigation)
-             .Include(t => t.Priority).Where(a => a.RequestId == item.RequestId).FirstOrDefault();
+                                 .Include(t => t.AssignedByNavigation)
+                                 .Include(t => t.Inist)
+                                 .Include(s=>s.TopStatus)
+                                 .Include(t => t.RequestedByNavigation)
+                                 .Include(t => t.CreatedByNavigation)
+                                 .Include(x => x.ExternalRequestStatus)
+                                 .Include(x => x.DepartmentUpprovalStatusNavigation)
+                                 .Include(x => x.DeputyUprovalStatusNavigation)
+                                 .Include(y => y.TeamUpprovalStatusNavigation)
+                                 .Include(t => t.Priority).Where(a => a.RequestId == item.RequestId).FirstOrDefault();
                 atsdbContext.Add(Request);
 
             }
@@ -1201,8 +1204,7 @@ namespace ATSManagement.Controllers
             }).ToList();
             return View(model);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost][ValidateAntiForgeryToken]
         public async Task<IActionResult> UppdateProgressStatus(CivilJusticeExternalRequestModel model)
         {
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
@@ -1352,9 +1354,7 @@ namespace ATSManagement.Controllers
             }
             return model;
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
+        [HttpPost][ValidateAntiForgeryToken][AllowAnonymous]
         public async Task<IActionResult> AddHistory(DocumentHistoryModel? model)
         {
             List<string> emails = new List<string>();
@@ -1452,9 +1452,7 @@ namespace ATSManagement.Controllers
             model.PriorityId = drafting.PriorityId;
             return View(model);
         }
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HttpPost][AllowAnonymous][ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignFromTeam(CivilJusticeExternalRequestModel model)
         {
             List<string>? emails = new List<string>();

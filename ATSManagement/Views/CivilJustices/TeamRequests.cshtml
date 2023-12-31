@@ -18,7 +18,6 @@
         font-weight: bolder;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <!-- Page header -->
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -51,23 +50,11 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <table class="table table-bordered" id="role">
+                            <table class="table cell-border" id="role">
                                 <thead>
                                     <tr>
                                         <th>
-                                            @_localization.Getkey("Detail")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("CreatedDate")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("created_by")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("assignmentDate")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("dueDate")
+                                            @_localization.Getkey("Details")
                                         </th>
                                         <th>
                                             @_localization.Getkey("assingment_remark")
@@ -76,37 +63,13 @@
                                             @_localization.Getkey("progress_status")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("priority")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("Team_Uproval")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("department_approval")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("Deputy_aproval")
+                                            Approval status
                                         </th>
                                         <th>
                                             @_localization.Getkey("final_status")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("Assigned_by")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("Assigned_to")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("serviceType")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("department")
-                                        </th>
-                                        <th>
                                             @_localization.Getkey("institution")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("external_users")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -116,76 +79,55 @@
                                     {
                                         var isRequest = (from items in ats.TblCivilJustices where items.RequestId == item.RequestId select items).FirstOrDefault();
                                         var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
-
                                         <tr>
                                             <td>
-                                                @Html.Raw(item.RequestDetail)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.DueDate)
+                                                @Html.Raw(item.RequestDetail) --> with service type <strong> @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)</strong>
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                                <label>
+                                                    .--> @_localization.Getkey("Assigned_to")
+                                                    @if (assigneess != null)
+                                                    {
+                                                        foreach (var assignees in assigneess)
+                                                        {
+                                                            @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
+                                                            @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                        }
+                                                    }
+                                                </label> and @_localization.Getkey("Assigned_by")--> <strong>
+                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
+                                                <label>
+                                                    . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+                                                </label>
                                             </td>
                                             <td>
                                                 @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
                                             </td>
                                             <td>
-                                                @if (item.PriorityId != null)
-                                                {
-                                                    @Html.Raw(item.Priority.PriorityNameWithColor)
-                                                }
-
-                                            </td>
-                                            <td>
+                                                <label>Team:-</label>
                                                 @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
-                                            </td>
-                                            <td>
+                                                <label>Department:</label>
                                                 @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                            </td>
-                                            <td>
+                                                <label>Deputy:</label>
                                                 @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
                                             </td>
                                             <td>
-                                                @Html.Raw(item.TopStatus)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
-                                            </td>
-                                            <td>
-                                                @if (assigneess != null)
+                                                @if (item.TopStatus != null)
                                                 {
-                                                    foreach (var assignees in assigneess)
-                                                    {
-                                                        @Html.DisplayFor(modelItem => assignees.FirstName)
-                                                        @Html.DisplayFor(modelItem => assignees.MidleName)
-                                                    }
+                                                    @Html.Raw(item.TopStatus.StatusName)
                                                 }
-
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CaseType.CaseTypeName)
-                                            </td>
-                                            <td>
-                                                <label>Civil Justice Administration</label>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Inist.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                @Html.DisplayFor(modelItem => item.Inist.Name) <label>
+                                                    -->
+                                                    . Focal person <strong>
+                                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                    </strong>
+                                                </label>
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
@@ -209,7 +151,6 @@
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
                                                                         Replies
                                                                     </a>
-
                                                                 }
                                                             }
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestId">
@@ -256,13 +197,20 @@
 </div>
 @section scripts{
 
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
-        new DataTable('#role', {
-            deferRender: true,
-            scrollCollapse: true,
-            scroller: true,
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
         });
+
     </script>
     <script type="text/javascript">
         var dp = $("#Date").datepicker({

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
+
 public partial class TblInternalUser
 {
     public Guid UserId { get; set; }
@@ -35,7 +36,8 @@ public partial class TblInternalUser
     public Guid? TeamId { get; set; }
 
     public bool? IsDefaultUser { get; set; }
-    public bool? IsSecretary { get;set; }
+
+    public bool? IsSecretary { get; set; }
 
     public virtual TblDepartment? Dep { get; set; }
 

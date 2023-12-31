@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
+
 public partial class TblMainMenu
 {
     public Guid MenuId { get; set; }
@@ -9,10 +10,12 @@ public partial class TblMainMenu
     public string? MenuName { get; set; }
 
     public string? MenuDescription { get; set; }
-    public string? MenuNameAmharic {  get; set; }
+
     public int? DisplayOrder { get; set; }
 
     public string? ClassSvg { get; set; }
+
+    public string? MenuNameAmharic { get; set; }
 
     public virtual ICollection<TblSubmenu> TblSubmenus { get; set; } = new List<TblSubmenu>();
 }

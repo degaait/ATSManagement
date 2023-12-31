@@ -19,7 +19,11 @@ public partial class TblSpecificPlan
 
     public Guid? InspectionPlanId { get; set; }
 
+    public int? PlanCatId { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblInspectionPlan? InspectionPlan { get; set; }
+
+    public virtual TblPlanCatagory? PlanCat { get; set; }
 }

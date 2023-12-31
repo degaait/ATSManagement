@@ -108,6 +108,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblMonth> TblMonths { get; set; }
 
+    public virtual DbSet<TblPlanCatagory> TblPlanCatagories { get; set; }
+
     public virtual DbSet<TblPlanInistitution> TblPlanInistitutions { get; set; }
 
     public virtual DbSet<TblPriority> TblPriorities { get; set; }
@@ -807,6 +809,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.InistId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Description).HasMaxLength(350);
             entity.Property(e => e.Name).HasMaxLength(250);
+            entity.Property(e => e.NameAmharic).HasMaxLength(250);
         });
 
         modelBuilder.Entity<TblInspectionInstitution>(entity =>
@@ -1189,6 +1192,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.ClassSvg).HasColumnName("Class_svg");
             entity.Property(e => e.MenuDescription).HasMaxLength(250);
             entity.Property(e => e.MenuName).HasMaxLength(250);
+            entity.Property(e => e.MenuNameAmharic).HasMaxLength(300);
         });
 
         modelBuilder.Entity<TblMonth>(entity =>
@@ -1200,6 +1204,17 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.MonthId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("MonthID");
+        });
+
+        modelBuilder.Entity<TblPlanCatagory>(entity =>
+        {
+            entity.HasKey(e => e.PlanCatId);
+
+            entity.ToTable("tbl_PlanCatagory");
+
+            entity.HasOne(d => d.InspectionPlan).WithMany(p => p.TblPlanCatagories)
+                .HasForeignKey(d => d.InspectionPlanId)
+                .HasConstraintName("FK_tbl_PlanCatagory_tbl_InspectionPlans");
         });
 
         modelBuilder.Entity<TblPlanInistitution>(entity =>
@@ -1603,6 +1618,10 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.InspectionPlan).WithMany(p => p.TblSpecificPlans)
                 .HasForeignKey(d => d.InspectionPlanId)
                 .HasConstraintName("FK_tbl_SpecificPlans_tbl_InspectionPlans");
+
+            entity.HasOne(d => d.PlanCat).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.PlanCatId)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_PlanCatagory");
         });
 
         modelBuilder.Entity<TblStatus>(entity =>

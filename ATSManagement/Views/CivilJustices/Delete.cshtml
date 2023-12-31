@@ -32,44 +32,44 @@
                             <div class="row">
                                 <dl class="row">
                                     <dt class="col-sm-2">
-                                        <label asp-for="RequestDetail" class="col-form-label-m">Request detail</label>
+                                        <label asp-for="RequestDetail" class="col-form-label">Request detail</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.Raw(Model.RequestDetail)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedDate" class="col-form-label-m">Request Date</label>
+                                        <label asp-for="CreatedDate" class="col-form-label">Request Date</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="CreatedBy" class="col-form-label-m">User</label>
+                                        <label asp-for="CreatedBy" class="col-form-label">User</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedDate" class="col-form-label-m">When did assigned to user</label>
+                                        <label asp-for="AssignedDate" class="col-form-label">When did assigned to user</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssignedDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">Due date</label>
+                                        <label asp-for="DueDate" class="col-form-label">Due date</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.DueDate)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">Assignment Remark</label>
+                                        <label asp-for="DueDate" class="col-form-label">Assignment Remark</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssingmentRemark)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DueDate" class="col-form-label-m">Progress status</label>
+                                        <label asp-for="DueDate" class="col-form-label">Progress status</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
@@ -82,52 +82,52 @@
                                     </dd>
 
                                     <dt class="col-sm-2">
-                                        <label asp-for="TopStatus" class="col-form-label-m">Final Status?</label>
+                                        <label asp-for="TopStatus" class="col-form-label">Final Status?</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.TopStatus)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedBy" class="col-form-label-m">Assigned by</label>
+                                        <label asp-for="AssignedBy" class="col-form-label">Assigned by</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssignedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.AssignedByNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedTo" class="col-form-label-m">Assigned to</label>
+                                        <label asp-for="AssignedTo" class="col-form-label">Assigned to</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.AssignedToNavigation.FirstName)
                                         @Html.DisplayFor(model => model.AssignedToNavigation.MidleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="AssignedTo" class="col-form-label-m">Case type</label>
+                                        <label asp-for="AssignedTo" class="col-form-label">Case type</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.CaseType.CaseTypeName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DepId" class="col-form-label-m">Department</label>
+                                        <label asp-for="DepId" class="col-form-label">Department</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Dep.DepName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DepId" class="col-form-label-m">Inistitution</label>
+                                        <label asp-for="DepId" class="col-form-label">Inistitution</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Inist.Name)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="RequestedBy" class="col-form-label-m">Focal Person</label>
+                                        <label asp-for="RequestedBy" class="col-form-label">Focal Person</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
                                         @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="UserUpprovalStatus" class="col-form-label-m">Team Upproval status</label>
+                                        <label asp-for="UserUpprovalStatus" class="col-form-label">Team Upproval status</label>
                                     </dt>
                                     <dd class="col-sm-10">
                                         <div class="col-sm-2">
@@ -135,7 +135,7 @@
                                         </div>
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DepartmentUpprovalStatus" class="col-form-label-m">Department Upproval status</label>
+                                        <label asp-for="DepartmentUpprovalStatus" class="col-form-label">Department Upproval status</label>
 
                                     </dt>
                                     <dd class="col-sm-10">
@@ -144,7 +144,7 @@
                                         </div>
                                     </dd>
                                     <dt class="col-sm-2">
-                                        <label asp-for="DeputyUprovalStatus" class="col-form-label-m">Deputy Upproval status</label>
+                                        <label asp-for="DeputyUprovalStatus" class="col-form-label">Deputy Upproval status</label>
 
                                     </dt>
                                     <dd class="col-sm-10">

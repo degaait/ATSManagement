@@ -14,7 +14,6 @@
         font-weight: bolder;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row g-2 align-items-center">
@@ -149,13 +148,19 @@
     </div>
 </div>
 @section scripts{
-
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
-        new DataTable('#role', {
-            deferRender: true,
-            scrollCollapse: true,
-            scroller: true,
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
         });
+
     </script>
 }

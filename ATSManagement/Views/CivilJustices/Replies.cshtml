@@ -64,8 +64,6 @@
         color: #999;
     }
 </style>
-
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -205,14 +203,21 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
-    <script type="text/javascript">
-        new DataTable('#role', {
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#role').DataTable({
+            dom: 'Bfrtip',
             deferRender: true,
             scrollCollapse: true,
             scroller: true,
+            buttons: [
+                'excel', 'print'
+            ]
         });
-    </script>
+    });
+
+</script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

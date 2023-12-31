@@ -17,7 +17,6 @@
         font-weight: bolder;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <!-- Page header -->
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -87,7 +86,7 @@
                                             @_localization.Getkey("institution")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("external_User")
+                                            @_localization.Getkey("secretary")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -145,8 +144,8 @@
                                                 @Html.DisplayFor(modelItem => item.Inist.Name)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
