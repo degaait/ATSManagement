@@ -1,12 +1,15 @@
-﻿using ATSManagement.Models;
+﻿using System.Net.Http;
+using ATSManagement.Models;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http.Extensions;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
@@ -134,7 +137,8 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.backUrl = HttpContext.Request.GetEncodedUrl();
+            
             var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)

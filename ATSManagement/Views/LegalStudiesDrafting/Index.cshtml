@@ -59,25 +59,25 @@
                                 <thead>
                                     <tr>
                                         <th>
+                                            @_localization.Getkey("institution")
+                                        </th>
+                                        <th>
+                                            @_localization.Getkey("serviceType")
+                                        </th>
+                                        <th>
                                             @_localization.Getkey("Details")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("assingment_remark")
+                                            @_localization.Getkey("progress_status")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("progress_status")
+                                            @_localization.Getkey("assingment_remark")
                                         </th>
                                         <th>
                                             Approval status
                                         </th>
                                         <th>
                                             @_localization.Getkey("final_status")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("institution")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("serviceType")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -89,47 +89,8 @@
                                         var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
                                         <tr>
                                             <td>
-                                                @Html.Raw(item.RequestDetail) --> with service type <strong> @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)</strong>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                                @Html.DisplayFor(modelItem => item.Inist.Name) 
                                                 <label>
-                                                    .--> @_localization.Getkey("Assigned_to")
-                                                    @if (assigneess != null)
-                                                    {
-                                                        foreach (var assignees in assigneess)
-                                                        {
-                                                            @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
-                                                            @Html.DisplayFor(modelItem => assignees.MidleName)
-                                                        }
-                                                    }
-                                                </label> and @_localization.Getkey("Assigned_by")--> <strong>
-                                                    @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
-                                                </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
-                                                <label>
-                                                    . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
-                                                </label>
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
-                                            </td>
-                                            <td>
-                                                <label>Team:-</label>
-                                                @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
-                                                <label>Department:</label>
-                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                                <label>Deputy:</label>
-                                                @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
-                                            </td>
-                                            <td>
-                                                @if (item.TopStatus != null)
-                                                {
-                                                    @Html.Raw(item.TopStatus.StatusName)
-                                                }
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Inist.Name) <label>
                                                     -->
                                                     . Focal person <strong>
                                                         @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
@@ -157,6 +118,46 @@
                                                 }
                                             </td>
                                             <td>
+                                                @Html.Raw(item.RequestDetail) --> with service type <strong> @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)</strong>
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                                <label>
+                                                    .--> @_localization.Getkey("Assigned_to")
+                                                    @if (assigneess != null)
+                                                    {
+                                                        foreach (var assignees in assigneess)
+                                                        {
+                                                            @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
+                                                            @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                        }
+                                                    }
+                                                </label> and @_localization.Getkey("Assigned_by")--> <strong>
+                                                    @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)<label>&nbsp;</label>
+                                                    @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
+                                                </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
+                                                <label>
+                                                    . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>Team:-</label>
+                                                @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
+                                                <label>Department:</label>
+                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                                <label>Deputy:</label>
+                                                @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
+                                            </td>
+                                            <td>
+                                                @if (item.TopStatus != null)
+                                                {
+                                                    @Html.Raw(item.TopStatus.StatusName)
+                                                }
+                                            </td>
+                                            <td>
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">
                                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
@@ -174,20 +175,26 @@
                                                                         </svg>&nbsp;
                                                                         @_localization.Getkey("assign")
                                                                     </a>
-                                                                    <a class="dropdown-item" asp-action="AddHistory" asp-route-id="@item.RequestId">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                                        @_localization.Getkey("reply")
-                                                                    </a>
+                                                                  
                                                                 }
                                                             }
-                                                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                                    <path d="M13.5 6.5l4 4"></path>
-                                                                    <path d="M16 19h6"></path>
-                                                                    <path d="M19 16v6"></path>
-                                                                </svg>&nbsp;   @_localization.Getkey("edit")
+                                                            else
+                                                            {
+                                                                if (user.IsDepartmentHead == true || user.IsSuperAdmin == true)
+                                                                {
+                                                                    <a class="dropdown-item" asp-action="AssignToUser" asp-route-id="@item.RequestId">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
+                                                                        </svg>&nbsp;
+                                                                       Re Assign
+                                                                    </a>
+
+                                                                }
+                                                            }
+                                                            <a class="dropdown-item" asp-action="AddHistory" asp-route-id="@item.RequestId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
+                                                                @_localization.Getkey("reply")
                                                             </a>
                                                             <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -200,13 +207,7 @@
                                                                     <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                 </svg> &nbsp; @_localization.Getkey("Detail")
                                                             </a>
-                                                            <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.RequestId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
-                                                                    <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor"></path>
-                                                                </svg>&nbsp;   @_localization.Getkey("delete")
-                                                            </a>
+
                                                         </div>
                                                     </div>
                                                 </div>

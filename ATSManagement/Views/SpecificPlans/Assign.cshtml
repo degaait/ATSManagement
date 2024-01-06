@@ -1,0 +1,160 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("assign") + ":Create";
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("assign")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                        </div>
+                        <form asp-action="Assign">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="SpecificPlanId" />
+                                        <input type="hidden" asp-for="AssignedBy" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label"> @_localization.Getkey("title")</label>
+                                            <div class="col">
+                                                <input asp-for="PlanTitle" class="form-control" />
+                                                <span asp-validation-for="PlanTitle" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="AssigneeTypeId" class="col-3 col-form-label">@_localization.Getkey("Assignment_Type")</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.AssigneeTypeId, new SelectList(Model.AssignmentTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="AssigneeTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divUsers" style="display:none">
+                                            <label asp-for="UserId" class="col-3 col-form-label">@_localization.Getkey("user")</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpUserId" })
+                                                <span asp-validation-for="UserId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" id="divTeams" style="display:none">
+                                            <label asp-for="UserId" class="col-3 col-form-label">
+                                                <label asp-for="UserId" class="col-3 col-form-label">@_localization.Getkey("teams")</label>
+                                            </label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.TeamId, new SelectList(Model.Teams, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpTeamId" })
+                                                <span asp-validation-for="TeamId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="StatusID" class="col-3 col-form-label">@_localization.Getkey("status")</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.StatusID, new SelectList(Model.status, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">@_localization.Getkey("assignmentDate")</label>
+                                            <div class="col">
+                                                <input asp-for="AssignedDate" class="form-control" readonly />
+                                                <span asp-validation-for="AssignedDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">@_localization.Getkey("dueDate") </label>
+                                            <div class="col">
+                                                <input asp-for="DueDate" id="inpic" class="form-control" />
+                                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">@_localization.Getkey("remark")</label>
+                                            <div class="col">
+                                                @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+                                                <span asp-validation-for="Remark" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="@_localization.Getkey("assign")" class="btn btn-primary" />|
+                                    <a asp-action="Index" asp-controller="Specifi">@_localization.Getkey("backlist")</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var el;
+            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
+                copyClassesToDropdown: false,
+                dropdownParent: 'body',
+                controlInput: '<input>',
+                render: {
+                    item: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                    option: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                },
+            }));
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+
+                $("#AssigneeTypeId").change(function () {
+                    var value = $("#AssigneeTypeId").val();
+                    // alert(value);
+                    if (value == "BDFB6C89-FB2A-45F9-82F1-D56A3A396847") {
+                        $("#divTeams").show();
+                        $("#divUsers").hide();
+                    }
+                    else {
+                        $("#divTeams").hide();
+                        $("#divUsers").show();
+                    }
+                });
+
+            });
+        });
+    </script>
+}

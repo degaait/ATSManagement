@@ -93,6 +93,10 @@ public partial class TblInternalUser
 
     public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
 
+    public virtual ICollection<TblNotification> TblNotificationCreatedByNavigations { get; set; } = new List<TblNotification>();
+
+    public virtual ICollection<TblNotification> TblNotificationUsers { get; set; } = new List<TblNotification>();
+
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
 
     public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();

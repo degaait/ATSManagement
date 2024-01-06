@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AspNetCoreHero.ToastNotification.Abstractions;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace ATSManagement.Controllers
 {
@@ -22,14 +21,12 @@ namespace ATSManagement.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
         private readonly INotyfService _notifyService;
-        IHostingEnvironment _hostingEnvironment=null;
-        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, INotyfService notyfService, IHostingEnvironment hostingEnvironment)
+        public InispectionPlansController(AtsdbContext context, IHttpContextAccessor contextAccessor, IMailService mail, INotyfService notyfService)
         {
             _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
             _mail = mail;
-            _hostingEnvironment = hostingEnvironment;
         }
         public async Task<IActionResult> Index()
         {
@@ -52,7 +49,6 @@ namespace ATSManagement.Controllers
 
             }          
         }
-
         public async Task<IActionResult> OngoingPlan(Guid? id)
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -130,16 +126,16 @@ namespace ATSManagement.Controllers
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
-            if(users.IsTeamLeader == true)
+
+          
+          if(users.IsTeamLeader == true)
             {
                 var assigned = (from items in _context.TblInspectionPlans
                                 join assing in _context.TblAssignedYearlyPlans on items.InspectionPlanId equals assing.PlanId
                                 where items.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")
                                 select items).ToList();
-
                 var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team).Where(s => s.TeamId == users.TeamId && s.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")&&(s.IsAssignedToUser==false||s.IsAssignedToUser==null)).ToList();
                 var filtered = atsdbContext.Intersect(assigned).ToList();
-
                 return View(atsdbContext);
             }
             else
@@ -191,9 +187,7 @@ namespace ATSManagement.Controllers
                 TblInspectionPlan tible = new TblInspectionPlan();
                 List<TblPlanInistitution> plan_in = new List<TblPlanInistitution>();
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-
-                if (ModelState.IsValid)
-                {
+               
                     tible.PlanTitle = inispectionPlan.PlanTitle;
                     tible.PlanDescription = inispectionPlan.PlanDescription;
                     tible.CreationDate = DateTime.Now;
@@ -202,23 +196,13 @@ namespace ATSManagement.Controllers
                     tible.IsAssignedToUser = false;
                     tible.IsAssignedTeam = false;
                     tible.ProId = _context.TblInspectionStatuses.Where(A => A.ProstatusTitle == "New").Select(A => A.ProId).FirstOrDefault();
-                    if (inispectionPlan.InistId.Length > 0)
-                    {
-                        plan_in = new List<TblPlanInistitution>();
-                        foreach (var item in inispectionPlan.InistId)
-                        {
-                            plan_in.Add(new TblPlanInistitution { InistId = item, PlanId = inispectionPlan.InspectionPlanId });
-                        }
-                        tible.TblPlanInistitutions = plan_in;
-                    }
+               
                     string? dbPath = null;
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-                    //create folder if not exist
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
                     if (inispectionPlan.Attachement != null)
                     {
-                        //get file extension
                         FileInfo fileInfo = new FileInfo(inispectionPlan.Attachement.FileName);
                         string fileName = Guid.NewGuid().ToString() + inispectionPlan.Attachement.FileName;
                         string fileNameWithPath = Path.Combine(path, fileName);
@@ -252,23 +236,8 @@ namespace ATSManagement.Controllers
                         return View(inispectionPlan);
                     }
                 }
-                else
-                {
-                    _notifyService.Error("Please fill all neccessary field and try again");
-                    inispectionPlan.Inistitutions = _context.TblInistitutions.Select(a => new SelectListItem
-                    {
-                        Text = a.Name,
-                        Value = a.InistId.ToString(),
-                    }).ToList();
-                    inispectionPlan.InspectionYear = _context.TblYears.Select(a => new SelectListItem
-                    {
-                        Value = a.YearId.ToString(),
-                        Text = a.Year
-                    }).ToList();
-                    return View(inispectionPlan);
-                }
-               
-            }
+                            
+            
             catch (Exception ex)
             {
                 _notifyService.Error($"Error:{ex.Message}. Please  try again");
@@ -431,7 +400,6 @@ namespace ATSManagement.Controllers
 
             return View(tblInspectionPlan);
         }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -471,7 +439,6 @@ namespace ATSManagement.Controllers
                     Value = g.UserId.ToString(),
                     Text = g.FirstName
                 }).ToList();
-
                 model.status = _context.TblStatuses.Where(p => p.Status == "New").Select(p => new SelectListItem
                 {
                     Value = p.StatusId.ToString(),
@@ -486,7 +453,6 @@ namespace ATSManagement.Controllers
                 {
                     Value = s.TeamId.ToString(),
                     Text = s.TeamName,
-
                 }).ToList();
                 if (plats.TeamId!=null)
                 {
@@ -501,8 +467,7 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
             else
-            {
-                
+            {                
                 model.PlanTitle = plats.PlanTitle;
                 model.AssignedBy = userId;
                 model.Users = AllUsers.Select(g => new SelectListItem
@@ -829,13 +794,14 @@ namespace ATSManagement.Controllers
 
             
         }
+
+
         private async Task SendMail(List<string> to, string subject, string body)
         {
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
-
         public async Task<IActionResult> UppdateDesicionStatus(Guid? id)
         {
             InspectionAssignModel model = new InspectionAssignModel();
@@ -935,7 +901,6 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
-
         public async Task<IActionResult> SendToInstitutions(Guid? InspectionPlanId)
         {
             InspectionAssignModel model = new InspectionAssignModel();
@@ -1067,7 +1032,6 @@ namespace ATSManagement.Controllers
                 return View(replyModel);
             }
         }
-
         public async Task<IActionResult> EditResponses(int ReplyId)
         {
             var reply = _context.TblInspectionReplyes.Find(ReplyId);

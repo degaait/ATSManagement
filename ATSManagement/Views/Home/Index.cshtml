@@ -1,181 +1,131 @@
 ﻿@using ATSManagement.Services;
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Home Page";
+    int id = 0;
 }
 
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <!-- Page pre-title -->
-                <div class="page-pretitle">
-                    Welcome to
-                    <h2 class="page-title text-center">
-                        Task Tracking Dashboard
-                    </h2>
+<div class="pagetitle">
+    <h1>Welcom to Task Tracking Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div>
+<!-- Left side columns -->
+<div class="col-lg-8">
+    <div class="row">
+        <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+                <a asp-action="Index" asp-controller="Requests">
+                    <div class="card-body">
+                        <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>@ViewBag.NewRequests</h6>
+
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+            </div>
+        </div>
+        <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+                <a asp-action="HighPriorityRequsts" asp-controller="Requests">
+                    <div class="card-body">
+                        <h5 class="card-title">@_localization.Getkey("high_priority_request")</h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>@ViewBag.HighPriorityRequests</h6>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-6">
+            <div class="card info-card customers-card">
+                <div class="card-body">
+                    <h5 class="card-title">@_localization.Getkey("total_institutions")</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>   @ViewBag.Insititutions</h6>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-deck row-cards">
+        <div class="col-xxl-4 col-xl-6">
+            <div class="card info-card customers-card">
+                <div class="card-body">
+                    <h5 class="card-title">@_localization.Getkey("Requests_sent_back_to_Inistitutions")</h5>
 
-            <div class="col-12">
-                <div class="row row-cards">
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <br />
-                                &nbsp;
-                                <a asp-action="Index" asp-controller="Requests">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-primary text-white avatar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-filter-question" width="30" height="30" viewBox="0 0 30 30" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M15 19l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414"></path>
-                                                    <path d="M19 22v.01"></path>
-                                                    <path d="M19 19a2.003 2.003 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                <h3>
-                                                    @_localization.Getkey("new_request")
-                                                </h3>
-                                            </div>
-                                            <div class="text-muted">
-                                                <h3>
-                                                    (
-                                                    <strong>@ViewBag.NewRequests</strong>
-                                                    )
-                                                </h3>
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>   @ViewBag.ReturnedRequests</h6>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <br />
-                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <br />
-                                &nbsp;
-                                <a asp-action="HighPriorityRequsts" asp-controller="Requests">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-red text-white avatar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                                                    <path d="M14.071 17.764a8.989 8.989 0 0 1 -2.071 .236c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.346 0 6.173 1.727 8.482 5.182"></path>
-                                                    <path d="M19 22v.01"></path>
-                                                    <path d="M19 19a2.003 2.003 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                <h3>
-                                                    @_localization.Getkey("high_priority_request")
-                                                </h3>
-                                            </div>
-                                            <div class="text-muted">
-                                                <h3>
-                                                    (
-                                                    <strong>@ViewBag.HighPriorityRequests</strong>
-                                                    )
-                                                </h3>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <br />
-                                &nbsp;
-                                <a href="#">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-twitter text-white avatar">
-                                                <!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9" /><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6" /></svg>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                <h3>
-                                                    @_localization.Getkey("total_institutions")
-                                                </h3>
-                                            </div>
-                                            <div class="text-muted">
-                                                <h3>
-                                                    (
-                                                    <strong>
-                                                        @ViewBag.Insititutions
-                                                    </strong>
-                                                    )
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <br />
-                                &nbsp;
-                                <a href="#">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-facebook text-white avatar">
-                                                <!-- Download SVG icon from http://tabler-icons.io/i/brand-facebook -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                <h3>
-                                                    @_localization.Getkey("Requests_sent_back_to_Inistitutions")
-                                                    
-                                                </h3>
-                                            </div>
-                                            <div class="text-muted">
-                                                <h3>
-                                                    (
-                                                    <strong> @ViewBag.ReturnedRequests</strong>
-                                                    )
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-                   
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+<div class="col-lg-4">
+    <div class="card">
+
+        <div class="card-body">
+            <h5 class="card-title">Recent Activity </h5>
+            <div class="activity">
+                @{
+                    var notifications = (from notes in ats.TblNotifications select notes).ToList();
+                }
+                @foreach (var item in notifications)
+                {
+                    <div class="activity-item d-flex">
+                        <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                        <div class="activity-content">
+                            @item.NotificationDetail <a href="#" class="fw-bold text-dark">@item.CreatedByNavigation.FirstName</a> beatae
+                        </div>
+                    </div><!-- End activity item-->
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div><!-- End Right side columns -->
+
+
+
+
+
+

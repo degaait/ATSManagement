@@ -11,7 +11,11 @@ public partial class TblPlanInistitution
 
     public Guid? InistId { get; set; }
 
+    public Guid? SpecificPlanId { get; set; }
+
     public virtual TblInistitution? Inist { get; set; }
 
     public virtual TblInspectionPlan? Plan { get; set; }
+
+    public virtual TblSpecificPlan? SpecificPlan { get; set; }
 }

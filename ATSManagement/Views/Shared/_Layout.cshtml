@@ -1,7 +1,8 @@
-﻿@using Newtonsoft.Json;
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
 @using ATSManagement.ViewModels;
-@using Microsoft.AspNetCore.Http;
-@inject IHttpContextAccessor _context;
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -11,367 +12,233 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ATSManagement</title>
-    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" asp-append-version="true" />
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-          <link rel="stylesheet" href="~/ATSManagement.styles.css" asp-append-version="true" />*@
-    <link href="~/dist/css/tabler.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/tabler-flags.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/tabler-payments.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/tabler-vendors.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/demo.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <style>
-        @@import url('https://rsms.me/inter/inter.css');
 
-        :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-        }
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-        body {
-            font-feature-settings: "cv03", "cv04", "cv11";
-        }
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-        .navbar-brand-image {
-            height: 4rem !important;
-            object-fit: cover !important;
-            width: 27rem !important;
-        }
-    </style>
-    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" />
-    <link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
 </head>
-<body class="layout-fluid">
-    <script src="~/dist/js/demo-theme.min.js?1684106062" type="text/javascript" asp-append-version="true"></script>
+<body>
+    @{
+        Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+        var user = (from userinfo in ats.TblInternalUsers where userinfo.UserId == userId select userinfo).FirstOrDefault();
+        var notifications = (from items in ats.TblNotifications where items.UserId == userId && items.IsChecked == false select items).ToList();
+        int id = 0;
+    }
+    <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="page">
-        <!-- Navbar -->
-        <div class="sticky-top">
-            <header class="navbar navbar-expand-md sticky-top d-print-none">
-                <div class="container-xl">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                        <a asp-action="Index" asp-controller="Home">
-                            <img src="~/dist/img/main_logo.png" alt="Tabler" class="navbar-brand-image">
+        <div class="d-flex align-items-center justify-content-between">
+            <a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center">
+                <img src="~/dist/img/main_logo.png" alt="">
+
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div>
+
+        <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-primary badge-number">
+                            @notifications.Count
+                        </span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                            You have   @notifications.Count  new notifications
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        @foreach (var item in notifications)
+                        {
+                            <li class="notification-item">
+                                <i class="bi bi-exclamation-circle text-warning"></i>
+                                <div>
+                                    <h4>@item.CreatedByNavigation.FirstName @item.CreatedByNavigation.MidleName</h4>
+                                    <p>@item.NotificationDetail</p>
+                                    <p>@item.NotificationDate.Value.ToShortDateString</p>
+                                </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        }
+                        <li class="dropdown-footer">
+                            <a href="#">Show all notifications</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown pe-3">
+                    @if (httpsSession.HttpContext.Session.GetString("UserFullname") != null)
+                    {
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                            <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                            <span class="d-none d-md-block dropdown-toggle ps-2">@httpsSession.HttpContext.Session.GetString("UserFullname")</span>
+                        </a><!-- End Profile Iamge Icon -->
+
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                            <li class="dropdown-header">
+                                <h6>@httpsSession.HttpContext.Session.GetString("DepName")</h6>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" asp-action="Profile" asp-controller="Account">
+                                    <i class="bi bi-person"></i>
+                                    <span>My Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" asp-action="FeedBack" asp-controller="Account">
+                                    <i class="bi bi-gear"></i>
+                                    <span>Feedbacks</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" asp-action="ChangePassword" asp-controller="Account">
+                                    <i class="bi bi-question-circle"></i>
+                                    <span>Change password</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a asp-action="Logout" asp-controller="Account" class="dropdown-item d-flex align-items-center">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </li>
+                        </ul><!-- End Profile Dropdown Items -->
+
+                    }
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link " asp-action="Index" asp-controller="Home">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            @if (httpsSession.HttpContext.Session.GetString("MenuMaster") != null)
+            {
+                var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(httpsSession.HttpContext.Session.GetString("MenuMaster"));
+                var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
+                foreach (var MenuList in groupByMenu)
+                {
+                    id = id + 1;
+                    var classIcon = (from item in MenuMaster where item.MainMenuName == MenuList.Key select item.Class_SVC).FirstOrDefault();
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#components-@id" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-menu-button-wide"></i><span>@MenuList.Key</span><i class="bi bi-chevron-down ms-auto"></i>
                         </a>
-                    </h1>
-                    <div class="navbar-nav flex-row order-md-last">
-                        <div class="d-none d-md-flex">
-                            <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
-                               data-bs-placement="bottom">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
-                            </a>
-                            <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
-                               data-bs-placement="bottom">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
-                            </a>
-                            <div class="nav-item dropdown d-none d-md-flex me-3">
-                                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
-                                    <span class="badge bg-red"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Last updates</h3>
-                                        </div>
-                                        <div class="list-group list-group-flush list-group-hoverable">
-                                            <div class="list-group-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
-                                                    <div class="col text-truncate">
-                                                        <a href="#" class="text-body d-block">Example 1</a>
-                                                        <div class="d-block text-muted text-truncate mt-n1">
-                                                            Change deprecated html tags to text decoration classes (#29604)
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a href="#" class="list-group-item-actions">
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="list-group-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                                    <div class="col text-truncate">
-                                                        <a href="#" class="text-body d-block">Example 2</a>
-                                                        <div class="d-block text-muted text-truncate mt-n1">
-                                                            justify-content:between ⇒ justify-content:space-between (#29734)
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a href="#" class="list-group-item-actions show">
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                                                            </svg>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="list-group-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                                    <div class="col text-truncate">
-                                                        <a href="#" class="text-body d-block">Example 3</a>
-                                                        <div class="d-block text-muted text-truncate mt-n1">
-                                                            Update change-version.js (#29736)
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a href="#" class="list-group-item-actions">
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="list-group-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
-                                                    <div class="col text-truncate">
-                                                        <a href="#" class="text-body d-block">Example 4</a>
-                                                        <div class="d-block text-muted text-truncate mt-n1">
-                                                            Regenerate package-lock.json (#29730)
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a href="#" class="list-group-item-actions">
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                                <span class="avatar avatar-sm" style="background-image:url('/dist/img/user_icon.png');"></span>
-                                <div class="d-none d-xl-block ps-2">
-                                    @if (_context.HttpContext.Session.GetString("UserFullname") != null)
-                                    {
-                                        <div>@_context.HttpContext.Session.GetString("UserFullname")</div>
-                                        <div class="mt-1 small text-muted">
-                                            @_context.HttpContext.Session.GetString("DepName")
-                                        </div>
-                                    }
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <a asp-action="Profile" asp-controller="Account" class="dropdown-item">Profile</a>
-                                <a asp-action="FeedBack" asp-controller="Account" class="dropdown-item">Feedback</a>
-                                <a asp-action="ChangePassword" asp-controller="Account" class="dropdown-item">Change password</a>
-                                <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <header class="navbar-expand-md">
-                <div class="collapse navbar-collapse" id="navbar-menu">
-                    <div class="navbar">
-                        <div class="container-xl">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Home">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            @_localization.Getkey("home")
-                                        </span>
+                        <ul id="components-@id" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @foreach (var SubMenuList in MenuList)
+                            {
+                                <li>
+                                    <a asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName" asp-route-id="" asp-route-message="null" asp->
+                                        <i class="bi bi-circle"></i><span> @SubMenuList.SubMenuName</span>
+
                                     </a>
                                 </li>
-                                @if (_context.HttpContext.Session.GetString("MenuMaster") != null)
-                                {
-                                    var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(_context.HttpContext.Session.GetString("MenuMaster"));
-                                    var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
-                                    foreach (var MenuList in groupByMenu)
-                                    {
-                                        var classIcon = (from item in MenuMaster where item.MainMenuName == MenuList.Key select item.Class_SVC).FirstOrDefault();
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                    @Html.Raw(@classIcon)
-                                                </span>
-                                                <span class="nav-link-title">
-                                                    @MenuList.Key
-                                                </span>
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <div class="dropdown-menu-columns">
-                                                    <div class="dropdown-menu-column">
-                                                        @foreach (var SubMenuList in MenuList)
-                                                        {
-                                                            <a class="dropdown-item" asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName" asp-route-id="" asp-route-message="null" asp->
-                                                                @SubMenuList.SubMenuName
-                                                            </a>
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-                                }
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/lifebuoy -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-help-circle-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 13a1 1 0 0 0 -.993 .883l-.007 .117l.007 .127a1 1 0 0 0 1.986 0l.007 -.117l-.007 -.127a1 1 0 0 0 -.993 -.883zm1.368 -6.673a2.98 2.98 0 0 0 -3.631 .728a1 1 0 0 0 1.44 1.383l.171 -.18a.98 .98 0 0 1 1.11 -.15a1 1 0 0 1 -.34 1.886l-.232 .012a1 1 0 0 0 .111 1.994a3 3 0 0 0 1.371 -5.673z" stroke-width="0" fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            @_localization.Getkey("help")
-                                        </span>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-action="Documentation" asp-controller="Help" target="_blank" rel="noopener">
-                                            @_localization.Getkey("documentation")
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        </div>
-        <div class="page-wrapper">
+                            }
+                        </ul>
+                    </li>
 
-            @RenderBody()
-
-            <footer class="footer footer-transparent d-print-none">
-                <div class="container-xl">
-                    <div class="row text-center align-items-center flex-row-reverse">
-                        <div class="col-lg-auto ms-lg-auto">
-                            <ul class="list-inline list-inline-dots mb-0">
-                                <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank" class="link-secondary" rel="noopener">Designed and Developed by MG-Solutions</a></li>
-
-                            </ul>
-                        </div>
-                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                            <ul class="list-inline list-inline-dots mb-0">
-                                <li class="list-inline-item">
-                                    Copyright &copy; 2023
-                                    <a href="." class="link-secondary">Justice Minister</a>.
-                                    All rights reserved.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-
-    <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-status bg-success"></div>
-                <div class="modal-body text-center py-4">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
-                    <h3>Payment succedeed</h3>
-                    <div class="text-muted">Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.</div>
-                </div>
-                <div class="modal-footer">
-                    <div class="w-100">
-                        <div class="row">
-                            <div class="col">
-                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                    Go to dashboard
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
-                                    View invoice
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
+            }
+        </ul>
+    </aside>
+    <main id="main" class="main">
+        <section class="section dashboard">
+            <div class="row">
+                @RenderBody()
             </div>
+        </section>
+    </main>
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>Minsrty of Jusctice</span></strong>. All Rights Reserved
         </div>
-    </div>
-    <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-status bg-danger"></div>
-                <div class="modal-body text-center py-4">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
-                    <h3>Are you sure?</h3>
-                    <div class="text-muted">Do you really want to remove 84 files? What you've done cannot be undone.</div>
-                </div>
-                <div class="modal-footer">
-                    <div class="w-100">
-                        <div class="row">
-                            <div class="col">
-                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                    Cancel
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                                    Delete 84 items
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="credits">
+            Designed and Developed by <a href="https://bootstrapmade.com/"> MG-Solutions</a>
         </div>
-    </div>
+    </footer>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
-    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
-
-    <script src="~/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/libs/jsvectormap/dist/maps/world.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062" defer asp-append-version="true"></script>
-
-    <script src="~/dist/js/tabler.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/js/demo.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
-    <script src="~/dist/libs/nouislider/dist/nouislider.min.js?1684106062" defer></script>
-    <script src="~/dist/libs/litepicker/dist/litepicker.js?1684106062" defer></script>
-    <script src="~/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062" defer></script>
-    <script src="~/dist/libs/tinymce/tinymce.min.js?1684106062" defer></script>
-
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>-->
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="~/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="~/assets/vendor/quill/quill.min.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <!-- Template Main JS File -->
+    <script src="~/assets/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("NToastNotify")
     @await Component.InvokeAsync("Notyf")

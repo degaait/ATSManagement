@@ -97,7 +97,7 @@
                             <div class="card-footer text-end">
                                 <div class="d-flex">
                                     <input type="submit" value="@_localization.Getkey("assign")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                                    <a asp-action="Index" asp-controller="SpecificPlans" asp-route-PlanCatId="@Model.PlanCatId">@_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
                         </form>

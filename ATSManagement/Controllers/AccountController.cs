@@ -203,6 +203,9 @@ namespace ATSManagement.Controllers
                                 userInformation = _loginCredentials.DepName.ToString();
                             }
                         }
+                        Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+                        ViewBag.Notifications = (from items in _context.TblNotifications where items.UserId == userinfo.UserId && items.IsChecked == false select items).ToList().Count;
+                        
                         _contextAccessor.HttpContext.Session.SetString("DepName", userInformation);
                         return RedirectToAction("Index", "Home");
                         // return Redirect(Request.Headers["Referer"].ToString());

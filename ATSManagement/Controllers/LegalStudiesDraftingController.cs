@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http.Extensions;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
@@ -156,7 +157,7 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.backUrl = HttpContext.Request.GetDisplayUrl();
             var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
                 .Include(t => t.CaseType)
@@ -543,7 +544,6 @@ namespace ATSManagement.Controllers
         {
             List<string>? emails = new List<string>();
             List<TblRequestAssignee> assignees;
-
             if (model.RequestId == null)
             {
                 return NotFound();
@@ -598,6 +598,7 @@ namespace ATSManagement.Controllers
                     relation.AssigneeTypeId = model.AssigneeTypeId;
                     relation.TeamId = model.TeamId;
                     relation.IsAssingedToUser = false;
+                    
                     drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
                     int updated = await _context.SaveChangesAsync();
                     if (updated > 0)
@@ -1561,7 +1562,7 @@ namespace ATSManagement.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]            
         public async Task<IActionResult> AssignFromTeam(CivilJusticeExternalRequestModel model)
         {
             List<string>? emails = new List<string>();
@@ -1774,6 +1775,307 @@ namespace ATSManagement.Controllers
                 }
             }
             return View(atsdbContext);
+        }
+
+        public async Task<IActionResult> ReAssignToUser(Guid id)
+        {
+            LegalStudiesDraftingModel model = new LegalStudiesDraftingModel();
+            TblRequest drafting = await _context.TblRequests.FindAsync(id);
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            if (drafting.RequestDetail != null)
+            {
+                model.RequestDetail = drafting.RequestDetail;
+            }
+            model.RequestId = id;
+            model.AssignedBy = userId;
+            model.AssignedDate = DateTime.Now;
+            model.LegalStadiesDocumenttypes = _context.TblLegalDraftingDocTypes.Select(x => new SelectListItem
+            {
+                Value = x.DocId.ToString(),
+                Text = x.DocName
+            }).ToList();
+            model.DocId = drafting.DocTypeId;
+            model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
+            {
+                Value = x.ServiceTypeId.ToString(),
+                Text = x.ServiceTypeName
+            }).ToList();
+            model.ServiceTypeID = drafting.ServiceTypeId;
+            model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+            {
+                Text = s.AssigneeType.ToString(),
+                Value = s.AssigneeTypeId.ToString(),
+            }).ToList();
+            model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+            {
+                Text = s.TeamName,
+                Value = s.TeamId.ToString(),
+            }).ToList();
+            model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
+            {
+                Value = x.UserId.ToString(),
+                Text = x.FirstName.ToString() + " " + x.MidleName
+
+            }).ToList();
+            model.DueDate = DateTime.Now.AddDays(10);
+            model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+            {
+                Value = x.PriorityId.ToString(),
+                Text = x.PriorityName.ToString()
+
+            }).ToList();
+            model.PriorityId = drafting.PriorityId;
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReAssignToUser(LegalStudiesDraftingModel model)
+        {
+            List<string>? emails = new List<string>();
+            List<TblRequestAssignee> assignees;
+            if (model.RequestId == null)
+            {
+                return NotFound();
+            }
+            TblRequest drafting = await _context.TblRequests.FindAsync(model.RequestId);
+            TblRequestDepartmentRelation relation = await _context.TblRequestDepartmentRelations.Where(s => s.RequestId == model.RequestId).FirstOrDefaultAsync();
+            if (drafting == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+
+                if (model.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847"))
+                {
+                    if (model.TeamId == null)
+                    {
+                        _notifyService.Error("Since assignment type is team , You should select one the team");
+                        model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                        {
+                            Value = s.ServiceTypeId.ToString(),
+                            Text = s.ServiceTypeName
+                        }).ToList();
+                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+                        {
+                            Text = s.AssigneeType.ToString(),
+                            Value = s.AssigneeTypeId.ToString(),
+                        }).ToList();
+                        model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                        {
+                            Text = s.TeamName,
+                            Value = s.TeamId.ToString(),
+                        }).ToList();
+                        model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+                        {
+                            Value = x.UserId.ToString(),
+                            Text = x.FirstName.ToString() + " " + x.MidleName
+
+                        }).ToList();
+                        model.DueDate = DateTime.Now.AddDays(10);
+                        model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                        {
+                            Value = x.PriorityId.ToString(),
+                            Text = x.PriorityName.ToString()
+
+                        }).ToList();
+                        model.PriorityId = drafting.PriorityId;
+                        return View(model);
+                    }
+                    TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "Assigned to team" select items).FirstOrDefault();
+                    var TeamEmail = _context.TblInternalUsers.Where(x => x.TeamId == model.TeamId && x.IsTeamLeader == true).Select(s => s.EmailAddress).ToList();
+                    relation.AssigneeTypeId = model.AssigneeTypeId;
+                    relation.TeamId = model.TeamId;
+                    relation.IsAssingedToUser = false;
+
+                    drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
+                    int updated = await _context.SaveChangesAsync();
+                    if (updated > 0)
+                    {
+                        _notifyService.Success("Request is successfully assigned to team");
+                        await SendMail(TeamEmail, "Task is assign notification", "<h3>Some tasks are assigned to your team via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _notifyService.Error("Assignment isn't successfull. Please try again");
+                        model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                        {
+                            Value = s.ServiceTypeId.ToString(),
+                            Text = s.ServiceTypeName
+                        }).ToList();
+                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+                        {
+                            Text = s.AssigneeType.ToString(),
+                            Value = s.AssigneeTypeId.ToString(),
+                        }).ToList();
+                        model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+                        {
+                            Text = s.TeamName,
+                            Value = s.TeamId.ToString(),
+                        }).ToList();
+                        model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
+                        {
+                            Value = x.UserId.ToString(),
+                            Text = x.FirstName.ToString() + " " + x.MidleName
+
+                        }).ToList();
+                        model.DueDate = DateTime.Now.AddDays(10);
+                        model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                        {
+                            Value = x.PriorityId.ToString(),
+                            Text = x.PriorityName.ToString()
+
+                        }).ToList();
+                        model.PriorityId = drafting.PriorityId;
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    TblExternalRequestStatus status = (from items in _context.TblExternalRequestStatuses where items.StatusName == "Assigned to user" select items).FirstOrDefault();
+                    foreach (var item in model.AssignedTo)
+                    {
+                        var userEmails = (from user in _context.TblInternalUsers where user.UserId == item select user.EmailAddress).FirstOrDefault();
+                        emails.Add(userEmails);
+                    }
+                    if (model.AssignedTo.Length == 0)
+                    {
+                        _notifyService.Error("Since assignment type is Expert , You should select one the experts");
+                        model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                        {
+                            Value = s.ServiceTypeId.ToString(),
+                            Text = s.ServiceTypeName
+                        }).ToList();
+                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+                        {
+                            Text = s.AssigneeType.ToString(),
+                            Value = s.AssigneeTypeId.ToString(),
+                        }).ToList();
+                        model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+                        {
+                            Text = s.TeamName,
+                            Value = s.TeamId.ToString(),
+                        }).ToList();
+                        model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
+                        {
+                            Value = x.UserId.ToString(),
+                            Text = x.FirstName.ToString() + " " + x.MidleName
+
+                        }).ToList();
+                        model.DueDate = DateTime.Now.AddDays(10);
+                        model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                        {
+                            Value = x.PriorityId.ToString(),
+                            Text = x.PriorityName.ToString()
+
+                        }).ToList();
+                        model.PriorityId = drafting.PriorityId;
+                        return View(model);
+                    }
+                    relation.IsAssingedToUser = true;
+                    drafting.DueDate = model.DueDate;
+                    drafting.AssignedDate = model.AssignedDate;
+                    drafting.PriorityId = model.PriorityId;
+                    drafting.AssignedBy = model.AssignedBy;
+                    drafting.AssingmentRemark = model.AssingmentRemark;
+                    drafting.CreatedBy = model.CreatedBy;
+                    drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
+                    if (model.AssignedTo.Length > 0)
+                    {
+                        assignees = new List<TblRequestAssignee>();
+                        foreach (var item in model.AssignedTo)
+                        {
+                            var ifExists = _context.TblRequestAssignees.Where(x => x.RequestId == model.RequestId && x.UserId == item).FirstOrDefault();
+                            if (ifExists == null)
+                            {
+                                assignees.Add(new TblRequestAssignee { UserId = item, RequestId = model.RequestId });
+                            }
+                        }
+                        drafting.TblRequestAssignees = assignees;
+                    }
+                    int updated = await _context.SaveChangesAsync();
+                    if (updated > 0)
+                    {
+                        await SendMail(emails, "Task is assign notification", "<h3>Some tasks are assigned to you via <strong> Task tacking Dashboard</strong>. Please check on the system and reply!. </h3");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+
+                        model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                        {
+                            Value = s.ServiceTypeId.ToString(),
+                            Text = s.ServiceTypeName
+                        }).ToList();
+                        model.ServiceTypeID = drafting.ServiceTypeId;
+                        model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+                        {
+                            Text = s.AssigneeType.ToString(),
+                            Value = s.AssigneeTypeId.ToString(),
+                        }).ToList();
+                        model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                        {
+                            Text = s.TeamName,
+                            Value = s.TeamId.ToString(),
+                        }).ToList();
+                        model.AssignedTos = _context.TblInternalUsers.Select(x => new SelectListItem
+                        {
+                            Value = x.UserId.ToString(),
+                            Text = x.FirstName.ToString() + " " + x.MidleName
+
+                        }).ToList();
+                        model.DueDate = DateTime.Now.AddDays(10);
+                        model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                        {
+                            Value = x.PriorityId.ToString(),
+                            Text = x.PriorityName.ToString()
+
+                        }).ToList();
+                        model.PriorityId = drafting.PriorityId;
+                        return View(model);
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                model.ServiceTypes = _context.TblServiceTypes.Where(x => x.Dep.DepCode == "CVA").Select(s => new SelectListItem
+                {
+                    Value = s.ServiceTypeId.ToString(),
+                    Text = s.ServiceTypeName
+                }).ToList();
+                model.ServiceTypeID = drafting.ServiceTypeId;
+                model.AssignmentTypes = _context.TblAssignementTypes.Select(s => new SelectListItem
+                {
+                    Text = s.AssigneeType.ToString(),
+                    Value = s.AssigneeTypeId.ToString(),
+                }).ToList();
+                model.Teams = _context.TblTeams.Where(s => s.Dep.DepCode == "LSDC").Select(s => new SelectListItem
+                {
+                    Text = s.TeamName,
+                    Value = s.TeamId.ToString(),
+                }).ToList();
+                model.AssignedTos = _context.TblInternalUsers.Where(x => x.Dep.DepCode == "LSDC").Select(x => new SelectListItem
+                {
+                    Value = x.UserId.ToString(),
+                    Text = x.FirstName.ToString() + " " + x.MidleName
+
+                }).ToList();
+                model.DueDate = DateTime.Now.AddDays(10);
+                model.Priorities = _context.TblPriorities.Select(x => new SelectListItem
+                {
+                    Value = x.PriorityId.ToString(),
+                    Text = x.PriorityName.ToString()
+
+                }).ToList();
+                model.PriorityId = drafting.PriorityId;
+                return View(model);
+            }
         }
     }
 }

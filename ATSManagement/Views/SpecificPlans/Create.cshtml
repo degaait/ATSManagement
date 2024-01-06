@@ -25,7 +25,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title"> @_localization.Getkey("create")</h4>
                         </div>
                         <form asp-action="Create">
                             <div class="card-body">
@@ -33,19 +32,26 @@
                                     <div class="col-md-8">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="CreatedBy" type="hidden" class="form-control" />
-                                        <input asp-for="InspectionPlanId" type="hidden" class="form-control" />
+                                        <input asp-for="PlanCatId" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                            <label class="col-3 col-form-label-sm">@_localization.Getkey("title")</label>
                                             <div class="col">
                                                 <input asp-for="Title" class="form-control" />
                                                 <span asp-validation-for="Title" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
+                                            <label class="col-3 col-form-label-sm">@_localization.Getkey("Description")</label>
                                             <div class="col">
                                                 <input asp-for="Description" type="text" id="descri" class="form-control" />
                                                 <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label-sm">@_localization.Getkey("targeted_institutions")</label>
+                                            <div class="col">
+                                                @Html.ListBoxFor(model => model.InistId, new MultiSelectList(Model.Inistitutions, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
+                                                <span asp-validation-for="InistId" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -66,6 +72,31 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var el;
+            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
+                copyClassesToDropdown: false,
+                dropdownParent: 'body',
+                controlInput: '<input>',
+                render: {
+                    item: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                    option: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                },
+            }));
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

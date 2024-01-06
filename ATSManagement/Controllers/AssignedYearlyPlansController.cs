@@ -30,12 +30,9 @@ namespace ATSManagement.Controllers
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
 
-            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.Plan).Include(p => p.Status).Include(s=>s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
+            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.SpecificPlan).Include(p => p.Status).Include(s=>s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
             return View(await atsdbContext.ToListAsync());
         }
-
-       
-
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.TblAssignedYearlyPlans == null)
@@ -75,7 +72,6 @@ namespace ATSManagement.Controllers
             ViewData["PlanId"] = new SelectList(_context.TblInspectionPlans, "InspectionPlanId", "InspectionPlanId", tblAssignedYearlyPlan.PlanId);
             return View(tblAssignedYearlyPlan);
         }
-
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.TblAssignedYearlyPlans == null)
@@ -92,7 +88,6 @@ namespace ATSManagement.Controllers
             ViewData["PlanId"] = new SelectList(_context.TblInspectionPlans, "InspectionPlanId", "InspectionPlanId", tblAssignedYearlyPlan.PlanId);
             return View(tblAssignedYearlyPlan);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,AssignedTo,AssignedBy,PlanId,AssignedDate,DueDate,EvaluationCheckLists,EngagementLetter,MeetingLetter,Remark,ProgressStatus")] TblAssignedYearlyPlan tblAssignedYearlyPlan)
@@ -126,7 +121,6 @@ namespace ATSManagement.Controllers
             ViewData["PlanId"] = new SelectList(_context.TblInspectionPlans, "InspectionPlanId", "InspectionPlanId", tblAssignedYearlyPlan.PlanId);
             return View(tblAssignedYearlyPlan);
         }
-
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblAssignedYearlyPlans == null)

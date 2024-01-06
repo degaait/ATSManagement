@@ -25,5 +25,7 @@ public partial class TblTeam
 
     public virtual ICollection<TblRequestDepartmentRelation> TblRequestDepartmentRelations { get; set; } = new List<TblRequestDepartmentRelation>();
 
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
+
     public virtual TblInternalUser? TeamLeader { get; set; }
 }

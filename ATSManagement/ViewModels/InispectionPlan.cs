@@ -10,7 +10,6 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage ="*")]
         public string? PlanTitle { get; set; }
         [Display(Name = "Description")]
-        [Required(ErrorMessage = "*")]
         [DataType(DataType.MultilineText)]
         public string? PlanDescription { get; set; }
         [Display(Name = "Creation Date")]
@@ -29,6 +28,8 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "Required")]
         public Guid[] InistId { get; set; }
         public IFormFile? Attachement { get; set; }
+
+      
 
 
     }

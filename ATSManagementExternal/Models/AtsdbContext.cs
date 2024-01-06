@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Models;
+
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -108,6 +109,8 @@ public partial class AtsdbContext : DbContext
 
     public virtual DbSet<TblMonth> TblMonths { get; set; }
 
+    public virtual DbSet<TblNotification> TblNotifications { get; set; }
+
     public virtual DbSet<TblPlanCatagory> TblPlanCatagories { get; set; }
 
     public virtual DbSet<TblPlanInistitution> TblPlanInistitutions { get; set; }
@@ -165,12 +168,9 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblYear> TblYears { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        var configSection = configBuilder.GetSection("ConnectionStrings");
-        var connectionString = configSection["ATSDB"] ?? null;
-        optionsBuilder.UseSqlServer(connectionString);
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=Dag-Pc;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblActivity>(entity =>
@@ -329,6 +329,10 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.PlanId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_AssignedYearlyPlans_tbl_InspectionPlans");
+
+            entity.HasOne(d => d.SpecificPlan).WithMany(p => p.TblAssignedYearlyPlans)
+                .HasForeignKey(d => d.SpecificPlanId)
+                .HasConstraintName("FK_tbl_AssignedYearlyPlans_tbl_SpecificPlans");
 
             entity.HasOne(d => d.Status).WithMany(p => p.TblAssignedYearlyPlans)
                 .HasForeignKey(d => d.StatusId)
@@ -1206,6 +1210,25 @@ public partial class AtsdbContext : DbContext
                 .HasColumnName("MonthID");
         });
 
+        modelBuilder.Entity<TblNotification>(entity =>
+        {
+            entity.HasKey(e => e.NotificationId);
+
+            entity.ToTable("tbl_Notifications");
+
+            entity.Property(e => e.NotificationId).HasColumnName("NotificationID");
+            entity.Property(e => e.NotificationDate).HasColumnType("datetime");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblNotificationCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_tbl_Notifications_tbl_InternalUsers1");
+
+            entity.HasOne(d => d.User).WithMany(p => p.TblNotificationUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_tbl_Notifications_tbl_InternalUsers");
+        });
+
         modelBuilder.Entity<TblPlanCatagory>(entity =>
         {
             entity.HasKey(e => e.PlanCatId);
@@ -1233,6 +1256,10 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.PlanId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_Plan_Inistitution_tbl_YearlyPlans");
+
+            entity.HasOne(d => d.SpecificPlan).WithMany(p => p.TblPlanInistitutions)
+                .HasForeignKey(d => d.SpecificPlanId)
+                .HasConstraintName("FK_tbl_Plan_Inistitution_tbl_SpecificPlans");
         });
 
         modelBuilder.Entity<TblPriority>(entity =>
@@ -1608,12 +1635,22 @@ public partial class AtsdbContext : DbContext
             entity.ToTable("tbl_SpecificPlans");
 
             entity.Property(e => e.SpecificPlanId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.AssigneeTypeId).HasColumnName("AssigneeTypeID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModificationDate).HasColumnType("datetime");
+            entity.Property(e => e.TeamId).HasColumnName("TeamID");
+
+            entity.HasOne(d => d.AssigneeType).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.AssigneeTypeId)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_AssignementTypes");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TblSpecificPlans)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("FK_tbl_SpecificPlans_tbl_InternalUsers");
+
+            entity.HasOne(d => d.Inist).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.InistId)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_Inistitutions");
 
             entity.HasOne(d => d.InspectionPlan).WithMany(p => p.TblSpecificPlans)
                 .HasForeignKey(d => d.InspectionPlanId)
@@ -1622,6 +1659,14 @@ public partial class AtsdbContext : DbContext
             entity.HasOne(d => d.PlanCat).WithMany(p => p.TblSpecificPlans)
                 .HasForeignKey(d => d.PlanCatId)
                 .HasConstraintName("FK_tbl_SpecificPlans_tbl_PlanCatagory");
+
+            entity.HasOne(d => d.Pro).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.ProId)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_InspectionStatus");
+
+            entity.HasOne(d => d.Team).WithMany(p => p.TblSpecificPlans)
+                .HasForeignKey(d => d.TeamId)
+                .HasConstraintName("FK_tbl_SpecificPlans_tbl_Teams");
         });
 
         modelBuilder.Entity<TblStatus>(entity =>

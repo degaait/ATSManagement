@@ -1,0 +1,69 @@
+﻿@model ATSManagement.Models.TblPlanCatagory
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = @_localization.Getkey("specific_plans");
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("specific_plans")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">@_localization.Getkey("edit")</h4>
+                        </div>
+                        <form asp-action="Edit">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="PlanCatId" />
+                                        <input type="hidden" asp-for="InspectionPlanId" />
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                            <div class="col">
+                                                <input asp-for="CatTitle" class="form-control" />
+                                                <span asp-validation-for="CatTitle" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
+                                            <div class="col">
+                                                <input asp-for="CatDescription" class="form-control" />
+                                                <span asp-validation-for="CatDescription" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
+                                    <a asp-action="Index" asp-controller="PlanCatagories" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

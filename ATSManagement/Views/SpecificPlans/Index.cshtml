@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblSpecificPlan>
 @using ATSManagement.Services;
-@inject LanguageService _localization
+@inject LanguageService _localization;
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = @_localization.Getkey("specific_plans");
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 }
 
 <style type="text/css">
@@ -25,7 +29,7 @@
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
-                    <a asp-action="Create" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" class="btn btn-primary d-none d-sm-inline-block">
+                    <a asp-action="Create" asp-controller="SpecificPlans" asp-route-PlanCatId="@ViewBag.PlanCatId" class="btn btn-primary d-none d-sm-inline-block">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                         @_localization.Getkey("CreateNew")
@@ -72,12 +76,28 @@
                                         <th>
                                             @_localization.Getkey("annual_plan")
                                         </th>
+                                        <th>
+                                            @_localization.Getkey("task_status")
+                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        var instr = (from ints in ats.TblPlanInistitutions
+                                                     join related in ats.TblInistitutions on ints.InistId equals related.InistId
+                                                     where ints.PlanId == item.InspectionPlanId
+                                                     select new
+                                                     {
+                                                         Name = related.Name
+                                                     }).ToList();
+                                        var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
+                                        var users = (from items in ats.TblAssignedYearlyPlans
+                                                     join plans in ats.TblInspectionPlans on items.PlanId equals plans.InspectionPlanId
+                                                     join assignee in ats.TblInternalUsers on items.AssignedTo equals assignee.UserId
+                                                     where items.PlanId == item.InspectionPlanId
+                                                     select assignee).ToList();
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Title)
@@ -96,7 +116,18 @@
                                                 @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.InspectionPlan.PlanTitle)
+                                                @Html.DisplayFor(modelItem => item.PlanCat.CatTitle)
+                                            </td>                                           
+                                            <td>
+                                                @if (item.Pro != null)
+                                                {
+                                                    @Html.Raw(item.Pro.StatusWithColor)
+                                                }
+
+                                                @if (team != null)
+                                                {
+                                                    <span>Team:- @team.TeamName</span>
+                                                }
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">
@@ -105,6 +136,19 @@
                                                             Actions
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
+                                                            @if (user.IsDepartmentHead == true || user.IsTeamLeader == true)
+                                                            {
+                                                                if ((item.IsAssignedToUser == false ||item.IsAssignedToUser==null) &&( item.IsAssignedToTeam == false || item.IsAssignedToTeam == null))
+                                                                {
+                                                                    <a class="dropdown-item" asp-action="Assign" asp-route-SpecificPlanId="@item.SpecificPlanId">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
+                                                                        </svg>&nbsp;
+                                                                        @_localization.Getkey("assign")
+                                                                    </a>
+                                                                }
+                                                            }
                                                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SpecificPlanId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -130,7 +174,7 @@
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
                                                                     <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor"></path>
-                                                                </svg>&nbsp; Delete     @_localization.Getkey("delete")
+                                                                </svg>&nbsp; @_localization.Getkey("delete")
                                                             </a>
                                                         </div>
                                                     </div>

@@ -43,25 +43,27 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            @_localization.Getkey("Details")
+                                            @_localization.Getkey("institution")
                                         </th>
                                         <th>
-                                            @_localization.Getkey("assingment_remark")
+                                            @_localization.Getkey("serviceType")
+                                        </th>
+
+                                        <th>
+                                            @_localization.Getkey("Details")
                                         </th>
                                         <th>
                                             @_localization.Getkey("progress_status")
                                         </th>
                                         <th>
+                                            @_localization.Getkey("assingment_remark")
+                                        </th>
+
+                                        <th>
                                             Approval status
                                         </th>
                                         <th>
                                             @_localization.Getkey("final_status")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("institution")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("serviceType")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -72,48 +74,6 @@
                                         var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
 
                                         <tr>
-                                            <td>
-                                                @Html.Raw(item.RequestDetail) --> with service type <strong>
-                                                    @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
-                                                </strong>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AssingmentRemark)
-                                                <label>
-                                                    .--> @_localization.Getkey("Assigned_to")
-                                                    @if (assigneess != null)
-                                                    {
-                                                        foreach (var assignees in assigneess)
-                                                        {
-                                                            @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
-                                                            @Html.DisplayFor(modelItem => assignees.MidleName)
-                                                        }
-                                                    }
-                                                </label> and @_localization.Getkey("Assigned_by")--> <strong>
-                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                                </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
-                                                <label>
-                                                    . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
-                                                </label>
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
-                                            </td>
-                                            <td>
-                                                <label>Team:-</label>
-                                                @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
-                                                <label>Department:</label>
-                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                                <label>Deputy:</label>
-                                                @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
-                                            </td>
-                                            <td>
-                                                @if (item.TopStatus != null)
-                                                {
-                                                    @Html.Raw(item.TopStatus.StatusName)
-                                                }
-                                            </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Inist.Name) <label>
                                                     -->
@@ -142,6 +102,50 @@
                                                     </a>
                                                 }
                                             </td>
+                                            <td>
+                                                @Html.Raw(item.RequestDetail) --> with service type <strong>
+                                                    @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                                <label>
+                                                    .--> @_localization.Getkey("Assigned_to")
+                                                    @if (assigneess != null)
+                                                    {
+                                                        foreach (var assignees in assigneess)
+                                                        {
+                                                            @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
+                                                            @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                        }
+                                                    }
+                                                </label> and @_localization.Getkey("Assigned_by")--> <strong>
+                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
+                                                <label>
+                                                    . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+                                                </label>
+                                            </td>
+
+                                            <td>
+                                                <label>Team:-</label>
+                                                @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
+                                                <label>Department:</label>
+                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                                <label>Deputy:</label>
+                                                @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
+                                            </td>
+                                            <td>
+                                                @if (item.TopStatus != null)
+                                                {
+                                                    @Html.Raw(item.TopStatus.StatusName)
+                                                }
+                                            </td>
+
                                             <td>
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">

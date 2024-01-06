@@ -12,7 +12,6 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Assign to")]
         [Required(ErrorMessage = "*")]
         public Guid[]? UserId { get; set; }
-
         public Guid? AssignedBy { get; set; }
         [Display(Name = "Inspection title")]
         [Required(ErrorMessage = "*")]
@@ -57,7 +56,6 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Status")]
         public List<SelectListItem>? DesicionStatus { get; set; }
-
         public bool IsDeputyApprovalNeeded { get; set; }
 
         [Display(Name = "Final of final Letter")]
@@ -65,9 +63,11 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Official letter")]
         public IFormFile? OfficialLetter { get; set; }
         public string? SendingRemark { get; set; }
-
         public Guid? InistId { get; set; }
         public IEnumerable<SelectListItem>? Insititutions { get; set; }
-        public DateTime? ExpectedReplyDate { get; internal set; }
+        public DateTime? ExpectedReplyDate { get;  set; }
+
+        public Guid? SpecificPlanId {  get; set; }
+        public int? PlanCatId { get; set; }
     }
 }

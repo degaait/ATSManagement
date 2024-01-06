@@ -47,14 +47,7 @@
                                                 @Html.EditorFor(model => model.PlanDescription, new { htmlAttributes = new { @class = "form-control" } })
                                                 <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                             </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("targeted_institutions")</label>
-                                            <div class="col">
-                                                @Html.ListBoxFor(model => model.InistId, new MultiSelectList(Model.Inistitutions, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
-                                                <span asp-validation-for="InistId" class="text-danger"></span>
-                                            </div>
-                                        </div>
+                                        </div>                                      
                                         <div class="mb-3 row">
                                             <label asp-for="YearId" class="col-3 col-form-label">@_localization.Getkey("inspection_year")</label>
                                             <div class="col">

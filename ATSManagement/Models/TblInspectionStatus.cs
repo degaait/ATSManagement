@@ -14,4 +14,6 @@ public partial class TblInspectionStatus
     public string? StatusWithColor { get; set; }
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlans { get; set; } = new List<TblInspectionPlan>();
+
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
 {
@@ -9,7 +10,6 @@ namespace ATSManagement.ViewModels
         [Required(ErrorMessage = "*")]
         public string? Title { get; set; }
         [Display(Name = "Description")]
-        [Required(ErrorMessage = "*")]
 
         [DisplayFormat(ApplyFormatInEditMode = true)]
         public string? Description { get; set; }
@@ -22,5 +22,11 @@ namespace ATSManagement.ViewModels
         public Guid? CreatedBy { get; set; }
         [Display(Name = "Annual Plan")]
         public Guid? InspectionPlanId { get; set; }
+        public int? PlanCatId { get;  set; }
+
+        [Display(Name = "Inistitutions")]
+        public List<SelectListItem>? Inistitutions { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public Guid[] InistId { get; set; }
     }
 }
