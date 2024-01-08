@@ -4,7 +4,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = _localization.Getkey("annual_plans")+":Create";
+    ViewData["Title"] = _localization.Getkey("annual_plans") + ":Create";
 }
 
 <div class="page-wrapper">
@@ -20,71 +20,66 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <form asp-action="Create" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
-                                            <div class="col">
-                                                <input asp-for="PlanTitle" class="form-control" />
-                                                <span asp-validation-for="PlanTitle" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
-                                            <div class="col">
-                                                @Html.EditorFor(model => model.PlanDescription, new { htmlAttributes = new { @class = "form-control" } })
-                                                <span asp-validation-for="PlanDescription" class="text-danger"></span>
-                                            </div>
-                                        </div>                                      
-                                        <div class="mb-3 row">
-                                            <label asp-for="YearId" class="col-3 col-form-label">@_localization.Getkey("inspection_year")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.YearId, new SelectList(Model.InspectionYear, "Value", "Text"), htmlAttributes: new { @class = "form-select", @readonly = true })
-                                                <span asp-validation-for="YearId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("CreatedDate")</label>
-                                            <div class="col">
-                                                <input asp-for="CreationDate" class="form-control" readonly />
-                                                <span asp-validation-for="CreationDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
-                                            <div class="col">
-                                                <input asp-for="Attachement" class="form-file-button" type="file" readonly />
-                                                <span asp-validation-for="Attachement" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    <input asp-for="PlanTitle" class="form-control" />
+                                    <span asp-validation-for="PlanTitle" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
+                                <div class="col">
+                                    @Html.EditorFor(model => model.PlanDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                 </div>
                             </div>
-                        </form>
+                            <div class="mb-3 row">
+                                <label asp-for="YearId" class="col-3 col-form-label">@_localization.Getkey("inspection_year")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.YearId, new SelectList(Model.InspectionYear, "Value", "Text"), htmlAttributes: new { @class = "form-select", @readonly = true })
+                                    <span asp-validation-for="YearId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("CreatedDate")</label>
+                                <div class="col">
+                                    <input asp-for="CreationDate" class="form-control" readonly />
+                                    <span asp-validation-for="CreationDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
+                                <div class="col">
+                                    <input asp-for="Attachement" class="form-file-button" type="file" readonly />
+                                    <span asp-validation-for="Attachement" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 @section Scripts{
     @{

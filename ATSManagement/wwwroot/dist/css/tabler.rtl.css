@@ -813,7 +813,7 @@ progress {
 .grid .g-col-1 {
   grid-column: auto/span 1;
 }
-.grid .g-col-2 {
+.grid .g-col-3 {
   grid-column: auto/span 2;
 }
 .grid .g-col-3 {
@@ -1284,7 +1284,7 @@ progress {
   width: 8.33333333%;
 }
 
-.col-2 {
+.col-3 {
   flex: 0 0 auto;
   width: 16.66666667%;
 }

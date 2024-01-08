@@ -15,7 +15,6 @@
         font-weight: bolder;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -29,10 +28,7 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
+   
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -46,14 +42,14 @@
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <input asp-for="CreatedBy" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="ActivityDetail" class=" col-2 col-form-label">@_localization.Getkey("Progress_Activities")</label>
+                                            <label asp-for="ActivityDetail" class=" col-3 col-form-label">@_localization.Getkey("Progress_Activities")</label>
                                             <div class="col">
                                                 <input asp-for="ActivityDetail" class="form-control" />
                                                 <span asp-validation-for="ActivityDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AddedDate" class=" col-2 col-form-label">@_localization.Getkey("Progress_Activities")</label>
+                                            <label asp-for="AddedDate" class=" col-3 col-form-label">@_localization.Getkey("Progress_Activities")</label>
                                             <div class="col">
                                                 <input asp-for="AddedDate" readonly class="form-control" />
                                                 <span asp-validation-for="AddedDate" class="text-danger"></span>
@@ -128,12 +124,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
         new DataTable('#role', {
             deferRender: true,

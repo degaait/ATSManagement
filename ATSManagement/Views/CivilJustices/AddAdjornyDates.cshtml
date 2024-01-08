@@ -29,96 +29,91 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Uppload</h4>
-                        </div>
-                        <form asp-action="AddAdjornyDates" method="post">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="RequestId" />
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Adjorny Date</label>
-                                            <div class="col">
-                                                <input asp-for="AdjorneyDate" class="form-control" />
-                                                <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">What is done</label>
-                                            <div class="col">
-                                                <input asp-for="WhatIsDone" class="form-control" />
-                                                <span asp-validation-for="WhatIsDone" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Uppload</h4>
+            </div>
+            <form asp-action="AddAdjornyDates" method="post">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Adjorny Date</label>
+                                <div class="col">
+                                    <input asp-for="AdjorneyDate" class="form-control" />
+                                    <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="Update" class="btn btn-primary" />|
-                                    <a asp-action="AssignedRequests">Back to List</a>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">What is done</label>
+                                <div class="col">
+                                    <input asp-for="WhatIsDone" class="form-control" />
+                                    <span asp-validation-for="WhatIsDone" class="text-danger"></span>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Activities List</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <table class="table table-bordered" id="role">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Activities Done
-                                            </th>
-                                            <th>
-                                                Adjornment Date
-
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in activities)
-                                        {
-
-                                            <tr>
-
-                                                <td>
-                                                    @Html.Raw(item.WhatIsDone)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.AdjorneyDate)
-                                                </td>
-                                                <td>
-
-                                                    <a asp-action="DeleteAdjorny" asp-route-id="@item.AdjoryId">Delete</a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="Update" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Activities List</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-bordered" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Activities Done
+                                </th>
+                                <th>
+                                    Adjornment Date
+
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in activities)
+                            {
+
+                                <tr>
+
+                                    <td>
+                                        @Html.Raw(item.WhatIsDone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AdjorneyDate)
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="DeleteAdjorny" asp-route-id="@item.AdjoryId">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   
+
 
     <script>
 

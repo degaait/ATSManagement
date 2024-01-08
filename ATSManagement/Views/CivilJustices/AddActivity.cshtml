@@ -33,10 +33,7 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
+   
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -50,14 +47,14 @@
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <input asp-for="CreatedBy" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="ActivityDetail" class=" col-2 col-form-label">@_localization.Getkey("Progress_Activities")</label>
+                                            <label asp-for="ActivityDetail" class=" col-3 col-form-label">@_localization.Getkey("Progress_Activities")</label>
                                             <div class="col">
                                                 <input asp-for="ActivityDetail" class="form-control" />
                                                 <span asp-validation-for="ActivityDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AddedDate" class=" col-2 col-form-label">@_localization.Getkey("datetime")</label>
+                                            <label asp-for="AddedDate" class=" col-3 col-form-label">@_localization.Getkey("datetime")</label>
                                             <div class="col">
                                                 <input asp-for="AddedDate" readonly class="form-control" />
                                                 <span asp-validation-for="AddedDate" class="text-danger"></span>
@@ -82,7 +79,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <table class="table table-bordered" id="role">
+                                <table class="table table-striped table-bordered" id="role">
                                     <thead>
                                         <tr>
                                             <th>
@@ -133,9 +130,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>

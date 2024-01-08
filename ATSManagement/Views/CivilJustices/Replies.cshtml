@@ -77,147 +77,142 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <form asp-action="Replies">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                                        <input asp-for="RequestId" type="hidden" class="form-control" />
-                                        <input asp-for="InternalReplayedBy" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">@_localization.Getkey("reply")</label>
-                                            <div class="col">
-                                                <input asp-for="ReplayDetail" class="form-control" />
-                                                <span asp-validation-for="ReplayDetail" class="text-danger"></span>
-                                            </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="Replies">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <input asp-for="RequestId" type="hidden" class="form-control" />
+                            <input asp-for="InternalReplayedBy" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="ReplayDetail" class=" col-3 col-form-label">@_localization.Getkey("reply")</label>
+                                <div class="col">
+                                    <input asp-for="ReplayDetail" class="form-control" />
+                                    <span asp-validation-for="ReplayDetail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="ReplayDetail" class=" col-3 col-form-label">@_localization.Getkey("datetime")</label>
+                                <div class="col">
+                                    <input asp-for="ReplyDate" readonly class="form-control" />
+                                    <span asp-validation-for="ReplyDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="IsSent" class=" col-3 col-form-label">@_localization.Getkey("Send_to_Institutions") </label>
+                                <div class="col">
+                                    <input asp-for="IsSent" type="checkbox" class="form-check" />
+                                    <span asp-validation-for="IsSent" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">@_localization.Getkey("replies")</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var item in replyes)
+                    {
+                        if (item.IsInternal == true)
+                        {
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container">
+                                            <h3 class="time-left" style="color:dodgerblue">@_localization.Getkey("you")</h3>
+                                            <br />
+                                            <p class="time-left">
+                                                @Html.Raw(@item.ReplayDetail)
+                                                <br />
+                                                <span class="time-left">@item.ReplyDate</span>
+                                                @if (item.Attachment != null)
+                                                {
+                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
+                                                }
+                                            </p>
+                                            <br />
+                                            <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                    <path d="M13.5 6.5l4 4"></path>
+                                                    <path d="M16 19h6"></path>
+                                                    <path d="M19 16v6"></path>
+                                                </svg>&nbsp;  @_localization.Getkey("edit")
+                                            </a>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">@_localization.Getkey("datetime")</label>
-                                            <div class="col">
-                                                <input asp-for="ReplyDate" readonly class="form-control" />
-                                                <span asp-validation-for="ReplyDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsSent" class=" col-2 col-form-label">@_localization.Getkey("Send_to_Institutions") </label>
-                                            <div class="col">
-                                                <input asp-for="IsSent" type="checkbox" class="form-check" />
-                                                <span asp-validation-for="IsSent" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        if (item.IsExternal == true)
+                        {
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="container">
+                                            <h3 class="time-right" style="color:dodgerblue">(@item.ExternalReplayedByNavigation.FirstName)</h3>
+                                            <br />
+                                            <div class="time-right">
+                                                @Html.Raw(@item.ReplayDetail)
+                                                <br />
+                                                <span class="time-right">@item.ReplyDate</span>
+                                                @if (item.Attachment != null)
+                                                {
+                                                    <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
-                        <br />
-
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">@_localization.Getkey("replies")</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                @foreach (var item in replyes)
-                                {
-                                    if (item.IsInternal == true)
-                                    {
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="container">
-                                                        <h3 class="time-left" style="color:dodgerblue">@_localization.Getkey("you")</h3>
-                                                        <br />
-                                                        <p class="time-left">
-                                                            @Html.Raw(@item.ReplayDetail)
-                                                            <br />
-                                                            <span class="time-left">@item.ReplyDate</span>
-                                                            @if (item.Attachment != null)
-                                                            {
-                                                                <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
-                                                            }
-                                                        </p>
-                                                        <br />
-                                                        <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                                <path d="M13.5 6.5l4 4"></path>
-                                                                <path d="M16 19h6"></path>
-                                                                <path d="M19 16v6"></path>
-                                                            </svg>&nbsp;  @_localization.Getkey("edit")
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                    if (item.IsExternal == true)
-                                    {
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="container">
-                                                        <h3 class="time-right" style="color:dodgerblue">(@item.ExternalReplayedByNavigation.FirstName)</h3>
-                                                        <br />
-                                                        <div class="time-right">
-                                                            @Html.Raw(@item.ReplayDetail)
-                                                            <br />
-                                                            <span class="time-right">@item.ReplyDate</span>
-                                                            @if (item.Attachment != null)
-                                                            {
-                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(document).ready(function () {
-        $('#role').DataTable({
-            dom: 'Bfrtip',
-            deferRender: true,
-            scrollCollapse: true,
-            scroller: true,
-            buttons: [
-                'excel', 'print'
-            ]
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
         });
-    });
 
-</script>
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

@@ -19,63 +19,58 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title btn-danger">@_localization.Getkey("are_you_sure_todelete")</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <dl class="row">
-                                    <dt class="col-sm-2">
-                                        <label asp-for="ReplayDetail" class="col-form-label">@_localization.Getkey("Details")</label>
 
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.Raw(Model.ReplayDetail)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="ReplyDate" class="col-form-label">@_localization.Getkey("datetime")</label>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title btn-danger">@_localization.Getkey("are_you_sure_todelete")</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            <label asp-for="ReplayDetail" class="col-form-label">@_localization.Getkey("Details")</label>
 
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.ReplyDate)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="ExternalReplayedBy" class="col-form-label">@_localization.Getkey("created_by")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.ExternalReplayedBy1.FirstName)
-                                        @Html.DisplayFor(model => model.ExternalReplayedBy1.MidleName)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="RequestId" class="col-form-label">@_localization.Getkey("requests")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.Raw(Model.Request.RequestDetail)
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.Raw(Model.ReplayDetail)
+                        </dd>
+                        <dt class="col-sm-2">
+                            <label asp-for="ReplyDate" class="col-form-label">@_localization.Getkey("datetime")</label>
 
-                        <div class="card-footer text-end">
-                            <div class="d-flex">
-                                <form asp-action="DeleteReply">
-                                    <input type="hidden" asp-for="ReplyId" />
-                                    <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> |
-                                    <a asp-action="AssignedRequest"> @_localization.Getkey("backlist")</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.ReplyDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            <label asp-for="ExternalReplayedBy" class="col-form-label">@_localization.Getkey("created_by")</label>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.ExternalReplayedBy1.FirstName)
+                            @Html.DisplayFor(model => model.ExternalReplayedBy1.MidleName)
+                        </dd>
+                        <dt class="col-sm-2">
+                            <label asp-for="RequestId" class="col-form-label">@_localization.Getkey("requests")</label>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.Raw(Model.Request.RequestDetail)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <form asp-action="DeleteReply">
+                        <input type="hidden" asp-for="ReplyId" />
+                        <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> |
+                        <a asp-action="AssignedRequest"> @_localization.Getkey("backlist")</a>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 

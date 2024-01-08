@@ -34,21 +34,21 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="AppointmentID" />
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">@_localization.Getkey("Details")</label>
+                                            <label asp-for="AppointmentDetail" class=" col-3 col-form-label">@_localization.Getkey("Details")</label>
                                             <div class="col">
                                                 @Html.Raw(Model.AppointmentDetail)
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="CreatedDate" class=" col-2 col-form-label">@_localization.Getkey("RequestedDate")</label>
+                                            <label asp-for="CreatedDate" class=" col-3 col-form-label">@_localization.Getkey("RequestedDate")</label>
                                             <div class="col">
                                                 <input asp-for="CreatedDate" class="form-control" readonly />
                                                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDate" class=" col-2 col-form-label">@_localization.Getkey("appointment_Date") </label>
+                                            <label asp-for="AppointmentDate" class=" col-3 col-form-label">@_localization.Getkey("appointment_Date") </label>
                                             <div class="col">
 
                                                 <input asp-for="AppointmentDate" class="calendar-date" readonly />
@@ -56,7 +56,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="FinalOutCome" class=" col-2 col-form-label">@_localization.Getkey("meeting_outcome") </label>
+                                            <label asp-for="FinalOutCome" class=" col-3 col-form-label">@_localization.Getkey("meeting_outcome") </label>
                                             <div class="col">
 
                                                 <input asp-for="FinalOutCome" class="form-control" />

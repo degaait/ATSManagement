@@ -6,6 +6,7 @@ using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
@@ -351,16 +352,51 @@ namespace ATSManagement.Controllers
         {
             return (_context.TblExternalRequests?.Any(e => e.RequestId == id)).GetValueOrDefault();
         }
-        public IActionResult AssignToDepartment(Guid id)
+        public IActionResult AssignToDepartment(Guid? id)
         {
-            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var instName = _context.TblExternalUsers.FindAsync(userId).Result;
-            model.RequestedDate = DateTime.Now;
-            model.ExterUserId = userId;
-            model.InistId = instName.InistId;
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View(getModels(id));
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignToDepartment(RequestModel requestModel)
+        {
+            TblRequest request = await _context.TblRequests.FindAsync(requestModel.RequestId);
+            List<TblRequestDepartmentRelation> departmentRelations;
+            List<String> depHeadEmail = new List<string>();
+            request.ServiceTypeId = requestModel.ServiceTypeID;
+            request.IsAssignedTodepartment = true;
+            if (requestModel.DepId.Length > 0)
+            {
+                departmentRelations = new List<TblRequestDepartmentRelation>();
+                foreach (var item in requestModel.DepId)
+                {
+                    departmentRelations.Add(new TblRequestDepartmentRelation { DepId = item, RequestId = requestModel.RequestId });
+                }
+                request.TblRequestDepartmentRelations = departmentRelations;
+            }
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                foreach (var item in requestModel.DepId)
+                {
+                    var DepartmentHeade = _context.TblInternalUsers.Where(x => x.Dep.DepId == item).Select(x => x.EmailAddress).ToList();
+                    depHeadEmail.AddRange(DepartmentHeade);
+                }
+                _notifyService.Success("Request is assigned to Department");
+                await SendMail(depHeadEmail, "Request Assignment notifications from Deputy director", "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
 
-            return View(model);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _notifyService.Error("Request isn't assigned. Please try again");
+                return View(getModels(requestModel.RequestId));
+            }
         }
         private async Task SendMail(List<string> to, string subject, string body)
         {
@@ -462,6 +498,39 @@ namespace ATSManagement.Controllers
                 Value = s.CompleteRequestID.ToString()
             }).ToList();
             return model;
+        }
+
+        public RequestModel getModels(Guid? id)
+        {
+            var reques = _context.TblRequests.Find(id);
+            RequestModel requestModel = new RequestModel();
+            requestModel.RequestId = id;
+            requestModel.CreatedDate = reques.CreatedDate;
+            requestModel.Deparments = _context.TblDepartments.Select(x => new SelectListItem
+            {
+                Text = x.DepName,
+                Value = x.DepId.ToString()
+            }).ToList();
+            requestModel.RequestDetail = reques.RequestDetail;
+            requestModel.ServiceTypes = _context.TblServiceTypes.Select(s => new SelectListItem
+            {
+                Text = s.ServiceTypeName,
+                Value = s.ServiceTypeId.ToString()
+            }).ToList();
+            requestModel.ServiceTypeID = reques.ServiceTypeId;
+            requestModel.Intitutions = _context.TblInistitutions.Where(s => s.InistId == reques.InistId).Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.InistId.ToString()
+            }).ToList();
+            requestModel.InistId = reques.InistId;
+            requestModel.RequestedUsers = _context.TblExternalUsers.Where(x => x.ExterUserId == reques.RequestedBy).Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.MiddleName,
+                Value = x.ExterUserId.ToString()
+            }).ToList();
+            requestModel.RequestedBy = reques.RequestedBy;
+            return requestModel;
         }
     }
 }

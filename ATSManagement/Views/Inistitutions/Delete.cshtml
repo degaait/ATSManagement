@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = @_localization.Getkey("institution")+": Delete";
+    ViewData["Title"] = @_localization.Getkey("institution") + ": Delete";
 }
 
 <div class="page-wrapper">
@@ -19,52 +19,47 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title btn-danger">@_localization.Getkey("are_you_sure_todelete")</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <dl class="row">
-                                    <dt class="col-sm-2">
-                                        <label asp-for="Name" class="col-form-label">@_localization.Getkey("name")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Name)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="Name" class="col-form-label">@_localization.Getkey("name_amharic")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.NameAmharic)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        <label asp-for="Description" class="col-form-label">@_localization.Getkey("Description")</label>
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Description)
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                        <div class="card-footer text-end">
-                            <div class="d-flex">
-                                <form asp-action="Delete">
-                                    <input type="hidden" asp-for="InistId" />
-                                    <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> &nbsp;
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title btn-danger">@_localization.Getkey("are_you_sure_todelete")</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            <label asp-for="Name" class="col-form-label">@_localization.Getkey("name")</label>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            <label asp-for="Name" class="col-form-label">@_localization.Getkey("name_amharic")</label>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.NameAmharic)
+                        </dd>
+                        <dt class="col-sm-2">
+                            <label asp-for="Description" class="col-form-label">@_localization.Getkey("Description")</label>
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="InistId" />
+                        <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> &nbsp;
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 

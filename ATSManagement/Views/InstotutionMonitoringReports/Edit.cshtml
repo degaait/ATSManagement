@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] =  "Edit";
+    ViewData["Title"] = "Edit";
 }
 
 <div class="page-wrapper">
@@ -19,121 +19,116 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">
-                                የመንግስት ተቋማት ክትትልና ድጋፍ
-                            </h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    የመንግስት ተቋማት ክትትልና ድጋፍ
+                </h4>
+            </div>
+            <form asp-action="Edit">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="mb-2 row">
+                                <label asp-for="MoniteredOffice" class="col-3 col-form-label">ጉብኝት የተደረገበት ተቋም</label>
+                                <div class="col">
+                                    <input asp-for="MoniteredOffice" required title="*" type="text" class="form-control" />
+                                    <span asp-validation-for="MoniteredOffice" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Edit">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="Id" />
-                                        <div class="mb-2 row">
-                                            <label asp-for="MoniteredOffice" class="col-3 col-form-label">ጉብኝት የተደረገበት ተቋም</label>
-                                            <div class="col">
-                                                <input asp-for="MoniteredOffice" required title="*" type="text" class="form-control" />
-                                                <span asp-validation-for="MoniteredOffice" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h5 class="card-title">
-                                            የተመረመሩ ጉዳዮች ቁጥር
-                                        </h5>
-                                        <div class="mb-2 row">
-                                            <label asp-for="ContractNumber" class="col-3 col-form-label">ውል</label>
-                                            <div class="col">
-                                                <input asp-for="ContractNumber" required title="*" type="number" class="form-control" />
-                                                <span asp-validation-for="ContractNumber" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 row">
-                                            <label asp-for="ContractMoneyAmount" class="col-3 col-form-label">ADR</label>
-                                            <div class="col">
-                                                <input asp-for="ContractMoneyAmount" type="number" required title="*" class="form-control" />
-                                                <span asp-validation-for="ContractMoneyAmount" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 row">
-                                            <label asp-for="Adrnumber" class="col-3 col-form-label">ክርክር</label>
-                                            <div class="col">
-                                                <input asp-for="Adrnumber" required title="*" type="number" class="form-control" />
-                                                <span asp-validation-for="Adrnumber" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h5 class="card-title">
-                                            የገንዘብ መጠን
-                                        </h5>
-                                        <div class="mb-2 row">
-                                            <label asp-for="DebateNumber" class="col-3 col-form-label">ውል</label>
-                                            <div class="col">
-                                                <input asp-for="DebateNumber" type="number" required title="*" class="form-control" />
-                                                <span asp-validation-for="DebateNumber" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 row">
-                                            <label asp-for="DebateMoneyAmmount" class="col-3 col-form-label">ADR</label>
-                                            <div class="col">
-                                                <input asp-for="DebateMoneyAmmount" required type="number" title="*" class="form-control" />
-                                                <span asp-validation-for="DebateMoneyAmmount" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 row">
-                                            <label asp-for="AdrmoneyAmount" class="col-3 col-form-label">ክርክር</label>
-                                            <div class="col">
-                                                <input asp-for="AdrmoneyAmount" type="number" required title="*" class="form-control" />
-                                                <span asp-validation-for="AdrmoneyAmount" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-2 row">
-                                            <label asp-for="Investigation" class="col-3 col-form-label">ምርመራ</label>
-                                            <div class="col">
-                                                <input asp-for="Investigation" required title="*" class="form-control" />
-                                                <span asp-validation-for="Investigation" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 row">
-                                            <label asp-for="YearId" class="col-3 col-form-label">
-                                                ዓመት
-                                            </label>
-                                            <div class="col">
-                                                <select asp-for="YearId" class="form-select" asp-items="ViewBag.YearId"></select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 row">
-                                            <label asp-for="MonthId" class="col-3 col-form-label">ወር</label>
-                                            <div class="col">
-                                                <select asp-for="MonthId" class="form-select" asp-items="ViewBag.MonthId"></select>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="col-md-4">
+                            <h5 class="card-title">
+                                የተመረመሩ ጉዳዮች ቁጥር
+                            </h5>
+                            <div class="mb-2 row">
+                                <label asp-for="ContractNumber" class="col-3 col-form-label">ውል</label>
+                                <div class="col">
+                                    <input asp-for="ContractNumber" required title="*" type="number" class="form-control" />
+                                    <span asp-validation-for="ContractNumber" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="Create" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                            <div class="mb-2 row">
+                                <label asp-for="ContractMoneyAmount" class="col-3 col-form-label">ADR</label>
+                                <div class="col">
+                                    <input asp-for="ContractMoneyAmount" type="number" required title="*" class="form-control" />
+                                    <span asp-validation-for="ContractMoneyAmount" class="text-danger"></span>
                                 </div>
                             </div>
-                        </form>
+                            <div class="mb-2 row">
+                                <label asp-for="Adrnumber" class="col-3 col-form-label">ክርክር</label>
+                                <div class="col">
+                                    <input asp-for="Adrnumber" required title="*" type="number" class="form-control" />
+                                    <span asp-validation-for="Adrnumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5 class="card-title">
+                                የገንዘብ መጠን
+                            </h5>
+                            <div class="mb-2 row">
+                                <label asp-for="DebateNumber" class="col-3 col-form-label">ውል</label>
+                                <div class="col">
+                                    <input asp-for="DebateNumber" type="number" required title="*" class="form-control" />
+                                    <span asp-validation-for="DebateNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-2 row">
+                                <label asp-for="DebateMoneyAmmount" class="col-3 col-form-label">ADR</label>
+                                <div class="col">
+                                    <input asp-for="DebateMoneyAmmount" required type="number" title="*" class="form-control" />
+                                    <span asp-validation-for="DebateMoneyAmmount" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-2 row">
+                                <label asp-for="AdrmoneyAmount" class="col-3 col-form-label">ክርክር</label>
+                                <div class="col">
+                                    <input asp-for="AdrmoneyAmount" type="number" required title="*" class="form-control" />
+                                    <span asp-validation-for="AdrmoneyAmount" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-2 row">
+                                <label asp-for="Investigation" class="col-3 col-form-label">ምርመራ</label>
+                                <div class="col">
+                                    <input asp-for="Investigation" required title="*" class="form-control" />
+                                    <span asp-validation-for="Investigation" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-2 row">
+                                <label asp-for="YearId" class="col-3 col-form-label">
+                                    ዓመት
+                                </label>
+                                <div class="col">
+                                    <select asp-for="YearId" class="form-select" asp-items="ViewBag.YearId"></select>
+                                </div>
+                            </div>
+                            <div class="mb-2 row">
+                                <label asp-for="MonthId" class="col-3 col-form-label">ወር</label>
+                                <div class="col">
+                                    <select asp-for="MonthId" class="form-select" asp-items="ViewBag.MonthId"></select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="Create" class="btn btn-primary" />|
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

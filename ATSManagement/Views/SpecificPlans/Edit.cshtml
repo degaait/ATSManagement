@@ -13,59 +13,54 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("specific_plans")     
+                        @_localization.Getkey("specific_plans")=> @_localization.Getkey("edit")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">@_localization.Getkey("edit")</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+               
+            </div>
+            <form asp-action="Edit">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="SpecificPlanId" />
+                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                            <input asp-for="PlanCatId" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    <input asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
+                                <div class="col">
+                                    <input asp-for="Description" type="text" id="descri" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Edit">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="SpecificPlanId" />
-                                        <input asp-for="CreatedBy" type="hidden" class="form-control" />
-                                        <input asp-for="PlanCatId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
-                                            <div class="col">
-                                                <input asp-for="Title" class="form-control" />
-                                                <span asp-validation-for="Title" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
-                                            <div class="col">
-                                                <input asp-for="Description" type="text" id="descri" class="form-control" />
-                                                <span asp-validation-for="Description" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
-                                    <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
+                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

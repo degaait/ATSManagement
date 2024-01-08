@@ -15,7 +15,6 @@
         font-weight: bolder;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -29,155 +28,148 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Evidences</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="AddEvidencesAndWitnesses" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Evidence types</label>
+                                <div class="col">
+                                    <input asp-for="WitnessesName" class="form-control" />
+                                    <span asp-validation-for="WitnessesName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Witness name</label>
+                                <div class="col">
+                                    <input asp-for="WitnessesName" class="form-control" />
+                                    <span asp-validation-for="WitnessesName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Any file</label>
+                                <div class="col">
+                                    <input asp-for="EvidenceFiles" type="file" class="form-file-button" />
+                                    <span asp-validation-for="EvidenceFiles" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Videos</label>
+                                <div class="col">
+                                    <input asp-for="EvidenceVideos" type="file" class="form-file-button" />
+                                    <span asp-validation-for="EvidenceVideos" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Witness name</label>
+                                <div class="col">
+                                    <input asp-for="CreatedDate" readonly class="form-control" />
+                                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="AddEvidencesAndWitnesses" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="RequestId" />
-                                        <input type="hidden" asp-for="CreatedBy" />
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Evidence types</label>
-                                            <div class="col">
-                                                <input asp-for="WitnessesName" class="form-control" />
-                                                <span asp-validation-for="WitnessesName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Witness name</label>
-                                            <div class="col">
-                                                <input asp-for="WitnessesName" class="form-control" />
-                                                <span asp-validation-for="WitnessesName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Any file</label>
-                                            <div class="col">
-                                                <input asp-for="EvidenceFiles" type="file" class="form-file-button" />
-                                                <span asp-validation-for="EvidenceFiles" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Videos</label>
-                                            <div class="col">
-                                                <input asp-for="EvidenceVideos" type="file" class="form-file-button" />
-                                                <span asp-validation-for="EvidenceVideos" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Witness name</label>
-                                            <div class="col">
-                                                <input asp-for="CreatedDate" readonly class="form-control" />
-                                                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="Update" class="btn btn-primary" />|
-                                    <a asp-action="AssignedRequests">Back to List</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Witnesses List</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <table class="table table-bordered" id="role">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Witnes name
-                                            </th>
-                                            <th>
-                                                Files
-                                            </th>
-                                            <th>
-                                                Videos
-                                            </th>
-                                            <th>
-                                                Request
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in activities)
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="Update" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Witnesses List</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-striped table-bordered" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Witnes name
+                                </th>
+                                <th>
+                                    Files
+                                </th>
+                                <th>
+                                    Videos
+                                </th>
+                                <th>
+                                    Request
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in activities)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @Html.Raw(item.Request.RequestDetail)
+                                    </td>
+                                    <td>
+                                        @if (item.EvidenceFiles != null)
                                         {
+                                            <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.EvidenceFiles">
 
-                                            <tr>
-                                                <td>
-                                                    @Html.Raw(item.Request.RequestDetail)
-                                                </td>
-                                                <td>
-                                                    @if (item.EvidenceFiles != null)
-                                                    {
-                                                        <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.EvidenceFiles">
-
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                                <path d="M12 17v-6"></path>
-                                                                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                            </svg>
-                                                            Download
-                                                        </a>
-                                                    }
-                                                </td>
-                                                <td>
-
-                                                    @if (item.EvidenceVideos != null)
-                                                    {
-                                                        <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.EvidenceVideos">
-
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                                <path d="M12 17v-6"></path>
-                                                                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                            </svg>
-                                                            Download
-                                                        </a>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    @Html.Raw(item.Request.RequestDetail)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="DeleteWitness" asp-route-id="@item.WitnessId">Delete</a>
-                                                </td>
-                                            </tr>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                    <path d="M12 17v-6"></path>
+                                                    <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                </svg>
+                                                Download
+                                            </a>
                                         }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                                    </td>
+                                    <td>
+
+                                        @if (item.EvidenceVideos != null)
+                                        {
+                                            <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="CivilJustices" asp-route-path="@item.EvidenceVideos">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                    <path d="M12 17v-6"></path>
+                                                    <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                </svg>
+                                                Download
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.Request.RequestDetail)
+                                    </td>
+                                    <td>
+                                        <a asp-action="DeleteWitness" asp-route-id="@item.WitnessId">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script type="text/javascript">
         new DataTable('#role', {
             deferRender: true,

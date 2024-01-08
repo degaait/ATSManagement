@@ -12,59 +12,55 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("Send_to_Institutions")                        
+                        @_localization.Getkey("Send_to_Institutions")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="SendToInstitution" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Letter_of_Upproval")</label>
+                                <div class="col">
+                                    <input asp-for="ApprovalLetter" type="file" class="form-file-button" />
+                                    <span asp-validation-for="ApprovalLetter" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("final_report")</label>
+                                <div class="col">
+                                    <input asp-for="FinalReport" type="file" class="form-file-button" />
+                                    <span asp-validation-for="FinalReport" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("remark")</label>
+                                <div class="col">
+                                    <input asp-for="SendingRemark" class="form-control" />
+                                    <span asp-validation-for="SendingRemark" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="SendToInstitution" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="RequestId" />
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("Letter_of_Upproval")</label>
-                                            <div class="col">
-                                                <input asp-for="ApprovalLetter" type="file" class="form-file-button" />
-                                                <span asp-validation-for="ApprovalLetter" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("final_report")</label>
-                                            <div class="col">
-                                                <input asp-for="FinalReport" type="file" class="form-file-button" />
-                                                <span asp-validation-for="FinalReport" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("remark")</label>
-                                            <div class="col">
-                                                <input asp-for="SendingRemark" class="form-control" />
-                                                <span asp-validation-for="SendingRemark" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+

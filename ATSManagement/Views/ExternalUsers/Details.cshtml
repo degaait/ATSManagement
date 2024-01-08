@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = @_localization.Getkey("external_users")+":Details";
+    ViewData["Title"] = @_localization.Getkey("external_users") + ":Details";
 }
 <div class="page-wrapper">
     <div class="page-header d-print-none">
@@ -17,69 +17,65 @@
             </div>
         </div>
     </div>
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <div class="card-body">
-                            <dl class="row">
-                                <dt class="col-sm-2">
-                                    <label asp-for="FirstName" class="col-form-label">@_localization.Getkey("first_name")</label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.FirstName)
-                                </dd>
-                                <dt class="col-sm-2">
-                                    <label asp-for="FirstName" class="col-form-label">@_localization.Getkey("middle_name") </label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.MiddleName)
-                                </dd>
-                                <dt class="col-sm-2">
-                                    <label asp-for="LastName" class="col-form-label">@_localization.Getkey("last_name") </label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.LastName)
-                                </dd>
-                                <dt class="col-sm-2">
-                                    <label asp-for="Email" class="col-form-label">@_localization.Getkey("email_address") </label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.Email)
-                                </dd>
-                                <dt class="col-sm-2">
-                                    <label asp-for="Email" class="col-form-label">@_localization.Getkey("phone_number") </label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.PhoneNumber)
-                                </dd>
-                                <dt class="col-sm-2">
-                                    <label asp-for="Email" class="col-form-label"> @_localization.Getkey("user_name")</label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.UserName)
-                                </dd>
-                                <dt class="col-sm-2">
-                                    <label asp-for="Email" class="col-form-label">@_localization.Getkey("institution") </label>
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @Html.DisplayFor(model => model.Inist.Name)
-                                </dd>
-                            </dl>
-                        </div>
-                        <div class="card-footer text-end">
-                            <div class="d-flex">
-                                <a asp-action="Edit" asp-route-id="@Model?.ExterUserId">@_localization.Getkey("edit")</a> |
-                                <a asp-action="Index">@_localization.Getkey("backlist") </a>
-                            </div>
-                        </div>
-                    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        <label asp-for="FirstName" class="col-form-label">@_localization.Getkey("first_name")</label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        <label asp-for="FirstName" class="col-form-label">@_localization.Getkey("middle_name") </label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.MiddleName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        <label asp-for="LastName" class="col-form-label">@_localization.Getkey("last_name") </label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        <label asp-for="Email" class="col-form-label">@_localization.Getkey("email_address") </label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt class="col-sm-2">
+                        <label asp-for="Email" class="col-form-label">@_localization.Getkey("phone_number") </label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </dd>
+                    <dt class="col-sm-2">
+                        <label asp-for="Email" class="col-form-label"> @_localization.Getkey("user_name")</label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.UserName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        <label asp-for="Email" class="col-form-label">@_localization.Getkey("institution") </label>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Inist.Name)
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <a asp-action="Edit" asp-route-id="@Model?.ExterUserId">@_localization.Getkey("edit")</a> |
+                    <a asp-action="Index">@_localization.Getkey("backlist") </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 

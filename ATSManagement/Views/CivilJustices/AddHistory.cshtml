@@ -29,14 +29,10 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
+ 
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Uppdate</h4>
                         </div>
                         <form asp-action="AddHistory" method="post" enctype="multipart/form-data">
                             <div class="card-body">
@@ -46,28 +42,28 @@
                                         <input asp-for="ExternalRepliedBy" type="hidden" class="form-control" />
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="Description" class=" col-2 col-form-label">Description</label>
+                                            <label asp-for="Description" class=" col-3 col-form-label">Description</label>
                                             <div class="col">
                                                 <input asp-for="Description" class="form-control" />
                                                 <span asp-validation-for="Description" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="DocPath" class=" col-2 col-form-label">Document</label>
+                                            <label asp-for="DocPath" class=" col-3 col-form-label">Document</label>
                                             <div class="col">
                                                 <input asp-for="DocPath" type="file" required class="form-file-button" />
                                                 <span asp-validation-for="DocPath" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="FileDescription" class=" col-2 col-form-label">File Description</label>
+                                            <label asp-for="FileDescription" class=" col-3 col-form-label">File Description</label>
                                             <div class="col">
                                                 <input asp-for="FileDescription" class="form-control" />
                                                 <span asp-validation-for="FileDescription" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="Round" class=" col-2 col-form-label">Round</label>
+                                            <label asp-for="Round" class=" col-3 col-form-label">Round</label>
                                             <div class="col">
                                                 <input asp-for="Round" readonly class="form-control" />
                                                 <span asp-validation-for="Round" class="text-danger"></span>
@@ -174,9 +170,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+       
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>

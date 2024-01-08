@@ -78,53 +78,48 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <form asp-action="EditReplies">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input asp-for="ReplyId" type="hidden" class="form-control" />
-                                        <input asp-for="RequestId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">@_localization.Getkey("reply")</label>
-                                            <div class="col">
-                                                <input asp-for="ReplayDetail" class="form-control" />
-                                                <span asp-validation-for="ReplayDetail" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsSent" class=" col-2 col-form-label">@_localization.Getkey("you_want_tosend_inst")</label>
-                                            <div class="col">
-                                                <input asp-for="IsSent" type="checkbox" class="form-check" />
-                                                <span asp-validation-for="IsSent" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
-                                    <a asp-action="Replies" asp-controller="CivilJustices" asp-route-id="@Model.RequestId">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
-                        <br />
 
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="EditReplies">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="ReplyId" type="hidden" class="form-control" />
+                            <input asp-for="RequestId" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="ReplayDetail" class=" col-3 col-form-label">@_localization.Getkey("reply")</label>
+                                <div class="col">
+                                    <input asp-for="ReplayDetail" class="form-control" />
+                                    <span asp-validation-for="ReplayDetail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="IsSent" class=" col-3 col-form-label">@_localization.Getkey("you_want_tosend_inst")</label>
+                                <div class="col">
+                                    <input asp-for="IsSent" type="checkbox" class="form-check" />
+                                    <span asp-validation-for="IsSent" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                        <a asp-action="Replies" asp-controller="CivilJustices" asp-route-id="@Model.RequestId">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 

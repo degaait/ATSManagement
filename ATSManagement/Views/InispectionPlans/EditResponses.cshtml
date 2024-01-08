@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] =_localization.Getkey("annual_plans")+":Response";
+    ViewData["Title"] = _localization.Getkey("annual_plans") + ":Response";
     IEnumerable<TblInspectionReplye> replyes = ViewData["Replies"] as IEnumerable<TblInspectionReplye>;
 }
 
@@ -65,7 +65,6 @@
         color: #999;
     }
 </style>
-<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <!-- Page header -->
 <div class="page-wrapper">
     <!-- Page header -->
@@ -75,55 +74,50 @@
                 <div class="col">
                     <h2 class="page-title">
                         @_localization.Getkey("response")
-                     
+
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <form asp-action="EditResponses" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input asp-for="RecId" type="hidden" class="form-control" />
-                                        <input asp-for="ReplyId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row" id="divRequestDetail">
-                                            <label asp-for="ResponseDetail" class=" col-2 col-form-label">@_localization.Getkey("Details")</label>
-                                            <div class="col">
-                                                <input asp-for="ResponseDetail" class="form-control" />
-                                                <span asp-validation-for="ResponseDetail" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row" id="divRequestDetail">
-                                            <label asp-for="Attachement" class=" col-2 col-form-label">@_localization.Getkey("attachement")</label>
-                                            <div class="col">
-                                                <input asp-for="Attachement" class="form-control" />
-                                                <span asp-validation-for="Attachement" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <form asp-action="EditResponses" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="RecId" type="hidden" class="form-control" />
+                            <input asp-for="ReplyId" type="hidden" class="form-control" />
+                            <div class="mb-3 row" id="divRequestDetail">
+                                <label asp-for="ResponseDetail" class=" col-3 col-form-label">@_localization.Getkey("Details")</label>
+                                <div class="col">
+                                    <input asp-for="ResponseDetail" class="form-control" />
+                                    <span asp-validation-for="ResponseDetail" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                            <div class="mb-3 row" id="divRequestDetail">
+                                <label asp-for="Attachement" class=" col-3 col-form-label">@_localization.Getkey("attachement")</label>
+                                <div class="col">
+                                    <input asp-for="Attachement" class="form-control" />
+                                    <span asp-validation-for="Attachement" class="text-danger"></span>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>

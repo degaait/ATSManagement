@@ -13,82 +13,78 @@
         font-weight: bolder;
     }
 </style>
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    @_localization.Getkey("adjournment")
-                </h2>
-            </div>
-            <!-- Page title actions -->
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("adjournment")
+                    </h2>
+                </div>
+                <!-- Page title actions -->
 
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <table class="table table-bordered" id="role">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            @_localization.Getkey("adjournment_date")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("what_is_done")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("CreatedDate")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("created_by")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("requests")
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AdjorneyDate)
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.WhatIsDone)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.Request.RequestDetail)
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-bordered" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @_localization.Getkey("adjournment_date")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("what_is_done")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("CreatedDate")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("created_by")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("requests")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AdjorneyDate)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.WhatIsDone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.Request.RequestDetail)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @section scripts{
 
     <script type="text/javascript">
@@ -106,15 +102,5 @@
         });
 
     </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
-        });
-    </script>
+   
 }

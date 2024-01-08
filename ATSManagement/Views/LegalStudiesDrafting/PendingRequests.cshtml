@@ -18,188 +18,185 @@
         font-weight: bolder;
     }
 </style>
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    @_localization.Getkey("pending_requests")
-                </h2>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("pending_requests")
+                    </h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <table class="table table-bordered" id="role">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            @_localization.Getkey("institution")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("serviceType")
-                                        </th>
 
-                                        <th>
-                                            @_localization.Getkey("Details")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("progress_status")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("assingment_remark")
-                                        </th>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-striped table-bordered" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @_localization.Getkey("institution")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("serviceType")
+                                </th>
 
-                                        <th>
-                                            Approval status
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("final_status")
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
+                                <th>
+                                    @_localization.Getkey("Details")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("progress_status")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("assingment_remark")
+                                </th>
 
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Inist.Name) <label>
-                                                    -->
-                                                    . Focal person <strong>
-                                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                                    </strong>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
-                                                <label>. And Document type is </label>
-                                                @Html.DisplayFor(modelItem => item.DocType.DocName)
-                                                <br />
-                                                @if (item.DocumentFile != null)
+                                <th>
+                                    Approval status
+                                </th>
+                                <th>
+                                    @_localization.Getkey("final_status")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
+
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Inist.Name) <label>
+                                            -->
+                                            . Focal person <strong>
+                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                            </strong>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        <label>. And Document type is </label>
+                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
+                                        <br />
+                                        @if (item.DocumentFile != null)
+                                        {
+                                            <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.DocumentFile">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                    <path d="M12 17v-6"></path>
+                                                    <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                </svg>
+                                                @_localization.Getkey("view_file")
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.RequestDetail) --> with service type <strong>
+                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                        <label>
+                                            .--> @_localization.Getkey("Assigned_to")
+                                            @if (assigneess != null)
+                                            {
+                                                foreach (var assignees in assigneess)
                                                 {
-                                                    <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.DocumentFile">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                            <path d="M12 17v-6"></path>
-                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                        </svg>
-                                                        @_localization.Getkey("view_file")
-                                                    </a>
+                                                    @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
+                                                    @Html.DisplayFor(modelItem => assignees.MidleName)
                                                 }
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.RequestDetail) --> with service type <strong>
-                                                    @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
-                                                </strong>
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AssingmentRemark)
-                                                <label>
-                                                    .--> @_localization.Getkey("Assigned_to")
-                                                    @if (assigneess != null)
+                                            }
+                                        </label> and @_localization.Getkey("Assigned_by")--> <strong>
+                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                        </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
+                                        <label>
+                                            . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+                                        </label>
+                                    </td>
+
+                                    <td>
+                                        <label>Team:-</label>
+                                        @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
+                                        <label>Department:</label>
+                                        @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                        <label>Deputy:</label>
+                                        @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
+                                    </td>
+                                    <td>
+                                        @if (item.TopStatus != null)
+                                        {
+                                            @Html.Raw(item.TopStatus.StatusName)
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="btn-list flex-nowrap">
+                                            <div class="dropdown">
+                                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                                    Actions
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    @if (assigneess == null)
                                                     {
-                                                        foreach (var assignees in assigneess)
+                                                        if (user.IsDepartmentHead == true || user.IsSuperAdmin == true)
                                                         {
-                                                            @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
-                                                            @Html.DisplayFor(modelItem => assignees.MidleName)
+                                                            <a class="dropdown-item" asp-action="AddHistory" asp-route-id="@item.RequestId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
+                                                                @_localization.Getkey("reply")
+                                                            </a>
                                                         }
                                                     }
-                                                </label> and @_localization.Getkey("Assigned_by")--> <strong>
-                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                                </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
-                                                <label>
-                                                    . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
-                                                </label>
-                                            </td>
-
-                                            <td>
-                                                <label>Team:-</label>
-                                                @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
-                                                <label>Department:</label>
-                                                @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                                <label>Deputy:</label>
-                                                @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
-                                            </td>
-                                            <td>
-                                                @if (item.TopStatus != null)
-                                                {
-                                                    @Html.Raw(item.TopStatus.StatusName)
-                                                }
-                                            </td>
-
-                                            <td>
-                                                <div class="btn-list flex-nowrap">
-                                                    <div class="dropdown">
-                                                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                            Actions
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            @if (assigneess == null)
-                                                            {
-                                                                if (user.IsDepartmentHead == true || user.IsSuperAdmin == true)
-                                                                {
-                                                                    <a class="dropdown-item" asp-action="AddHistory" asp-route-id="@item.RequestId">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                                        @_localization.Getkey("reply")
-                                                                    </a>
-                                                                }
-                                                            }
-                                                            <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M13 5h8"></path>
-                                                                    <path d="M13 9h5"></path>
-                                                                    <path d="M13 15h8"></path>
-                                                                    <path d="M13 19h5"></path>
-                                                                    <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                    <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                </svg> &nbsp;@_localization.Getkey("Progress_Activities")
-                                                            </a>
-                                                            <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M13 5h8"></path>
-                                                                    <path d="M13 9h5"></path>
-                                                                    <path d="M13 15h8"></path>
-                                                                    <path d="M13 19h5"></path>
-                                                                    <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                    <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                </svg> &nbsp;@_localization.Getkey("Details")
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M13 5h8"></path>
+                                                            <path d="M13 9h5"></path>
+                                                            <path d="M13 15h8"></path>
+                                                            <path d="M13 19h5"></path>
+                                                            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                        </svg> &nbsp;@_localization.Getkey("Progress_Activities")
+                                                    </a>
+                                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M13 5h8"></path>
+                                                            <path d="M13 9h5"></path>
+                                                            <path d="M13 15h8"></path>
+                                                            <path d="M13 19h5"></path>
+                                                            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                        </svg> &nbsp;@_localization.Getkey("Details")
+                                                    </a>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @section scripts{
     <script type="text/javascript">
 
@@ -216,15 +213,5 @@
         });
 
     </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
-        });
-    </script>
+   
 }

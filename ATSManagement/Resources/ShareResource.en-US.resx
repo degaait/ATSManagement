@@ -145,6 +145,10 @@
     <value>Annual Plans</value>
     <comment>Annual Plans</comment>
   </data>
+  <data name="annual_plans" xml:space="preserve">
+    <value>Annual Plans</value>
+    <comment>Annual Plans</comment>
+  </data>
   <data name="appointment" xml:space="preserve">
     <value>Appointments</value>
     <comment>Appointments</comment>

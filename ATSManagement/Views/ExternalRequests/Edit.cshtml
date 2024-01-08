@@ -13,59 +13,53 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Your Requests
+                        @_localization.Getkey("requests")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Edit</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="Edit">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <input asp-for="ExterUserId" type="hidden" class="form-control" />
+                            <input asp-for="InistId" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="RequestDetail" class=" col-3 col-form-label">Request Detail</label>
+                                <div class="col">
+                                    <input asp-for="RequestDetail" class="form-control" />
+                                    <span asp-validation-for="RequestDetail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="RequestedDate" class=" col-3 col-form-label"> Request Date</label>
+                                <div class="col">
+                                    <input asp-for="RequestedDate" class="form-control" readonly />
+                                    <span asp-validation-for="RequestedDate" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Edit">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="RequestId" />
-                                        <input asp-for="ExterUserId" type="hidden" class="form-control" />
-                                        <input asp-for="InistId" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="RequestDetail" class=" col-2 col-form-label">Request Detail</label>
-                                            <div class="col">
-                                                <input asp-for="RequestDetail" class="form-control" />
-                                                <span asp-validation-for="RequestDetail" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="RequestedDate" class=" col-2 col-form-label"> Request Date</label>
-                                            <div class="col">
-                                                <input asp-for="RequestedDate" class="form-control" readonly />
-                                                <span asp-validation-for="RequestedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="Update" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="Update" class="btn btn-primary" />|
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

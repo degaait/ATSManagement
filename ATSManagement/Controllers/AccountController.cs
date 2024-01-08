@@ -37,21 +37,18 @@ namespace ATSManagement.Controllers
             models.Languages = _context.TblLanguages.Select(s => new SelectListItem
             {
                 Value = s.LangId.ToString(),
-                Text = s.Language.ToString()
+                Text = s.Language
             }).ToList();
             return View(models);
         }
-
-        // POST: LoginController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginModels collection)
         {
-            string culture = null;
-            string userInformation = null;
+            string? culture = null;
+            string? userInformation = null;
             try
             {
-
                 if (collection.LangId == 1)
                 {
                     culture = "en-US";
@@ -63,7 +60,6 @@ namespace ATSManagement.Controllers
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                    new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
-
                 bool isExist = false;
                 List<MenuModels> _menus = new List<MenuModels>();
                 if (collection.Password != null && collection.UserName != null)
@@ -71,7 +67,6 @@ namespace ATSManagement.Controllers
                     string realPas = PawwordEncryption.DecryptPasswordBase64String("MTIzNDU2");
                     string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
                     TblInternalUser userinfo = (from items in _context.TblInternalUsers where (items.UserName == collection.UserName && items.Password == password) || (items.EmailAddress == collection.UserName && items.Password == password) select items).FirstOrDefault();
-
                     if (userinfo != null)
                     {
                         LoginModels _loginCredentials = _context.TblInternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password || (x.EmailAddress == collection.UserName)).Select(x => new LoginModels
@@ -120,12 +115,9 @@ namespace ATSManagement.Controllers
                                     Class_SVC = x.Menu.ClassSvg
                                 }).OrderBy(p => p.DisplayOrder).ToList();
                             }
-
                         }
                         else
-                        {
-                            // Get the login user details and bind it to LoginModels class  
-
+                        {                           
                             if (culture == "am")
                             {
                                 _menus = _context.TblSubmenus.Where(x => x.DepId == _loginCredentials.DepId && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
@@ -160,9 +152,7 @@ namespace ATSManagement.Controllers
                                     Class_SVC = x.Menu.ClassSvg
                                 }).OrderBy(p => p.DisplayOrder).ToList();
                             }
-                        }
-                        //Get the Menu details from entity and bind it in MenuModels list.  
-                        //SetAuthCookie(_loginCredentials.UserName, false); // set the formauthentication cookie  
+                        }          
                         string menusString = JsonSerializer.Serialize(_menus);
                         string loginCredentials = JsonSerializer.Serialize(_loginCredentials);
                         _contextAccessor.HttpContext.Session.SetString("MenuMaster", menusString);
@@ -243,9 +233,7 @@ namespace ATSManagement.Controllers
                     Text = s.Language
                 }).ToList();
                 return View(collection);
-            }
-
-       
+            }       
         }
         public IActionResult Logout()
         {
@@ -255,16 +243,12 @@ namespace ATSManagement.Controllers
         public IActionResult FeedBack()
         {
             return View();
-        }
-        public IActionResult Profile()
-        {
-            return View();
-        }
+        }      
         public IActionResult AccountStatus()
         {
             return View();
         }
-        public async Task<IActionResult> ChangePassword()
+        public async Task<IActionResult> Profile()
         {
             LoginModels loginModels = new LoginModels();
             Guid id = new Guid(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -285,7 +269,7 @@ namespace ATSManagement.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult ChangePassword(LoginModels loginModels)
+        public IActionResult Profile(LoginModels loginModels)
         {
             if (TblUserExists(loginModels.UserId))
             {
@@ -304,10 +288,8 @@ namespace ATSManagement.Controllers
                 }
             }
             ViewBag.Error = "User doesn't found!. Please try again";
-
             return View();
         }
-
         private bool TblUserExists(Guid id)
         {
             return (_context.TblInternalUsers?.Any(e => e.UserId == id)).GetValueOrDefault();

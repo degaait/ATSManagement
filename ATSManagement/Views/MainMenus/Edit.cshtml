@@ -18,58 +18,53 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">@_localization.Getkey("edit")</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="Edit">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="MenuId" />
+                            <div class="mb-3 row">
+                                <label asp-for="MenuName" class="col-3 col-form-label">@_localization.Getkey("english_name")</label>
+                                <div class="col">
+                                    <input asp-for="MenuName" class="form-control" />
+                                    <span asp-validation-for="MenuName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="MenuNameAmharic" class="col-3 col-form-label">@_localization.Getkey("amharic_name")</label>
+                                <div class="col">
+                                    <input asp-for="MenuNameAmharic" class="form-control" />
+                                    <span asp-validation-for="MenuNameAmharic" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="MenuDescription" class="col-3 col-form-label">@_localization.Getkey("Description")</label>
+                                <div class="col">
+                                    <input asp-for="MenuDescription" class="form-control" />
+                                    <span asp-validation-for="MenuDescription" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Edit">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="MenuId" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="MenuName" class="col-3 col-form-label">@_localization.Getkey("english_name")</label>
-                                            <div class="col">
-                                                <input asp-for="MenuName" class="form-control" />
-                                                <span asp-validation-for="MenuName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="MenuNameAmharic" class="col-3 col-form-label">@_localization.Getkey("amharic_name")</label>
-                                            <div class="col">
-                                                <input asp-for="MenuNameAmharic" class="form-control" />
-                                                <span asp-validation-for="MenuNameAmharic" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="MenuDescription" class="col-3 col-form-label">@_localization.Getkey("Description")</label>
-                                            <div class="col">
-                                                <input asp-for="MenuDescription" class="form-control" />
-                                                <span asp-validation-for="MenuDescription" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

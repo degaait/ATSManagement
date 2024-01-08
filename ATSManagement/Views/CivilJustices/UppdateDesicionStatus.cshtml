@@ -18,57 +18,52 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Uppdate</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Uppdate</h4>
+            </div>
+            <form asp-action="UppdateDesicionStatus" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    @Html.Raw(Model.RequestDetail)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("status")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.DesStatusId, new SelectList(Model.DesicionStatus, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="DesStatusId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row" id="divIsDeputyNeeded" style="display:@ViewBag.visible">
+                                <label class="col-3 col-form-label">@_localization.Getkey("no_need_deputy_approval")</label>
+                                <div class="col">
+                                    <input asp-for="IsDeputyApprovalNeeded" class="form-check-input m-0" type="checkbox" />
+                                    <span asp-validation-for="IsDeputyApprovalNeeded" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="UppdateDesicionStatus" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="RequestId" />
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
-                                            <div class="col">
-                                                @Html.Raw(Model.RequestDetail)
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("status")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.DesStatusId, new SelectList(Model.DesicionStatus, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="DesStatusId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row" id="divIsDeputyNeeded" style="display:@ViewBag.visible">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("no_need_deputy_approval")</label>
-                                            <div class="col">
-                                                <input asp-for="IsDeputyApprovalNeeded" class="form-check-input m-0" type="checkbox" />
-                                                <span asp-validation-for="IsDeputyApprovalNeeded" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />|
-                                    <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

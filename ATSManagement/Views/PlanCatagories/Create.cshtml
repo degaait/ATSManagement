@@ -18,55 +18,46 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">@_localization.Getkey("Create")</h4>
-                        </div>
-                        <form asp-action="Create">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                            <input type="hidden" asp-for="PlanCatId" />
-                                            <input type="hidden" asp-for="InspectionPlanId" />
-                                            <div class="mb-3 row">
-                                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
-                                                <div class="col">
-                                                    <input asp-for="CatTitle" class="form-control" />
-                                                    <span asp-validation-for="CatTitle" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
-                                                <div class="col">
-                                                    <input asp-for="CatDescription" class="form-control" />
-                                                    <span asp-validation-for="CatDescription" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">@_localization.Getkey("Create")</h4>
+            </div>
+            <form asp-action="Create">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="PlanCatId" />
+                                <input type="hidden" asp-for="InspectionPlanId" />
+                                <div class="mb-3 row">
+                                    <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                    <div class="col">
+                                        <input asp-for="CatTitle" class="form-control" />
+                                        <span asp-validation-for="CatTitle" class="text-danger"></span>
                                     </div>
                                 </div>
-                            </div><div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                                <div class="mb-3 row">
+                                    <label class="col-3 col-form-label">@_localization.Getkey("Description")</label>
+                                    <div class="col">
+                                        <input asp-for="CatDescription" class="form-control" />
+                                        <span asp-validation-for="CatDescription" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                </div><div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
-
-
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

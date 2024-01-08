@@ -18,94 +18,89 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title"> @_localization.Getkey("Create")</h4>
-                        </div>
-                        <form asp-action="Create">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input asp-for="CreatedBy" type="hidden" class="form-control" />
-                                        <div class="mb-6 row">
-                                            <label asp-for="Title" class="col-3 col-form-label">@_localization.Getkey("title")</label>
-                                            <div class="col">
-                                                <input asp-for="Title" class="form-control" />
-                                                <span asp-validation-for="Title" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
 
-                                            <label asp-for="Recomendation" class="col-3 col-form-label">@_localization.Getkey("Recomendations")</label>
-                                            <div class="col">
-                                                <input asp-for="Recomendation" class="form-control" />
-                                                <span asp-validation-for="Recomendation" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
-                                            <label asp-for="InistId" class="col-3 col-form-label">@_localization.Getkey("institution")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Inistitutions, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="InistId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
-                                            <label asp-for="Status" class="col-3 col-form-label">@_localization.Getkey("status")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.RecostatusID, new SelectList(Model.Status, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="RecostatusID" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
-                                            <label asp-for="LawId" class="col-3 col-form-label">@_localization.Getkey("recomendation_laws")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.LawId, new SelectList(Model.Laws, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="LawId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
-                                            <label asp-for="YearId" class="col-3 col-form-label">@_localization.Getkey("inspection_year")</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.YearId, new SelectList(Model.Years, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="RecostatusID" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
-                                            <label class="col-3 col-form-label">@_localization.Getkey("final_report")</label>
-                                            <div class="col">
-                                                <input asp-for="FinalReport" type="file" class="form-file-button" />
-                                                <span asp-validation-for="FinalReport" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-6 row">
-                                            <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("IsActive")</label>
-                                            <div class="col">
-                                                <input asp-for="IsActive" class="form-check-input m-0" type="checkbox" />
-                                                <span asp-validation-for="IsActive" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> @_localization.Getkey("Create")</h4>
+            </div>
+            <form asp-action="Create">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                            <div class="mb-6 row">
+                                <label asp-for="Title" class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    <input asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("Create")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                            <div class="mb-6 row">
+
+                                <label asp-for="Recomendation" class="col-3 col-form-label">@_localization.Getkey("Recomendations")</label>
+                                <div class="col">
+                                    <input asp-for="Recomendation" class="form-control" />
+                                    <span asp-validation-for="Recomendation" class="text-danger"></span>
                                 </div>
                             </div>
-                        </form>
+                            <div class="mb-6 row">
+                                <label asp-for="InistId" class="col-3 col-form-label">@_localization.Getkey("institution")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Inistitutions, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="InistId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-6 row">
+                                <label asp-for="Status" class="col-3 col-form-label">@_localization.Getkey("status")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.RecostatusID, new SelectList(Model.Status, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="RecostatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-6 row">
+                                <label asp-for="LawId" class="col-3 col-form-label">@_localization.Getkey("recomendation_laws")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.LawId, new SelectList(Model.Laws, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="LawId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-6 row">
+                                <label asp-for="YearId" class="col-3 col-form-label">@_localization.Getkey("inspection_year")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.YearId, new SelectList(Model.Years, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="RecostatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-6 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("final_report")</label>
+                                <div class="col">
+                                    <input asp-for="FinalReport" type="file" class="form-file-button" />
+                                    <span asp-validation-for="FinalReport" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-6 row">
+                                <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("IsActive")</label>
+                                <div class="col">
+                                    <input asp-for="IsActive" class="form-check-input m-0" type="checkbox" />
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Create")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

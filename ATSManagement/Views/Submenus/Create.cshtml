@@ -19,84 +19,78 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title"> @_localization.Getkey("submenus")</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> @_localization.Getkey("submenus")</h4>
+            </div>
+            <form asp-action="Create">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="mb-3 row">
+                                <label asp-for="Submenu" class="col-3 col-form-label">@_localization.Getkey("name")</label>
+                                <div class="col">
+                                    <input asp-for="Submenu" class="form-control" />
+                                    <span asp-validation-for="Submenu" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="Controller" class="col-3 col-form-label">Controller</label>
+                                <div class="col">
+                                    <input asp-for="Controller" class="form-control" />
+                                    <span asp-validation-for="Controller" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="Action" class="col-3 col-form-label">Action</label>
+                                <div class="col">
+                                    <input asp-for="Action" class="form-control" />
+                                    <span asp-validation-for="Action" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="MenuId" class="col-3 col-form-label">@_localization.Getkey("main_menu")</label>
+                                <div class="col">
+                                    <select asp-for="MenuId" class="form-select" asp-items="ViewBag.MenuId"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("IsActive")</label>
+                                <div class="col">
+                                    <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="DepId" class="col-3 col-form-label">@_localization.Getkey("department")</label>
+                                <div class="col">
+                                    <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
+                                </div>
+                            </div><div class="mb-3 row">
+                                <label asp-for="SubmenuAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
+                                <div class="col">
+                                    <input asp-for="SubmenuAmharic" class="form-control" />
+                                    <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Create">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="Submenu" class="col-3 col-form-label">@_localization.Getkey("name")</label>
-                                            <div class="col">
-                                                <input asp-for="Submenu" class="form-control" />
-                                                <span asp-validation-for="Submenu" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="Controller" class="col-3 col-form-label">Controller</label>
-                                            <div class="col">
-                                                <input asp-for="Controller" class="form-control" />
-                                                <span asp-validation-for="Controller" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="Action" class="col-3 col-form-label">Action</label>
-                                            <div class="col">
-                                                <input asp-for="Action" class="form-control" />
-                                                <span asp-validation-for="Action" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="MenuId" class="col-3 col-form-label">@_localization.Getkey("main_menu")</label>
-                                            <div class="col">
-                                                <select asp-for="MenuId" class="form-select" asp-items="ViewBag.MenuId"></select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("IsActive")</label>
-                                            <div class="col">
-                                                <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
-                                                <span asp-validation-for="IsActive" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="DepId" class="col-3 col-form-label">@_localization.Getkey("department")</label>
-                                            <div class="col">
-                                                <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
-                                            </div>
-                                        </div><div class="mb-3 row">
-                                            <label asp-for="SubmenuAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
-                                            <div class="col">
-                                                <input asp-for="SubmenuAmharic" class="form-control" />
-                                                <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
 }

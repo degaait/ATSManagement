@@ -18,59 +18,54 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Update</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Update</h4>
+            </div>
+            <form asp-action="UpdateProgressStatus" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Title</label>
+                                <div class="col">
+                                    @Html.DisplayFor(model => model.PlanTitle)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Evaluation criteria</label>
+                                <div class="col">
+                                    @Html.Raw(Model.EvaluationCheckLists)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="StatusID" class="col-3 col-form-label">Status</label>
+                                <div class="col">
+                                    @Html.DropDownList("StatusId", null, htmlAttributes: new { @class = "form-select" })
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Remark</label>
+                                <div class="col">
+                                    @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="UpdateProgressStatus" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="Id" />
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Title</label>
-                                            <div class="col">
-                                                @Html.DisplayFor(model => model.PlanTitle)
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Evaluation criteria</label>
-                                            <div class="col">
-                                                @Html.Raw(Model.EvaluationCheckLists)
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="StatusID" class="col-3 col-form-label">Status</label>
-                                            <div class="col">
-                                                @Html.DropDownList("StatusId", null, htmlAttributes: new { @class = "form-select" })
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Remark</label>
-                                            <div class="col">
-                                                @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="Update" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="Update" class="btn btn-primary" />|
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 

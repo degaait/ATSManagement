@@ -14,69 +14,65 @@
         font-weight: bolder;
     }
 </style>
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    @_localization.Getkey("Progress_Activities")
-                </h2>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Progress_Activities")
+                    </h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <table class="table table-bordered" id="role">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            @_localization.Getkey("Detail")
 
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("datetime")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("created_by")
-                                        </th>
-                                        <th>
-                                            @_localization.Getkey("requests")
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.Raw(item.ActivityDetail)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AddedDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
-                                            </td>
-                                            <td>
-                                                @Html.Raw(item.Request.RequestDetail)
-                                            </td>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-striped table-bordered" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @_localization.Getkey("Detail")
 
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                </th>
+                                <th>
+                                    @_localization.Getkey("datetime")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("created_by")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("requests")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.Raw(item.ActivityDetail)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AddedDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.Request.RequestDetail)
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -98,15 +94,5 @@
         });
 
     </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
-        });
-    </script>
+
 }

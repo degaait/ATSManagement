@@ -18,128 +18,124 @@
             </div>
         </div>
     </div>
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">@_localization.Getkey("edit")</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">@_localization.Getkey("edit")</h4>
+            </div>
+            <form asp-action="Edit">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="UserId" />
+                            <div class="mb-3 row">
+                                <label asp-for="FirstName" class="col-3 col-form-label">@_localization.Getkey("first_name")</label>
+                                <div class="col">
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="MiddleName" class="col-3 col-form-label">@_localization.Getkey("middle_name")</label>
+                                <div class="col">
+                                    <input asp-for="MiddleName" class="form-control" />
+                                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="LastName" class="col-3 col-form-label"> @_localization.Getkey("last_name") </label>
+                                <div class="col">
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="EmailAddress" class="col-3 col-form-label">@_localization.Getkey("email_address") </label>
+                                <div class="col">
+                                    <input asp-for="EmailAddress" class="form-control" />
+                                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="DepId" class="col-3 col-form-label"> @_localization.Getkey("department") </label>
+                                <div class="col">
+                                    <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="TeamID" class="col-3 col-form-label">@_localization.Getkey("team") </label>
+                                <div class="col">
+
+                                    <select asp-for="TeamID" class="form-select" id="drpTeam" asp-items="ViewBag.Teams"></select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="PhoneNumber" class="col-3 col-form-label">@_localization.Getkey("phone_number") </label>
+                                <div class="col">
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="UserName" class="col-3 col-form-label">@_localization.Getkey("user_name") </label>
+                                <div class="col">
+                                    <input asp-for="UserName" class="form-control" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="IsActive" class="col-3 col-form-label"> @_localization.Getkey("isactive")</label>
+                                <div class="col">
+                                    <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="specialRoles" class="col-3 col-form-label">@_localization.Getkey("special_roles") </label>
+                                <div class="col">
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsDeputy" checked="@ViewBag.IsDeputy" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("isDeputy") </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsDepartmentHead" checked="@ViewBag.IsDepartmentHead" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("isDepartment") </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsTeamLeader" checked="@ViewBag.IsTeamLeader" class="form-check-input" />
+                                        <span class="form-check-label"> @_localization.Getkey("isTeam") </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="DefaultUser" checked="@ViewBag.IsDefaultUser" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("isDefaultUser") </span>
+                                    </label>
+                                    <span asp-validation-for="specialRoles" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="IsSuperAdmin" class="col-3 col-form-label">@_localization.Getkey("isSuperadmin") </label>
+                                <div class="col">
+                                    <input asp-for="IsSuperAdmin" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Edit">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="UserId" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="FirstName" class="col-3 col-form-label">@_localization.Getkey("first_name")</label>
-                                            <div class="col">
-                                                <input asp-for="FirstName" class="form-control" />
-                                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="MiddleName" class="col-3 col-form-label">@_localization.Getkey("middle_name")</label>
-                                            <div class="col">
-                                                <input asp-for="MiddleName" class="form-control" />
-                                                <span asp-validation-for="MiddleName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="LastName" class="col-3 col-form-label"> @_localization.Getkey("last_name") </label>
-                                            <div class="col">
-                                                <input asp-for="LastName" class="form-control" />
-                                                <span asp-validation-for="LastName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="EmailAddress" class="col-3 col-form-label">@_localization.Getkey("email_address") </label>
-                                            <div class="col">
-                                                <input asp-for="EmailAddress" class="form-control" />
-                                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="DepId" class="col-3 col-form-label"> @_localization.Getkey("department") </label>
-                                            <div class="col">
-                                                <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="TeamID" class="col-3 col-form-label">@_localization.Getkey("team") </label>
-                                            <div class="col">
-
-                                                <select asp-for="TeamID" class="form-select" id="drpTeam" asp-items="ViewBag.Teams"></select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="PhoneNumber" class="col-3 col-form-label">@_localization.Getkey("phone_number") </label>
-                                            <div class="col">
-                                                <input asp-for="PhoneNumber" class="form-control" />
-                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="UserName" class="col-3 col-form-label">@_localization.Getkey("user_name") </label>
-                                            <div class="col">
-                                                <input asp-for="UserName" class="form-control" />
-                                                <span asp-validation-for="UserName" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsActive" class="col-3 col-form-label"> @_localization.Getkey("isactive")</label>
-                                            <div class="col">
-                                                <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
-                                                <span asp-validation-for="IsActive" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="specialRoles" class="col-3 col-form-label">@_localization.Getkey("special_roles") </label>
-                                            <div class="col">
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="IsDeputy" checked="@ViewBag.IsDeputy" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isDeputy") </span>
-                                                </label>
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="IsDepartmentHead" checked="@ViewBag.IsDepartmentHead" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isDepartment") </span>
-                                                </label>
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="IsTeamLeader" checked="@ViewBag.IsTeamLeader" class="form-check-input" />
-                                                    <span class="form-check-label"> @_localization.Getkey("isTeam") </span>
-                                                </label>
-                                                <label class="form-check">
-                                                    <input asp-for="specialRoles" type="radio" value="DefaultUser" checked="@ViewBag.IsDefaultUser" class="form-check-input" />
-                                                    <span class="form-check-label">@_localization.Getkey("isDefaultUser") </span>
-                                                </label>
-                                                <span asp-validation-for="specialRoles" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="IsSuperAdmin" class="col-3 col-form-label">@_localization.Getkey("isSuperadmin") </label>
-                                            <div class="col">
-                                                <input asp-for="IsSuperAdmin" type="checkbox" class="form-check-input m-0" />
-                                                <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 @section Scripts{
     @{

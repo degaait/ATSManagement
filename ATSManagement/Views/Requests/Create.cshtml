@@ -10,108 +10,108 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="RequestDetail" class="col-2 col-form-label"></label>
+                <label asp-for="RequestDetail" class="col-3 col-form-label"></label>
                 <input asp-for="RequestDetail" class="form-control" />
                 <span asp-validation-for="RequestDetail" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="InistId" class="col-2 col-form-label"></label>
+                <label asp-for="InistId" class="col-3 col-form-label"></label>
                 <select asp-for="InistId" class="form-control" asp-items="ViewBag.InistId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="RequestedBy" class="col-2 col-form-label"></label>
+                <label asp-for="RequestedBy" class="col-3 col-form-label"></label>
                 <select asp-for="RequestedBy" class="form-control" asp-items="ViewBag.RequestedBy"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedDate" class="col-2 col-form-label"></label>
+                <label asp-for="CreatedDate" class="col-3 col-form-label"></label>
                 <input asp-for="CreatedDate" class="form-control" />
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedBy" class="col-2 col-form-label"></label>
+                <label asp-for="CreatedBy" class="col-3 col-form-label"></label>
                 <select asp-for="CreatedBy" class="form-control" asp-items="ViewBag.CreatedBy"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CaseTypeId" class="col-2 col-form-label"></label>
+                <label asp-for="CaseTypeId" class="col-3 col-form-label"></label>
                 <select asp-for="CaseTypeId" class="form-control" asp-items="ViewBag.CaseTypeId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AssignedBy" class="col-2 col-form-label"></label>
+                <label asp-for="AssignedBy" class="col-3 col-form-label"></label>
                 <select asp-for="AssignedBy" class="form-control" asp-items="ViewBag.AssignedBy"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AssignedDate" class="col-2 col-form-label"></label>
+                <label asp-for="AssignedDate" class="col-3 col-form-label"></label>
                 <input asp-for="AssignedDate" class="form-control" />
                 <span asp-validation-for="AssignedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DueDate" class="col-2 col-form-label"></label>
+                <label asp-for="DueDate" class="col-3 col-form-label"></label>
                 <input asp-for="DueDate" class="form-control" />
                 <span asp-validation-for="DueDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AssingmentRemark" class="col-2 col-form-label"></label>
+                <label asp-for="AssingmentRemark" class="col-3 col-form-label"></label>
                 <input asp-for="AssingmentRemark" class="form-control" />
                 <span asp-validation-for="AssingmentRemark" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AssignedTo" class="col-2 col-form-label"></label>
+                <label asp-for="AssignedTo" class="col-3 col-form-label"></label>
                 <input asp-for="AssignedTo" class="form-control" />
                 <span asp-validation-for="AssignedTo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExternalRequestStatusId" class="col-2 col-form-label"></label>
+                <label asp-for="ExternalRequestStatusId" class="col-3 col-form-label"></label>
                 <select asp-for="ExternalRequestStatusId" class="form-control" asp-items="ViewBag.ExternalRequestStatusId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="TopStatus" class="col-2 col-form-label"></label>
+                <label asp-for="TopStatus" class="col-3 col-form-label"></label>
                 <input asp-for="TopStatus" class="form-control" />
                 <span asp-validation-for="TopStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PriorityId" class="col-2 col-form-label"></label>
+                <label asp-for="PriorityId" class="col-3 col-form-label"></label>
                 <select asp-for="PriorityId" class="form-control" asp-items="ViewBag.PriorityId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="UserUpprovalStatus" class="col-2 col-form-label"></label>
+                <label asp-for="UserUpprovalStatus" class="col-3 col-form-label"></label>
                 <select asp-for="UserUpprovalStatus" class="form-control" asp-items="ViewBag.UserUpprovalStatus"></select>
             </div>
             <div class="form-group">
-                <label asp-for="TeamUpprovalStatus" class="col-2 col-form-label"></label>
+                <label asp-for="TeamUpprovalStatus" class="col-3 col-form-label"></label>
                 <select asp-for="TeamUpprovalStatus" class="form-control" asp-items="ViewBag.TeamUpprovalStatus"></select>
             </div>
             <div class="form-group">
-                <label asp-for="DeputyUprovalStatus" class="col-2 col-form-label"></label>
+                <label asp-for="DeputyUprovalStatus" class="col-3 col-form-label"></label>
                 <select asp-for="DeputyUprovalStatus" class="form-control" asp-items="ViewBag.DeputyUprovalStatus"></select>
             </div>
             <div class="form-group">
-                <label asp-for="DepartmentUpprovalStatus" class="col-2 col-form-label"></label>
+                <label asp-for="DepartmentUpprovalStatus" class="col-3 col-form-label"></label>
                 <select asp-for="DepartmentUpprovalStatus" class="form-control" asp-items="ViewBag.DepartmentUpprovalStatus"></select>
             </div>
             <div class="form-group">
-                <label asp-for="DocTypeId" class="col-2 col-form-label"></label>
+                <label asp-for="DocTypeId" class="col-3 col-form-label"></label>
                 <select asp-for="DocTypeId" class="form-control" asp-items="ViewBag.DocTypeId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="QuestTypeId" class="col-2 col-form-label"></label>
+                <label asp-for="QuestTypeId" class="col-3 col-form-label"></label>
                 <select asp-for="QuestTypeId" class="form-control" asp-items="ViewBag.QuestTypeId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="FinalReport" class="col-2 col-form-label"></label>
+                <label asp-for="FinalReport" class="col-3 col-form-label"></label>
                 <input asp-for="FinalReport" class="form-control" />
                 <span asp-validation-for="FinalReport" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DocumentFile" class="col-2 col-form-label"></label>
+                <label asp-for="DocumentFile" class="col-3 col-form-label"></label>
                 <input asp-for="DocumentFile" class="form-control" />
                 <span asp-validation-for="DocumentFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ServiceTypeId" class="col-2 col-form-label"></label>
+                <label asp-for="ServiceTypeId" class="col-3 col-form-label"></label>
                 <select asp-for="ServiceTypeId" class="form-control" asp-items="ViewBag.ServiceTypeId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="RequestRound" class="col-2 col-form-label"></label>
+                <label asp-for="RequestRound" class="col-3 col-form-label"></label>
                 <input asp-for="RequestRound" class="form-control" />
                 <span asp-validation-for="RequestRound" class="text-danger"></span>
             </div>

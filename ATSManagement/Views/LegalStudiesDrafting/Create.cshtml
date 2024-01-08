@@ -19,93 +19,88 @@
             </div>
         </div>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Create</h4>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Create</h4>
+            </div>
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="RequestDetail" class="col-3 col-form-label">Request Detail</label>
+                                <div class="col">
+                                    <input asp-for="RequestDetail" class="form-control" />
+                                    <span asp-validation-for="RequestDetail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="InistId" class="col-3 col-form-label">Institution</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="InistId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="RequestedDate" class="col-3 col-form-label">Creation Date</label>
+                                <div class="col">
+                                    <input asp-for="CreatedDate" class="form-control" readonly />
+                                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="DepId" class="col-3 col-form-label">Responsible Department</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="DepId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="DocId" class="col-3 col-form-label">Document type</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="DocId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="QuestTypeId" class="col-3 col-form-label">Question type</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="QuestTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">Document file</label>
+                                <div class="col">
+                                    <input asp-for="DocumentFile" type="file" class="form-file-button" />
+                                    <span asp-validation-for="DocumentFile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="Priorities" class=" col-3 col-form-label">Priority</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="PriorityId" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="Create" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input asp-for="CreatedBy" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="RequestDetail" class="col-2 col-form-label">Request Detail</label>
-                                            <div class="col">
-                                                <input asp-for="RequestDetail" class="form-control" />
-                                                <span asp-validation-for="RequestDetail" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="InistId" class="col-2 col-form-label">Institution</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="InistId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="RequestedDate" class="col-2 col-form-label">Creation Date</label>
-                                            <div class="col">
-                                                <input asp-for="CreatedDate" class="form-control" readonly />
-                                                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="DepId" class="col-2 col-form-label">Responsible Department</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Deparments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="DepId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="DocId" class="col-2 col-form-label">Document type</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="DocId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="QuestTypeId" class="col-2 col-form-label">Question type</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.QuestTypeId, new SelectList(Model.LegalStadiesQuestiontypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="QuestTypeId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-3 col-form-label">Document file</label>
-                                            <div class="col">
-                                                <input asp-for="DocumentFile" type="file" class="form-file-button" />
-                                                <span asp-validation-for="DocumentFile" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="Priorities" class=" col-2 col-form-label">Priority</label>
-                                            <div class="col">
-                                                @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                                <span asp-validation-for="PriorityId" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="Create" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="Create" class="btn btn-primary" />|
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>

@@ -25,6 +25,8 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
+    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" asp-append-version="true" />
+ 
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -46,22 +48,19 @@
         int id = 0;
     }
     <header id="header" class="header fixed-top d-flex align-items-center">
-
         <div class="d-flex align-items-center justify-content-between">
             <a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center">
-                <img src="~/dist/img/main_logo.png" alt="">
-
+                <img src="~/dist/img/main_logo.png" style="max-height:139px" alt="">
+                
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
-
         <div class="search-bar">
             <form class="search-form d-flex align-items-center" method="POST" action="#">
                 <input type="text" name="query" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
         </div>
-
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
 
@@ -77,7 +76,6 @@
                             @notifications.Count
                         </span>
                     </a>
-
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                         <li class="dropdown-header">
                             You have   @notifications.Count  new notifications
@@ -109,9 +107,9 @@
                     @if (httpsSession.HttpContext.Session.GetString("UserFullname") != null)
                     {
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                            <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                            <img src="~/assets/img/user-circle.svg" alt="Profile" class="rounded-circle">
                             <span class="d-none d-md-block dropdown-toggle ps-2">@httpsSession.HttpContext.Session.GetString("UserFullname")</span>
-                        </a><!-- End Profile Iamge Icon -->
+                        </a>
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                             <li class="dropdown-header">
@@ -137,32 +135,20 @@
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" asp-action="ChangePassword" asp-controller="Account">
-                                    <i class="bi bi-question-circle"></i>
-                                    <span>Change password</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            </li>                           
                             <li>
                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item d-flex align-items-center">
                                     <i class="bi bi-box-arrow-right"></i>
                                     <span>Sign Out</span>
                                 </a>
                             </li>
-                        </ul><!-- End Profile Dropdown Items -->
+                        </ul>
 
                     }
-                </li><!-- End Profile Nav -->
-
+                </li>
             </ul>
-        </nav><!-- End Icons Navigation -->
-
-    </header><!-- End Header -->
-
+        </nav>
+    </header>
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
@@ -181,23 +167,20 @@
                     id = id + 1;
                     var classIcon = (from item in MenuMaster where item.MainMenuName == MenuList.Key select item.Class_SVC).FirstOrDefault();
                     <li class="nav-item">
-                        <a class="nav-link collapsed" data-bs-target="#components-@id" data-bs-toggle="collapse" href="#">
-                            <i class="bi bi-menu-button-wide"></i><span>@MenuList.Key</span><i class="bi bi-chevron-down ms-auto"></i>
+                        <a class="nav-link collapsed" data-bs-target="#components-@id" data-bs-toggle="collapse">
+                            @Html.Raw(@classIcon)<span>@MenuList.Key</span><i class="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="components-@id" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
                             @foreach (var SubMenuList in MenuList)
                             {
                                 <li>
-                                    <a asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName" asp-route-id="" asp-route-message="null" asp->
-                                        <i class="bi bi-circle"></i><span> @SubMenuList.SubMenuName</span>
-
+                                    <a asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName">
+                                        <i class="bx bxl-adobe"></i> <span> @SubMenuList.SubMenuName</span>
                                     </a>
                                 </li>
                             }
                         </ul>
                     </li>
-
                 }
             }
         </ul>
@@ -221,6 +204,8 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -231,6 +216,8 @@
     <!-- Vendor JS Files -->
     <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062" defer></script>
     <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
     <script src="~/assets/vendor/echarts/echarts.min.js"></script>
     <script src="~/assets/vendor/quill/quill.min.js"></script>
