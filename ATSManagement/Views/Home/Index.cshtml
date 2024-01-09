@@ -22,8 +22,7 @@
                         <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
 
                         <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                              
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">                              
                                 <i class="bx bx-help-circle"></i>
                             </div>
                             <div class="ps-3" style="justify-content:center">
@@ -41,14 +40,13 @@
                 <a asp-action="HighPriorityRequsts" asp-controller="Requests">
                     <div class="card-body">
                         <h5 class="card-title">@_localization.Getkey("high_priority_request")</h5>
-
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bx bx-help-circle text-danger"></i>
                             </div>
                             <div class="ps-3">
                                 <h6>( @ViewBag.HighPriorityRequests )</h6>
-                                <span class="text-danger small pt-1 fw-bold">These are total number of request those needs urgent response. </span>
+                                <span class="text-primary small pt-1 fw-bold">These are total number of request those needs urgent response. </span>
                             </div>
                         </div>
                     </div>
@@ -61,13 +59,12 @@
                 <div class="card-body">
                     <h5 class="card-title">@_localization.Getkey("total_institutions")</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">                            
                             <i class="bx bxs-bank"></i>
                         </div>
                         <div class="ps-3">
                             <h6>( @ViewBag.Insititutions )</h6>
-                            <span class="text-warning small pt-1 fw-bold">These are total number of Inistitutions those have accounts in this dashboard. </span>
+                            <span class="text-info small pt-1 fw-bold">These are total number of Inistitutions those have accounts in this dashboard. </span>
 
                         </div>
                     </div>
@@ -78,14 +75,13 @@
             <div class="card info-card customers-card">
                 <div class="card-body">
                     <h5 class="card-title">@_localization.Getkey("Requests_sent_back_to_Inistitutions")</h5>
-
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                             <i class="bi bi-piggy-bank-fill"></i>
                         </div>
                         <div class="ps-3">
                             <h6>  ( @ViewBag.ReturnedRequests )</h6>
-                            <span class="text-danger small pt-1 fw-bold">These are total number of Inistitutions those have accounts in this dashboard. </span>
+                            <span class="text-warning small pt-1 fw-bold">These are total number of Inistitutions those have accounts in this dashboard. </span>
 
 
                         </div>
@@ -109,8 +105,39 @@
                 @foreach (var item in notifications)
                 {
                     <div class="activity-item d-flex">
-                        <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
-                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                        @if (item.Icon == "1")
+                        {
+                            <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                        }
+                        else if (item.Icon == "2")
+                        {
+                            <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                            <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                        }
+                        else if (item.Icon == "3")
+                        {
+                            <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                            <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                        }
+                        else if (item.Icon == "4")
+                        {
+                            <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                            <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+                        }
+                        else if (item.Icon == "5")
+                        {
+
+                            <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                            <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+
+                        }
+                        else
+                        {
+                            <div class="activite-label">@item.NotificationDate.Value.ToShortDateString()</div>
+                            <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
+
+                        }
                         <div class="activity-content">
                             @item.NotificationDetail <a href="#" class="fw-bold text-dark">@item.CreatedByNavigation.FirstName</a> beatae
                         </div>

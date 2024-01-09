@@ -18,4 +18,5 @@ public partial class TblNotification
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblInternalUser? User { get; set; }
+    public string? Icon {  get; set; }
 }

@@ -25,7 +25,7 @@
                 </div>
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
+                    <div class="btn-list" style="display:flex !important">
                         @foreach (var item in tblDebatePerformances)
                         {
                             <a asp-controller="DebateWorkPerformanceReports" asp-action="Create" asp-route-id="@item.PerformanceId" class="btn btn-primary d-none d-sm-inline-block">
