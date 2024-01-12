@@ -107,9 +107,7 @@
                                     {
                                         @Html.Raw(item.Priority.PriorityNameWithColor)
                                     }
-
                                 </td>
-
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
                                 </td>
@@ -145,7 +143,7 @@
                                     <div class="btn-list flex-nowrap">
                                         <div class="dropdown">
                                             <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                Actions
+                                               ...
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <a class="dropdown-item" asp-action="AssignToDepartment" asp-route-id="@item.RequestId">
@@ -196,17 +194,6 @@
             });
         });
 
-    </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
-        });
     </script>
 }
 

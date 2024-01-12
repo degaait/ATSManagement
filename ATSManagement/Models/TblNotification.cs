@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
+
 public partial class TblNotification
 {
     public int NotificationId { get; set; }
@@ -13,10 +14,12 @@ public partial class TblNotification
     public Guid? UserId { get; set; }
 
     public Guid? CreatedBy { get; set; }
-    public bool? IsChecked {  get; set; }
+
+    public bool? IsChecked { get; set; }
+
+    public string? Icon { get; set; }
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblInternalUser? User { get; set; }
-    public string? Icon {  get; set; }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
+﻿@model IEnumerable<ATSManagement.Models.TblSpecificPlan>
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -67,7 +67,7 @@
                                     @_localization.Getkey("modificationDate")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("inspection_year")
+                                    @_localization.Getkey("Category")
                                 </th>
                                 <th>
                                     @_localization.Getkey("created_by")
@@ -92,13 +92,13 @@
 
                                 <tr>
                                     <td>
-                                        @Html.Raw(item.PlanTitle)
+                                        @Html.Raw(item.Title)
                                     </td>
                                     <td>
-                                        @Html.Raw(item.PlanDescription)
+                                        @Html.Raw(item.Description)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreationDate)
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
                                     </td>
                                     <td>
                                         @foreach (var items in instr)
@@ -110,13 +110,16 @@
                                         @Html.DisplayFor(modelItem => item.ModificationDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Year.Year)
+                                        @Html.DisplayFor(modelItem => item.PlanCat.CatTitle)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.User.FirstName)
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
                                     </td>
                                     <td>
-                                        @Html.Raw(item.Pro.StatusWithColor)
+                                        @if (item.Pro!=null)
+                                        {
+                                            @Html.Raw(item.Pro.StatusWithColor)
+                                        }
                                         @if (team != null)
                                         {
                                             <span>Team:- @team.TeamName</span>
@@ -126,7 +129,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     @if (item.IsAssignedToUser == false)

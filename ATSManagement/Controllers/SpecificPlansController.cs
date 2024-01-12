@@ -35,7 +35,7 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> Index(int PlanCatId)
         {
             ViewBag.PlanCatId = PlanCatId;
-            var atsdbContext = _context.TblSpecificPlans.Include(t => t.CreatedByNavigation).Include(t => t.PlanCat).Where(x => x.PlanCatId == PlanCatId);
+            var atsdbContext = _context.TblSpecificPlans.Include(s=>s.Pro).Include(t => t.CreatedByNavigation).Include(t => t.PlanCat).Where(x => x.PlanCatId == PlanCatId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> Details(Guid? id)
@@ -78,10 +78,11 @@ namespace ATSManagement.Controllers
         {
             try
             {
+
                 TblSpecificPlan tible = new TblSpecificPlan();
                 List<TblPlanInistitution> plan_in = new List<TblPlanInistitution>();
-                if (ModelState.IsValid)
-                {
+                var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "New").FirstOrDefault();
+               
                     TblSpecificPlan tblSpecificPlan = new TblSpecificPlan();
                     tblSpecificPlan.Title = model.Title;
                     tblSpecificPlan.Description = model.Description;
@@ -89,8 +90,9 @@ namespace ATSManagement.Controllers
                     tblSpecificPlan.CreatedBy = model.CreatedBy;
                     tblSpecificPlan.CreatedDate = DateTime.Now;
                     tblSpecificPlan.IsAssignedToTeam = false;
+                    tblSpecificPlan.ProId = status.ProId;
                     tblSpecificPlan.IsAssignedToUser=false;
-                    if (model.InistId.Length > 0)
+                    if (model.InistId!=null)
                     {
                         plan_in = new List<TblPlanInistitution>();
                         foreach (var item in model.InistId)
@@ -117,13 +119,7 @@ namespace ATSManagement.Controllers
                         ViewBag.PlanCatId = model.PlanCatId.ToString();
                         return View(model);
                     }
-                }
-                else
-                {
-                    _notifyService.Error("Specific plan isn't successfull added. Please try again");
-                    ViewBag.PlanCatId = model.PlanCatId.ToString();
-                    return View(model);
-                }
+                
             }
             catch (Exception ex)
             {
@@ -163,9 +159,7 @@ namespace ATSManagement.Controllers
             if (specific == null)
             {
                 return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
+            }           
                 try
                 {
                     specific.ModificationDate = DateTime.Now;
@@ -176,7 +170,8 @@ namespace ATSManagement.Controllers
                     int updated = await _context.SaveChangesAsync();
                     if (updated > 0)
                     {
-                        return RedirectToAction(nameof(Index), new { PlanCatId = model.PlanCatId });
+                    _notifyService.Success("Specific plan successfully updated!.");
+                    return RedirectToAction(nameof(Index), new { PlanCatId = model.PlanCatId });
                     }
                     else
                     {
@@ -192,18 +187,12 @@ namespace ATSManagement.Controllers
                     }
                     else
                     {
-                        throw;
-                    }
+                    _notifyService.Error(ex.Message + " happened. Please try again");
+                    ViewBag.PlanCatId = model.PlanCatId.ToString();
+                    return View(model);
                 }
-            }
-            else
-            {
-                ViewBag.PlanCatId = model.PlanCatId.ToString();
-                return View(model);
-            }
-
+              }
         }
-
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblSpecificPlans == null)
@@ -248,7 +237,6 @@ namespace ATSManagement.Controllers
 
         public async Task<IActionResult> Assign(Guid? SpecificPlanId)
         {
-
             var isAssigned = _context.TblAssignedYearlyPlans.FirstOrDefault(a => a.SpecificPlanId == SpecificPlanId.Value);
             InspectionAssignModel model = new InspectionAssignModel();
             var plats = _context.TblSpecificPlans.Where(p => p.SpecificPlanId == SpecificPlanId).FirstOrDefault();
@@ -381,14 +369,15 @@ namespace ATSManagement.Controllers
             }
             else
             {
+                var yearlyStatus=_context.TblStatuses.Where(p => p.Status == "Assigned to user").FirstOrDefault();
 
                 var plats = _context.TblSpecificPlans.Where(p => p.SpecificPlanId == model.SpecificPlanId).FirstOrDefault();
                 var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to user").FirstOrDefault();
                 plats.AssigneeTypeId = model.AssigneeTypeId;
                 plats.IsAssignedToUser = true;
-                var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).ToList();
+                var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.SpecificPlanId == model.SpecificPlanId).ToList();
 
-                if (ifAssigned != null)
+                if (ifAssigned.Count != 0)
                 {
                     _context.TblAssignedYearlyPlans.RemoveRange(ifAssigned);
                     _context.SaveChanges();
@@ -403,7 +392,7 @@ namespace ATSManagement.Controllers
                     yearlyPlan.DueDate = model.DueDate;
                     yearlyPlan.Remark = model.Remark;
                     yearlyPlan.SpecificPlanId = model.SpecificPlanId;
-                    yearlyPlan.StatusId = status.ProId;
+                    yearlyPlan.StatusId = yearlyStatus.StatusId;
                     plats.ProId = status.ProId;
                     plats.ModificationDate = DateTime.Now;
                     plats.AssigningRemark = model.Remark;

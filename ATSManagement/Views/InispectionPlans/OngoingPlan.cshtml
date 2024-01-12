@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
+﻿@model IEnumerable<ATSManagement.Models.TblSpecificPlan>
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -68,7 +68,6 @@
                                     @_localization.Getkey("dueDate")
                                 </th>
                                 <th>
-
                                     @_localization.Getkey("Evaluation_criteria")
                                 </th>
                                 <th>
@@ -76,25 +75,14 @@
                                     @_localization.Getkey("Engagement_letter")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("targeted_institutions")
-                                </th>
-                                <th>
                                     @_localization.Getkey("task_status")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("User_Uproval")
+                                    @_localization.Getkey("targeted_institutions")
                                 </th>
+
                                 <th>
-                                    @_localization.Getkey("Team_Uproval")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("department_approval")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("Deputy_aproval")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("inspection_year")
+                                    Upproval status
                                 </th>
                                 <th>
                                     @_localization.Getkey("Assigned_to")
@@ -122,17 +110,17 @@
                                              }).ToList();
                                 var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
                                 var users = (from items in ats.TblAssignedYearlyPlans
-                                             join plans in ats.TblInspectionPlans on items.PlanId equals plans.InspectionPlanId
+                                             join plans in ats.TblSpecificPlans on items.PlanId equals plans.SpecificPlanId
                                              join assignee in ats.TblInternalUsers on items.AssignedTo equals assignee.UserId
-                                             where items.PlanId == item.InspectionPlanId
+                                             where items.SpecificPlanId == item.SpecificPlanId
                                              select assignee).ToList();
-                                var assingmentInformation = ats.TblAssignedYearlyPlans.Where(s => s.PlanId == item.InspectionPlanId).FirstOrDefault();
+                                var assingmentInformation = ats.TblAssignedYearlyPlans.Where(s => s.SpecificPlanId == item.SpecificPlanId).FirstOrDefault();
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PlanTitle)
+                                        @Html.DisplayFor(modelItem => item.Title)
                                     </td>
                                     <td>
-                                        @Html.Raw(item.PlanDescription)
+                                        @Html.Raw(item.Description)
                                     </td>
                                     <td>
                                         @if (assingmentInformation != null && assingmentInformation.AssignedDate != null)
@@ -168,7 +156,11 @@
                                         }
                                     </td>
                                     <td>
-                                        @Html.Raw(item.Pro.StatusWithColor)
+                                        @if (item.Pro != null)
+                                        {
+                                            @Html.Raw(item.Pro.StatusWithColor)
+                                        }
+
                                         @if (team != null)
                                         {
                                             <span>Team:- @team.TeamName</span>
@@ -183,29 +175,25 @@
                                     <td>
                                         @if (item.IsUserUprovedNavigation != null)
                                         {
+                                            <label>User:-</label>
                                             @Html.Raw(item.IsUserUprovedNavigation.StatusWithColor)
                                         }
-                                    </td>
-                                    <td>
-                                        @if (item.IsUpprovedbyTeamNavigation != null)
+                                        @if (item.IsUpprovedbyTeamNavigation!=null)
                                         {
+                                            <label>Team:-</label>
                                             @Html.Raw(item.IsUpprovedbyTeamNavigation.StatusWithColor)
                                         }
-                                    </td>
-                                    <td>
-                                        @if (item.IsUpprovedbyDepartmentNavigation != null)
+                                        @if (item.IsUpprovedbyDepartmentNavigation!=null)
                                         {
+                                            <label>Department:</label>
                                             @Html.Raw(item.IsUpprovedbyDepartmentNavigation.StatusWithColor)
                                         }
-                                    </td>
-                                    <td>
-                                        @if (item.IsUprovedByDeputyNavigation != null)
+                                        @if (item.IsUprovedByDeputyNavigation!=null)
                                         {
+                                            <label>Deputy:</label>
                                             @Html.Raw(item.IsUprovedByDeputyNavigation.StatusWithColor)
                                         }
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Year.Year)
+
                                     </td>
                                     <td>
                                         @if (users != null)
@@ -218,7 +206,7 @@
                                         }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.User.FirstName)
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
                                     </td>
                                     <td>
                                         @if (item.FinalReport != null)
@@ -242,9 +230,9 @@
                                                     Actions
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    @if ((user.IsDeputy == true || user.IsSuperAdmin == true || user.IsDepartmentHead == true || user.IsTeamLeader == true) && item.Pro.ProstatusTitle == "Completed")
+                                                    @if ((user.IsDeputy == true || user.IsSuperAdmin == true || user.IsDepartmentHead == true || user.IsTeamLeader == true))
                                                     {
-                                                        <a class="dropdown-item" asp-action="UppdateDesicionStatus" asp-route-id="@item.InspectionPlanId">
+                                                        <a class="dropdown-item" asp-action="UppdateDesicionStatus" asp-route-id="@item.SpecificPlanId">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                 <path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
@@ -253,19 +241,6 @@
 
                                                         </a>
                                                     }
-                                                    <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-                                                        @_localization.Getkey("specific_plans")
-                                                    </a>
-                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                            <path d="M13.5 6.5l4 4"></path>
-                                                            <path d="M16 19h6"></path>
-                                                            <path d="M19 16v6"></path>
-                                                        </svg>&nbsp;  @_localization.Getkey("edit")
-                                                    </a>
                                                     <a class="dropdown-item" asp-action="Details" asp-route-id="@item.InspectionPlanId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

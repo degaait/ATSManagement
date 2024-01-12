@@ -19,7 +19,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <form asp-action="SendToInstitutions" method="post" enctype="multipart/form-data">
@@ -27,7 +26,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="PlanId" />
+                            <input type="hidden" asp-for="SpecificPlanId" />
                             <div class="mb-3 row">
                                 <label class="col-3 col-form-label">Remark</label>
                                 <div class="col">

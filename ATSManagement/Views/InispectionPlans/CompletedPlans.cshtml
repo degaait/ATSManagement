@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ATSManagement.Models.TblInspectionPlan>
+﻿@model IEnumerable<ATSManagement.Models.TblSpecificPlan>
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -8,7 +8,6 @@
     ViewData["Title"] = _localization.Getkey("annual_plans");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
-
 }
 <style type="text/css">
     .table thead th {
@@ -59,26 +58,11 @@
                                     @_localization.Getkey("title")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("CreatedDate")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("attachment")
-                                </th>
+                                    @_localization.Getkey("Description")
+                                </th>                              
                                 <th>
                                     @_localization.Getkey("targeted_institutions")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("modificationDate")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("inspection_year")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("created_by")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("Assigned_to")
-                                </th>
+                                </th>  
                                 <th>
                                     @_localization.Getkey("final_report")
                                 </th>
@@ -102,15 +86,22 @@
                                 var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PlanTitle)
+                                        @Html.DisplayFor(modelItem => item.Title)
                                     </td>
                                     <td>
-                                        @Html.Raw(item.PlanDescription)
+                                        @Html.Raw(item.Description)
                                     </td>
                                     <td>
-                                        @if (item.Attachement != null)
+                                        @foreach (var items in instr)
                                         {
-                                            <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" target="_blank" asp-route-path="@item.Attachement">
+                                            @Html.DisplayFor(modelItem => items.Name) <br />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.FinalReport != null)
+                                        {
+                                            <a class="btn btn-primary" asp-action="DocumentViewer" asp-controller="DocumentViewer" asp-route-path="@item.FinalReport">
+
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                     <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -120,46 +111,14 @@
                                                 </svg>
                                                 @_localization.Getkey("view_file")
                                             </a>
-
                                         }
+
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreationDate)
-                                    </td>
-                                    <td>
-                                        @foreach (var items in instr)
+                                        @if (item.Pro != null)
                                         {
-                                            @Html.DisplayFor(modelItem => items.Name) <br />
+                                            @Html.Raw(item.Pro.StatusWithColor)
                                         }
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ModificationDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Year.Year)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.User.FirstName)
-                                    </td>
-                                    <td>
-                                        @if (item.FinalReport != null)
-                                        {
-                                            <a class="btn btn-primary" asp-action="DownloadFile" asp-route-path="@item.FinalReport">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                    <path d="M12 17v-6"></path>
-                                                    <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                </svg>
-                                                Download
-                                            </a>
-                                        }
-
-                                    </td>
-                                    <td>
-                                        @Html.Raw(item.Pro.StatusWithColor)
                                         @if (team != null)
                                         {
                                             <span>Team:- @team.TeamName</span>
@@ -172,24 +131,12 @@
                                                     Actions
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-
-                                                        @_localization.Getkey("Specific_plans")
-                                                    </a>
+               
                                                     <a class="dropdown-item" asp-action="SendToInstitutions" asp-controller="InispectionPlans" asp-route-InspectionPlanId="@item.InspectionPlanId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" fill-rule="evenodd"><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8" /></g></svg>&nbsp;
                                                         @_localization.Getkey("Send_to_Institutions")
                                                     </a>
-                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                            <path d="M13.5 6.5l4 4"></path>
-                                                            <path d="M16 19h6"></path>
-                                                            <path d="M19 16v6"></path>
-                                                        </svg>&nbsp; @_localization.Getkey("edit")
-                                                    </a>
+                                                   
                                                     <a class="dropdown-item" asp-action="Details" asp-route-id="@item.InspectionPlanId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -201,7 +148,7 @@
                                                             <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                         </svg> &nbsp; @_localization.Getkey("Detail")
                                                     </a>
-                                                    <a class="dropdown-item" asp-action="ReAssign" asp-route-id="@item.InspectionPlanId">
+                                                    <a class="dropdown-item" asp-action="ReAssign" asp-route-id="@item.SpecificPlanId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M13 5h8"></path>

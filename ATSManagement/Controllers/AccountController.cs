@@ -1,6 +1,7 @@
 ﻿using NToastNotify;
 using System.Text.Json;
 using ATSManagement.Models;
+using ATSManagement.Filters;
 using ATSManagement.Security;
 using ATSManagement.Services;
 using ATSManagement.ViewModels;
@@ -101,6 +102,43 @@ namespace ATSManagement.Controllers
                             else
                             {
                                 _menus = _context.TblSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                                {
+                                    MainMenuId = x.Menu.MenuId,
+                                    MainMenuName = x.Menu.MenuName,
+                                    SubMenuId = x.Id,
+                                    SubMenuName = x.Submenu,
+                                    ControllerName = x.Controller,
+                                    ActionName = x.Action,
+                                    DepId = x.RoleId,
+                                    DepName = x.Dep.DepName,
+                                    DepNameAmharic = x.Dep.DepNameAmharic,
+                                    DisplayOrder = x.Menu.DisplayOrder,
+                                    Class_SVC = x.Menu.ClassSvg
+                                }).OrderBy(p => p.DisplayOrder).ToList();
+                            }
+                        }
+                        else if (userinfo.IsDeputy==true)
+                        {
+                            if (culture == "am")
+                            {
+                                _menus = _context.TblSubmenus.Include(s=>s.Menu).Where(x => x.Menu.MenuName!="Settings"&&x.Menu.MenuName!= "Configurations"  && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
+                                {
+                                    MainMenuId = x.Menu.MenuId,
+                                    MainMenuName = x.Menu.MenuNameAmharic,
+                                    SubMenuId = x.Id,
+                                    SubMenuName = x.SubmenuAmharic,
+                                    ControllerName = x.Controller,
+                                    ActionName = x.Action,
+                                    DepId = x.RoleId,
+                                    DepName = x.Dep.DepName,
+                                    DepNameAmharic = x.Dep.DepNameAmharic,
+                                    DisplayOrder = x.Menu.DisplayOrder,
+                                    Class_SVC = x.Menu.ClassSvg
+                                }).OrderBy(p => p.DisplayOrder).ToList();
+                            }
+                            else
+                            {
+                                _menus = _context.TblSubmenus.Where(x => x.Menu.MenuName != "Settings" && x.Menu.MenuName != "Configurations" && x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
                                 {
                                     MainMenuId = x.Menu.MenuId,
                                     MainMenuName = x.Menu.MenuName,
@@ -248,6 +286,7 @@ namespace ATSManagement.Controllers
         {
             return View();
         }
+        [CheckSessionIsAvailable]
         public async Task<IActionResult> Profile()
         {
             LoginModels loginModels = new LoginModels();
@@ -267,6 +306,7 @@ namespace ATSManagement.Controllers
 
             return View(loginModels);
         }
+
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public IActionResult Profile(LoginModels loginModels)

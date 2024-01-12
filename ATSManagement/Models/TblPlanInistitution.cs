@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
-
 public partial class TblPlanInistitution
 {
     public Guid Id { get; set; }

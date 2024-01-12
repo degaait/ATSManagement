@@ -68,7 +68,6 @@
                                 <th>
                                     @_localization.Getkey("attachment")
                                 </th>
-
                                 <th>
                                     @_localization.Getkey("modificationDate")
                                 </th>
@@ -78,7 +77,6 @@
                                 <th>
                                     @_localization.Getkey("created_by")
                                 </th>
-
                                 <th>
                                     @_localization.Getkey("final_report")
                                 </th>
@@ -140,7 +138,6 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.User.FirstName)
                                     </td>
-
                                     <td>
                                         @if (item.FinalReport != null)
                                         {
@@ -156,12 +153,11 @@
                                             </a>
                                         }
                                     </td>
-
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-controller="PlanCatagories" asp-action="Index" asp-route-InspectionPlanId="@item.InspectionPlanId">
@@ -170,7 +166,7 @@
                                                             <path d="M12 5l0 14" />
                                                             <path d="M5 12l14 0" />
                                                         </svg>&nbsp;
-                                                        Add Category
+                                                        Add Key Plans (Catagory)
                                                     </a>
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InspectionPlanId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

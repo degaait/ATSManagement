@@ -16,7 +16,7 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Inspection title")]
         [Required(ErrorMessage = "*")]
         public string? PlanTitle { get; set; }
-        public Guid? PlanId { get; set; }
+        //public Guid? PlanId { get; set; }
         [Required(ErrorMessage = "*")]
         [Display(Name = "Assigned Date")]
         public DateTime? AssignedDate { get; set; }
@@ -69,5 +69,8 @@ namespace ATSManagement.ViewModels
 
         public Guid? SpecificPlanId {  get; set; }
         public int? PlanCatId { get; set; }
+
+        [Display(Name = "TOR Attachment")]
+        public IFormFile? TORAttachment { get; set; }
     }
 }

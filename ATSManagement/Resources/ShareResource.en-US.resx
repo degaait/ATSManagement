@@ -413,6 +413,10 @@
     <value>Is Team Leader?</value>
     <comment>Is Team Leader?</comment>
   </data>
+  <data name="key_plans" xml:space="preserve">
+    <value>Key Plans (Catagory)</value>
+    <comment>Key Plans (Catagory)</comment>
+  </data>
   <data name="last_name" xml:space="preserve">
     <value>Last Name</value>
     <comment>Last Name</comment>

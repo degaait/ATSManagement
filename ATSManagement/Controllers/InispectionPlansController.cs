@@ -55,10 +55,9 @@ namespace ATSManagement.Controllers
             var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
             if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true|| users.IsTeamLeader == true)
             {
-                var atsdbContext = _context.TblInspectionPlans
-                    .Include(t => t.User)
+                var atsdbContext = _context.TblSpecificPlans
+                    .Include(s=>s.CreatedByNavigation)
                     .Include(T => T.Pro)
-                    .Include(s => s.Year)
                     .Include(s=>s.IsUpprovedbyDepartmentNavigation)
                     .Include(s=>s.IsUpprovedbyTeamNavigation)
                     .Include(s => s.IsUprovedByDeputyNavigation)
@@ -67,7 +66,10 @@ namespace ATSManagement.Controllers
             }
             else if (users.IsTeamLeader == true)
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team)
+                var atsdbContext = _context.TblSpecificPlans
+                    .Include(s => s.CreatedByNavigation)
+                    .Include(T => T.Pro)
+                    .Include(s => s.Team)
                     .Include(s => s.IsUpprovedbyDepartmentNavigation)
                     .Include(s => s.IsUpprovedbyTeamNavigation)
                     .Include(s => s.IsUprovedByDeputyNavigation)
@@ -87,12 +89,12 @@ namespace ATSManagement.Controllers
             var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
             if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true)
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Where(s => s.FinalStatus == true);
+                var atsdbContext = _context.TblSpecificPlans.Include(t => t.Pro).Where(s => s.FinalStatus == true);
                 return View(await atsdbContext.ToListAsync());
             }
             else if (users.IsTeamLeader == true)
             {
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team).Where(s => s.TeamId == users.TeamId&& s.FinalStatus == true);
+                var atsdbContext = _context.TblSpecificPlans.Include(T => T.Pro).Include(s => s.Team).Where(s => s.TeamId == users.TeamId&& s.FinalStatus == true);
                 return View(await atsdbContext.ToListAsync());
             }
             else
@@ -125,18 +127,19 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> TeamPlans()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
-
+          var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
           
           if(users.IsTeamLeader == true)
             {
-                var assigned = (from items in _context.TblInspectionPlans
-                                join assing in _context.TblAssignedYearlyPlans on items.InspectionPlanId equals assing.PlanId
-                                where items.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")
+               
+
+                var assigned = (from items in _context.TblSpecificPlans
+                                join assing in _context.TblPlanCatagories on items.PlanCatId equals assing.PlanCatId
+                                where items.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847") && items.TeamId==users.TeamId
                                 select items).ToList();
-                var atsdbContext = _context.TblInspectionPlans.Include(t => t.User).Include(T => T.Pro).Include(s => s.Year).Include(s => s.Team).Where(s => s.TeamId == users.TeamId && s.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")&&(s.IsAssignedToUser==false||s.IsAssignedToUser==null)).ToList();
+                var atsdbContext = _context.TblSpecificPlans.Include(t => t.CreatedByNavigation).Include(T => T.Pro).Include(s => s.PlanCat).Include(s => s.Team).Where(s => s.TeamId == users.TeamId && s.AssigneeTypeId == Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847")&&(s.IsAssignedToUser==false||s.IsAssignedToUser==null)).ToList();
                 var filtered = atsdbContext.Intersect(assigned).ToList();
-                return View(atsdbContext);
+                return View(filtered);
             }
             else
             {
@@ -426,13 +429,13 @@ namespace ATSManagement.Controllers
 
             var isAssigned = _context.TblAssignedYearlyPlans.FirstOrDefault(a => a.PlanId == id.Value);
             InspectionAssignModel model = new InspectionAssignModel();
-            var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == id).FirstOrDefault();
+            var plats = _context.TblSpecificPlans.Where(p => p.InspectionPlanId == id).FirstOrDefault();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var loggedInUser = _context.TblInternalUsers.Where(p => p.UserId == userId).ToList();
             var AllUsers = _context.TblInternalUsers.Where(s=>s.Dep.DepCode== "FLIM").ToList().Except(loggedInUser);
             if (isAssigned != null)
             {
-                model.PlanTitle = plats.PlanTitle;
+                model.PlanTitle = plats.Title;
                 model.AssignedBy = userId;
                 model.Users = AllUsers.Select(g => new SelectListItem
                 {
@@ -462,13 +465,13 @@ namespace ATSManagement.Controllers
                 model.StatusID = isAssigned.StatusId;
                 model.AssignedDate = isAssigned.AssignedDate;
                 model.DueDate = isAssigned.DueDate;
-                model.PlanId = id;
+                model.SpecificPlanId = id;
                 model.Remark = plats.AssigningRemark;
                 return View(model);
             }
             else
             {                
-                model.PlanTitle = plats.PlanTitle;
+                model.PlanTitle = plats.Title;
                 model.AssignedBy = userId;
                 model.Users = AllUsers.Select(g => new SelectListItem
                 {
@@ -493,7 +496,7 @@ namespace ATSManagement.Controllers
                 }).ToList();
                 model.AssignedDate = DateTime.Now;
                 model.DueDate = DateTime.Now.AddDays(10);
-                model.PlanId = id;
+                model.SpecificPlanId = id;
                 return View(model);
             }
         }
@@ -511,12 +514,12 @@ namespace ATSManagement.Controllers
             var AllUsers = _context.TblInternalUsers.ToList().Except(loggedInUser);
             if (model.AssigneeTypeId==Guid.Parse("bdfb6c89-fb2a-45f9-82f1-d56a3a396847"))
             {
-                var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
+                var plats = _context.TblSpecificPlans.Where(p => p.SpecificPlanId == model.SpecificPlanId).FirstOrDefault();
                 var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to Team").FirstOrDefault();
                 plats.AssigneeTypeId = model.AssigneeTypeId;
                 plats.ProId = status.ProId;
-                plats.IsAssignedTeam = true;
-                var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
+                plats.IsAssignedToTeam = true;
+                var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.SpecificPlanId).FirstOrDefault();
                 var teamLeader=(from items in _context.TblTeams 
                                 join users in _context.TblInternalUsers on items.TeamLeaderId equals users.UserId where items.TeamId==model.TeamId
                                 select users.EmailAddress).ToList();
@@ -554,11 +557,11 @@ namespace ATSManagement.Controllers
             else
             {
               
-                var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
+                var plats = _context.TblSpecificPlans.Where(p => p.SpecificPlanId == model.SpecificPlanId).FirstOrDefault();
                 var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to user").FirstOrDefault();
                 plats.AssigneeTypeId = model.AssigneeTypeId;
                 plats.IsAssignedToUser = true;
-                var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
+                var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.SpecificPlanId == model.SpecificPlanId).FirstOrDefault();
                
                     if (ifAssigned != null)
                     {
@@ -574,7 +577,7 @@ namespace ATSManagement.Controllers
                         yearlyPlan.AssignedDate = model.AssignedDate;
                         yearlyPlan.DueDate = model.DueDate;
                         yearlyPlan.Remark = model.Remark;
-                        yearlyPlan.PlanId = model.PlanId;
+                        yearlyPlan.SpecificPlanId = model.SpecificPlanId;
                         plats.ProId = status.ProId;
                         plats.ModificationDate = DateTime.Now;
                         plats.AssigningRemark = model.Remark;
@@ -622,13 +625,13 @@ namespace ATSManagement.Controllers
             var usersIds = _context.TblAssignedYearlyPlans.Where(a => a.PlanId == id.Value).Select(S => S.AssignedTo).ToArray();
             InspectionAssignModel model = new InspectionAssignModel();
            
-            var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == id).FirstOrDefault();
+            var plats = _context.TblSpecificPlans.Where(p => p.SpecificPlanId == id).FirstOrDefault();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var loggedInUser = _context.TblInternalUsers.Where(p => p.UserId == userId).ToList();
             var AllUsers = _context.TblInternalUsers.Where(s => s.Dep.DepCode == "FLIM").ToList().Except(loggedInUser);
             if (isAssigned != null)
             {
-                model.PlanTitle = plats.PlanTitle;
+                model.PlanTitle = plats.Title;
                 model.AssignedBy = userId;
                 model.Teams = _context.TblTeams.Where(s => s.TeamId == plats.TeamId).Select(s => new SelectListItem
                 {
@@ -656,13 +659,13 @@ namespace ATSManagement.Controllers
                 model.StatusID = isAssigned.StatusId;
                 model.AssignedDate = isAssigned.AssignedDate;
                 model.DueDate = isAssigned.DueDate;
-                model.PlanId = id;
+                model.SpecificPlanId = id;
                 model.Remark = plats.AssigningRemark;
                 return View(model);
             }
             else
             {
-                model.PlanTitle = plats.PlanTitle;
+                model.PlanTitle = plats.Title;
                 model.AssignedBy = userId;
                 model.Users = AllUsers.Select(g => new SelectListItem
                 {
@@ -688,7 +691,7 @@ namespace ATSManagement.Controllers
                 model.TeamId = model.TeamId;
                 model.AssignedDate = DateTime.Now;
                 model.DueDate = DateTime.Now.AddDays(10);
-                model.PlanId = id;
+                model.SpecificPlanId = id;
                 return View(model);
             }
         }
@@ -703,10 +706,10 @@ namespace ATSManagement.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var loggedInUser = _context.TblInternalUsers.Where(p => p.UserId == userId).ToList();
             var AllUsers = _context.TblInternalUsers.ToList().Except(loggedInUser);
-            var plats = _context.TblInspectionPlans.Where(p => p.InspectionPlanId == model.PlanId).FirstOrDefault();
+            var plats = _context.TblSpecificPlans.Where(p => p.InspectionPlanId == model.SpecificPlanId).FirstOrDefault();
             var status = _context.TblInspectionStatuses.Where(p => p.ProstatusTitle == "Assigned to user").FirstOrDefault();
 
-            var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.PlanId == model.PlanId).FirstOrDefault();
+            var ifAssigned = _context.TblAssignedYearlyPlans.Where(p => p.SpecificPlanId == model.SpecificPlanId).FirstOrDefault();
           
                 if (ModelState.IsValid)
                 {
@@ -724,7 +727,7 @@ namespace ATSManagement.Controllers
                         yearlyPlan.AssignedDate = model.AssignedDate;
                         yearlyPlan.DueDate = model.DueDate;
                         yearlyPlan.Remark = model.Remark;
-                        yearlyPlan.PlanId = model.PlanId;
+                        yearlyPlan.SpecificPlanId = model.SpecificPlanId;
                         plats.ProId = status.ProId;
                         plats.ModificationDate = DateTime.Now;
                         plats.AssigningRemark = model.Remark;
@@ -739,7 +742,7 @@ namespace ATSManagement.Controllers
                     }
                     else
                     {
-                    model.PlanId = model.PlanId;
+                    model.SpecificPlanId = model.SpecificPlanId;
                     model.Users = AllUsers.Select(g => new SelectListItem
                     {
                         Value = g.UserId.ToString(),
@@ -767,7 +770,7 @@ namespace ATSManagement.Controllers
                 else
                 {
                     
-                    model.PlanId = model.PlanId;
+                    model.SpecificPlanId = model.SpecificPlanId;
                     model.Users = AllUsers.Select(g => new SelectListItem
                     {
                         Value = g.UserId.ToString(),
@@ -794,8 +797,6 @@ namespace ATSManagement.Controllers
 
             
         }
-
-
         private async Task SendMail(List<string> to, string subject, string body)
         {
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
@@ -805,11 +806,11 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> UppdateDesicionStatus(Guid? id)
         {
             InspectionAssignModel model = new InspectionAssignModel();
-            var plaDetail=_context.TblInspectionPlans.Where(s=>s.InspectionPlanId==id).FirstOrDefault();
+            var plaDetail=_context.TblSpecificPlans.Where(s=>s.SpecificPlanId==id).FirstOrDefault();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
-            model.PlanId=id;
-            model.PlanTitle = plaDetail.PlanTitle;
+            model.SpecificPlanId=id;
+            model.PlanTitle = plaDetail.Title;
             model.DesicionStatus = _context.TblDecisionStatuses.Where(x => x.StatusName == "Upproved" || x.StatusName == "Rejected").Select(x => new SelectListItem
             {
                 Text = x.StatusName,
@@ -832,17 +833,17 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UppdateDesicionStatus(InspectionAssignModel model)
         {
-            var yearlyPlan = _context.TblInspectionPlans.Find(model.PlanId);
+            var yearlyPlan = _context.TblSpecificPlans.Find(model.SpecificPlanId);
+            var waitingStatus = _context.TblDecisionStatuses.Where(s => s.StatusName == "Waiting for Upproval").FirstOrDefault();
             var status = _context.TblInspectionStatuses.Where(s => s.ProstatusTitle == "Completed").FirstOrDefault();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
             TblTopStatus topStatus = _context.TblTopStatuses.Where(s => s.StatusName == "Completed").FirstOrDefault();
             var desicionStatus = _context.TblDecisionStatuses.Where(s => s.StatusName == "Upproved").FirstOrDefault();
-           
-            
             if (user.IsTeamLeader == true)
             {
                 yearlyPlan.IsUpprovedbyTeam = model.DesStatusId;
+                yearlyPlan.IsUprovedByDeputy = waitingStatus.DesStatusId;
             }
             else if (user.IsDepartmentHead == true)
             {
@@ -856,6 +857,10 @@ namespace ATSManagement.Controllers
                     }
                     yearlyPlan.ProId = status.ProId;
                     yearlyPlan.IsUprovedByDeputy = model.DesStatusId;
+                }
+                else
+                {
+                    yearlyPlan.IsUprovedByDeputy = waitingStatus.DesStatusId;
                 }
             }
             else if (user.IsDeputy == true)
@@ -907,7 +912,7 @@ namespace ATSManagement.Controllers
             var plaDetail=_context.TblInspectionPlans.Where(s=>s.InspectionPlanId== InspectionPlanId).FirstOrDefault();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
-            model.PlanId=InspectionPlanId;
+            model.SpecificPlanId =InspectionPlanId;
             model.ExpectedReplyDate=DateTime.Now.AddDays(20);
             model.Insititutions = _context.TblInistitutions.Select(s => new SelectListItem
             {

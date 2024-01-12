@@ -26,7 +26,7 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "Inistitutions")]
         public List<SelectListItem>? Inistitutions { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public Guid[] InistId { get; set; }
+       
+        public Guid[]? InistId { get; set; }
     }
 }

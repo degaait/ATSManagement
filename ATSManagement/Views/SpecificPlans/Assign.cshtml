@@ -27,7 +27,7 @@
             <form asp-action="Assign">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="SpecificPlanId" />
                             <input type="hidden" asp-for="AssignedBy" />
@@ -48,8 +48,9 @@
                             <div class="mb-3 row" id="divUsers" style="display:none">
                                 <label asp-for="UserId" class="col-3 col-form-label">@_localization.Getkey("user")</label>
                                 <div class="col">
-                                    @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select", @id = "drpUserId" })
+                                    @Html.DropDownListFor(model => model.UserId, new SelectList(Model.Users, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "drpUserId" })
                                     <span asp-validation-for="UserId" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="mb-3 row" id="divTeams" style="display:none">
@@ -106,10 +107,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-
         document.addEventListener("DOMContentLoaded", function () {
             var el;
-            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
+            window.TomSelect && (new TomSelect(el = document.getElementById('drpUserId'), {
                 copyClassesToDropdown: false,
                 dropdownParent: 'body',
                 controlInput: '<input>',
@@ -150,6 +150,31 @@
                 });
 
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var el;
+            window.TomSelect && (new TomSelect(el = document.getElementById('Subjects_dropdown'), {
+                copyClassesToDropdown: false,
+                dropdownParent: 'body',
+                controlInput: '<input>',
+                render: {
+                    item: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                    option: function (data, escape) {
+                        if (data.customProperties) {
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        }
+                        return '<div>' + escape(data.text) + '</div>';
+                    },
+                },
+            }));
         });
     </script>
 }

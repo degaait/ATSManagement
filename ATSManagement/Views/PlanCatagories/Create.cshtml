@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = @_localization.Getkey("teams") + " Create";
+    ViewData["Title"] = "Key Plans (Catagory) Create";
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -12,7 +12,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("teams")
+                        Key Plans (Catagory)
                     </h2>
                 </div>
             </div>
@@ -21,7 +21,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">@_localization.Getkey("Create")</h4>
             </div>
             <form asp-action="Create">
                 <div class="card-body">

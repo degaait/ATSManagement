@@ -8,7 +8,8 @@
     ViewData["Title"] = @_localization.Getkey("specific_plans");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
-}
+ 
+    }
 
 <style type="text/css">
     .table thead th {
@@ -44,8 +45,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -68,7 +67,7 @@
                                     @_localization.Getkey("modificationDate")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("created_by")
+                                    @_localization.Getkey("targeted_institutions")
                                 </th>
                                 <th>
                                     @_localization.Getkey("annual_plan")
@@ -84,16 +83,16 @@
                             {
                                 var instr = (from ints in ats.TblPlanInistitutions
                                              join related in ats.TblInistitutions on ints.InistId equals related.InistId
-                                             where ints.PlanId == item.InspectionPlanId
+                                             where ints.SpecificPlanId == item.SpecificPlanId
                                              select new
                                              {
                                                  Name = related.Name
                                              }).ToList();
                                 var team = ats.TblTeams.Where(s => s.TeamId == item.TeamId).FirstOrDefault();
                                 var users = (from items in ats.TblAssignedYearlyPlans
-                                             join plans in ats.TblInspectionPlans on items.PlanId equals plans.InspectionPlanId
+                                             join plans in ats.TblSpecificPlans on items.SpecificPlanId equals plans.SpecificPlanId
                                              join assignee in ats.TblInternalUsers on items.AssignedTo equals assignee.UserId
-                                             where items.PlanId == item.InspectionPlanId
+                                             where items.SpecificPlanId == item.SpecificPlanId
                                              select assignee).ToList();
                                 <tr>
                                     <td>
@@ -109,8 +108,10 @@
                                         @Html.DisplayFor(modelItem => item.ModificationDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                        @foreach (var items in instr)
+                                        {
+                                            @Html.DisplayFor(modelItem => items.Name) <br />
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.PlanCat.CatTitle)
@@ -130,7 +131,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     @if (user.IsDepartmentHead == true || user.IsTeamLeader == true)

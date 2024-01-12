@@ -421,6 +421,10 @@
     <value>ቡድን መሪ ነው?</value>
     <comment>ቡድን መሪ ነው?</comment>
   </data>
+  <data name="key_plans" xml:space="preserve">
+    <value>ቁልፍ እቅዶች (ምድብ)</value>
+    <comment>ቁልፍ እቅዶች (ምድብ)</comment>
+  </data>
   <data name="last_name" xml:space="preserve">
     <value>የአያት ስም</value>
     <comment>የአያት ስም</comment>

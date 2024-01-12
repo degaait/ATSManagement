@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Models;
-
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -168,9 +167,12 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblYear> TblYears { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=Dag-Pc;Database=ATSDB;User ID=sa;Password=superadmin;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
-
+    {
+        var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        var configSection = configBuilder.GetSection("ConnectionStrings");
+        var connectionString = configSection["ATSDB"] ?? null;
+        optionsBuilder.UseSqlServer(connectionString);
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblActivity>(entity =>

@@ -48,7 +48,7 @@
                                 <label class="col-3 col-form-label-sm">@_localization.Getkey("targeted_institutions")</label>
                                 <div class="col">
                                     @Html.ListBoxFor(model => model.InistId, new MultiSelectList(Model.Inistitutions, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
-                                    <span asp-validation-for="InistId" class="text-danger"></span>
+                                   
                                 </div>
                             </div>
                         </div>

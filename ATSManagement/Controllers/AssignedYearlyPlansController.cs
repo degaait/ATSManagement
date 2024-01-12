@@ -28,10 +28,19 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> Index(Guid? id)
         {
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
 
-            var atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.SpecificPlan).Include(p => p.Status).Include(s=>s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
-            return View(await atsdbContext.ToListAsync());
+            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            var user=_context.TblInternalUsers.Find(userId);
+            if (user.IsSuperAdmin==true||user.IsDeputy==true||user.IsDepartmentHead==true)
+            {
+                IQueryable<TblAssignedYearlyPlan>? atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.SpecificPlan).Include(p => p.Status).Include(s => s.AssignedByNavigation);
+                return View(await atsdbContext.ToListAsync());
+            }            
+            else
+            {
+                IQueryable<TblAssignedYearlyPlan>? atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.SpecificPlan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
+                return View(await atsdbContext.ToListAsync());
+            }
         }
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -164,10 +173,10 @@ namespace ATSManagement.Controllers
         {
             InspectionAssignModel model = new InspectionAssignModel();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);          
-            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
+            var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
             model.Id = assignedTasks.Id;
             model.AssignedBy= assignedTasks.AssignedBy;
-            model.PlanTitle = yearlyPlan.PlanTitle;
+            model.PlanTitle = yearlyPlan.Title;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
             return View(model);
         }
@@ -250,38 +259,41 @@ namespace ATSManagement.Controllers
             }
          
         }
-        public IActionResult AddMeetingLetter(Guid? id)
+
+        public IActionResult AddTORAttachement(Guid? id)
         {
             InspectionAssignModel model = new InspectionAssignModel();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
-            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
+            var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
             model.Id = assignedTasks.Id;
-            model.PlanTitle = yearlyPlan.PlanTitle;
+            if (yearlyPlan!=null)
+            {
+                model.PlanTitle = yearlyPlan.Title;
+            }
+           
             return View(model);
         }
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public IActionResult AddMeetingLetter(InspectionAssignModel? model)
+        public IActionResult AddTORAttachement(InspectionAssignModel? model)
         {
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
 
-            //create folder if not exist
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            //get file extension
-            FileInfo fileInfo = new FileInfo(model.MeetingLetter.FileName);
-            string fileName = Guid.NewGuid().ToString() + model.MeetingLetter.FileName;
+            FileInfo fileInfo = new FileInfo(model.TORAttachment.FileName);
+            string fileName = Guid.NewGuid().ToString() + model.TORAttachment.FileName;
             string fileNameWithPath = Path.Combine(path, fileName);
             using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
             {
-                model.MeetingLetter.CopyTo(stream);
+                model.TORAttachment.CopyTo(stream);
             }
             string dbPath = "/Files/" + fileName;
             assignedTasks.Remark = model.Remark;
-            assignedTasks.MeetingLetter = dbPath;
+            assignedTasks.TORAttachment = dbPath;
             int updated = _context.SaveChanges();
             if (updated > 0)
             {
@@ -297,10 +309,10 @@ namespace ATSManagement.Controllers
            
             InspectionAssignModel model = new InspectionAssignModel();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
-            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
+            var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
             model.AssignedBy = assignedTasks.AssignedBy;
             model.Id = assignedTasks.Id;
-            model.PlanTitle = yearlyPlan.PlanTitle;
+            model.PlanTitle = yearlyPlan.Title;
             model.Remark = assignedTasks.Remark;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
             model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user"&& a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
@@ -325,12 +337,12 @@ namespace ATSManagement.Controllers
                 var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
                 var desicionStatus=_context.TblDecisionStatuses.Where(s=>s.StatusName== "Waiting for Upproval").FirstOrDefault();
                 TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
-                var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
+                var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
                 if (model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport == null)
                 {
                     _notifyService.Error("Before you make complete status. Please uppload final report");
                     model.Id = assignedTasks.Id;
-                    model.PlanTitle = yearlyPlan.PlanTitle;
+                    model.PlanTitle = yearlyPlan.Title;
                     model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
                     model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
                     {

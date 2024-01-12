@@ -5,12 +5,12 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Home Page";
-    
+
 }
 
 <div class="pagetitle">
     <h1>Welcom to Task Tracking Dashboard</h1>
-   
+
 </div>
 <!-- Left side columns -->
 <div class="col-lg-8">
@@ -22,7 +22,7 @@
                         <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
 
                         <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">                              
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bx bx-help-circle"></i>
                             </div>
                             <div class="ps-3" style="justify-content:center">
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    </a>
+                </a>
 
             </div>
         </div>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    </a>
+                </a>
 
             </div>
         </div>
@@ -59,7 +59,7 @@
                 <div class="card-body">
                     <h5 class="card-title">@_localization.Getkey("total_institutions")</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">                            
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                             <i class="bx bxs-bank"></i>
                         </div>
                         <div class="ps-3">
@@ -91,6 +91,8 @@
             </div>
 
         </div>
+
+
     </div>
 </div>
 <div class="col-lg-4">
@@ -152,6 +154,65 @@
 
 
 </div><!-- End Right side columns -->
+
+
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Institution wise report</h5>
+
+            <!-- Pie Chart -->
+            <div id="pieChart"></div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#pieChart"), {
+                        series: [44, 55, 13],
+                        chart: {
+                            height: 350,
+                            type: 'pie',
+                            toolbar: {
+                                show: true
+                            }
+                        },
+                        labels: ['Health Minister', 'Finance Minister','Justice Minister']
+                    }).render();
+                });
+            </script>
+            <!-- End Pie Chart -->
+
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Recomendations report</h5>
+
+            <!-- Donut Chart -->
+            <div id="donutChart"></div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#donutChart"), {
+                        series: [44, 55, 13],
+                        chart: {
+                            height: 350,
+                            type: 'donut',
+                            toolbar: {
+                                show: true
+                            }
+                        },
+                        labels: ['Health Minister', 'Finance Minister', 'Justice Minister'],
+                    }).render();
+                });
+            </script>
+            <!-- End Donut Chart -->
+
+        </div>
+    </div>
+</div>
 
 
 

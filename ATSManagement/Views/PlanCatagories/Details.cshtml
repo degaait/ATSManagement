@@ -1,36 +1,57 @@
 ﻿@model ATSManagement.Models.TblPlanCatagory
-
+@using ATSManagement.Services;
+@inject LanguageService _localization
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = _localization.Getkey("key_plans")+ _localization.Getkey("Details");
 }
 
-<h1>Details</h1>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("key_plans")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h4>TblPlanCatagory</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CatTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CatTitle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CatDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CatDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InspectionPlan)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InspectionPlan.InspectionPlanId)
-        </dd>
-    </dl>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @_localization.Getkey("title")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CatTitle)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @_localization.Getkey("Description")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CatDescription)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @_localization.Getkey("annual_plans")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.InspectionPlan.PlanTitle)
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <a asp-action="Edit" asp-route-id="@Model?.PlanCatId">Edit</a> |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.PlanCatId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
