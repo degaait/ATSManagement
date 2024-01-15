@@ -41,6 +41,7 @@ namespace ATSManagementExternal.Controllers
             {
                 dataPointss.Add(new DataPoint(item.Instition, item.Number));
             }
+            ViewBag.Datas=dataPointss;
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPointss);
             return View(collectionModel);
         }
@@ -595,6 +596,7 @@ namespace ATSManagementExternal.Controllers
                     dataPointss.Add(new DataPoint(item.Instition, item.Number));
                 }
             }
+            ViewBag.Datas=dataPointss;
            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPointss);
             return View(model);
         }
