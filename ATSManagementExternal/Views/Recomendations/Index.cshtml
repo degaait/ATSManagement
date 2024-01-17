@@ -112,7 +112,7 @@
                                 <div class="accordion" id="accordion-example">
                                     
                                     @foreach (var item in Institutions)
-                                    {
+                                     {
                                         var instit = ats.TblInistitutions.Where(s => s.Name == item.Label).FirstOrDefault();
                                         var details = ats.TblRecomendations.Where(s => s.InistId == instit.InistId);
                                         id = id + 1;
@@ -123,8 +123,8 @@
                                                 </button>
                                             </h2>
                                             @foreach (var deta in details)
-                                            {
-                                                <div id="collapse-@id" class="accordion-collapse collapse" style="padding-left:30px" data-bs-parent="#accordion-example">
+                                             {
+                                                <div id="collapse-@id" class="accordion-collapse collapse" style="padding-left: 30px; border-style: outset;" data-bs-parent="#accordion-example">
                                                     @Html.Raw(deta.Recomendation)
                                                     <div class="accordion-body pt-0" style="display:flex">
                                                         @if (deta.Recostatus.Status == "Open")
@@ -155,10 +155,10 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            }
+                                             }
 
                                         </div>
-                                    }
+                                     }
                                 </div>
                             </div>
                         </div>
