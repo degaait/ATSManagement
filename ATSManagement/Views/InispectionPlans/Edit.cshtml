@@ -27,7 +27,7 @@
             <form asp-action="Edit">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="InspectionPlanId" />
                             <div class="mb-3 row">
@@ -42,13 +42,6 @@
                                 <div class="col">
                                     <input asp-for="PlanDescription" class="form-control" />
                                     <span asp-validation-for="PlanDescription" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label class="col-3 col-form-label">@_localization.Getkey("targeted_institutions")</label>
-                                <div class="col">
-                                    @Html.ListBoxFor(model => model.InistId, new MultiSelectList(Model.Inistitutions, "Value", "Text"), new { @class = "form-select", multiple = "multiple", id = "Subjects_dropdown" })
-                                    <span asp-validation-for="InistId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">

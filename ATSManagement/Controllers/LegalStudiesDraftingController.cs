@@ -1,14 +1,14 @@
-﻿using ATSManagement.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http.Extensions;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -48,7 +48,7 @@ namespace ATSManagement.Controllers
                    .Include(s => s.ServiceType)
                    .Include(t => t.RequestedByNavigation)
                    .Include(t => t.CreatedByNavigation)
-                   .Include(t=>t.DocType)
+                   .Include(t => t.DocType)
                    .Include(x => x.ExternalRequestStatus)
                    .Include(x => x.UserUpprovalStatusNavigation)
                    .Include(x => x.DepartmentUpprovalStatusNavigation)
@@ -82,8 +82,8 @@ namespace ATSManagement.Controllers
                     tblRequest = _context.TblRequests
                       .Include(t => t.AssignedByNavigation)
                       .Include(t => t.Inist)
-                      .Include(s=>s.DocType)
-                      .Include(s=>s.ServiceType)
+                      .Include(s => s.DocType)
+                      .Include(s => s.ServiceType)
                       .Include(t => t.RequestedByNavigation)
                       .Include(t => t.CreatedByNavigation)
                       .Include(x => x.ExternalRequestStatus)
@@ -598,7 +598,7 @@ namespace ATSManagement.Controllers
                     relation.AssigneeTypeId = model.AssigneeTypeId;
                     relation.TeamId = model.TeamId;
                     relation.IsAssingedToUser = false;
-                    
+
                     drafting.ExternalRequestStatusId = status.ExternalRequestStatusId;
                     int updated = await _context.SaveChangesAsync();
                     if (updated > 0)
@@ -817,7 +817,7 @@ namespace ATSManagement.Controllers
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var dep = _context.TblInternalUsers.Find(userId);
-            if (dep.IsDepartmentHead==true)
+            if (dep.IsDepartmentHead == true)
             {
                 ViewBag.value = "flex";
 
@@ -890,7 +890,7 @@ namespace ATSManagement.Controllers
                     dbPath = "/Files/" + fileName;
                     replay.Attachment = dbPath;
                 }
-                    _context.TblReplays.Add(replay);
+                _context.TblReplays.Add(replay);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
@@ -1081,14 +1081,14 @@ namespace ATSManagement.Controllers
                                                         .Include(t => t.DocType)
                                                         .Include(x => x.QuestType)
                                                         .Include(t => t.Inist)
-                                                        .Include(t=>t.ServiceType)
+                                                        .Include(t => t.ServiceType)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
                                                         .Include(x => x.ExternalRequestStatus)
                                                         .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName != "New" &&x.ExternalRequestStatus.StatusName!="Completed").FirstOrDefault();
+                                                        .Include(t => t.Priority).Where(x => x.RequestId == item && x.ExternalRequestStatus.StatusName != "New" && x.ExternalRequestStatus.StatusName != "Completed").FirstOrDefault();
                     if (tblRequest != null)
                     {
                         atsdbContext.Add(tblRequest);
@@ -1135,8 +1135,8 @@ namespace ATSManagement.Controllers
                                   .Include(t => t.AssignedByNavigation)
                                   .Include(t => t.CaseType)
                                   .Include(t => t.Inist)
-                                  .Include(s=>s.DocType)
-                                  .Include(s=>s.ServiceType)
+                                  .Include(s => s.DocType)
+                                  .Include(s => s.ServiceType)
                                   .Include(t => t.RequestedByNavigation)
                                   .Include(t => t.CreatedByNavigation)
                                   .Include(x => x.ExternalRequestStatus)
@@ -1281,7 +1281,7 @@ namespace ATSManagement.Controllers
                 Text = x.StatusName,
                 Value = x.DesStatusId.ToString()
             }).ToList();
-           if (user.IsDepartmentHead == true)
+            if (user.IsDepartmentHead == true)
             {
                 ViewBag.visible = true;
             }
@@ -1543,7 +1543,7 @@ namespace ATSManagement.Controllers
                 Text = s.TeamName,
                 Value = s.TeamId.ToString(),
             }).ToList();
-            
+
             model.AssignedTos = _context.TblInternalUsers.Where(s => s.Dep.DepCode == "LSDC").Select(x => new SelectListItem
             {
                 Value = x.UserId.ToString(),
@@ -1562,7 +1562,7 @@ namespace ATSManagement.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]            
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignFromTeam(CivilJusticeExternalRequestModel model)
         {
             List<string>? emails = new List<string>();
@@ -2076,6 +2076,39 @@ namespace ATSManagement.Controllers
                 model.PriorityId = drafting.PriorityId;
                 return View(model);
             }
+        }
+
+        public async Task<IActionResult> UppdateBeforeStatus(Guid? id)
+        {
+
+            CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
+            TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
+            model.RequestDetail = tblCivilJustice.RequestDetail;
+            model.RequestId = tblCivilJustice.RequestId;
+            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed" || x.StatusName == "Report Preparation" || x.StatusName == "Data Collection").Select(x => new SelectListItem
+            {
+                Text = x.StatusName,
+                Value = x.ExternalRequestStatusId.ToString()
+            }).ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UppdateBeforeStatus(CivilJusticeExternalRequestModel model)
+        {
+            TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
+            TblDecisionStatus status = _context.TblDecisionStatuses.Where(x => x.StatusName == "Waiting for Upproval").FirstOrDefault();
+
+            tblCivilJustice.ExternalRequestStatusId = model.ExternalRequestStatusID;
+            tblCivilJustice.TeamUpprovalStatus = status.DesStatusId;
+            tblCivilJustice.DepartmentUpprovalStatus = status.DesStatusId;
+            tblCivilJustice.DeputyUprovalStatus = status.DesStatusId;
+            int saved = await _context.SaveChangesAsync();
+            if (saved > 0)
+            {
+                return RedirectToAction(nameof(AssignedRequests));
+            }
+            return View(model);
         }
     }
 }

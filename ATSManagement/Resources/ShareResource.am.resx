@@ -585,6 +585,10 @@
     <value>ምላሽ</value>
     <comment>ምላሽ</comment>
   </data>
+  <data name="re_assign" xml:space="preserve">
+    <value>እንደገና መድብ</value>
+    <comment>እንደገና መድብ</comment>
+  </data>
   <data name="save" xml:space="preserve">
     <value>አስቀምጥ</value>
     <comment>አስቀምጥ</comment>

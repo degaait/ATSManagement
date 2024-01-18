@@ -13,13 +13,12 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        _localization.Getkey("annual_plans")
+                        @_localization.Getkey("annual_plans")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -69,7 +68,7 @@
             <div class="card-footer text-end">
                 <div class="d-flex">
                     <a asp-action="Edit" asp-route-id="@Model?.InspectionPlanId">@_localization.Getkey("edit")</a> |
-                    <a asp-action="Index">@_localization.Getkey("baclist")</a>
+                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
                 </div>
             </div>
         </div>
