@@ -1,15 +1,15 @@
-using NToastNotify;
-using System.Reflection;
-using System.Globalization;
-using ATSManagementExternal.Models;
-using Microsoft.Extensions.Options;
-using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
-using ATSManagementExternal.Services;
 using AspNetCoreHero.ToastNotification;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.FileProviders;
 using AspNetCoreHero.ToastNotification.Extensions;
+using ATSManagementExternal.IModels;
+using ATSManagementExternal.Models;
+using ATSManagementExternal.Services;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using NToastNotify;
+using System.Globalization;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -26,18 +26,21 @@ builder.Services.AddDbContext<AtsdbContext>(options =>
 });
 builder.Services.AddSingleton<LanguageService>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options => {
-    options.DataAnnotationLocalizerProvider = (type, factory) => {
+builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options =>
+{
+    options.DataAnnotationLocalizerProvider = (type, factory) =>
+    {
         var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
         return factory.Create("ShareResource", assemblyName.Name);
     };
 });
-builder.Services.Configure<RequestLocalizationOptions>(options => {
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
     var supportedCultures = new List<CultureInfo> {
         new CultureInfo("am"),
         new CultureInfo("en-US")
     };
-    options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+    options.DefaultRequestCulture = new RequestCulture(culture: "am", uiCulture: "am");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
     options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());

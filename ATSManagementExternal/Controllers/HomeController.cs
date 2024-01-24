@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagementExternal.IModels;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -15,17 +16,39 @@ namespace ATSManagementExternal.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
         private readonly INotyfService _notifyService;
-        public HomeController(ILogger<HomeController> logger,INotyfService notyfService,IMailService mailService,AtsdbContext atsdbContext)
+        public HomeController(ILogger<HomeController> logger, INotyfService notyfService, IMailService mailService, AtsdbContext atsdbContext, IHttpContextAccessor httpContext)
         {
             _notifyService = notyfService;
             _mail = mailService;
-            _context= atsdbContext;
+            _context = atsdbContext;
             _logger = logger;
+            _contextAccessor = httpContext;
         }
 
         public IActionResult Index()
         {
+            String culture;
+            if (_contextAccessor.HttpContext.Session.GetString("culture") != null)
+            {
+                culture = _contextAccessor.HttpContext.Session.GetString("culture");
+                _contextAccessor.HttpContext.Session.SetString("culture", culture);
+            }
+            else
+            {
+                culture = "am";
+                _contextAccessor.HttpContext.Session.SetString("culture", "am");
+            }
+
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                 new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
             return View();
+        }
+
+        public IActionResult IndexLocalIzation(String? Culture)
+        {
+            _contextAccessor.HttpContext.Session.SetString("culture", Culture);
+            return RedirectToAction("Index");
         }
 
         public IActionResult AboutUs()
@@ -36,6 +59,10 @@ namespace ATSManagementExternal.Controllers
         {
             return View();
         }
+        public IActionResult Help()
+        {
+            return View();
+        }
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -43,9 +70,9 @@ namespace ATSManagementExternal.Controllers
         {
             try
             {
-                ContactModel coModel= new ContactModel();
+                ContactModel coModel = new ContactModel();
                 TblContactInformation tblContact = new TblContactInformation();
-                var userEmails=_context.TblInternalUsers.Where(x=>x.IsDeputy==true||x.IsDepartmentHead==true).Select(s=>s.EmailAddress).ToList();
+                var userEmails = _context.TblInternalUsers.Where(x => x.IsDeputy == true || x.IsDepartmentHead == true).Select(s => s.EmailAddress).ToList();
                 tblContact.ContactPhoneNumber = model.ContactPhoneNumber;
                 tblContact.ContactEmail = model.ContactEmail;
                 tblContact.ContactDetaiMessage = model.ContactDetaiMessage;
@@ -81,7 +108,7 @@ namespace ATSManagementExternal.Controllers
             }
             catch (Exception ex)
             {
-                _notifyService.Error("Your message isn't submitted successfully because of "+ex.Message+". Please try again");
+                _notifyService.Error("Your message isn't submitted successfully because of " + ex.Message + ". Please try again");
                 return View(model);
             }
 

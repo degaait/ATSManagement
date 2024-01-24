@@ -1,6 +1,8 @@
 ﻿@using Newtonsoft.Json;
 @using ATSManagementExternal.ViewModels;
 @using Microsoft.AspNetCore.Http;
+@using ATSManagementExternal.Services;
+@inject LanguageService _localization
 @inject IHttpContextAccessor _context;
 <!DOCTYPE html>
 <html lang="en">
@@ -65,99 +67,49 @@
                                 <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
                             </a>
-                            @if (_context.HttpContext.Session.GetString("UserFullname") != null)
-                            {
-                                <div class="nav-item dropdown d-none d-md-flex me-3">
-                                    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
-                                        <span class="badge bg-red"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h3 class="card-title">Last updates</h3>
+                            <div class="nav-item dropdown d-none d-md-flex me-3">
+                                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-world" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                        <path d="M3.6 9h16.8" />
+                                        <path d="M3.6 15h16.8" />
+                                        <path d="M11.5 3a17 17 0 0 0 0 18" />
+                                        <path d="M12.5 3a17 17 0 0 1 0 18" />
+                                    </svg> <span class="badge bg-red"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+                                    <div class="card">
+                                        <div class="list-group list-group-flush list-group-hoverable">
+                                            <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col text-truncate">
+                                                        <a asp-action="IndexLocalIzation" asp-controller="Home" asp-route-Culture="en-US" class="text-body d-block">English</a>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="list-group list-group-flush list-group-hoverable">
-                                                <div class="list-group-item">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
-                                                        <div class="col text-truncate">
-                                                            <a href="#" class="text-body d-block">Example 1</a>
-                                                            <div class="d-block text-muted text-truncate mt-n1">
-                                                                Change deprecated html tags to text decoration classes (#29604)
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <a href="#" class="list-group-item-actions">
-                                                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="list-group-item">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                                        <div class="col text-truncate">
-                                                            <a href="#" class="text-body d-block">Example 2</a>
-                                                            <div class="d-block text-muted text-truncate mt-n1">
-                                                                justify-content:between ⇒ justify-content:space-between (#29734)
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <a href="#" class="list-group-item-actions show">
-                                                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="list-group-item">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                                        <div class="col text-truncate">
-                                                            <a href="#" class="text-body d-block">Example 3</a>
-                                                            <div class="d-block text-muted text-truncate mt-n1">
-                                                                Update change-version.js (#29736)
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <a href="#" class="list-group-item-actions">
-                                                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="list-group-item">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
-                                                        <div class="col text-truncate">
-                                                            <a href="#" class="text-body d-block">Example 4</a>
-                                                            <div class="d-block text-muted text-truncate mt-n1">
-                                                                Regenerate package-lock.json (#29730)
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <a href="#" class="list-group-item-actions">
-                                                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                            </a>
-                                                        </div>
+                                        </div>
+                                        <div class="list-group list-group-flush list-group-hoverable">
+                                            <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col text-truncate">
+                                                        <a asp-action="IndexLocalIzation" asp-controller="Home" asp-route-Culture="am" class="text-body d-block">አማርኛ</a>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            }
-                            else
+                            </div>
+
+                            @if (_context.HttpContext.Session.GetString("UserFullname") == null)
                             {
-                               
-                                    <a asp-action="Login" class="nav-link px-0" asp-controller="Account">
-                                        <span>Login</span>
-                                    </a>
+
+                                <a asp-action="Login" class="nav-link px-0" asp-controller="Account">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" /><path d="M3 12h13l-3 -3" /><path d="M13 15l3 -3" /></svg>
+                                    <span> @_localization.Getkey("login")</span>
+                                </a>
                             }
                         </div>
                         <div class="nav-item dropdown">
@@ -198,7 +150,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
                                         </span>
                                         <span class="nav-link-title">
-                                            Home
+                                            @_localization.Getkey("home")
                                         </span>
                                     </a>
                                 </li>
@@ -247,7 +199,7 @@
                                             </svg>
                                         </span>
                                         <span class="nav-link-title">
-                                            Contact Us
+                                            @_localization.Getkey("contact_us")
                                         </span>
                                     </a>
                                 </li>
@@ -263,7 +215,7 @@
                                             </svg>
                                         </span>
                                         <span class="nav-link-title">
-                                            About Us
+                                            @_localization.Getkey("about_us")
                                         </span>
                                     </a>
                                 </li>
@@ -279,7 +231,7 @@
                                             </svg>
                                         </span>
                                         <span class="nav-link-title">
-                                           Recomendations
+                                            @_localization.Getkey("recomendations")
                                         </span>
                                     </a>
                                 </li>
@@ -297,29 +249,12 @@
                                         </span>
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-action="Documentation" asp-controller="Help" target="_blank" rel="noopener">
+                                        <a class="dropdown-item" asp-action="Help" asp-controller="Home">
                                             Documentation
-                                        </a>
-                                        <a class="dropdown-item" asp-action="FAQ" asp-controller="Help">
-                                            FAQ
-                                        </a>
-                                        <a class="dropdown-item" asp-action="UserManual" asp-controller="Help" target="_blank" rel="noopener">
-                                            User manual
                                         </a>
                                     </div>
                                 </li>
                             </ul>
-                            <!--<div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
-                                <form action="./" method="get" autocomplete="off" novalidate>
-                                    <div class="input-icon">
-                                        <span class="input-icon-addon">-->
-                            <!-- Download SVG icon from http://tabler-icons.io/i/search -->
-                            <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
-                                        </span>
-                                        <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
-                                    </div>
-                                </form>
-                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -341,9 +276,9 @@
                         <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                             <ul class="list-inline list-inline-dots mb-0">
                                 <li class="list-inline-item">
-                                    Copyright &copy; 2023
+                                    @_localization.Getkey("Copyright") &copy; @{ DateTime.Now.Year.ToString();}
                                     <a href="." class="link-secondary">Justice Minister</a>.
-                                    All rights reserved.
+                                    @_localization.Getkey("All_rights_reserved")
                                 </li>
                             </ul>
                         </div>
@@ -353,67 +288,6 @@
         </div>
     </div>
 
-
-    <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-status bg-success"></div>
-                <div class="modal-body text-center py-4">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
-                    <h3>Payment succedeed</h3>
-                    <div class="text-muted">Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.</div>
-                </div>
-                <div class="modal-footer">
-                    <div class="w-100">
-                        <div class="row">
-                            <div class="col">
-                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                    Go to dashboard
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
-                                    View invoice
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-status bg-danger"></div>
-                <div class="modal-body text-center py-4">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
-                    <h3>Are you sure?</h3>
-                    <div class="text-muted">Do you really want to remove 84 files? What you've done cannot be undone.</div>
-                </div>
-                <div class="modal-footer">
-                    <div class="w-100">
-                        <div class="row">
-                            <div class="col">
-                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                    Cancel
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                                    Delete 84 items
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     @*<script src="~/js/site.js" asp-append-version="true"></script>*@

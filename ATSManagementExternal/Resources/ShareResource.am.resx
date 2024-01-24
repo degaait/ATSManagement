@@ -1,101 +1,569 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="about_us" xml:space="preserve">
+    <value>ስለ እኛ</value>
+    <comment>ስለ እኛ</comment>
+  </data>
+  <data name="All_rights_reserved." xml:space="preserve">
+    <value>መብቱ በህግ የተጠበቀ ነው::</value>
+    <comment>መብቱ በህግ የተጠበቀ ነው::</comment>
+  </data>
+  <data name="Attorney_General_Message" xml:space="preserve">
+    <value>የፍትህ ሚኒስቴሩ መልዕክት</value>
+    <comment>የፍትህ ሚኒስቴሩ መልዕክት</comment>
+  </data>
+  <data name="commenting" xml:space="preserve">
+    <value>አስተያየት መስጠት</value>
+    <comment>አስተያየት መስጠት</comment>
+  </data>
+  <data name="commenting_description" xml:space="preserve">
+    <value>Commenting different document types like Policy, Strategy and so on.</value>
+    <comment>Commenting different document types like Policy, Strategy and so on.</comment>
+  </data>
+  <data name="contact_us" xml:space="preserve">
+    <value>አግኙን</value>
+    <comment>አግኙን</comment>
+  </data>
+  <data name="Contract_Negotation" xml:space="preserve">
+    <value>የኮንትራት ድርድር</value>
+    <comment>የኮንትራት ድርድር</comment>
+  </data>
+  <data name="Contract_Negotation_description" xml:space="preserve">
+    <value>The role being played by CJADG in this specific task is twofold. One is, serving as a mediator/arbitrator. As per Proclamation No. 1263/2014, MoJ has a mandate to give decisions on a civil dispute arising between two or more government offices. It also mediate or arbitrate disputes between government institutions against private entities based on consents. The second role is CJADG representing government institutions in negotiation/mediation or arbitration. 
+Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which the dispute arising between federal government offices are resolved through judicial means or other than court alternative such as negotiation, mediation, arbitration.</value>
+    <comment>The role being played by CJADG in this specific task is twofold. One is, serving as a mediator/arbitrator. As per Proclamation No. 1263/2014, MoJ has a mandate to give decisions on a civil dispute arising between two or more government offices. It also mediate or arbitrate disputes between government institutions against private entities based on consents. The second role is CJADG representing government institutions in negotiation/mediation or arbitration. 
+Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which the dispute arising between federal government offices are resolved through judicial means or other than court alternative such as negotiation, mediation, arbitration.</comment>
+  </data>
+  <data name="contract_Negotiation_description" xml:space="preserve">
+    <value>The CJADG provides Contract Negotiation, Drafting, Review and advices relating to matters of contract amendments/revisions and other contract related issues. Contract preparation and review service to government institutions pursuant to proclamation No. 943/2016 and 1210/20202. It participates or advises concerned government bodies in contract preparation and negotiation of mega projects and in other contracts when it believes that public and government interest could be affected.</value>
+    <comment>The CJADG provides Contract Negotiation, Drafting, Review and advices relating to matters of contract amendments/revisions and other contract related issues. Contract preparation and review service to government institutions pursuant to proclamation No. 943/2016 and 1210/20202. It participates or advises concerned government bodies in contract preparation and negotiation of mega projects and in other contracts when it believes that public and government interest could be affected.</comment>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>የቅጂ መብት</value>
+    <comment>የቅጂ መብት</comment>
+  </data>
+  <data name="home" xml:space="preserve">
+    <value>መግቢያ</value>
+    <comment>መግቢያ</comment>
+  </data>
+  <data name="Inspection_Followup" xml:space="preserve">
+    <value>ምርመራ እና ክትትል</value>
+    <comment>ምርመራ እና ክትትል</comment>
+  </data>
+  <data name="Inspection_Followup_description" xml:space="preserve">
+    <value>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</value>
+    <comment>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</comment>
+  </data>
+  <data name="International_Cases" xml:space="preserve">
+    <value>ዓለም አቀፍ ጉዳዮች</value>
+    <comment>ዓለም አቀፍ ጉዳዮች</comment>
+  </data>
+  <data name="International_Cases_description" xml:space="preserve">
+    <value>Internation cases can be served</value>
+    <comment>Internation cases can be served</comment>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>ቋንቋ</value>
+    <comment>ቋንቋ</comment>
+  </data>
+  <data name="Legal_Advices" xml:space="preserve">
+    <value>የህግ ምክሮች</value>
+    <comment>የህግ ምክሮች</comment>
+  </data>
+  <data name="legal_advice_description" xml:space="preserve">
+    <value>The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.</value>
+    <comment>The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.</comment>
+  </data>
+  <data name="litigations" xml:space="preserve">
+    <value>ሙግቶች</value>
+    <comment>ሙግቶች</comment>
+  </data>
+  <data name="litigation_description" xml:space="preserve">
+    <value>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
+The Directorate General represents the federal government offices in civil litigation. It institutes civil suits on behalf of the federal government office; and represent them in civil litigation where they sue or being sued. It represents victims of crime and citizens who do not have financial capacity to institute civil action under federal court.
+It represents institutions in an ongoing civil litigation fully or whenever necessary it run cases jointly or may give direction to government offices on their handling, and to entertain the case by their own. It has responsibilities to implement decisions and causes execution of judgment in accordance with law. 
+ 	&lt;strong&gt;Handling International Cases &lt;/strong&gt;
+It also represents the FDRE government at international judicial and quasi-judicial institutions, litigate in consultation with relevant parties the decision.</value>
+    <comment>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
+The Directorate General represents the federal government offices in civil litigation. It institutes civil suits on behalf of the federal government office; and represent them in civil litigation where they sue or being sued. It represents victims of crime and citizens who do not have financial capacity to institute civil action under federal court.
+It represents institutions in an ongoing civil litigation fully or whenever necessary it run cases jointly or may give direction to government offices on their handling, and to entertain the case by their own. It has responsibilities to implement decisions and causes execution of judgment in accordance with law. 
+ 	&lt;strong&gt;Handling International Cases &lt;/strong&gt;
+It also represents the FDRE government at international judicial and quasi-judicial institutions, litigate in consultation with relevant parties the decision.</comment>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>ግባ</value>
+    <comment>ግባ</comment>
+  </data>
+  <data name="Mandates" xml:space="preserve">
+    <value>የተቋሙ ስልጣንና ተግባር</value>
+    <comment>የተቋሙ ስልጣንና ተግባር</comment>
+  </data>
+  <data name="Mandates_Description" xml:space="preserve">
+    <value>የኢ.ፌ.ዲ.ሪ. ፍትሕ ሚኒስቴር ሥልጣንና ተግባራት
 
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
+የፍትህ ሚኒስቴር ስልጣን እና ተግባራት የሚመነጨው የፌዴራል መንግሥት አስፈፃሚ አካላትን ሥልጣንና ተግባር ለመወሰን ከወጣው አዋጅ ቁጥር 1263/2014፣ በዚሁ አዋጅ የስም ለውጥ ተደርጎበት የፍትሕ ሚኒስቴር የሆነውን የፌዴራል ጠቅላይ ዐቃቤ ህግ ተቋምን ለማቋቋም በወጣው አዋጅ ቁጥር 943/2008 እና ከሌሎች አዋጆች ነው፡፡
 
-		Example:
+በዚህ አጭር ጽሁፍም እነኚህኑ የተቋ ስልጣን እና ተግባራት እንደሚከተለው ተዘርዝረዋል፡፡
 
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
+ 
 
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
+1.  የፍትህ ሚኒስቴር በአዋጅ ቁጥር 943/2008 እና 1263/2014 መሰረት የተሰጡት ስልጣንና ተግባራት
 
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
+የፍትህ ሚኒስቴር  በሕግ ጉዳዮች የፌዴራል መንግስት ዋና አማካሪ እና ተወካይ ሆኖ ይሰራል፤
 
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
+ 
 
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
+1. የወንጀል ጉዳይን በተመለከተ የፍትህ ሚኒስቴር ስልጣንና ተግባራት፦
 
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
+የወንጀል ፍትህ ፖሊሲን የሚመለከታቸውን አካላት በማስተባበር ያዘጋጃል፤ ሲፀድቅም ተግባራዊነቱን ያስተባብራል፣ ይከታተላል፣ ያረጋግጣል፤
+የወንጀል ክስ፣ የክርክርና የፍርድ ማስፈፀም ስራዎች የአሰራር ነፃነቱን የሚያስከብር የወንጀል ጉዳዮች ዘርፍ አደረጃጀትና አሰራር እንዲኖረው ይደርጋል፡፡
+በሌሎች ህጎች ለፖሊስ የተሰጠው ስልጣን እንደተጠበቀ ሆኖ በፌዴራል ፍርድ ቤት ስልጣን  ስር የሚወድቅ የወንጀል ምርመራ እንዲጀመር ያደርጋል፣ ክትትልና ድጋፍ ያደርጋል፣
+ በፌዴራል ፖሊስ ምርመራ ዘርፍ የሚከናወኑ የምርመራ ሥራዎችን ይመራል፣ ይከታተላል፣ ያስተባብራል፣ ሪፖርት እንዲቀርብለት ያደርጋል፤ (አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+ የተጠናቀቁ የምርመራ መዝገቦችን ከሕግና ከማስረጃ አንፃር መርምሮ ውሳኔ ይሰጣል፤
+የጥፋተኝነት ድርድር ይወስናል፣ ድርድር ያደርጋል፣ አማራጭ የመፍትሄ እርምጃ እንዲወሰድ ይወስናል፣ ተግባራዊነቱን ይከታተላል፤
+የፌዴራል መንግስትን በመወከል የወንጀል ጉዳዩች ክስ ይመሰርታል፣ ይከራከራል፣ ለህዝብ ጥቅም አስፈላጊ ሆኖ ሲያገኘው ክስ ያነሳል፣ የተነሳ ክስ እንዲቀጥል ያደርጋል።
+ሀገራዊ ይዘት የሚኖረው ሲሆን ጠቅላይ ሚኒስትሩን በማማከር ክስ ስለሚያነሳበት አግባብ መመሪያ ያወጣል፤
+ፍርድ ቤቶች በወንጀል ጉዳይ የሚሰጡዋቸው ውሳኔዎችና ትዕዛዞች መፈፀምና መከበራቸውን ይከታተላል፣ የእርምት እርምጃ እንዲወሰድ ያደርጋል፤
+በፍርድ ቤት የሚወሰኑ የወንጀል ቅጣቶች በአግባቡ እንዲፈፀሙ ለማድረግ የሚያስችሉ ሥርዓቶችን ያደራጃል ወይም መደራጀታቸውን ያረጋግጣል፤
+ታራሚዎችን የማረምና ማነፅ ስራዎችን፣ በዘርፉ የሚደረጉ ጥናቶችንና የሚሰጡ ስልጠናዎችን፣ ከግብር ጋር የተያያዙ የይግባኝ ስራዎቸን፣ የሰነዶች ማረጋገጥና ምዝገባ ስራዎችን እና የሲቪል ማህበረሰብ ድርጅቶችን የሚመለከቱ ስራዎችን ያስተባብራል(አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+የሞት ቅጣት ውሳኔዎችን ለኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ ፕሬዚዳንት ያቀርባል፣ አፈፃፀሙን ይከታተላል።
+ 
 
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
+2. የፍትሐ ብሔር ጉዳዮችን በተመለከተ የፍትህ ሚኒስቴር ስልጣንና ተግባር፦
 
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+ሀ/ በፌዴራል የመንግስት መሥሪያ ቤቶች የሕዝብ እና የፌዴራል መንግስት መብትና ጥቅም ወኪል ሆኖ ይከራከራል፣ ያስከብራል፣ እንዲከበሩ ያደርጋል፣ ይከታተላል፣ ይቆጣጠራል፤
+
+ለ/ በግዙፍ የመንግስት ፕሮጀክቶች የውል ዝግጅት እና ድርድር ከሚመለከታቸው አካላት ጋር በመሆን ያደርጋል፣ የሕዝብና የፌዴራል መንግስት መስሪያ ቤቶች ጥቅም ይጎዳል ብሎ ሲያምን በሌሎች ጉዳዮች ውል ዝግጅትና ድርድር ያደርጋል ወይም የሚመለከታቸውን አካላት ያማክራል፤
+
+ሐ/ የፌዴራል መንግስት መስሪያ ቤትን በመወከል የፍትሐብሔር ክስ ይመሰርታል፤ በከሰሱበት ወይም በተከሰሱበት የፍትሐ ብሔር ጉዳዮች ላይ ክርክር ያደርጋል፤ በክርክር አመራር ላይ ለመሥሪያ ቤቶች አቅጣጫ ይሰጣል፣ በሕግ መሠረት ፍርድን ያስፈፅማል፤
+
+መ/ የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ያልተግባቡባቸው የፍትሐብሔር ጉዳዩች በፍርድ ቤት ወይም ከፍርድ ቤት ውጭ ባለ አማራጭ የክርክር መፍቻ መንገድ እንዲወሰን ውሳኔ ይሰጣል፣ በውሳኔው መሰረት መፈፀሙን ያረጋግጣል፤
+
+ሠ/ የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ባልተግባቡበት የፍትሐ ብሔር ጉዳይ ላይ ውሳኔ ይሰጣል፣ (አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+
+ረ/ በፌዴራል ፍርድ ቤቶች የፍትሐብሔር ክስ ለመመሥረት የገንዘብ አቅም የሌላቸውን ዜጎች በተለይም ሴቶችን፣ ሕፃናትን፣ አካል ጉዳተኞችን እና አረጋውያንን ወክሎ ይከራከራል፤
+
+ሰ/ የገንዘብ አቅም የሌላቸው የወንጀል ተጎጂ የሆኑ ተበዳዩች እንዲካሱ መልሰው እንዲቋቋሙ እንዲሁም ከጉዳቱ የተያያዙ የፍትሐ ብሔር ጥቅማቸውን ለማስጠበቅ እነሱን በመወከል የፍትሐብሔር ክስ ያቀርባል ወይም ይደራደራል፤
+
+ሸ/ የኢፌዲሪ መንግስት በዓለምአቀፍ የዳኝነትና ከፊል ዳኝነት አካላት በሚከስበት ወይም በሚከሰስበት ጉዳይ መንግስትን በመወከል እና ከሚመለከታቸው አካላት ጋር በመመካከር ክርክር ያደርጋል፤ ድርድር ያካሂዳል፤ ውሳኔውንም ያስፈፅማል፤
+
+ቀ/ በሀገር ወስጥና በውጪ ሀገር የሚገኙ ከወንጀል ጋር የተገናኙ ንብረቶች የማስመለስ ስራዎችን ይሰራል፣ ያስተባብራል፤(አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+
+ 
+
+3. የሕግ ጥናት፣ ማርቀቅ እና ማጠቃለል ሥራን በተመለከተ የፍትህ ሚኒስቴር ስልጣንና ተግባር፦
+
+ሀ/ በፌዴራል መንግሥት የሚወጡ ሕጎች የሕግ ረቂቅ ዝግጅት ይሰራል፤ የመንግስት አካላት የሚያዘጋጁት ረቂቅ ሕግ ከሕገ መንግስቱና ከፌዴራል ሕጎች ጋር የተጣጣመ መሆኑን ያረጋግጣል፣ ለሚመለከታቸው ክፍሎችም አስተያየት ያቀርባል፤ በክልሎች ጥያቄ ሲቀርብለት የሕግ ረቂቆችን በማዘጋጀት ይረዳል፤
+
+ለ/ የሕግ ማሻሻያ ጥናቶችን እንዲሁም የኮዲፊኬሽንና የፌዴራል ሕጐችን የማሰባሰብና ማጠቃለል ሥራ ይሰራል፤ የክልል ሕጎችን ያሰባስባል፣ እንደአስፈላጊነቱም እንዲጠቃለሉ ያደርጋል፤
+
+ሐ/ ኢትዮጵያ የምትፈርመው ወይም የምትቀበለው ዓለም አቀፍ ስምምነት ሕገ መንግስቱን እና የአገሪቱን ሌሎች ሕግጋት ያገናዘበና ከብሔራዊ ጥቅም አንፃር ተቀባይነት ያለው መሆኑን ያረጋግጣል፤
+
+ 
+
+4. የፌዴራል ሕጐች ተፈጻሚነትን ከመከታተል አንጻር ተቋሙ ያለው ስልጣን
+
+የፌዴራል መንግስቱ ሕጐች ተግባራዊ መደረጋቸውን እና አተገባበራቸውም ወጥነት ያለው መሆኑን ያረጋግጣል፤ እንዲሁም አስፈፃሚ የፌዴራል መንግስት መስሪያ ቤቶች ሥራቸውን በሕግ መሰረት ማከናወናቸውን ያረጋግጣል፤
+
+5. ከአቅም ግንባታ አንጻር የፍትሕ ሚኒስቴር ተግባር
+
+ ሀ/ የሕግ የበላይነትን ለማረጋገጥ ለፌዴራል መንግስት ባለስልጣናት፣ ሹመኞች፣ ተመራጮች፣ ሰራተኞች እንዲሁም የግሉ ዘርፍ ተሳታፊዎች እንደየአስፈላጊነቱ የሕግ ሥልጠና ይሰጣል ወይም እንዲሰጥ ያደርጋል፤
+
+ለ/ ዐቃቤያነ ሕግ ስለ ስራቸው ያላቸውን አመለካከት፣ እውቀትና ክህሎት በተከታታይ እና በየደረጃው ለማሳደግ ሥልጠና ይሰጣል ወይም ስልጠና እና ትምህርት እንዲሰጣቸው ያደርጋል፤ 
+
+6. ሰብአዊ መብትን በተመለከተ የፍትህ ሚኒስተሩ ስልጣንና ተግባር፦
+
+ሀ/ ነፃ የሕግ ድጋፍን አሰጣጥ ስትራቴጂዎችን ይቀርፃል፣ አፈፃፀሙን ይከታተላል፣ በመስኩ የሚሰማሩ አካላትን ያስተባብራል፤
+
+ለ/ ብሔራዊ የሰብአዊ መብት የድርጊት መርሀ ግብርን ከሚመለከታቸው አካላት ጋር በመሆን ያዘጋጃል፣ አፈፃፀሙን ይከታተላል፤ በአገር አቀፍ ደረጃ የሚመለከታቸውን አካላት ያስተባብራል፣ ለሚመለከታቸው አካላት ሪፖርት ያቀርባል፤
+
+ሐ/ በፖሊስ ጣቢያና በማረሚያ ቤት ቁጥጥር ሥር ያሉ ሰዎችን ይጎበኛል፣ አያያዛቸው እና ቆይታቸው በሕግ መሰረት መፈጸሙን ያረጋግጣል፣ ሕገ ወጥ ተግባር እንዲታረም እና እርምጃ እንዲወሰድ ያደርጋል፤
+
+መ/ የሰብአዊ መብት ትምህርት እና የንቃተ ሕግ ለማዳበር በተለያዩ ዘዴዎች ትምህርት ይሰጣል፤ በዘርፉ የተሰማሩ የሚመለከታቸውን አካላት ያስተባብራል፤
+
+ሠ/ ኢትዮጵያ ያፀደቀቻቸውን ወይም የተቀበለቻቸውን ዓለም አቀፍና አህጉራዊ የሰብአዊ መብት ስምምነቶች አፈፃፀማቸውን ይከታተላል፣ ለሚነሱ ጉዳዮች እንደ አግባብነታቸው ከሚመለከታቸው አካላት ጋር በመመካከር ምላሽ ይሰጣል፤ የስምምነቶቹን ብሔራዊ የአፈፃፀም ሪፖርት ከሚመለከታቸው አካላት ጋር በመተባበር ያዘጋጃል፤
+
+7. ስለ ሕግ ጥናት
+
+ሀ/ አሰራሩን ውጤታማ ለማድረግ ጥናትና ምርምር ያደርጋል፤
+
+ለ/ የወንጀል ፍትሕ መረጃዎችን መሰብሰብ፣ ማደራጀት፣ መተንተንና ማሰራጨት የሚያስችል ሥርዓት ይዘረጋል፣ ያስፈፅማል፤
+
+8. በህግ ጉዳይ ዐለም ዐቀፍ ትብብርን ከመምራት አንጻር የተቋሙ ስልጣን
+
+በፀረ ሽብርተኝነት አዋጅ እና የውጭ ጉዳይ ሚኒስቴር ስልጣንና ተግባር ስር የተመለከተው እንደተጠበቀ ሆኖ በወንጀልና ፍትሐብሔር ጉዳዩች ዓለም አቀፍ ግንኙነትና ትብብር ያደርጋል፤
+
+9. ከህግ ኦዲት እና ኢንስፔክሽን አንጻር የተቋሙ ተግባር
+
+በዐቃቤያነ ሕግ የሚሰጡ ውሳኔዎች በሕግ መሰረት መከናወናቸውን የሚያረጋግጥ የኢንስፔክሽን ክፍል ያደራጃል፣ ጉድለቶችን በጥናት አስደግፎ ይለያል፤ በግኝቱ መሠረትም እንዲታረሙ ያደርጋል፣ እርምጃ ይወስዳል ወይም እንዲወሰድ ያደርጋል፣ መልካም ተሞክሮዎችን ያስፋፋል፤
+
+2.  በሌሎች ሕጎች ለኢ.ፌ.ዲ.ሪ. ፍትህ ሚኒስቴር/ በቀድሞ ስያሜው ጠቅላይ ዐቃቤ ሕግ የተሰጡ ስልጣን እና ተግባራትን
+
+
+ለኢ.ፌ.ዴ.ሪ. ፍትህ ሚኒስቴር ከታች በተዘረዘሩት አዋጆች ውስጥ በግልጽ ተደንግገው የተሰጡት ስልጣኖች እና ተግባራት ይገኛሉ፡፡ የአዋጆቹ አጭር ርዕስ እና የተቋሙ ስልጣን የሚመነጭባው አንቀጾች እንደሚከተለው ቀርበዋል፡፡
+
+ 
+ሀ/ የተሻሻለው የቤተሰብ ሕግ አዋጅ ቁጥር 213/92
+
+ 
+ለ/ የመገናኛ ብዙሃን አዋጅ ቁጥር 1238/2013 (አንቀፅ 85)
+
+ 
+ሐ/ የምስክሮች እና ጠቋሚዎች ጥበቃ አዋጅ ቁጥር 699/2003
+
+
+መ/ የይቅርታ አሰጣጥና አፈጻፀም አዋጅ ቁጥር 840/2006
+
+
+ሠ/ የኮምፒውተር ወንጀል አዋጅ ቁጥር 958/2008 (አንቀጽ 25 (2) የኮምፒዩተር ዳታን   ስለማሰባሰብ)
+
+ረ/ በሰው የመነገድ፣ ሰውን በህገ-ወጥ መንገድ ድንበር የማሻገር ወንጀልን ለመከላከል የወጣው አዋጅ ቁጥር 1178/2012 (አንቀጽ 37 ሥለ ትብብር ጥምረት ጽ/ቤት ማቋቋም፣ አንቀጽ 38 ስለ ተቋሙ ኃላፊነት እና አንቀጽ 46 መመሪያ ስለማውጣት)
+ 
+
+ሰ/ የፌዴራል አስተዳደር ሥነ-ስርዓት አዋጅ ቁጥር 1183/2012 (አንቀጽ 16 ስለመመሪያ ምዝገባ እና አንቀጽ 17 ስለመመሪያ ተደራሽነ)
+
+ 
+
+ሸ/ በንግድ ውድድርና ሸማቾች ጥበቃ አዋጅ ቁጥር 813/2006 (እንደተሻሻለ) አንቀጽ 37 (1) ለ የወንጀል ክስ ስለመመስረት) እና በኢትዮጵያ ምርት ገበያ ባለስልጣን አዋጅ ቁጥር 551/1999 (እንደተሻሻለ) የተመለከቱት
+
+ቀ/ የሽብር ወንጀልን ለመከላከል እና ለመቆጣጠር የወጣ አዋጅ ቁጠር 1176/2012 (አንቀጽ 17 (2) እና 38))
+
+በ/ የፌዴራል መንግስት ፕሮጀክቶች አስተዳደርና አመራር አዋጅ ቁጥር 1210/2012 (አንቀፅ 23-ስለ ፍትህ ሚኒስቴር ኃላፊነት)
+
+ተ/ የግልግል ዳኝነትን እና የዕርቅ አሰራር ስርዓትን ለመደንገግ የወጣ አዋጅ ቁጥር 1237/2013 (አንቀጽ 18 (2))
+
+ቸ/ በውጭ አገራት ለተሰጡ የግልግል ዳኝነት ውሳኔዎች እውቅና የመስጠት እና የመፈጸም ስምምነትን ለማጽደቅ የወጣ አዋጅ ቁጥር 1184/2012 አንቀጽ 5</value>
+    <comment>የኢ.ፌ.ዲ.ሪ. ፍትሕ ሚኒስቴር ሥልጣንና ተግባራት
+
+የፍትህ ሚኒስቴር ስልጣን እና ተግባራት የሚመነጨው የፌዴራል መንግሥት አስፈፃሚ አካላትን ሥልጣንና ተግባር ለመወሰን ከወጣው አዋጅ ቁጥር 1263/2014፣ በዚሁ አዋጅ የስም ለውጥ ተደርጎበት የፍትሕ ሚኒስቴር የሆነውን የፌዴራል ጠቅላይ ዐቃቤ ህግ ተቋምን ለማቋቋም በወጣው አዋጅ ቁጥር 943/2008 እና ከሌሎች አዋጆች ነው፡፡
+
+በዚህ አጭር ጽሁፍም እነኚህኑ የተቋ ስልጣን እና ተግባራት እንደሚከተለው ተዘርዝረዋል፡፡
+
+ 
+
+1.  የፍትህ ሚኒስቴር በአዋጅ ቁጥር 943/2008 እና 1263/2014 መሰረት የተሰጡት ስልጣንና ተግባራት
+
+የፍትህ ሚኒስቴር  በሕግ ጉዳዮች የፌዴራል መንግስት ዋና አማካሪ እና ተወካይ ሆኖ ይሰራል፤
+
+ 
+
+1. የወንጀል ጉዳይን በተመለከተ የፍትህ ሚኒስቴር ስልጣንና ተግባራት፦
+
+የወንጀል ፍትህ ፖሊሲን የሚመለከታቸውን አካላት በማስተባበር ያዘጋጃል፤ ሲፀድቅም ተግባራዊነቱን ያስተባብራል፣ ይከታተላል፣ ያረጋግጣል፤
+የወንጀል ክስ፣ የክርክርና የፍርድ ማስፈፀም ስራዎች የአሰራር ነፃነቱን የሚያስከብር የወንጀል ጉዳዮች ዘርፍ አደረጃጀትና አሰራር እንዲኖረው ይደርጋል፡፡
+በሌሎች ህጎች ለፖሊስ የተሰጠው ስልጣን እንደተጠበቀ ሆኖ በፌዴራል ፍርድ ቤት ስልጣን  ስር የሚወድቅ የወንጀል ምርመራ እንዲጀመር ያደርጋል፣ ክትትልና ድጋፍ ያደርጋል፣
+ በፌዴራል ፖሊስ ምርመራ ዘርፍ የሚከናወኑ የምርመራ ሥራዎችን ይመራል፣ ይከታተላል፣ ያስተባብራል፣ ሪፖርት እንዲቀርብለት ያደርጋል፤ (አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+ የተጠናቀቁ የምርመራ መዝገቦችን ከሕግና ከማስረጃ አንፃር መርምሮ ውሳኔ ይሰጣል፤
+የጥፋተኝነት ድርድር ይወስናል፣ ድርድር ያደርጋል፣ አማራጭ የመፍትሄ እርምጃ እንዲወሰድ ይወስናል፣ ተግባራዊነቱን ይከታተላል፤
+የፌዴራል መንግስትን በመወከል የወንጀል ጉዳዩች ክስ ይመሰርታል፣ ይከራከራል፣ ለህዝብ ጥቅም አስፈላጊ ሆኖ ሲያገኘው ክስ ያነሳል፣ የተነሳ ክስ እንዲቀጥል ያደርጋል።
+ሀገራዊ ይዘት የሚኖረው ሲሆን ጠቅላይ ሚኒስትሩን በማማከር ክስ ስለሚያነሳበት አግባብ መመሪያ ያወጣል፤
+ፍርድ ቤቶች በወንጀል ጉዳይ የሚሰጡዋቸው ውሳኔዎችና ትዕዛዞች መፈፀምና መከበራቸውን ይከታተላል፣ የእርምት እርምጃ እንዲወሰድ ያደርጋል፤
+በፍርድ ቤት የሚወሰኑ የወንጀል ቅጣቶች በአግባቡ እንዲፈፀሙ ለማድረግ የሚያስችሉ ሥርዓቶችን ያደራጃል ወይም መደራጀታቸውን ያረጋግጣል፤
+ታራሚዎችን የማረምና ማነፅ ስራዎችን፣ በዘርፉ የሚደረጉ ጥናቶችንና የሚሰጡ ስልጠናዎችን፣ ከግብር ጋር የተያያዙ የይግባኝ ስራዎቸን፣ የሰነዶች ማረጋገጥና ምዝገባ ስራዎችን እና የሲቪል ማህበረሰብ ድርጅቶችን የሚመለከቱ ስራዎችን ያስተባብራል(አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+የሞት ቅጣት ውሳኔዎችን ለኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ ፕሬዚዳንት ያቀርባል፣ አፈፃፀሙን ይከታተላል።
+ 
+
+2. የፍትሐ ብሔር ጉዳዮችን በተመለከተ የፍትህ ሚኒስቴር ስልጣንና ተግባር፦
+
+ሀ/ በፌዴራል የመንግስት መሥሪያ ቤቶች የሕዝብ እና የፌዴራል መንግስት መብትና ጥቅም ወኪል ሆኖ ይከራከራል፣ ያስከብራል፣ እንዲከበሩ ያደርጋል፣ ይከታተላል፣ ይቆጣጠራል፤
+
+ለ/ በግዙፍ የመንግስት ፕሮጀክቶች የውል ዝግጅት እና ድርድር ከሚመለከታቸው አካላት ጋር በመሆን ያደርጋል፣ የሕዝብና የፌዴራል መንግስት መስሪያ ቤቶች ጥቅም ይጎዳል ብሎ ሲያምን በሌሎች ጉዳዮች ውል ዝግጅትና ድርድር ያደርጋል ወይም የሚመለከታቸውን አካላት ያማክራል፤
+
+ሐ/ የፌዴራል መንግስት መስሪያ ቤትን በመወከል የፍትሐብሔር ክስ ይመሰርታል፤ በከሰሱበት ወይም በተከሰሱበት የፍትሐ ብሔር ጉዳዮች ላይ ክርክር ያደርጋል፤ በክርክር አመራር ላይ ለመሥሪያ ቤቶች አቅጣጫ ይሰጣል፣ በሕግ መሠረት ፍርድን ያስፈፅማል፤
+
+መ/ የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ያልተግባቡባቸው የፍትሐብሔር ጉዳዩች በፍርድ ቤት ወይም ከፍርድ ቤት ውጭ ባለ አማራጭ የክርክር መፍቻ መንገድ እንዲወሰን ውሳኔ ይሰጣል፣ በውሳኔው መሰረት መፈፀሙን ያረጋግጣል፤
+
+ሠ/ የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ባልተግባቡበት የፍትሐ ብሔር ጉዳይ ላይ ውሳኔ ይሰጣል፣ (አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+
+ረ/ በፌዴራል ፍርድ ቤቶች የፍትሐብሔር ክስ ለመመሥረት የገንዘብ አቅም የሌላቸውን ዜጎች በተለይም ሴቶችን፣ ሕፃናትን፣ አካል ጉዳተኞችን እና አረጋውያንን ወክሎ ይከራከራል፤
+
+ሰ/ የገንዘብ አቅም የሌላቸው የወንጀል ተጎጂ የሆኑ ተበዳዩች እንዲካሱ መልሰው እንዲቋቋሙ እንዲሁም ከጉዳቱ የተያያዙ የፍትሐ ብሔር ጥቅማቸውን ለማስጠበቅ እነሱን በመወከል የፍትሐብሔር ክስ ያቀርባል ወይም ይደራደራል፤
+
+ሸ/ የኢፌዲሪ መንግስት በዓለምአቀፍ የዳኝነትና ከፊል ዳኝነት አካላት በሚከስበት ወይም በሚከሰስበት ጉዳይ መንግስትን በመወከል እና ከሚመለከታቸው አካላት ጋር በመመካከር ክርክር ያደርጋል፤ ድርድር ያካሂዳል፤ ውሳኔውንም ያስፈፅማል፤
+
+ቀ/ በሀገር ወስጥና በውጪ ሀገር የሚገኙ ከወንጀል ጋር የተገናኙ ንብረቶች የማስመለስ ስራዎችን ይሰራል፣ ያስተባብራል፤(አዋጅ ቁጥር 1263/2014 አንቀጽ 40)፡፡
+
+ 
+
+3. የሕግ ጥናት፣ ማርቀቅ እና ማጠቃለል ሥራን በተመለከተ የፍትህ ሚኒስቴር ስልጣንና ተግባር፦
+
+ሀ/ በፌዴራል መንግሥት የሚወጡ ሕጎች የሕግ ረቂቅ ዝግጅት ይሰራል፤ የመንግስት አካላት የሚያዘጋጁት ረቂቅ ሕግ ከሕገ መንግስቱና ከፌዴራል ሕጎች ጋር የተጣጣመ መሆኑን ያረጋግጣል፣ ለሚመለከታቸው ክፍሎችም አስተያየት ያቀርባል፤ በክልሎች ጥያቄ ሲቀርብለት የሕግ ረቂቆችን በማዘጋጀት ይረዳል፤
+
+ለ/ የሕግ ማሻሻያ ጥናቶችን እንዲሁም የኮዲፊኬሽንና የፌዴራል ሕጐችን የማሰባሰብና ማጠቃለል ሥራ ይሰራል፤ የክልል ሕጎችን ያሰባስባል፣ እንደአስፈላጊነቱም እንዲጠቃለሉ ያደርጋል፤
+
+ሐ/ ኢትዮጵያ የምትፈርመው ወይም የምትቀበለው ዓለም አቀፍ ስምምነት ሕገ መንግስቱን እና የአገሪቱን ሌሎች ሕግጋት ያገናዘበና ከብሔራዊ ጥቅም አንፃር ተቀባይነት ያለው መሆኑን ያረጋግጣል፤
+
+ 
+
+4. የፌዴራል ሕጐች ተፈጻሚነትን ከመከታተል አንጻር ተቋሙ ያለው ስልጣን
+
+የፌዴራል መንግስቱ ሕጐች ተግባራዊ መደረጋቸውን እና አተገባበራቸውም ወጥነት ያለው መሆኑን ያረጋግጣል፤ እንዲሁም አስፈፃሚ የፌዴራል መንግስት መስሪያ ቤቶች ሥራቸውን በሕግ መሰረት ማከናወናቸውን ያረጋግጣል፤
+
+5. ከአቅም ግንባታ አንጻር የፍትሕ ሚኒስቴር ተግባር
+
+ ሀ/ የሕግ የበላይነትን ለማረጋገጥ ለፌዴራል መንግስት ባለስልጣናት፣ ሹመኞች፣ ተመራጮች፣ ሰራተኞች እንዲሁም የግሉ ዘርፍ ተሳታፊዎች እንደየአስፈላጊነቱ የሕግ ሥልጠና ይሰጣል ወይም እንዲሰጥ ያደርጋል፤
+
+ለ/ ዐቃቤያነ ሕግ ስለ ስራቸው ያላቸውን አመለካከት፣ እውቀትና ክህሎት በተከታታይ እና በየደረጃው ለማሳደግ ሥልጠና ይሰጣል ወይም ስልጠና እና ትምህርት እንዲሰጣቸው ያደርጋል፤ 
+
+6. ሰብአዊ መብትን በተመለከተ የፍትህ ሚኒስተሩ ስልጣንና ተግባር፦
+
+ሀ/ ነፃ የሕግ ድጋፍን አሰጣጥ ስትራቴጂዎችን ይቀርፃል፣ አፈፃፀሙን ይከታተላል፣ በመስኩ የሚሰማሩ አካላትን ያስተባብራል፤
+
+ለ/ ብሔራዊ የሰብአዊ መብት የድርጊት መርሀ ግብርን ከሚመለከታቸው አካላት ጋር በመሆን ያዘጋጃል፣ አፈፃፀሙን ይከታተላል፤ በአገር አቀፍ ደረጃ የሚመለከታቸውን አካላት ያስተባብራል፣ ለሚመለከታቸው አካላት ሪፖርት ያቀርባል፤
+
+ሐ/ በፖሊስ ጣቢያና በማረሚያ ቤት ቁጥጥር ሥር ያሉ ሰዎችን ይጎበኛል፣ አያያዛቸው እና ቆይታቸው በሕግ መሰረት መፈጸሙን ያረጋግጣል፣ ሕገ ወጥ ተግባር እንዲታረም እና እርምጃ እንዲወሰድ ያደርጋል፤
+
+መ/ የሰብአዊ መብት ትምህርት እና የንቃተ ሕግ ለማዳበር በተለያዩ ዘዴዎች ትምህርት ይሰጣል፤ በዘርፉ የተሰማሩ የሚመለከታቸውን አካላት ያስተባብራል፤
+
+ሠ/ ኢትዮጵያ ያፀደቀቻቸውን ወይም የተቀበለቻቸውን ዓለም አቀፍና አህጉራዊ የሰብአዊ መብት ስምምነቶች አፈፃፀማቸውን ይከታተላል፣ ለሚነሱ ጉዳዮች እንደ አግባብነታቸው ከሚመለከታቸው አካላት ጋር በመመካከር ምላሽ ይሰጣል፤ የስምምነቶቹን ብሔራዊ የአፈፃፀም ሪፖርት ከሚመለከታቸው አካላት ጋር በመተባበር ያዘጋጃል፤
+
+7. ስለ ሕግ ጥናት
+
+ሀ/ አሰራሩን ውጤታማ ለማድረግ ጥናትና ምርምር ያደርጋል፤
+
+ለ/ የወንጀል ፍትሕ መረጃዎችን መሰብሰብ፣ ማደራጀት፣ መተንተንና ማሰራጨት የሚያስችል ሥርዓት ይዘረጋል፣ ያስፈፅማል፤
+
+8. በህግ ጉዳይ ዐለም ዐቀፍ ትብብርን ከመምራት አንጻር የተቋሙ ስልጣን
+
+በፀረ ሽብርተኝነት አዋጅ እና የውጭ ጉዳይ ሚኒስቴር ስልጣንና ተግባር ስር የተመለከተው እንደተጠበቀ ሆኖ በወንጀልና ፍትሐብሔር ጉዳዩች ዓለም አቀፍ ግንኙነትና ትብብር ያደርጋል፤
+
+9. ከህግ ኦዲት እና ኢንስፔክሽን አንጻር የተቋሙ ተግባር
+
+በዐቃቤያነ ሕግ የሚሰጡ ውሳኔዎች በሕግ መሰረት መከናወናቸውን የሚያረጋግጥ የኢንስፔክሽን ክፍል ያደራጃል፣ ጉድለቶችን በጥናት አስደግፎ ይለያል፤ በግኝቱ መሠረትም እንዲታረሙ ያደርጋል፣ እርምጃ ይወስዳል ወይም እንዲወሰድ ያደርጋል፣ መልካም ተሞክሮዎችን ያስፋፋል፤
+
+2.  በሌሎች ሕጎች ለኢ.ፌ.ዲ.ሪ. ፍትህ ሚኒስቴር/ በቀድሞ ስያሜው ጠቅላይ ዐቃቤ ሕግ የተሰጡ ስልጣን እና ተግባራትን
+
+ 
+
+ለኢ.ፌ.ዴ.ሪ. ፍትህ ሚኒስቴር ከታች በተዘረዘሩት አዋጆች ውስጥ በግልጽ ተደንግገው የተሰጡት ስልጣኖች እና ተግባራት ይገኛሉ፡፡ የአዋጆቹ አጭር ርዕስ እና የተቋሙ ስልጣን የሚመነጭባው አንቀጾች እንደሚከተለው ቀርበዋል፡፡
+
+ 
+
+ሀ/ የተሻሻለው የቤተሰብ ሕግ አዋጅ ቁጥር 213/92
+
+ 
+
+ለ/ የመገናኛ ብዙሃን አዋጅ ቁጥር 1238/2013 (አንቀፅ 85)
+
+ 
+
+ 
+
+ሐ/ የምስክሮች እና ጠቋሚዎች ጥበቃ አዋጅ ቁጥር 699/2003
+
+ 
+
+መ/ የይቅርታ አሰጣጥና አፈጻፀም አዋጅ ቁጥር 840/2006
+
+ 
+
+ሠ/ የኮምፒውተር ወንጀል አዋጅ ቁጥር 958/2008 (አንቀጽ 25 (2) የኮምፒዩተር ዳታን   ስለማሰባሰብ)
+
+ረ/ በሰው የመነገድ፣ ሰውን በህገ-ወጥ መንገድ ድንበር የማሻገር ወንጀልን ለመከላከል የወጣው አዋጅ ቁጥር 1178/2012 (አንቀጽ 37 ሥለ ትብብር ጥምረት ጽ/ቤት ማቋቋም፣ አንቀጽ 38 ስለ ተቋሙ ኃላፊነት እና አንቀጽ 46 መመሪያ ስለማውጣት)
+
+ 
+
+ሰ/ የፌዴራል አስተዳደር ሥነ-ስርዓት አዋጅ ቁጥር 1183/2012 (አንቀጽ 16 ስለመመሪያ ምዝገባ እና አንቀጽ 17 ስለመመሪያ ተደራሽነ)
+
+ 
+
+ሸ/ በንግድ ውድድርና ሸማቾች ጥበቃ አዋጅ ቁጥር 813/2006 (እንደተሻሻለ) አንቀጽ 37 (1) ለ የወንጀል ክስ ስለመመስረት) እና በኢትዮጵያ ምርት ገበያ ባለስልጣን አዋጅ ቁጥር 551/1999 (እንደተሻሻለ) የተመለከቱት
+
+ቀ/ የሽብር ወንጀልን ለመከላከል እና ለመቆጣጠር የወጣ አዋጅ ቁጠር 1176/2012 (አንቀጽ 17 (2) እና 38))
+
+በ/ የፌዴራል መንግስት ፕሮጀክቶች አስተዳደርና አመራር አዋጅ ቁጥር 1210/2012 (አንቀፅ 23-ስለ ፍትህ ሚኒስቴር ኃላፊነት)
+
+ተ/ የግልግል ዳኝነትን እና የዕርቅ አሰራር ስርዓትን ለመደንገግ የወጣ አዋጅ ቁጥር 1237/2013 (አንቀጽ 18 (2))
+
+ቸ/ በውጭ አገራት ለተሰጡ የግልግል ዳኝነት ውሳኔዎች እውቅና የመስጠት እና የመፈጸም ስምምነትን ለማጽደቅ የወጣ አዋጅ ቁጥር 1184/2012 አንቀጽ 5</comment>
+  </data>
+  <data name="Mission_Vision" xml:space="preserve">
+    <value>ራዕይ፣ተልዕኮና እሴቶች</value>
+    <comment>ራዕይ፣ተልዕኮና እሴቶች</comment>
+  </data>
+  <data name="Mission_Vision_Detail" xml:space="preserve">
+    <value>የኢ.ፌ.ዲ.ሪ ፍትሕ ሚኒስቴር ራዕይ፣ተልዕኮና እሴቶች
+ 
+ራዕይ
+
+በ2022 የአፍሪካ የፍትሕ ተቋማት ተምሳሌት ሆኖ ማየት
+
+ 
+
+ተልዕኮ
+
+የህግ የበላይነትንና ሰብዓዊ መብትን በማክበርና በማስከበር፤ ወንጀልን በመከላከል፣ ሰላምና ደህንነት በማረጋገጥና የመንግስትንና የህዝብን ጥቅም በማስጠበቅ፤ የሕዝብ ዓመኔታ ያተረፈ ተደራሽ፣ ቀልጣፋ፣ ፍትሃዊና ውጤታማ የፍትህ አገልግሎት መስጠት፡፡
+
+ 
+
+እሴቶች
+
+ሰብዓዊ ክብር
+የሕግ የበላይነት
+ታማኝነት
+ተጠያቂነትና ግልጽነት
+ሙያዊ ብቃት/ፕሮፌሽናሊዝም/
+ትብብርና አጋርነት
+ፍትሐዊነት</value>
+    <comment>የኢ.ፌ.ዲ.ሪ ፍትሕ ሚኒስቴር ራዕይ፣ተልዕኮና እሴቶች
+ 
+ራዕይ
+
+በ2022 የአፍሪካ የፍትሕ ተቋማት ተምሳሌት ሆኖ ማየት
+
+ 
+
+ተልዕኮ
+
+የህግ የበላይነትንና ሰብዓዊ መብትን በማክበርና በማስከበር፤ ወንጀልን በመከላከል፣ ሰላምና ደህንነት በማረጋገጥና የመንግስትንና የህዝብን ጥቅም በማስጠበቅ፤ የሕዝብ ዓመኔታ ያተረፈ ተደራሽ፣ ቀልጣፋ፣ ፍትሃዊና ውጤታማ የፍትህ አገልግሎት መስጠት፡፡
+
+ 
+
+እሴቶች
+
+ሰብዓዊ ክብር
+የሕግ የበላይነት
+ታማኝነት
+ተጠያቂነትና ግልጽነት
+ሙያዊ ብቃት/ፕሮፌሽናሊዝም/
+ትብብርና አጋርነት
+ፍትሐዊነት</comment>
+  </data>
+  <data name="our_services" xml:space="preserve">
+    <value>የምንሰጣቸው አገልግሎቶች</value>
+    <comment>የምንሰጣቸው አገልግሎቶች</comment>
+  </data>
+  <data name="recomendations" xml:space="preserve">
+    <value>ምክሮች</value>
+    <comment>ምክሮች</comment>
+  </data>
+  <data name="registration" xml:space="preserve">
+    <value>ምዝገባዎች</value>
+    <comment>ምዝገባዎች</comment>
+  </data>
+  <data name="registration_description" xml:space="preserve">
+    <value>Registering different document stypes like Proclamations, Policy and so on</value>
+    <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
+  </data>
+  <data name="The_List_Of_Prosecutors" xml:space="preserve">
+    <value>The List Of Prosecutors</value>
+    <comment>The List Of Prosecutors</comment>
+  </data>
 </root>

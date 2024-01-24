@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
+using System.Reflection;
 
 namespace ATSManagement.Services
 {
@@ -13,7 +13,7 @@ namespace ATSManagement.Services
         {
             var type = typeof(SharedResource);
             var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
-            _localizer = factory.Create("ShareResource", assemblyName.Name); // §REVIEW_DJE: "SharedResource" or "ShareResource"
+            _localizer = factory.Create("SharedResource", assemblyName.Name); // §REVIEW_DJE: "SharedResource" or "ShareResource"
         }
         public LocalizedString Getkey(string key)
         {

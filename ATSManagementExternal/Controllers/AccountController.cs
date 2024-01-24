@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using ATSManagementExternal.Models;
 using ATSManagementExternal.Security;
 using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -32,9 +32,9 @@ namespace ATSManagementExternal.Controllers
             List<MenuModels> _menus = new List<MenuModels>();
             if (collection.Password != null && collection.UserName != null)
             {
-              
+
                 string password = PawwordEncryption.EncryptPasswordBase64Strig(collection.Password);
-                TblExternalUser userinfo = (from items in _context.TblExternalUsers where (items.UserName == collection.UserName && items.Password == password)|| (items.Email == collection.UserName && items.Password == password) select items).FirstOrDefault();
+                TblExternalUser userinfo = (from items in _context.TblExternalUsers where (items.UserName == collection.UserName && items.Password == password) || (items.Email == collection.UserName && items.Password == password) select items).FirstOrDefault();
 
                 if (userinfo != null)
                 {
@@ -50,9 +50,9 @@ namespace ATSManagementExternal.Controllers
                     _menus = _context.TblExternalSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels
                     {
                         MainMenuId = x.Menu.MenuId,
-                        MainMenuName = x.Menu.MenuName,
+                        MainMenuName = x.Menu.MenuNameAmharic,
                         SubMenuId = x.Id,
-                        SubMenuName = x.Submenu,
+                        SubMenuName = x.SubmenuAmharic,
                         ControllerName = x.Controller,
                         ActionName = x.Action,
                         DepId = x.DepId,
