@@ -29,85 +29,37 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading-2">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false">
-                                @_localization.Getkey("Legal_Advices")
+                                @_localization.Getkey("Mission_Vision")
                             </button>
                         </h2>
                         <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
                             <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("legal_advice_description"))
+                                @Html.Raw(@_localization.Getkey("Mission_Vision_Detail"))
                             </div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading-3">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false">
-                                @_localization.Getkey("registration")
+                                @_localization.Getkey("Mandates")
                             </button>
                         </h2>
                         <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
                             <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("registration_description"))
+                                @Html.Raw(@_localization.Getkey("Mandates_Description"))
                             </div>
+                           
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading-4">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-4" aria-expanded="false">
-                                @_localization.Getkey("commenting")
+                                @_localization.Getkey("Attorney_General_Message")
                             </button>
                         </h2>
                         <div id="collapse-4" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
                             <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("commenting_description"))
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-5" aria-expanded="false">
-                                @_localization.Getkey("litigations")
-                            </button>
-                        </h2>
-                        <div id="collapse-5" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
-                            <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("litigation_description"))
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-6" aria-expanded="false">
-                                @_localization.Getkey("Contract_Negotation")
-
-                            </button>
-                        </h2>
-                        <div id="collapse-6" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
-                            <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("contract_Negotiation_description"))
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-7" aria-expanded="false">
-                                @_localization.Getkey("Inspection_Followup")
-                            </button>
-                        </h2>
-                        <div id="collapse-7" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
-                            <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("Inspection_Followup_description"))
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-8" aria-expanded="false">
-                                @_localization.Getkey("International_Cases")
-                            </button>
-                        </h2>
-                        <div id="collapse-8" class="accordion-collapse collapse" data-bs-parent="#accordion-example">
-                            <div class="accordion-body pt-0">
-                                @Html.Raw(@_localization.Getkey("International_Cases_description"))
+                                @Html.Raw(@_localization.Getkey("Attorney_General_Message_Description"))
                             </div>
                         </div>
                     </div>
@@ -148,7 +100,7 @@
                             <h3 class="card-title"> @_localization.Getkey("Legal_Advices")</h3>
                         </div>
                         <div class="card-body">
-                           
+
                             <p class="text-muted"> @Html.Raw(@_localization.Getkey("legal_advice_description"))</p>
                         </div>
                     </div>
@@ -161,7 +113,7 @@
                             <h3 class="card-title"> @_localization.Getkey("litigations")</h3>
                         </div>
                         <div class="card-body">
-                            
+
                             <p class="text-muted">
                                 @Html.Raw(@_localization.Getkey("litigation_description"))
                             </p>
@@ -175,7 +127,7 @@
                             <h3 class="card-title"> @_localization.Getkey("Contract_Negotation")</h3>
                         </div>
                         <div class="card-body">
-                           
+
                             <p class="text-muted">
                                 @Html.Raw(@_localization.Getkey("contract_Negotiation_description"))
                             </p>
@@ -189,7 +141,7 @@
                             <h3 class="card-title"> @_localization.Getkey("Inspection_Followup")</h3>
                         </div>
                         <div class="card-body">
-                            
+
                             <p class="text-muted">
                                 @Html.Raw(@_localization.Getkey("Inspection_Followup_description"))
                             </p>
@@ -202,11 +154,11 @@
                             <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
                         </div>
-                        <div class="card-header">     
+                        <div class="card-header">
                             <h3 class="card-title">  @_localization.Getkey("International_Cases")</h3>
                         </div>
                         <div class="card-body">
-                       
+
                             <p class="text-muted">
                                 @Html.Raw(@_localization.Getkey("International_Cases_description"))
                             </p>
@@ -219,7 +171,7 @@
                             <h3 class="card-title"> @_localization.Getkey("registration")</h3>
                         </div>
                         <div class="card-body">
-                           
+
                             <p class="text-muted"> @Html.Raw(@_localization.Getkey("registration_description"))</p>
                         </div>
                     </div>
@@ -236,7 +188,7 @@
                             <h3 class="card-title">@_localization.Getkey("commenting")</h3>
                         </div>
                         <div class="card-body">
-                            
+
                             <p> @Html.Raw(@_localization.Getkey("commenting_description"))</p>
                         </div>
                     </div>
@@ -244,6 +196,6 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
 

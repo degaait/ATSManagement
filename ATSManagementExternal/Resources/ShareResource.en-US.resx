@@ -129,6 +129,12 @@
     <value>Attorney General Message</value>
     <comment>Attorney General Message</comment>
   </data>
+  <data name="Attorney_General_Message_Description" xml:space="preserve">
+    <value>&lt;strong&gt;የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት&lt;/strong&gt;
+ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ</value>
+    <comment>&lt;strong&gt;የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት&lt;/strong&gt;
+ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ</comment>
+  </data>
   <data name="commenting" xml:space="preserve">
     <value>Commenting</value>
     <comment>Commenting</comment>
