@@ -20,66 +20,66 @@
         </div>
     </div>
 
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="accordion" id="accordion-example">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="heading-1">
-                                            <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
-                                                Request from @Html.DisplayFor(model => model.Inist.Name)
-                                            </button>
-                                        </h2>
-                                        <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
-                                            <div class="accordion-body pt-0">
-                                                <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>with the priority of @Html.DisplayFor(model => model.Priority.PriorityName) .Its Case type is <strong>@Html.DisplayFor(model => model.ServiceType.ServiceTypeName)<label>.</label></strong>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="accordion" id="accordion-example">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-1">
+                                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                    Request from @Html.DisplayFor(model => model.Inist.Name)
+                                </button>
+                            </h2>
+                            <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
+                                <div class="accordion-body pt-0">
+                                    <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>with the priority of @Html.DisplayFor(model => model.Priority.PriorityName) .Its Case type is <strong>@Html.DisplayFor(model => model.ServiceType.ServiceTypeName)<label>.</label></strong>
 
-                                                @{
-                                                    if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
-                                                    {
-                                                        <label>This request is created by</label>
-                                                        <strong>Secretary</strong>
-                                                        @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
-                                                        @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
-                                                    }
-                                                    else if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
-                                                    {
-                                                        <label>This request is requested by</label>
-                                                        <strong>Externa User</strong>
-                                                        @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                        @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
-                                                    }
+                                    @{
+                                        if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
+                                        {
+                                            <label>This request is created by</label>
+                                            <strong>Secretary</strong>
+                                            @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
+                                            @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
+                                        }
+                                        else if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
+                                        {
+                                            <label>This request is requested by</label>
+                                            <strong>Externa User</strong>
+                                            @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                            @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
+                                        }
 
-                                                    if (Model.ExternalRequestStatusId != null)
-                                                    {
-                                                        <label>
-                                                            Currently the status of request this request is at
-                                                            <strong>
+                                        if (Model.ExternalRequestStatusId != null)
+                                        {
+                                            <label>
+                                                Currently the status of request this request is at
+                                                <strong>
 
-                                                                @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
-                                                            </strong>
-                                                        </label>
-                                                    }
+                                                    @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
+                                                </strong>
+                                            </label>
+                                        }
 
-                                                }
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
+                                    }
+
                                 </div>
-
-                            </div>
-                        </div>
-                        <div class="card-footer text-end">
-                            <div class="d-flex">
-                                <a asp-action="Index">@_localization.Getkey("backlist")</a>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-      
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,9 +1,9 @@
-﻿using ATSManagementExternal.Models;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using ATSManagementExternal.Models;
+using Microsoft.EntityFrameworkCore;
 using ATSManagementExternal.Security;
 using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace ATSManagementExternal.Controllers
 {

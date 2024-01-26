@@ -30,7 +30,7 @@ namespace ATSManagement.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblAppointments.Include(t => t.Inist).Include(t => t.RequestedByNavigation);
+            var atsdbContext = _context.TblAppointments.Include(t => t.Inist).Include(t => t.RequestedByNavigation).OrderBy(s=>s.CreatedDate);
             return View(await atsdbContext.ToListAsync());
         }
 

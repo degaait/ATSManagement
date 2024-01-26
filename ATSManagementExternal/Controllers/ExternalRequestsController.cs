@@ -275,6 +275,12 @@ namespace ATSManagementExternal.Controllers
                 request.InistId = model.IntId;
                 request.RequestedBy = userId;
                 request.CreatedDate = DateTime.Now;
+                if (model.MoneyAmount!=null)
+                {
+                    request.MoneyAmount = int.Parse(model.MoneyAmount);
+                    request.MoneyCurrency = model.CurrencyId;
+                }
+                
                 request.ExternalRequestStatusId = statusiD;
                 request.DepartmentUpprovalStatus = decision.DesStatusId;
                 request.TeamUpprovalStatus = decision.DesStatusId;
@@ -369,12 +375,13 @@ namespace ATSManagementExternal.Controllers
             model.ExterUserId = userId;
             model.IntId = instName.InistId;
             model.AppointmentDate = DateTime.Now;
+            model.AppointmentDetail = String.Empty;
             return model;
         }
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Addppointments(AppointmentModel model)
+        public async Task<IActionResult> AddAppointments(AppointmentModel model)
         {
             TblAppointment appointment = new TblAppointment();
             appointment.CreatedDate = DateTime.Now;
@@ -501,6 +508,30 @@ namespace ATSManagementExternal.Controllers
                     RoundTypeId = 2,
                 }
             };
+            List<CurrencyModel> currencyModels = new List<CurrencyModel>()
+            {
+                new CurrencyModel
+                {
+                    CurrencyId="USD",
+                    CurrencyName="DOLLAR"
+                },
+                new CurrencyModel
+                {
+                    CurrencyId="ETB",
+                    CurrencyName="ETB"
+                },
+                new CurrencyModel
+                {
+                    CurrencyName="Euro",
+                    CurrencyId="Euro"
+                },
+                new CurrencyModel
+                {
+                    CurrencyId="Pound",
+                    CurrencyName="Pound"
+                },
+
+            };
 
             var completedRequests = _context.TblRequests.Where(x => x.IsArchived == true).ToList();
             foreach (var item in completedRequests)
@@ -519,6 +550,11 @@ namespace ATSManagementExternal.Controllers
             {
                 Text = s.RequestDetail.ToString(),
                 Value = s.CompleteRequestID.ToString()
+            }).ToList();
+            model.Currency = currencyModels.Select(d => new SelectListItem
+            {
+                Text = d.CurrencyName.ToString(),
+                Value = d.CurrencyId.ToString()
             }).ToList();
             return model;
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
-
 public partial class TblRequest
 {
     public Guid RequestId { get; set; }
@@ -74,7 +73,8 @@ public partial class TblRequest
     public bool? IsSenttoInst { get; set; }
 
     public bool? IsReturned { get; set; }
-
+    public int? MoneyAmount { get; set; }
+    public string? MoneyCurrency { get; set; }
     public string? ReturningRemark { get; set; }
 
     public DateTime? SentDate { get; set; }
