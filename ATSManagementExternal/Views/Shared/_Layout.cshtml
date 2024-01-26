@@ -10,303 +10,169 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ATSManagement</title>
-    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" asp-append-version="true" />
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-          <link rel="stylesheet" href="~/ATSManagement.styles.css" asp-append-version="true" />*@
-    <link href="~/dist/css/tabler.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/tabler-flags.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/tabler-payments.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/tabler-vendors.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <link href="~/dist/css/demo.min.css?1684106062" rel="stylesheet" type="text/css" asp-append-version="true" />
-    <style>
-        @@import url('https://rsms.me/inter/inter.css');
 
-        :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-        }
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="~/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/css/style.css" rel="stylesheet">
 
-        body {
-            font-feature-settings: "cv03", "cv04", "cv11";
-        }
-
-        .navbar-brand-image {
-            height: 4rem !important;
-            object-fit: cover !important;
-            width: 27rem !important;
-        }
-    </style>
-    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" />
-    <link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
 </head>
+
 <body class="layout-fluid">
-    <script src="~/dist/js/demo-theme.min.js?1684106062" type="text/javascript" asp-append-version="true"></script>
 
-    <div class="page">
-        <!-- Navbar -->
-        <div class="sticky-top">
-            <header class="navbar navbar-expand-md sticky-top d-print-none">
-                <div class="container-xl">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                        <a asp-action="Index" asp-controller="Home">
-                            <img src="~/dist/img/main_logo.png" alt="Tabler" class="navbar-brand-image">
-                        </a>
-                    </h1>
-                    <div class="navbar-nav flex-row order-md-last">
-                        <div class="d-none d-md-flex">
-                            <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
-                               data-bs-placement="bottom">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
-                            </a>
-                            <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
-                               data-bs-placement="bottom">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
-                            </a>
-                            <div class="nav-item dropdown d-none d-md-flex me-3">
-                                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-world" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                        <path d="M3.6 9h16.8" />
-                                        <path d="M3.6 15h16.8" />
-                                        <path d="M11.5 3a17 17 0 0 0 0 18" />
-                                        <path d="M12.5 3a17 17 0 0 1 0 18" />
-                                    </svg> <span class="badge bg-red"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                                    <div class="card">
-                                        <div class="list-group list-group-flush list-group-hoverable">
-                                            <div class="list-group-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col text-truncate">
-                                                        <a asp-action="IndexLocalIzation" asp-controller="Home" asp-route-Culture="en-US" class="text-body d-block">English</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="list-group list-group-flush list-group-hoverable">
-                                            <div class="list-group-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col text-truncate">
-                                                        <a asp-action="IndexLocalIzation" asp-controller="Home" asp-route-Culture="am" class="text-body d-block">አማርኛ</a>
+    <section id="topbar" class="d-flex align-items-center">
+        <div class="container d-flex justify-content-center justify-content-md-between">
+            <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@eag.gov.et</a>
+                <i class="bi bi-phone-fill phone-icon"></i> 011 551 5099
+            </div>
+            <div class="social-links d-none d-md-block">
+                <a href="https://x.com/MOJEthiopia?s=20" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.facebook.com/MOJEthiopia" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="https://www.facebook.com/MOJEthiopia" class="instagram"><i class="bi bi-instagram"></i></a>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="d-flex align-items-center">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo"><img src="assets/img/logo_black.jpg" alt="" style="width:110% !important"></a>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="#about">About</a></li>
+                    <li><a class="nav-link scrollto" href="#services">Services</a></li>
+                    <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
+                    <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
+                    <li><a class="nav-link scrollto" href="#team">Team</a></li>
+                    <li class="dropdown">
+                        <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="#">Drop Down 1</a></li>
+                            <li class="dropdown">
+                                <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                                <ul>
+                                    <li><a href="#">Deep Drop Down 1</a></li>
+                                    <li><a href="#">Deep Drop Down 2</a></li>
+                                    <li><a href="#">Deep Drop Down 3</a></li>
+                                    <li><a href="#">Deep Drop Down 4</a></li>
+                                    <li><a href="#">Deep Drop Down 5</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Drop Down 2</a></li>
+                            <li><a href="#">Drop Down 3</a></li>
+                            <li><a href="#">Drop Down 4</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+    </header><!-- End Header -->
+
+    <main id="main">
+        @RenderBody()
+
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-info">
+                            <h3>Ministry of Justice</h3>
+
+                            <p>
+                                Bambis, Jomo Kenyatta Avenue, <br>
+                                Addis Ababa, Ethiopia<br><br>
+                                <strong>Phone:</strong> 011 551 5099<br>
+                                <strong>Email:</strong> info@eag.gov.et<br>
+                            </p>
+                            <div class="social-links mt-3">
+                                <a href="https://x.com/MOJEthiopia?s=20" class="twitter"><i class="bi bi-twitter"></i></a>
+                                <a href="https://www.facebook.com/MOJEthiopia" class="facebook"><i class="bi bi-facebook"></i></a>
+                                <a href="https://www.facebook.com/MOJEthiopia" class="instagram"><i class="bi bi-instagram"></i></a>
+
                             </div>
-
-                            @if (_context.HttpContext.Session.GetString("UserFullname") == null)
-                            {
-
-                                <a asp-action="Login" class="nav-link px-0" asp-controller="Account">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" /><path d="M3 12h13l-3 -3" /><path d="M13 15l3 -3" /></svg>
-                                    <span> @_localization.Getkey("login")</span>
-                                </a>
-                            }
-                        </div>
-                        <div class="nav-item dropdown">
-                            @if (_context.HttpContext.Session.GetString("UserFullname") != null)
-                            {
-                                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                                    <span class="avatar avatar-sm" style="background-image:url('/dist/img/user_icon.png');"></span>
-                                    <div class="d-none d-xl-block ps-2">
-
-                                        <div>@_context.HttpContext.Session.GetString("UserName")</div>
-                                        <div class="mt-1 small text-muted">
-                                            @_context.HttpContext.Session.GetString("DepName")
-                                        </div>
-                                    </div>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <a asp-action="AccountStatus" asp-controller="Account" class="dropdown-item">Status</a>
-                                    <a asp-action="Profile" asp-controller="Account" class="dropdown-item">Profile</a>
-                                    <a asp-action="FeedBack" asp-controller="Account" class="dropdown-item">Feedback</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a asp-action="ChangePassword" asp-controller="Account" class="dropdown-item">Change password</a>
-                                    <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
-                                </div>
-                            }
                         </div>
                     </div>
-                </div>
-            </header>
-            <header class="navbar-expand-md">
-                <div class="collapse navbar-collapse" id="navbar-menu">
-                    <div class="navbar">
-                        <div class="container-xl">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Home">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            @_localization.Getkey("home")
-                                        </span>
-                                    </a>
-                                </li>
-                                @if (_context.HttpContext.Session.GetString("MenuMaster") != null)
-                                {
-                                    var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(_context.HttpContext.Session.GetString("MenuMaster"));
-                                    var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
-                                    foreach (var MenuList in groupByMenu)
-                                    {
-                                        var classIcon = (from item in MenuMaster where item.MainMenuName == MenuList.Key select item.Class_SVC).FirstOrDefault();
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                    @Html.Raw(@classIcon)
-                                                </span>
-                                                <span class="nav-link-title">
-                                                    @MenuList.Key
-                                                </span>
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <div class="dropdown-menu-columns">
-                                                    <div class="dropdown-menu-column">
-                                                        @foreach (var SubMenuList in MenuList)
-                                                        {
-                                                            <a class="dropdown-item" asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName" asp-route-id="" asp-route-message="null" asp->
-                                                                @SubMenuList.SubMenuName
-                                                            </a>
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-                                }
 
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="ContactUs" asp-controller="Home">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                                <path d="M21 21l-6 -6"></path>
-                                                <path d="M10 13l0 .01"></path>
-                                                <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            @_localization.Getkey("contact_us")
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="AboutUs" asp-controller="Home">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-description" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                <path d="M9 17h6"></path>
-                                                <path d="M9 13h6"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            @_localization.Getkey("our_services")
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Recomendations">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-description" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                <path d="M9 17h6"></path>
-                                                <path d="M9 13h6"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            @_localization.Getkey("recomendations")
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/lifebuoy -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-help-circle-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 13a1 1 0 0 0 -.993 .883l-.007 .117l.007 .127a1 1 0 0 0 1.986 0l.007 -.117l-.007 -.127a1 1 0 0 0 -.993 -.883zm1.368 -6.673a2.98 2.98 0 0 0 -3.631 .728a1 1 0 0 0 1.44 1.383l.171 -.18a.98 .98 0 0 1 1.11 -.15a1 1 0 0 1 -.34 1.886l-.232 .012a1 1 0 0 0 .111 1.994a3 3 0 0 0 1.371 -5.673z" stroke-width="0" fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            Help
-                                        </span>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-action="Help" asp-controller="Home">
-                                            Documentation
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                        </ul>
                     </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+                        </ul>
+                    </div>
+
                 </div>
-            </header>
+            </div>
         </div>
-        <div class="page-wrapper">
 
-            @RenderBody()
-
-            <footer class="footer footer-transparent d-print-none">
-                <div class="container-xl">
-                    <div class="row text-center align-items-center flex-row-reverse">
-                        <div class="col-lg-auto ms-lg-auto">
-                            <ul class="list-inline list-inline-dots mb-0">
-                                <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank" class="link-secondary" rel="noopener">Designed and Developed by MG-Solutions</a></li>
-
-                            </ul>
-                        </div>
-                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                            <ul class="list-inline list-inline-dots mb-0">
-                                <li class="list-inline-item">
-                                    @_localization.Getkey("Copyright") &copy; @{ DateTime.Now.Year.ToString();}
-                                    <a href="." class="link-secondary">Justice Minister</a>.
-                                    @_localization.Getkey("All_rights_reserved")
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Day</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/day-multipurpose-html-template-for-free/ -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
         </div>
-    </div>
+    </footer><!-- End Footer -->
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
-    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
-
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
-
-    <script src="~/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/libs/jsvectormap/dist/maps/world.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062" defer asp-append-version="true"></script>
-
-    <script src="~/dist/js/tabler.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/js/demo.min.js?1684106062" defer asp-append-version="true"></script>
-    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
-    <script src="~/dist/libs/nouislider/dist/nouislider.min.js?1684106062" defer></script>
-    <script src="~/dist/libs/litepicker/dist/litepicker.js?1684106062" defer></script>
-    <script src="~/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062" defer></script>
-    <script src="~/dist/libs/tinymce/tinymce.min.js?1684106062" defer></script>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <div id="preloader"></div>
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/assets/vendor/aos/aos.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <!-- Template Main JS File -->
+    <script src="~/assets/js/main.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("NToastNotify")
