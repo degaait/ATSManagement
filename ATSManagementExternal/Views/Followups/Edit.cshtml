@@ -3,15 +3,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<br />
 <div class="page-wrapper">
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <h2 class="page-title">
-                        Followups
-                    </h2>
                 </div>
             </div>
         </div>
@@ -25,6 +22,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Followups</h4>
                         </div>
+                        <br />
                         <form asp-action="Edit">
                             <div class="card-body">
                                 <div class="row">
@@ -39,7 +37,7 @@
                                             <span asp-validation-for="Message" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    </div>
+                                </div>
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
@@ -47,38 +45,40 @@
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<br />
 @section Scripts {
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let options = {
-            selector: '#Message',
-            height: 300,
-            menubar: true,
-            statusbar: false,
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount',
-                'lists'
-            ],
-            toolbar: 'undo redo | formatselect | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat',
-            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
-        }
-        if (localStorage.getItem("tablerTheme") === 'dark') {
-            options.skin = 'oxide-dark';
-            options.content_css = 'dark';
-        }
-        tinyMCE.init(options);
-    })
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Message',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

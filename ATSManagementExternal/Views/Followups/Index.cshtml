@@ -13,14 +13,7 @@
         font-weight: bolder;
     }
 
-    /* Chat containers */
-    .container {
-        border: 2px solid #dedede;
-        background-color: #f1f1f1;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px 0;
-    }
+   
 
     /* Darker chat container */
     .darker {
@@ -29,14 +22,14 @@
     }
 
     /* Clear floats */
-    .container::after {
+    .container_chat::after {
         content: "";
         clear: both;
         display: table;
     }
 
     /* Style images */
-    .container img {
+    .container_chat img {
         float: left;
         max-width: 60px;
         width: 100%;
@@ -45,7 +38,7 @@
     }
 
         /* Style the right image */
-        .container img.right {
+        .container_chat img.right {
             float: right;
             margin-left: 0px;
             margin-right: 0;
@@ -65,113 +58,112 @@
 </style>
 <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    Folloups
-                </h2>
-            </div>
-            <!-- Page title actions -->
-            <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-                    <a asp-action="Create" asp-controller="Followups" asp-route-RequestId="@ViewBag.id" class="btn btn-primary d-none d-sm-inline-block">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Add new
-                    </a>
-                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                    </a>
+<section id="about" class="about">
+    <div class="container">
+       
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                </div>
+                <!-- Page title actions -->
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a asp-action="Create" asp-controller="Followups" asp-route-RequestId="@ViewBag.id" class="btn btn-primary d-none d-sm-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                            Add new
+                        </a>
+                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+       
     </div>
-</div>
 
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Follow Ups</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach (var item in Model)
-                            {
-                                if (item.FromExternal == true)
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Follow Ups</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var item in Model)
                                 {
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="container">
-                                                    <h3 class="time-left" style="color:dodgerblue">(You)</h3>
-                                                    <br />
-                                                    <p class="time-left">
-                                                        @Html.Raw(@item.Message)
+                                    if (item.FromExternal == true)
+                                    {
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="container">
+                                                        <h3 class="time-left" style="color:dodgerblue">(You)</h3>
                                                         <br />
-                                                        <span class="time-left">@item.CreatedDate</span>
-                                                        @if (item.Attachment != null)
-                                                        {
-                                                            <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
-                                                        }
-                                                    </p>
-                                                    <br />
-                                                    <a class="dropdown-item time-right" asp-action="Edit" asp-route-id="@item.FollowUpId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                            <path d="M13.5 6.5l4 4"></path>
-                                                            <path d="M16 19h6"></path>
-                                                            <path d="M19 16v6"></path>
-                                                        </svg>&nbsp;  Edit
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                }
-                                if (item.FromInternal == true)
-                                {
-                                    <div class="col-12">
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <div class="container">
-                                                    <h3 class="time-right" style="color:dodgerblue">(@item.User.FirstName)</h3>
-                                                    <br/>
-                                                    <div class="time-right">
-                                                        @Html.Raw(@item.Message)
-                                                        <br/>
-                                                        <span class="time-right">@item.CreatedDate</span>
-                                                        @if (item.Attachment != null)
-                                                        {
-                                                            <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
-                                                        }
+                                                        <p class="time-left">
+                                                            @Html.Raw(@item.Message)
+                                                            <br />
+                                                            <span class="time-left">@item.CreatedDate</span>
+                                                            @if (item.Attachment != null)
+                                                            {
+                                                                <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                            }
+                                                        </p>
+                                                        <br />
+                                                        <a class="dropdown-item time-right" asp-action="Edit" asp-route-id="@item.FollowUpId">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                                <path d="M13.5 6.5l4 4"></path>
+                                                                <path d="M16 19h6"></path>
+                                                                <path d="M19 16v6"></path>
+                                                            </svg>&nbsp;  Edit
+                                                        </a>
                                                     </div>
-
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
 
                                             </div>
                                         </div>
-                                    </div>
-                                }
-                            }
+                                    }
+                                    if (item.FromInternal == true)
+                                    {
+                                        <div class="col-12">
+                                            <div class="row">
 
+                                                <div class="col-md-6">
+                                                    <div class="container">
+                                                        <h3 class="time-right" style="color:dodgerblue">(@item.User.FirstName)</h3>
+                                                        <br />
+                                                        <div class="time-right">
+                                                            @Html.Raw(@item.Message)
+                                                            <br />
+                                                            <span class="time-right">@item.CreatedDate</span>
+                                                            @if (item.Attachment != null)
+                                                            {
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                            }
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+         </section>

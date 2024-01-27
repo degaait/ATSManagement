@@ -14,7 +14,7 @@
     }
 
     /* Chat containers */
-    .container {
+    .container_chat {
         border: 2px solid #dedede;
         background-color: #f1f1f1;
         border-radius: 5px;
@@ -29,14 +29,14 @@
     }
 
     /* Clear floats */
-    .container::after {
+    .container_chat::after {
         content: "";
         clear: both;
         display: table;
     }
 
     /* Style images */
-    .container img {
+    .container_chat img {
         float: left;
         max-width: 60px;
         width: 100%;
@@ -45,7 +45,7 @@
     }
 
         /* Style the right image */
-        .container img.right {
+        .container_chat img.right {
             float: right;
             margin-left: 0px;
             margin-right: 0;
@@ -63,7 +63,7 @@
         color: #999;
     }
 </style>
-
+<br />
 <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
 <div class="page-wrapper">
     <!-- Page header -->
@@ -71,9 +71,7 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <h2 class="page-title">
-                        Request Replys
-                    </h2>
+                   
                 </div>
             </div>
         </div>
@@ -85,32 +83,34 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Create</h4>
+                            <h2 class="page-title">
+                                Request Replys
+                            </h2>
                         </div>
                         <form asp-action="Replies" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <input asp-for="ExternalReplayedBy" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">Reply</label>
+                                            <label asp-for="ReplayDetail" class=" col-3 col-form-label">Reply</label>
                                             <div class="col">
                                                 <input asp-for="ReplayDetail" class="form-control" />
                                                 <span asp-validation-for="ReplayDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-2 col-form-label">Date</label>
+                                            <label asp-for="ReplayDetail" class=" col-3 col-form-label">Date</label>
                                             <div class="col">
                                                 <input asp-for="ReplyDate" readonly class="form-control" />
                                                 <span asp-validation-for="ReplyDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="Attachement" class="col-2 col-form-label">Attachment</label>
+                                            <label asp-for="Attachement" class="col-3 col-form-label">Attachment</label>
                                             <div class="col">
                                                 <input asp-for="Attachement" type="file" class="form-file-button" />
                                                 <span asp-validation-for="Attachement" class="text-danger"></span>
@@ -145,28 +145,29 @@
 
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="container">
+                                                    <div class="container_chat">
                                                         <h3 class="time-right" style="color:dodgerblue">(You)</h3>
                                                         <br />
                                                         <p class="time-right">
                                                             @Html.Raw(@item.ReplayDetail)
-                                                            <br />
-                                                            <span class="time-right">@item.ReplyDate</span>
+
                                                             @if (item.Attachment != null)
-                                                             {
+                                                            {
                                                                 <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
-                                                             }
+                                                            }
+
+                                                            <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                                    <path d="M13.5 6.5l4 4"></path>
+                                                                    <path d="M16 19h6"></path>
+                                                                    <path d="M19 16v6"></path>
+                                                                </svg>&nbsp;  Edit
+                                                            </a>
+                                                            <span class="time-right">@item.ReplyDate</span>
+                                                            <br />
                                                         </p>
-                                                        <br />
-                                                        <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                                <path d="M13.5 6.5l4 4"></path>
-                                                                <path d="M16 19h6"></path>
-                                                                <path d="M19 16v6"></path>
-                                                            </svg>&nbsp;  Edit
-                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -177,7 +178,7 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="container">
+                                                    <div class="container_chat">
                                                         <h3 class="time-left" style="color:dodgerblue">(@item.InternalReplayedByNavigation.FirstName)</h3>
                                                         <br />
                                                         <div class="time-left">
@@ -207,6 +208,7 @@
         </div>
     </div>
 </div>
+<br />
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>

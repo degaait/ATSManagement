@@ -510,16 +510,16 @@ section {
   position: relative;
 }
 
-.section-title h2 {
-  font-size: 32px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-  padding-bottom: 0;
-  color: #191919;
-  position: relative;
-  z-index: 2;
-}
+    .section-title h2 {
+        font-size: 32px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        padding-bottom: 0;
+        color: #1b469d;
+        position: relative;
+        z-index: 2;
+    }
 
 .section-title span {
   position: absolute;
@@ -606,12 +606,12 @@ section {
   color: #191919;
 }
 
-.why-us .box p {
-  color: #aaaaaa;
-  font-size: 15px;
-  margin: 0;
-  padding: 0;
-}
+    .why-us .box p {
+        color: #1b469d;
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+    }
 
 .why-us .box:hover {
   background: #cc1616;
@@ -723,15 +723,16 @@ section {
   font-size: 24px;
 }
 
-.services .icon-box h4 a {
-  color: #191919;
-}
+    .services .icon-box h4 a {
+        color: #1b469d;
+    }
 
-.services .icon-box p {
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
-}
+    .services .icon-box p {
+        line-height: 24px;
+        font-size: 14px;
+        margin-bottom: 0;
+        color: #1b469d;
+    }
 
 .services .icon-box:hover {
   background: #cc1616;

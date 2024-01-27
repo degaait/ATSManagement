@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagementExternal.Filters;
+using ATSManagementExternal.IModels;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -81,7 +81,7 @@ namespace ATSManagementExternal.Controllers
                 followup.Message = model.Message;
                 followup.ExternalUserId = model.ExternalUserId;
                 followup.CreatedDate = DateTime.UtcNow;
-                followup.InistId=model.InistId;
+                followup.InistId = model.InistId;
                 followup.FromExternal = true;
                 followup.FromInternal = false;
                 string? dbPath = null;

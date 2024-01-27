@@ -46,35 +46,22 @@
     <!-- ======= Header ======= -->
     <header id="header" class="d-flex align-items-center">
         <div class="container d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo"><img src="assets/img/logo_black.jpg" alt="" style="width:110% !important"></a>
+            <a  asp-controller="Home" asp-action="Index" class="logo"><img src="~/assets/img/logo_black.jpg" alt="" style="width:110% !important"></a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                    <li><a class="nav-link scrollto" href="#about">About</a></li>
-                    <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                    <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
-                    <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
-                    <li><a class="nav-link scrollto" href="#team">Team</a></li>
+                    <li><a class="nav-link scrollto" asp-controller="Inspections" asp-action="Index"> @_localization.Getkey("home")</a></li>
+
+                    <li><a class="nav-link scrollto" asp-controller="Inspections" asp-action="Index">@_localization.Getkey("Inspection_Reports")</a></li>
+                    <li><a class="nav-link scrollto" asp-controller="Recomendations" asp-action="Index">@_localization.Getkey("recomendations")</a></li>
                     <li class="dropdown">
-                        <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+                        <a href="#"><span>@_localization.Getkey("requests")</span> <i class="bi bi-chevron-down"></i></a>
                         <ul>
-                            <li><a href="#">Drop Down 1</a></li>
-                            <li class="dropdown">
-                                <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Deep Drop Down 1</a></li>
-                                    <li><a href="#">Deep Drop Down 2</a></li>
-                                    <li><a href="#">Deep Drop Down 3</a></li>
-                                    <li><a href="#">Deep Drop Down 4</a></li>
-                                    <li><a href="#">Deep Drop Down 5</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Drop Down 2</a></li>
-                            <li><a href="#">Drop Down 3</a></li>
-                            <li><a href="#">Drop Down 4</a></li>
+                            <li><a asp-controller="ExternalRequests" asp-action="Index">@_localization.Getkey("new_requests")</a></li>
+
+                            <li><a asp-controller="ExternalRequests" asp-action="SentBackRequests">@_localization.Getkey("completed_requests")</a></li>
                         </ul>
                     </li>
-                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                    <li><a class="nav-link scrollto" asp-controller="Home" asp-action="ContactUs">Contact as Guest</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -85,9 +72,8 @@
     <main id="main">
         @RenderBody()
 
-    </main><!-- End #main -->
-    <!-- ======= Footer ======= -->
-    <footer id="footer">
+    </main>
+    <footer id="footer" style="background: #17233b !important">
         <div class="footer-top">
             <div class="container">
                 <div class="row">
@@ -149,20 +135,26 @@
 
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Day</span></strong>. All Rights Reserved
+                &copy; @_localization.Getkey("Copyright") <strong><span>Justice Minister</span></strong>. @_localization.Getkey("Copyright") &copy; @{ DateTime.Now.Year.ToString();}
             </div>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/day-multipurpose-html-template-for-free/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                Designed and Developed <a href="https://bootstrapmade.com/">MG-Solutions</a>
             </div>
         </div>
     </footer><!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
     <div id="preloader"></div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
+
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
     <!-- Vendor JS Files -->
     <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="~/assets/vendor/aos/aos.js"></script>
@@ -171,6 +163,11 @@
     <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
     <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/dist/libs/nouislider/dist/nouislider.min.js?1684106062" defer></script>
+    <script src="~/dist/libs/litepicker/dist/litepicker.js?1684106062" defer></script>
+    <script src="~/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062" defer></script>
+    <script src="~/dist/libs/tinymce/tinymce.min.js?1684106062" defer></script>
     <!-- Template Main JS File -->
     <script src="~/assets/js/main.js"></script>
 

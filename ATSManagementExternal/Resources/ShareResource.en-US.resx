@@ -143,6 +143,10 @@
     <value>Commenting different document types like Policy, Strategy and so on.</value>
     <comment>Commenting different document types like Policy, Strategy and so on.</comment>
   </data>
+  <data name="completed_requests" xml:space="preserve">
+    <value>Completed Requests</value>
+    <comment>Completed Requests</comment>
+  </data>
   <data name="contact_us" xml:space="preserve">
     <value>Contact Us</value>
     <comment>Contact Us</comment>
@@ -165,6 +169,14 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>Copyright</value>
     <comment>Copyright</comment>
   </data>
+  <data name="documetations" xml:space="preserve">
+    <value>Documentations</value>
+    <comment>Documentations</comment>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Helps</value>
+    <comment>Helps</comment>
+  </data>
   <data name="home" xml:space="preserve">
     <value>Home</value>
     <comment>Home</comment>
@@ -176,6 +188,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="Inspection_Followup_description" xml:space="preserve">
     <value>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</value>
     <comment>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</comment>
+  </data>
+  <data name="Inspection_Reports" xml:space="preserve">
+    <value>Inspection Reports</value>
+    <comment>Inspection Reports</comment>
   </data>
   <data name="International Cases" xml:space="preserve">
     <value>International Cases</value>
@@ -4272,6 +4288,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
 
 &lt;/div&gt;</value>
   </data>
+  <data name="new_requests" xml:space="preserve">
+    <value>New Requests</value>
+    <comment>New Requests</comment>
+  </data>
   <data name="our_services" xml:space="preserve">
     <value>Our Services</value>
     <comment>Our Services</comment>
@@ -4287,6 +4307,14 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
   <data name="registration_description" xml:space="preserve">
     <value>Registering different document stypes like Proclamations, Policy and so on</value>
     <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
+  </data>
+  <data name="requests" xml:space="preserve">
+    <value>Requests</value>
+    <comment>Requests</comment>
+  </data>
+  <data name="services" xml:space="preserve">
+    <value>Our Services</value>
+    <comment>Our Services</comment>
   </data>
   <data name="The_List_Of_Prosecutors" xml:space="preserve">
     <value>The List Of Prosecutors</value>

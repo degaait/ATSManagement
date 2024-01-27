@@ -3,16 +3,13 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+<br />
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <h2 class="page-title">
-                        Teams
-                    </h2>
                 </div>
             </div>
         </div>
@@ -29,20 +26,20 @@
                         <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-10">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="InistId" />
                                         <input type="hidden" asp-for="RequestId" />
                                         <input type="hidden" asp-for="ExternalUserId" />
                                         <div class="mb-3 row">
-                                            <label asp-for="Message" class="col-2 col-form-label">Message</label>
+                                            <label asp-for="Message" class="col-3 col-form-label">Message</label>
                                             <div class="col">
                                                 <input asp-for="Message" class="form-control" />
                                                 <span asp-validation-for="Message" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="Attachement" class="col-2 col-form-label">Attachement</label>
+                                            <label asp-for="Attachement" class="col-3 col-form-label">Attachement</label>
                                             <div class="col">
                                                 <input asp-for="Attachement" class="form-file" type="file" />
                                                 <span asp-validation-for="Attachement" class="text-danger"></span>
@@ -64,34 +61,34 @@
         </div>
     </div>
 </div>
-
+<br />
 @section Scripts {
 
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-           let options = {
-               selector: '#Message',
-               height: 300,
-               menubar: true,
-               statusbar: false,
-               plugins: [
-                   'advlist autolink lists link image charmap print preview anchor',
-                   'searchreplace visualblocks code fullscreen',
-                   'insertdatetime media table paste code help wordcount',
-                   'lists'
-               ],
-               toolbar: 'undo redo | formatselect | ' +
-                   'bold italic backcolor | alignleft aligncenter ' +
-                   'alignright alignjustify | bullist numlist outdent indent | ' +
-                   'removeformat',
-               content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
-           }
-           if (localStorage.getItem("tablerTheme") === 'dark') {
-               options.skin = 'oxide-dark';
-               options.content_css = 'dark';
-           }
-           tinyMCE.init(options);
-       })
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Message',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

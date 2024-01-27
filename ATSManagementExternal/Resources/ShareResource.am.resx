@@ -143,6 +143,10 @@
     <value>Commenting different document types like Policy, Strategy and so on.</value>
     <comment>Commenting different document types like Policy, Strategy and so on.</comment>
   </data>
+  <data name="completed_requests" xml:space="preserve">
+    <value>የተጠናቀቁ ጥያቄዎች </value>
+    <comment>የተጠናቀቁ ጥያቄዎች</comment>
+  </data>
   <data name="contact_us" xml:space="preserve">
     <value>አግኙን</value>
     <comment>አግኙን</comment>
@@ -165,6 +169,14 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>የቅጂ መብት</value>
     <comment>የቅጂ መብት</comment>
   </data>
+  <data name="documetations" xml:space="preserve">
+    <value>ሰነዶች</value>
+    <comment>ሰነዶች</comment>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>እገዛ</value>
+    <comment>እገዛ</comment>
+  </data>
   <data name="home" xml:space="preserve">
     <value>መግቢያ</value>
     <comment>መግቢያ</comment>
@@ -176,6 +188,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="Inspection_Followup_description" xml:space="preserve">
     <value>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</value>
     <comment>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</comment>
+  </data>
+  <data name="Inspection_Reports" xml:space="preserve">
+    <value>የኢንስፔክሽን ሪፖርቶች</value>
+    <comment>የኢንስፔክሽን ሪፖርቶች</comment>
   </data>
   <data name="International_Cases" xml:space="preserve">
     <value>ዓለም አቀፍ ጉዳዮች</value>
@@ -4431,6 +4447,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
 ትብብርና አጋርነት
 ፍትሐዊነት</comment>
   </data>
+  <data name="new_requests" xml:space="preserve">
+    <value>አዲስ ጥያቄዎች</value>
+    <comment>አዲስ ጥያቄዎች</comment>
+  </data>
   <data name="our_services" xml:space="preserve">
     <value>የምንሰጣቸው አገልግሎቶች</value>
     <comment>የምንሰጣቸው አገልግሎቶች</comment>
@@ -4446,5 +4466,13 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
   <data name="registration_description" xml:space="preserve">
     <value>Registering different document stypes like Proclamations, Policy and so on</value>
     <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
+  </data>
+  <data name="requests" xml:space="preserve">
+    <value>ጥያቄዎች</value>
+    <comment>ጥያቄዎች</comment>
+  </data>
+  <data name="services" xml:space="preserve">
+    <value>የምንሰጣቸው አገልግሎቶች </value>
+    <comment>የምንሰጣቸው አገልግሎቶች</comment>
   </data>
 </root>

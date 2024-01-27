@@ -2,19 +2,10 @@
 @{
     ViewData["Title"] = "Create";
 }
+<br />
 <div class="page-wrapper">
     <!-- Page header -->
-    <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
-                        Contact Us
-                    </h2>
-                </div>
-            </div>
-        </div>
-    </div>
+  
     <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
@@ -22,11 +13,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <h2 class="page-title">
+                                Contact Us
+                            </h2>
                         </div>
                         <form asp-action="ContactUs" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <div class="mb-3 row" id="divAppointmentDetail">
                                             <label asp-for="ContactDetaiMessage" class=" col-2 col-form-label">Message</label>
                                             <div class="col">
@@ -67,8 +61,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <button type="submit" value="Save" class="btn btn-primary" >Save changes</button>
-                                   
+                                    <button type="submit" value="Save" class="btn btn-primary">Save changes</button>
+
                                 </div>
                             </div>
                         </form>
@@ -79,7 +73,7 @@
     </div>
 </div>
 
-
+<br />
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 

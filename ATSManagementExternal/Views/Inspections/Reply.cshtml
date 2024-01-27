@@ -13,14 +13,17 @@
     }
 
     /* Chat containers */
-    .container {
+    .container_chat {
         border: 2px solid #dedede;
         background-color: #f1f1f1;
         border-radius: 5px;
         padding: 10px;
         margin: 10px 0;
     }
-
+    .pchat h3 {
+        line-height: 2;
+        font-size: 14px;
+    }
     /* Darker chat container */
     .darker {
         border-color: #ccc;
@@ -28,14 +31,14 @@
     }
 
     /* Clear floats */
-    .container::after {
+    .container_chat::after {
         content: "";
         clear: both;
         display: table;
     }
 
     /* Style images */
-    .container img {
+    .container_chat img {
         float: left;
         max-width: 60px;
         width: 100%;
@@ -44,7 +47,7 @@
     }
 
         /* Style the right image */
-        .container img.right {
+        .container_chat img.right {
             float: right;
             margin-left: 0px;
             margin-right: 0;
@@ -63,7 +66,7 @@
     }
 </style>
 <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
-<!-- Page header -->
+<br />
 <div class="page-wrapper">
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -86,19 +89,19 @@
                         <form asp-action="Reply" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="RecId" type="hidden" class="form-control" />
 
                                         <div class="mb-3 row" id="divRequestDetail">
-                                            <label asp-for="ResponseDetail" class=" col-2 col-form-label">Reply Detail</label>
+                                            <label asp-for="ResponseDetail" class=" col-3 col-form-label">Reply Detail</label>
                                             <div class="col">
                                                 <input asp-for="ResponseDetail" class="form-control" />
                                                 <span asp-validation-for="ResponseDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divRequestDetail">
-                                            <label asp-for="Attachement" class=" col-2 col-form-label">Attachement</label>
+                                            <label asp-for="Attachement" class=" col-3 col-form-label">Attachement</label>
                                             <div class="col">
                                                 <input asp-for="Attachement" class="form-control" />
                                                 <span asp-validation-for="Attachement" class="text-danger"></span>
@@ -131,24 +134,25 @@
 
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="container">
+                                                    <div class="container_chat">
                                                         <h3 class="time-right" style="color:dodgerblue">(You)</h3>
                                                         <br />
-                                                        <p class="time-right">
+                                                        <p class="time-right pchat">
                                                             @Html.Raw(@item.RecoDetail)
                                                             <br />
+                                                            <a class="dropdown-item time-right" asp-action="EditReply" asp-route-ReplyId="@item.ReplyId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                                    <path d="M13.5 6.5l4 4"></path>
+                                                                    <path d="M16 19h6"></path>
+                                                                    <path d="M19 16v6"></path>
+                                                                </svg>&nbsp;  Edit
+                                                            </a>
                                                             <span class="time-right">@item.DateCreated</span>
+                                                            <br />
                                                         </p>
-                                                        <br />
-                                                        <a class="dropdown-item time-right" asp-action="EditReply" asp-route-ReplyId="@item.ReplyId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                                                                <path d="M13.5 6.5l4 4"></path>
-                                                                <path d="M16 19h6"></path>
-                                                                <path d="M19 16v6"></path>
-                                                            </svg>&nbsp;  Edit
-                                                        </a>
+                                                      
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,14 +163,16 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="container">
+                                                    <div class="container_chat">
+
                                                         <h3 class="time-left" style="color:dodgerblue">(@item.InternalUserNavigation.FirstName)</h3>
                                                         <br />
-                                                        <div class="time-left">
-                                                            @Html.Raw(@item.RecoDetail)
-                                                            <br />
-                                                            <span class="time-left">@item.DateCreated</span>
-                                                        </div>
+                                                        <p class="time-left pchat">
+                                                                @Html.Raw(@item.RecoDetail)
+                                                                <br />
+                                                                <span class="time-left">@item.DateCreated</span>
+                                                               
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,6 +187,7 @@
         </div>
     </div>
 </div>
+<br />
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
