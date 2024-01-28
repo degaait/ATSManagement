@@ -125,6 +125,10 @@
     <value>All rights reserved.</value>
     <comment>All rights reserved.</comment>
   </data>
+  <data name="appointments" xml:space="preserve">
+    <value>Appointments</value>
+    <comment>Appointments</comment>
+  </data>
   <data name="Attorney_General_Message" xml:space="preserve">
     <value>Attorney General Message</value>
     <comment>Attorney General Message</comment>

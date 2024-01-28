@@ -125,6 +125,10 @@
     <value>መብቱ በህግ የተጠበቀ ነው::</value>
     <comment>መብቱ በህግ የተጠበቀ ነው::</comment>
   </data>
+  <data name="appointments" xml:space="preserve">
+    <value>ቀጠሮዎች</value>
+    <comment>ቀጠሮዎች</comment>
+  </data>
   <data name="Attorney_General_Message" xml:space="preserve">
     <value>የፍትህ ሚኒስቴሩ መልዕክት</value>
     <comment>የፍትህ ሚኒስቴሩ መልዕክት</comment>

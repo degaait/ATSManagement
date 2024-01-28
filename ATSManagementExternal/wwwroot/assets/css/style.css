@@ -222,7 +222,7 @@ h6 {
   align-items: center;
   justify-content: space-between;
   padding: 25px 15px 24px 15px;
-  font-size: 14px;
+  font-size: 17px;
   color: #fff;
   white-space: nowrap;
   transition: 0.3s;
@@ -230,9 +230,9 @@ h6 {
 
 .navbar a i,
 .navbar a:focus i {
-  font-size: 12px;
+  font-size: 18px;
   line-height: 0;
-  margin-left: 5px;
+  margin-left: 0px;
 }
 
 .navbar a:hover,
@@ -1433,7 +1433,7 @@ section {
 }
 
 #footer .copyright {
-  border-top: 1px solid #262626;
+  border-top: 1px solid #fff;
   text-align: center;
   padding-top: 30px;
 }

@@ -1,31 +1,21 @@
 ﻿@model ATSManagementExternal.Models.TblAppointment
 @inject AtsdbContext ats;
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Appointment Detail";
 }
 <br />
 
 <div class="page-wrapper">
-    <!-- Page header -->
-    <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
-                        Appointment Detail
-                    </h2>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page body -->
+    
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title btn-danger">Detail Information</h4>
+                            <h2 class="page-title">
+                                Appointment Detail
+                            </h2>
                         </div>
                         @{
                             var particpants = (from items in ats.TblAppointmentParticipants
@@ -40,49 +30,49 @@
                         }
                         <div class="card-body">
                             <dl class="row">
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Appointment detail</label>
 
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
                                     @Html.Raw(Model.AppointmentDetail)
                                 </dd>
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Final Outcome</label>
 
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.DescusionFinalComeup)
                                 </dd>
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Created Date</label>
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.CreatedDate)
                                 </dd>
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Appointment Date</label>
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.AppointmentDate)
                                 </dd>
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Inistitution</label>
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.Inist.Name)
                                 </dd>
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Requested User</label>
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
                                     @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
                                 </dd>
-                                <dt class="col-sm-2">
+                                <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Appointment Participants</label>
                                 </dt>
-                                <dd class="col-sm-10">
+                                <dd class="col-sm-9">
 
                                     @foreach (var parts in particpants)
                                     {

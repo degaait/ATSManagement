@@ -87,7 +87,7 @@ namespace ATSManagementExternal.Controllers
         public IActionResult Logout()
         {
             _contextAccessor.HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult FeedBack()
         {

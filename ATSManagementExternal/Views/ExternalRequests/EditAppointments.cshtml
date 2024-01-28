@@ -5,44 +5,34 @@
 <br />
 
 <div class="page-wrapper">
-    <!-- Page header -->
-    <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
-                        Edit Appointments
-                    </h2>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page body -->
+   
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Edit</h4>
+                            <h2 class="page-title">
+                                Edit Appointments
+                            </h2>
                         </div>
                         <form asp-action="EditAppointments" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input asp-for="ExterUserId" type="hidden" class="form-control" />
                                         <input asp-for="AppointmentId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">Appointment Detail</label>
+                                            <label asp-for="AppointmentDetail" class=" col-3 col-form-label">Appointment Detail</label>
                                             <div class="col">
                                                 <input asp-for="AppointmentDetail" class="form-control" />
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="AppointmentDate" class=" col-2 col-form-label">Expected Appointment Date</label>
+                                            <label asp-for="AppointmentDate" class=" col-3 col-form-label">Expected Appointment Date</label>
                                             <div class="col">
                                                 <input asp-for="AppointmentDate" class="form-control" />
                                                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>

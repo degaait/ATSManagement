@@ -23,11 +23,8 @@
     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="~/assets/css/style.css" rel="stylesheet">
-
 </head>
-
 <body class="layout-fluid">
-
     <section id="topbar" class="d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
@@ -38,50 +35,66 @@
                 <a href="https://x.com/MOJEthiopia?s=20" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="https://www.facebook.com/MOJEthiopia" class="facebook"><i class="bi bi-facebook"></i></a>
                 <a href="https://www.facebook.com/MOJEthiopia" class="instagram"><i class="bi bi-instagram"></i></a>
-
+                <p>loged in</p>
             </div>
         </div>
     </section>
-
-    <!-- ======= Header ======= -->
     <header id="header" class="d-flex align-items-center">
         <div class="container d-flex align-items-center justify-content-between">
             <a  asp-controller="Home" asp-action="Index" class="logo"><img src="~/assets/img/logo_black.jpg" alt="" style="width:110% !important"></a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto" asp-controller="Inspections" asp-action="Index"> @_localization.Getkey("home")</a></li>
+                    <li><a class="cta-btn" asp-controller="Home" asp-action="Index"> @_localization.Getkey("home")</a></li>
+                    <li><a class="cta-btn" asp-controller="Home" asp-action="ContactUs">Contact as Guest</a></li>
+                    <li><a class="cta-btn" asp-controller="Recomendations" asp-action="Index">@_localization.Getkey("recomendations")</a></li>
+                    @if (_context.HttpContext.Session.GetString("UserFullname") != null)
+                    {
 
-                    <li><a class="nav-link scrollto" asp-controller="Inspections" asp-action="Index">@_localization.Getkey("Inspection_Reports")</a></li>
-                    <li><a class="nav-link scrollto" asp-controller="Recomendations" asp-action="Index">@_localization.Getkey("recomendations")</a></li>
+                        
+                        <li><a class="cta-btn" asp-controller="Inspections" asp-action="Index">@_localization.Getkey("Inspection_Reports")</a></li>
+                        <li class="dropdown">
+                            <a href="#"><span>@_localization.Getkey("requests")</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                <li><a asp-controller="ExternalRequests" asp-action="Index">@_localization.Getkey("new_requests")</a></li>
+                                <li><a asp-controller="ExternalRequests" asp-action="SentBackRequests">@_localization.Getkey("completed_requests")</a></li>
+                                <li><a class="cta-btn" asp-controller="ExternalRequests" asp-action="Appointments">@_localization.Getkey("appointments")</a></li>
+                            </ul>
+                        </li>
+                    }
+
                     <li class="dropdown">
-                        <a href="#"><span>@_localization.Getkey("requests")</span> <i class="bi bi-chevron-down"></i></a>
+                        <a href="#"><i class="bi bi-globe"></i></a>
                         <ul>
-                            <li><a asp-controller="ExternalRequests" asp-action="Index">@_localization.Getkey("new_requests")</a></li>
-
-                            <li><a asp-controller="ExternalRequests" asp-action="SentBackRequests">@_localization.Getkey("completed_requests")</a></li>
+                            <li><a asp-controller="Home" asp-action="IndexLocalIzation" asp-route-Culture="am">አማርኛ</a></li>
+                            <li><a asp-controller="Home" asp-action="IndexLocalIzation" asp-route-Culture="en-US">English</a></li>
                         </ul>
                     </li>
-                    <li><a class="nav-link scrollto" asp-controller="Home" asp-action="ContactUs">Contact as Guest</a></li>
+                    @if (_context.HttpContext.Session.GetString("UserFullname") != null)
+                    {
+                        <li><a class="cta-btn" asp-controller="Account" asp-action="Logout">Logout</a></li>
+
+                    }
+                    else
+                    {
+                        <li><a class="cta-btn" asp-controller="Account" asp-action="Login">Login</a></li>
+                    }
+
+
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-
+            </nav>
         </div>
-    </header><!-- End Header -->
-
+    </header>
     <main id="main">
         @RenderBody()
-
     </main>
     <footer id="footer" style="background: #17233b !important">
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-4 col-md-6 footer-links">
                         <div class="footer-info">
                             <h3>Ministry of Justice</h3>
-
                             <p>
                                 Bambis, Jomo Kenyatta Avenue, <br>
                                 Addis Ababa, Ethiopia<br><br>
@@ -92,30 +105,17 @@
                                 <a href="https://x.com/MOJEthiopia?s=20" class="twitter"><i class="bi bi-twitter"></i></a>
                                 <a href="https://www.facebook.com/MOJEthiopia" class="facebook"><i class="bi bi-facebook"></i></a>
                                 <a href="https://www.facebook.com/MOJEthiopia" class="instagram"><i class="bi bi-instagram"></i></a>
-
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-2 col-md-6 footer-links">
+                    <div class="col-lg-4 col-md-6 footer-links">
                         <h4>Useful Links</h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#header">Home</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Services     </a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-2 col-md-6 footer-links">
-                        <h4>Our Services</h4>
-                        <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-6 footer-links">
@@ -128,21 +128,15 @@
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>
-
         <div class="container">
             <div class="copyright">
                 &copy; @_localization.Getkey("Copyright") <strong><span>Justice Minister</span></strong>. @_localization.Getkey("Copyright") &copy; @{ DateTime.Now.Year.ToString();}
             </div>
             <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/day-multipurpose-html-template-for-free/ -->
-                Designed and Developed <a href="https://bootstrapmade.com/">MG-Solutions</a>
+                Designed and Developed by <a href="https://bootstrapmade.com/">MG-Solutions</a>
             </div>
         </div>
     </footer><!-- End Footer -->
