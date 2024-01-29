@@ -168,7 +168,7 @@
             <div class="col-md-3">
                 @using (Html.BeginForm("Index", "Recomendations", FormMethod.Post, new { @name = "Form1" }))
                 {
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 @Html.DropDownListFor(model => model.RecostatusId, new SelectList(Model.tblRecomendationsStatus, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlStatus" })
@@ -176,7 +176,7 @@
                         </div>
                     </div>
                     <br />
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 @Html.DropDownListFor(model => model.YearId, new SelectList(Model.tblYears, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlYears" })
@@ -184,7 +184,7 @@
                         </div>
                     </div>
                     <br />
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 @Html.DropDownListFor(model => model.InistId, new SelectList(Model.tblInistitutions, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlInistitutions" })
@@ -192,7 +192,7 @@
                         </div>
                     </div>
                     <br />
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 @Html.DropDownListFor(model => model.LawId, new SelectList(Model.tblInspectionLaws, "Value", "Text"), "--All--", htmlAttributes: new { @class = "form-select", @id = "ddlInspectionLaws" })

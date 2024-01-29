@@ -2,21 +2,20 @@
 @using ATSManagementExternal.ViewModels;
 @using Microsoft.AspNetCore.Http;
 @using ATSManagementExternal.Services;
+@model ATSManagementExternal.ViewModels.ContactModel;
 @inject LanguageService _localization
 @inject IHttpContextAccessor _context;
 @{
     ViewData["Title"] = "Task Tracking Dashboard";
 }
 
-<!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center">
     <div class="container position-relative" data-aos="fade-up" data-aos-delay="500">
         <h1>Welcome to Ministry of Justice</h1>
         <h2>To see the Ministry of Justice Institution that ensures respect of rule of law and wins public and state beliefs with the participation of the people in 2024/25.”</h2>
         <a href="#about" class="btn-get-started scrollto">Get Started</a>
     </div>
-</section><!-- End Hero -->
-
+</section>
 <section id="about" class="about" style="background: #f6f9fd">
     <div class="container" style="background:#fff">
 
@@ -32,22 +31,20 @@
                 <ul>
                     <li>
                         <i class="bi bi-check-circle"></i>
-                        
-                            ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ ተግባራዊ እንቅስቃሴ ሊረጋገጥ አይችልም፡፡
-                            የአገራችን የፍትህ ዘርፍ ታሪክ ስር በሰደዱ አናቂ የሕግና የአሰራር እንዲሁም የአመለካካት ችግሮች የተተበተበ እና የጉልበተኞች ምርኮኛ እንደነበር ይታወሳል፡፡
-                        
-                            </li>
+                        ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ ተግባራዊ እንቅስቃሴ ሊረጋገጥ አይችልም፡፡
+                        የአገራችን የፍትህ ዘርፍ ታሪክ ስር በሰደዱ አናቂ የሕግና የአሰራር እንዲሁም የአመለካካት ችግሮች የተተበተበ እና የጉልበተኞች ምርኮኛ እንደነበር ይታወሳል፡፡
+
+                    </li>
                     <li><i class="bi bi-check-circle"></i> በተጀመረው አዲስ የለውጥ ምዕራፍ ተቋማችን የሕግ እና ፍትህ ሪፎርም በማከናወን እንዲሁም የአሰራር ችግሮችን በማሻሻል፣ ከሰብአዊ መብት አኳያ የሕግ ታራሚዎችን አያያዝ በማስተካከል ተቋማዊ አግልግሎትን ቀልጣፋ፣ ፍትሀዊና ውጤታማ የሆኑ የፍትህ ተደራሽነትን በማረጋገጥ ዘርፈ ብዙ መሠረታዊ የለውጥ ተግባራትን አከናውኗል፣በማከናወን ላይም ይገኛል፡፡</li>
                     <li><i class="bi bi-check-circle"></i> ፍትህ ሚኒስቴር በአገራዊ የለውጥ ጉዞ ዳር ለማድረስ በሚደረገው ሰፊና ሁለንተናዊ ርብርብ ምቹ ሁኔታ በመፍጠር በአዋጅ ቁጥር 943/2008 በተሰጠው ስልጣን የፍትህ እና ሕገ መንግስታዊ ሥርዓቱን በማክበርና ማስከበር፣ የሕግ የበላይነትን ማረጋገጥ፣ ፍትህን በማስፈን፣ የዜጎች ሰብአዊና ዴሞክራሲያዊ መብቶች እንዲረጋገጡ ሀገራዊ ተልዕኮውን ከመቸውም ጊዜ በላቀ ደረጃ በመወጣት ላይ ነው፡፡</li>
                     @*<li><i class="bi bi-check-circle"></i> ተቋሙ የህብረተሰቡን ተሳትፎ በማረጋገጥ የህዝብና የመንግስት አመኔታ የተቸረው ተቋም በመሆን የሀገራችንን ሰላም አስተማማኝና ዘላቂ በማድረግ የተጀመረው የልማት፣ የሰላም፣ የዲሞክራሲ ስርዓት ግንባታ እንዲጎለብት ብሎም የፍትህ ሥርዓትን ግልፅነት፣ ነፃነትና ተጠያቂነት አሰራርን በማሻሻል በርካታ ተግባራት የተከናወኑ ሲሆን በዘላቂነት ለውጡን ለማፋጠን የነቃና የተጠናከረ የህዝብ እና የባለድርሻ አካላት ተሳትፎ ከመቸውም ጊዜ በላይ ያስፈልጋል፡፡ ፍትህ የምርጫ ጉዳይ ሳይሆን የህልውና መሰረት ነው፡፡</li>
-                    <li>
-                        <i class="bi bi-check-circle"></i>     ፍትህ የምክንያታዊነትና የእውነት ማንፀባረቂያ ሲሆን የሕግ የበላይነትን በማክበርና በማስከበር አገራችን በሁሉም መስክ የተለወጠችና የበለጸገች፣ የዴሞክራሲና የፍትህ ተምሳሌት እንድትሆን ለማድረግ በሚከናውኑ ተግባራት ላይ መላው የአገራችን ህዝብ ከጎናችን በመቆም የሕግ የበላይነትን በማስፈንና ተቋማዊ ለውጡን ለማረጋገጥ በምንሰራው ስራ በባለቤትነት ንቁ ተሳትፎ በማድረግ የለውጡ ፈፃሚና ዋና ተዋናኝ እንድትሆኑ መልዕክቴን አስተላልፋለሁ፡፡
-                    </li>*@
+                        <li>
+                            <i class="bi bi-check-circle"></i>     ፍትህ የምክንያታዊነትና የእውነት ማንፀባረቂያ ሲሆን የሕግ የበላይነትን በማክበርና በማስከበር አገራችን በሁሉም መስክ የተለወጠችና የበለጸገች፣ የዴሞክራሲና የፍትህ ተምሳሌት እንድትሆን ለማድረግ በሚከናውኑ ተግባራት ላይ መላው የአገራችን ህዝብ ከጎናችን በመቆም የሕግ የበላይነትን በማስፈንና ተቋማዊ ለውጡን ለማረጋገጥ በምንሰራው ስራ በባለቤትነት ንቁ ተሳትፎ በማድረግ የለውጡ ፈፃሚና ዋና ተዋናኝ እንድትሆኑ መልዕክቴን አስተላልፋለሁ፡፡
+                        </li>*@
 
                 </ul>
             </div>
         </div>
-
     </div>
 </section>
 <section id="why-us" class="why-us" style="background: #f6f9fd">
@@ -90,8 +87,7 @@
         </div>
 
     </div>
-</section><!-- End Why Us Section -->
-
+</section>
 <section id="services" class="services" style="background: #f6f9fd">
     <div class="container" style="background:#fff">
 
@@ -100,7 +96,6 @@
             <h2>@_localization.Getkey("our_services")</h2>
             <p>@_localization.Getkey("our_services")</p>
         </div>
-
         <div class="row">
             <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="icon-box">
@@ -148,29 +143,23 @@
         </div>
 
     </div>
-</section><!-- End Services Section -->
-<!-- ======= Cta Section ======= -->
+</section>
 <section id="cta" class="cta">
-
     <div class="container" data-aos="zoom-in">
-
         <div class="text-center">
             <h3>Call To Action</h3>
             <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <a class="cta-btn" href="#">Call To Action</a>
         </div>
-
     </div>
 </section>
 
 <section id="contact" class="contact" style="background: #f6f9fd">
     <div class="container" style="background:#fff">
-
         <div class="section-title">
             <span>Contact</span>
             <h2>Contact</h2>
         </div>
-
         <div class="row" data-aos="fade-up">
             <div class="col-lg-6">
                 <div class="info-box mb-4">
@@ -201,27 +190,25 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9779.61472386125!2d38.77354496253109!3d9.01080342749606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85a38740d5d5%3A0x92367e5d57439f85!2sMinistry%20of%20JUSTICE!5e1!3m2!1sen!2set!4v1706343251395!5m2!1sen!2set" style="border:0; width: 100%; height: 384px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <div class="col-lg-6">
-                <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                <form asp-action="Index" method="post" role="form" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                            <input type="text" class="form-control" asp-for="ContactPhoneNumber" id="subject" placeholder="Phone Number" required>
                         </div>
                         <div class="col-md-6 form-group mt-3 mt-md-0">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                            <input type="email" class="form-control" asp-for="ContactEmail" id="email" placeholder="Your Email" required>
                         </div>
                     </div>
-                    <div class="form-group mt-3">
-                        <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                    <div class="form-group mt-3">                           
+                        <input type="text" asp-for="ContactCountry" class="form-control" id="name" placeholder="Country" required>
                     </div>
                     <div class="form-group mt-3">
-                        <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                        <textarea class="form-control" asp-for="ContactDetaiMessage"  rows="5" placeholder="Message" required></textarea>
                     </div>
-                    <div class="my-3">
-                        <div class="loading">Loading</div>
-                        <div class="error-message"></div>
-                        <div class="sent-message">Your message has been sent. Thank you!</div>
+                    <div class="form-group mt-3">
+                        <input asp-for="formFile" class="form-control" />
                     </div>
-                    <div class="text-center"><button type="submit">Send Message</button></div>
+                    <div class="form-group mt-3"><input type="submit" class="btn btn-success" value="Send Message"/></div>
                 </form>
             </div>
         </div>

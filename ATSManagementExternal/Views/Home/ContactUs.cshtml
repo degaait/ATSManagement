@@ -1,11 +1,13 @@
 ﻿@model ATSManagementExternal.ViewModels.ContactModel
+@using ATSManagementExternal.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = _localization.Getkey("contact_us");
 }
 <br />
 <div class="page-wrapper">
     <!-- Page header -->
-  
     <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
@@ -14,7 +16,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h2 class="page-title">
-                                Contact Us
+                                @_localization.Getkey("contact_us")  
                             </h2>
                         </div>
                         <form asp-action="ContactUs" method="post" enctype="multipart/form-data">
@@ -22,35 +24,35 @@
                                 <div class="row">
                                     <div class="col-md-10">
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="ContactDetaiMessage" class=" col-2 col-form-label">Message</label>
+                                            <label asp-for="ContactDetaiMessage" class="col-2 col-form-label">@_localization.Getkey("message")  </label>
                                             <div class="col">
                                                 <input asp-for="ContactDetaiMessage" required class="form-control" />
                                                 <span asp-validation-for="ContactDetaiMessage" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="ContactEmail" class=" col-2 col-form-label">Email Address</label>
+                                            <label asp-for="ContactEmail" class=" col-2 col-form-label">@_localization.Getkey("Email_Address") </label>
                                             <div class="col">
                                                 <input asp-for="ContactEmail" required class="form-control" />
                                                 <span asp-validation-for="ContactEmail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="ContactPhoneNumber" class=" col-2 col-form-label">Phone Number</label>
+                                            <label asp-for="ContactPhoneNumber" class=" col-2 col-form-label">@_localization.Getkey("Phone_Number") </label>
                                             <div class="col">
                                                 <input asp-for="ContactPhoneNumber" required class="form-control" />
                                                 <span asp-validation-for="ContactPhoneNumber" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divCountry">
-                                            <label asp-for="ContactCountry" class=" col-2 col-form-label">Country</label>
+                                            <label asp-for="ContactCountry" class=" col-2 col-form-label"> @_localization.Getkey("Country") </label>
                                             <div class="col">
                                                 <input asp-for="ContactCountry" required class="form-control" />
                                                 <span asp-validation-for="ContactCountry" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="formFile" class=" col-2 col-form-label">Files</label>
+                                            <label asp-for="formFile" class=" col-2 col-form-label">@_localization.Getkey("files") </label>
                                             <div class="col">
                                                 <input asp-for="formFile" required class="form-control" />
                                                 <span asp-validation-for="formFile" class="text-danger"></span>
@@ -61,7 +63,7 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <button type="submit" value="Save" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" value="Save" class="btn btn-primary">@_localization.Getkey("send")</button>
 
                                 </div>
                             </div>

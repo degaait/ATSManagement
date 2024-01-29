@@ -129,6 +129,14 @@
     <value>ቀጠሮዎች</value>
     <comment>ቀጠሮዎች</comment>
   </data>
+  <data name="appointment_date" xml:space="preserve">
+    <value>የቀጠሮው ቀን</value>
+    <comment>የቀጠሮው ቀን</comment>
+  </data>
+  <data name="appointment_Result" xml:space="preserve">
+    <value>የቀጠሮው ውጤት</value>
+    <comment>የቀጠሮው ውጤት</comment>
+  </data>
   <data name="Attorney_General_Message" xml:space="preserve">
     <value>የፍትህ ሚኒስቴሩ መልዕክት</value>
     <comment>የፍትህ ሚኒስቴሩ መልዕክት</comment>
@@ -155,6 +163,10 @@
     <value>አግኙን</value>
     <comment>አግኙን</comment>
   </data>
+  <data name="contact_us_guest" xml:space="preserve">
+    <value>እንደ እንግዳ ያግኙን</value>
+    <comment>እንደ እንግዳ ያግኙን</comment>
+  </data>
   <data name="Contract_Negotation" xml:space="preserve">
     <value>የኮንትራት ድርድር</value>
     <comment>የኮንትራት ድርድር</comment>
@@ -173,9 +185,37 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>የቅጂ መብት</value>
     <comment>የቅጂ መብት</comment>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>ሀገር</value>
+    <comment>ሀገር</comment>
+  </data>
+  <data name="created_Date" xml:space="preserve">
+    <value>ቀን</value>
+    <comment>ቀን</comment>
+  </data>
+  <data name="create_new" xml:space="preserve">
+    <value>አዲስ ፍጠሩ</value>
+    <comment>አዲስ ፍጠሩ</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>ማብራሪያ</value>
+    <comment>ማብራሪያ</comment>
+  </data>
+  <data name="developed_by" xml:space="preserve">
+    <value>ዲዛይን የተደረገውና የበለጸገው በ</value>
+    <comment>ዲዛይን የተደረገውና የበለጸገው በ</comment>
+  </data>
   <data name="documetations" xml:space="preserve">
     <value>ሰነዶች</value>
     <comment>ሰነዶች</comment>
+  </data>
+  <data name="Email_Address" xml:space="preserve">
+    <value>ኢ_ሜይል</value>
+    <comment>ኢ_ሜይል</comment>
+  </data>
+  <data name="files" xml:space="preserve">
+    <value>ፋይል</value>
+    <comment>ፋይል</comment>
   </data>
   <data name="help" xml:space="preserve">
     <value>እገዛ</value>
@@ -204,6 +244,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="International_Cases_description" xml:space="preserve">
     <value>Internation cases can be served</value>
     <comment>Internation cases can be served</comment>
+  </data>
+  <data name="justice_Minister" xml:space="preserve">
+    <value>ፍትህ ሚኒስቴር</value>
+    <comment>ፍትህ ሚኒስቴር</comment>
   </data>
   <data name="language" xml:space="preserve">
     <value>ቋንቋ</value>
@@ -4391,6 +4435,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
 
        &lt;/div&gt;</comment>
   </data>
+  <data name="message" xml:space="preserve">
+    <value>መልዕክት/ጥያቄ</value>
+    <comment>መልዕክት/ጥያቄ</comment>
+  </data>
   <data name="Mission_Vision" xml:space="preserve">
     <value>ራዕይ፣ተልዕኮና እሴቶች</value>
     <comment>ራዕይ፣ተልዕኮና እሴቶች</comment>
@@ -4459,6 +4507,14 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>የምንሰጣቸው አገልግሎቶች</value>
     <comment>የምንሰጣቸው አገልግሎቶች</comment>
   </data>
+  <data name="Participants" xml:space="preserve">
+    <value>የስብሰባዉ ተሳታፊዎች </value>
+    <comment>የስብሰባዉ ተሳታፊዎች</comment>
+  </data>
+  <data name="Phone_Number" xml:space="preserve">
+    <value>ስልክ ቁጥር</value>
+    <comment>ስልክ ቁጥር</comment>
+  </data>
   <data name="recomendations" xml:space="preserve">
     <value>ምክሮች</value>
     <comment>ምክሮች</comment>
@@ -4475,8 +4531,20 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>ጥያቄዎች</value>
     <comment>ጥያቄዎች</comment>
   </data>
+  <data name="Response" xml:space="preserve">
+    <value>ምላሾች</value>
+    <comment>ምላሾች</comment>
+  </data>
+  <data name="send" xml:space="preserve">
+    <value>ይላኩ</value>
+    <comment>ይላኩ</comment>
+  </data>
   <data name="services" xml:space="preserve">
     <value>የምንሰጣቸው አገልግሎቶች </value>
     <comment>የምንሰጣቸው አገልግሎቶች</comment>
+  </data>
+  <data name="useful_Links" xml:space="preserve">
+    <value>ጠቃሚ መስፈንጠሪያዎች</value>
+    <comment>ጠቃሚ መስፈንጠሪያዎች</comment>
   </data>
 </root>

@@ -25,7 +25,7 @@ namespace ATSManagementExternal.Controllers
             _contextAccessor = httpContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             String culture;
             if (_contextAccessor.HttpContext.Session.GetString("culture") != null)
@@ -45,6 +45,55 @@ namespace ATSManagementExternal.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(ContactModel model)
+        {
+            try
+            {
+                ContactModel coModel = new ContactModel();
+                TblContactInformation tblContact = new TblContactInformation();
+                var userEmails = _context.TblInternalUsers.Where(x => x.IsDeputy == true || x.IsDepartmentHead == true).Select(s => s.EmailAddress).ToList();
+                tblContact.ContactPhoneNumber = model.ContactPhoneNumber;
+                tblContact.ContactEmail = model.ContactEmail;
+                tblContact.ContactDetaiMessage = model.ContactDetaiMessage;
+                tblContact.ContactCountry = model.ContactCountry;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
+                if (model.formFile != null)
+                {
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    FileInfo fileInfo = new FileInfo(model.formFile.FileName);
+                    string fileName = Guid.NewGuid().ToString() + model.formFile.FileName;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.formFile.CopyTo(stream);
+                    }
+                    string dbPath = "/admin/Files/" + fileName;
+                    tblContact.FileUplaod = dbPath;
+                }
+                _context.TblContactInformations.Add(tblContact);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Your Message is successfully submitted.");
+                    await SendMail(userEmails, "Contact message notification from Task Tracking Dashboard", "<h3>Please review the detail on Task Tracking Dashboard and reply accordingly.<h3>");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notifyService.Error("Your message isn't submitted successfully. Please try again");
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error("Your message isn't submitted successfully because of " + ex.Message + ". Please try again");
+                return View(model);
+            }
+        }
         public IActionResult IndexLocalIzation(String? Culture)
         {
             _contextAccessor.HttpContext.Session.SetString("culture", Culture);
