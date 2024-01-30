@@ -1,16 +1,13 @@
-﻿using System.IO;
-using NToastNotify;
-using Org.BouncyCastle.Ocsp;
-using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.IModels;
-using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagementExternal.Filters;
+using ATSManagementExternal.IModels;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -23,7 +20,7 @@ namespace ATSManagementExternal.Controllers
         private readonly INotyfService _notifyService;
         public ExternalRequestsController(AtsdbContext context, INotyfService notyfService, IHttpContextAccessor contextAccessor, IMailService mail)
         {
-           
+
             _notifyService = notyfService;
             _context = context;
             _contextAccessor = contextAccessor;
@@ -39,12 +36,12 @@ namespace ATSManagementExternal.Controllers
                                                      .Include(t => t.AssignedByNavigation)
                                                      .Include(t => t.CaseType)
                                                      .Include(t => t.Inist)
-                                                     .Include(t =>  t.TopStatus)
+                                                     .Include(t => t.TopStatus)
                                                      .Include(t => t.RequestedByNavigation)
                                                      .Include(t => t.CreatedByNavigation)
                                                      .Include(x => x.ExternalRequestStatus)
                                                      .Include(x => x.ServiceType)
-                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId&&x.TopStatusId!= tblTopStatus.TopStatusId);
+                                                     .Include(t => t.Priority).Where(x => x.InistId == instName.InistId && x.TopStatusId != tblTopStatus.TopStatusId);
 
             return View(await atsdbContext.OrderByDescending(x => x.CreatedDate).ToListAsync());
         }
@@ -79,7 +76,7 @@ namespace ATSManagementExternal.Controllers
                 .Include(x => x.DepartmentUpprovalStatusNavigation)
                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                         .Include(y => y.TeamUpprovalStatusNavigation)
-               .Include(t => t.Priority).Where(x=> x.InistId == user.InistId);
+               .Include(t => t.Priority).Where(x => x.InistId == user.InistId);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> NewLegalRequest()
@@ -229,7 +226,7 @@ namespace ATSManagementExternal.Controllers
             return View(tblExternalRequest);
         }
         public IActionResult Create()
-        {        
+        {
             return View(getModel());
         }
         [HttpPost]
@@ -237,7 +234,7 @@ namespace ATSManagementExternal.Controllers
         public async Task<IActionResult> Create(CivilJusticeExternalRequestModel model)
         {
             try
-            {                
+            {
                 TblRequest request = new TblRequest();
                 List<TblDocumentHistory> documentHistory = new List<TblDocumentHistory>();
                 List<TblRequestPriorityQuestionsRelation> relations = new List<TblRequestPriorityQuestionsRelation>();
@@ -275,12 +272,12 @@ namespace ATSManagementExternal.Controllers
                 request.InistId = model.IntId;
                 request.RequestedBy = userId;
                 request.CreatedDate = DateTime.Now;
-                if (model.MoneyAmount!=null)
+                if (model.MoneyAmount != null)
                 {
                     request.MoneyAmount = int.Parse(model.MoneyAmount);
                     request.MoneyCurrency = model.CurrencyId;
                 }
-                
+
                 request.ExternalRequestStatusId = statusiD;
                 request.DepartmentUpprovalStatus = decision.DesStatusId;
                 request.TeamUpprovalStatus = decision.DesStatusId;
@@ -315,8 +312,8 @@ namespace ATSManagementExternal.Controllers
                     {
                         if (item.IsSelected == true)
                         {
-                            relations.Add(new TblRequestPriorityQuestionsRelation { RequestId = request.RequestId, PriorityQueId = item.PriorityQueId });                            
-                        }                       
+                            relations.Add(new TblRequestPriorityQuestionsRelation { RequestId = request.RequestId, PriorityQueId = item.PriorityQueId });
+                        }
                     }
                     request.TblRequestPriorityQuestionsRelations = relations;
                 }
@@ -328,10 +325,10 @@ namespace ATSManagementExternal.Controllers
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
-                    var existingRequ=_context.TblRounds.Where(s=>s.RequestIid==request.RequestId).FirstOrDefault();
-                    TblRound roundS=new TblRound();
+                    var existingRequ = _context.TblRounds.Where(s => s.RequestIid == request.RequestId).FirstOrDefault();
+                    TblRound roundS = new TblRound();
                     roundS.RequestIid = request.RequestId;
-                    if (existingRequ!=null)
+                    if (existingRequ != null)
                     {
                         roundS.RoundNumber = existingRequ.RoundNumber + 1;
                     }
@@ -492,7 +489,7 @@ namespace ATSManagementExternal.Controllers
                 Title = x.QuestionName,
                 IsSelected = false
             }).ToList();
-            model.TermsAndCondionts= _context.TblTermsAndConditions.Select(s => s.Details).FirstOrDefault();
+            model.TermsAndCondionts = _context.TblTermsAndConditions.Select(s => s.Details).FirstOrDefault();
             List<CompletedRequests> completeds = new List<CompletedRequests>();
             CompletedRequests completedRequests1;
             List<RoundModel> modelr = new List<RoundModel>
@@ -657,7 +654,7 @@ namespace ATSManagementExternal.Controllers
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
-        }    
+        }
         public async Task<IActionResult> LegalReplies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -881,19 +878,19 @@ namespace ATSManagementExternal.Controllers
         private async Task<DocumentHistoryModel> historyModel(Guid? id)
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            TblDocumentHistory tblDocument =  _context.TblDocumentHistories.Include(x=>x.Request).Where(x => x.RequestId == id).OrderBy(x=>x.Round).Last();
+            TblDocumentHistory tblDocument = _context.TblDocumentHistories.Include(x => x.Request).Where(x => x.RequestId == id).OrderBy(x => x.Round).Last();
             DocumentHistoryModel model = new DocumentHistoryModel();
             ViewData["histories"] = _context.TblDocumentHistories.Where(x => x.RequestId == id).ToList();
-            model.RequestId = id;            
+            model.RequestId = id;
             model.ExternalRepliedBy = userId;
-            if (tblDocument.Round==null)
+            if (tblDocument.Round == null)
             {
                 model.Round = 1;
             }
             else
             {
-                model.Round =Convert.ToInt32(tblDocument.Round) + 1;
-            }            
+                model.Round = Convert.ToInt32(tblDocument.Round) + 1;
+            }
             return model;
         }
         [HttpPost]
@@ -901,21 +898,22 @@ namespace ATSManagementExternal.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AddHistory(DocumentHistoryModel? model)
         {
-            List<string> emails=new List<string>();
+            List<string> emails = new List<string>();
 
 
             var users = (from user in _context.TblRequestAssignees
                          join assignees in _context.TblInternalUsers on user.UserId equals assignees.UserId
-                          where (assignees.IsDepartmentHead == true || assignees.IsDeputy == true )&&user.RequestId==model.RequestId select assignees.EmailAddress).ToList();
-            if (users.Count!=0)
+                         where (assignees.IsDepartmentHead == true || assignees.IsDeputy == true) && user.RequestId == model.RequestId
+                         select assignees.EmailAddress).ToList();
+            if (users.Count != 0)
             {
                 emails = users;
             }
             else
             {
-                emails= (from  assignees in _context.TblInternalUsers 
-                         where assignees.IsDepartmentHead == true || assignees.IsDeputy == true
-                         select assignees.EmailAddress).ToList();
+                emails = (from assignees in _context.TblInternalUsers
+                          where assignees.IsDepartmentHead == true || assignees.IsDeputy == true
+                          select assignees.EmailAddress).ToList();
             }
             var institutionName = (from items in _context.TblRequests where items.RequestId == model.RequestId select items.Inist.Name).FirstOrDefault();
 
@@ -923,14 +921,14 @@ namespace ATSManagementExternal.Controllers
             history.ExternalRepliedBy = model.ExternalRepliedBy;
             history.Round = model.Round;
             history.Description = model.Description;
-            history.FileDescription= model.FileDescription;
+            history.FileDescription = model.FileDescription;
             history.RequestId = model.RequestId;
-            history.CreatedDate=DateTime.Now;
+            history.CreatedDate = DateTime.Now;
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
             if (model.DocPath != null)
             {
                 if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);               
+                    Directory.CreateDirectory(path);
                 FileInfo fileInfo = new FileInfo(model.DocPath.FileName);
                 string fileName = Guid.NewGuid().ToString() + model.DocPath.FileName;
                 string fileNameWithPath = Path.Combine(path, fileName);
@@ -944,7 +942,7 @@ namespace ATSManagementExternal.Controllers
 
             _context.TblDocumentHistories.Add(history);
             int saved = await _context.SaveChangesAsync();
-            if (saved>0)
+            if (saved > 0)
             {
                 await SendMail(users, "Request notifications from " + institutionName, "<h3>Please review the recquest on the system and reply for the institution accordingly</h3>");
                 _notifyService.Success("Document added successfully!");
@@ -954,7 +952,7 @@ namespace ATSManagementExternal.Controllers
             {
                 _notifyService.Error("Document is not successfully added. Please try again");
                 return View(model);
-            }           
+            }
         }
         public async Task<IActionResult> ContinuationRequests()
         {
@@ -991,7 +989,7 @@ namespace ATSManagementExternal.Controllers
                                                         .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                         .Include(x => x.DeputyUprovalStatusNavigation)
                                                         .Include(y => y.TeamUpprovalStatusNavigation)
-                                                        .Include(t => t.Priority).Where(x => x.TopStatusId == tblTopStatus.TopStatusId && x.IsSenttoInst == true && x.RequestId == item &&x.InistId== instName.InistId).FirstOrDefault();
+                                                        .Include(t => t.Priority).Where(x => x.TopStatusId == tblTopStatus.TopStatusId && x.IsSenttoInst == true && x.RequestId == item && x.InistId == instName.InistId).FirstOrDefault();
                 if (tblRequest != null)
                 {
                     atsdbContext.Add(tblRequest);
@@ -1032,7 +1030,7 @@ namespace ATSManagementExternal.Controllers
                 replay.IsInternal = false;
                 replay.IsSent = true;
                 string? dbPath = null;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");                
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
                 if (model.Attachement != null)
@@ -1073,8 +1071,8 @@ namespace ATSManagementExternal.Controllers
             RepliesModel model = new RepliesModel
             {
                 ReplyId = ReplyId,
-                RequestId=reply.RequestId,
-                ReplayDetail=reply.ReplayDetail,
+                RequestId = reply.RequestId,
+                ReplayDetail = reply.ReplayDetail,
                 ReplyDate = DateTime.Now,
                 ExternalReplayedBy = userId,
             };
@@ -1093,7 +1091,7 @@ namespace ATSManagementExternal.Controllers
             try
             {
                 TblReplay replay = _context.TblReplays.Find(model.ReplyId);
-                replay.ReplyDate = DateTime.Now;               
+                replay.ReplyDate = DateTime.Now;
                 replay.ReplayDetail = model.ReplayDetail;
                 string? dbPath = null;
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
@@ -1134,9 +1132,9 @@ namespace ATSManagementExternal.Controllers
             List<DocTypes> docList = new List<DocTypes>();
             DocTypes type;
             Guid doctype = Guid.Parse("fc11e673-474a-4cb9-b59b-1fa876c9b2b2");
-            if (ServiceTypeID==Guid.Parse("f935dcd1-2651-4c64-947c-0a877f652fb5"))
+            if (ServiceTypeID == Guid.Parse("f935dcd1-2651-4c64-947c-0a877f652fb5"))
             {
-              var  subcategoryModels = (from items in _context.TblLegalDraftingDocTypes where items.DocId == doctype select items).ToList();
+                var subcategoryModels = (from items in _context.TblLegalDraftingDocTypes where items.DocId == doctype select items).ToList();
                 foreach (var item in subcategoryModels)
                 {
                     type = new DocTypes();
@@ -1148,7 +1146,7 @@ namespace ATSManagementExternal.Controllers
             }
             else
             {
-              var  subcategoryModels = (from items in _context.TblLegalDraftingDocTypes where items.DocId != doctype select items).ToList();
+                var subcategoryModels = (from items in _context.TblLegalDraftingDocTypes where items.DocId != doctype select items).ToList();
                 foreach (var item in subcategoryModels)
                 {
                     type = new DocTypes();
@@ -1162,11 +1160,11 @@ namespace ATSManagementExternal.Controllers
         }
         public IActionResult PDFViewerNewTab(string? filePath)
         {
-            return File(System.IO.File.ReadAllBytes(filePath),"application/pdf");
+            return File(System.IO.File.ReadAllBytes(filePath), "application/pdf");
         }
         public IActionResult priveweier(string filePath)
         {
-            using (FileStream fileStream=System.IO.File.Create(filePath))
+            using (FileStream fileStream = System.IO.File.Create(filePath))
             {
                 fileStream.Flush();
             }

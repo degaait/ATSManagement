@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="priorityQuestionType" style="display:none">
-                                            <label class=" col-2 col-form-label">Additional Questions</label>
+                                            <label class=" col-2 col-form-label">@_localization.Getkey("additional_Question") </label>
                                             <div class="col">
                                                 @for (var i = 0; i < Model.PrioritiesQues.Count(); i++)
                                                 {
@@ -139,8 +139,7 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">
-                                        
+                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">                                         
                                         @_localization.Getkey("send")
                                     </a>
                                     <a asp-action="Index">@_localization.Getkey("back")</a>

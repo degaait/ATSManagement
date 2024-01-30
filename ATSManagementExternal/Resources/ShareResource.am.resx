@@ -125,6 +125,10 @@
     <value>ይላኩ</value>
     <comment>ይላኩ</comment>
   </data>
+  <data name="additional_Question" xml:space="preserve">
+    <value>ተጨማሪ ጥያቄዎች </value>
+    <comment>ተጨማሪ ጥያቄዎች</comment>
+  </data>
   <data name="All_rights_reserved." xml:space="preserve">
     <value>መብቱ በህግ የተጠበቀ ነው::</value>
     <comment>መብቱ በህግ የተጠበቀ ነው::</comment>
