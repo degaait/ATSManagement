@@ -1,5 +1,7 @@
 ﻿@model ATSManagementExternal.ViewModels.RepliesModel
-
+@using ATSManagementExternal.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
 @{
     ViewData["Title"] = "Create";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
@@ -71,7 +73,7 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                   
+
                 </div>
             </div>
         </div>
@@ -84,7 +86,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h2 class="page-title">
-                                Request Replys
+                                @_localization.Getkey("replys")
                             </h2>
                         </div>
                         <form asp-action="Replies" method="post" enctype="multipart/form-data">
@@ -96,21 +98,21 @@
                                         <input asp-for="RequestId" type="hidden" class="form-control" />
                                         <input asp-for="ExternalReplayedBy" type="hidden" class="form-control" />
                                         <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-3 col-form-label">Reply</label>
+                                            <label asp-for="ReplayDetail" class=" col-3 col-form-label">@_localization.Getkey("replys")</label>
                                             <div class="col">
                                                 <input asp-for="ReplayDetail" class="form-control" />
                                                 <span asp-validation-for="ReplayDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="ReplayDetail" class=" col-3 col-form-label">Date</label>
+                                            <label asp-for="ReplayDetail" class=" col-3 col-form-label">@_localization.Getkey("date")</label>
                                             <div class="col">
                                                 <input asp-for="ReplyDate" readonly class="form-control" />
                                                 <span asp-validation-for="ReplyDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="Attachement" class="col-3 col-form-label">Attachment</label>
+                                            <label asp-for="Attachement" class="col-3 col-form-label">@_localization.Getkey("Attachment")</label>
                                             <div class="col">
                                                 <input asp-for="Attachement" type="file" class="form-file-button" />
                                                 <span asp-validation-for="Attachement" class="text-danger"></span>
@@ -121,8 +123,8 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <input type="submit" value="Submit" class="btn btn-primary" />|
-                                    <a asp-action="Index">Back to List</a>
+                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("back")</a>
                                 </div>
                             </div>
                         </form>
@@ -131,7 +133,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Replies</h4>
+                            <h4 class="card-title">@_localization.Getkey("replys")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">

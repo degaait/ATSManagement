@@ -121,6 +121,10 @@
     <value>About Us</value>
     <comment>About Us</comment>
   </data>
+  <data name="Accept_Submit" xml:space="preserve">
+    <value>Accept and Submit</value>
+    <comment>Accept and Submit</comment>
+  </data>
   <data name="All_rights_reserved" xml:space="preserve">
     <value>All rights reserved.</value>
     <comment>All rights reserved.</comment>
@@ -146,6 +150,18 @@
 ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ</value>
     <comment>&lt;strong&gt;የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት&lt;/strong&gt;
 ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ</comment>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>Back to List</value>
+    <comment>Back to List</comment>
+  </data>
+  <data name="call_us" xml:space="preserve">
+    <value>Call Us</value>
+    <comment>Call Us</comment>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+    <comment>Close</comment>
   </data>
   <data name="commenting" xml:space="preserve">
     <value>Commenting</value>
@@ -197,6 +213,18 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>Create New</value>
     <comment>Create New</comment>
   </data>
+  <data name="currencyType" xml:space="preserve">
+    <value>Currency</value>
+    <comment>Currency</comment>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>Date</value>
+    <comment>Date</comment>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Delete</comment>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
     <comment>Description</comment>
@@ -205,17 +233,33 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>Designed and Developed by</value>
     <comment>Designed and Developed by</comment>
   </data>
+  <data name="document_type" xml:space="preserve">
+    <value>Document Types</value>
+    <comment>Document Types</comment>
+  </data>
   <data name="documetations" xml:space="preserve">
     <value>Documentations</value>
     <comment>Documentations</comment>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Edit</comment>
   </data>
   <data name="Email_Address" xml:space="preserve">
     <value>Email Address</value>
     <comment>Email Address</comment>
   </data>
+  <data name="email_us" xml:space="preserve">
+    <value>Email Us</value>
+    <comment>Email Us</comment>
+  </data>
   <data name="files" xml:space="preserve">
     <value>Files</value>
     <comment>Files</comment>
+  </data>
+  <data name="full_Name" xml:space="preserve">
+    <value>Full Name</value>
+    <comment>Full Name</comment>
   </data>
   <data name="help" xml:space="preserve">
     <value>Helps</value>
@@ -4340,9 +4384,17 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
 
 &lt;/div&gt;</value>
   </data>
+  <data name="MoneyAmmount" xml:space="preserve">
+    <value>Money Ammount</value>
+    <comment>Money Ammount</comment>
+  </data>
   <data name="new_requests" xml:space="preserve">
     <value>New Requests</value>
     <comment>New Requests</comment>
+  </data>
+  <data name="our_address" xml:space="preserve">
+    <value>Our Address</value>
+    <comment>Our Address</comment>
   </data>
   <data name="our_services" xml:space="preserve">
     <value>Our Services</value>
@@ -4356,6 +4408,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Phone Number</value>
     <comment>Phone Number</comment>
   </data>
+  <data name="priority" xml:space="preserve">
+    <value>Priority</value>
+    <comment>Priority</comment>
+  </data>
   <data name="recomendations" xml:space="preserve">
     <value>Recomendations</value>
     <comment>Recomendations</comment>
@@ -4368,6 +4424,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Registering different document stypes like Proclamations, Policy and so on</value>
     <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
   </data>
+  <data name="RequestRound" xml:space="preserve">
+    <value>Request Round</value>
+    <comment>Request Round</comment>
+  </data>
   <data name="requests" xml:space="preserve">
     <value>Requests</value>
     <comment>Requests</comment>
@@ -4376,6 +4436,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Responses</value>
     <comment>Responses</comment>
   </data>
+  <data name="Select_requests" xml:space="preserve">
+    <value>Select requests</value>
+    <comment>Select requests</comment>
+  </data>
   <data name="send" xml:space="preserve">
     <value>Send</value>
     <comment>Send</comment>
@@ -4383,6 +4447,14 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
   <data name="services" xml:space="preserve">
     <value>Our Services</value>
     <comment>Our Services</comment>
+  </data>
+  <data name="service_types" xml:space="preserve">
+    <value>Service Types</value>
+    <comment>Service Types</comment>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>Progress Status</value>
+    <comment>Progress Status</comment>
   </data>
   <data name="The_List_Of_Prosecutors" xml:space="preserve">
     <value>The List Of Prosecutors</value>

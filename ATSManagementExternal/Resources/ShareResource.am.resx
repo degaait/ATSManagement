@@ -121,6 +121,10 @@
     <value>ስለ እኛ</value>
     <comment>ስለ እኛ</comment>
   </data>
+  <data name="Accept_Submit" xml:space="preserve">
+    <value>ይላኩ</value>
+    <comment>ይላኩ</comment>
+  </data>
   <data name="All_rights_reserved." xml:space="preserve">
     <value>መብቱ በህግ የተጠበቀ ነው::</value>
     <comment>መብቱ በህግ የተጠበቀ ነው::</comment>
@@ -137,6 +141,10 @@
     <value>የቀጠሮው ውጤት</value>
     <comment>የቀጠሮው ውጤት</comment>
   </data>
+  <data name="Attachment" xml:space="preserve">
+    <value>አባሪ</value>
+    <comment>አባሪ</comment>
+  </data>
   <data name="Attorney_General_Message" xml:space="preserve">
     <value>የፍትህ ሚኒስቴሩ መልዕክት</value>
     <comment>የፍትህ ሚኒስቴሩ መልዕክት</comment>
@@ -146,6 +154,22 @@
 ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ</value>
     <comment>&lt;strong&gt;የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት&lt;/strong&gt;
 ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ</comment>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>ወደ ኋላ</value>
+    <comment>ወደ ኋላ</comment>
+  </data>
+  <data name="call_us" xml:space="preserve">
+    <value>ይደውሉልን</value>
+    <comment>ይደውሉልን</comment>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>ሰርዝ</value>
+    <comment>ሰርዝ</comment>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>ዝጋው</value>
+    <comment>ዝጋው</comment>
   </data>
   <data name="commenting" xml:space="preserve">
     <value>አስተያየት መስጠት</value>
@@ -189,6 +213,9 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>ሀገር</value>
     <comment>ሀገር</comment>
   </data>
+  <data name="Create" xml:space="preserve">
+    <value />
+  </data>
   <data name="created_Date" xml:space="preserve">
     <value>ቀን</value>
     <comment>ቀን</comment>
@@ -196,6 +223,18 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="create_new" xml:space="preserve">
     <value>አዲስ ፍጠሩ</value>
     <comment>አዲስ ፍጠሩ</comment>
+  </data>
+  <data name="currencyType" xml:space="preserve">
+    <value>የምንዛሬ አይነት </value>
+    <comment>የምንዛሬ አይነት</comment>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>ቀን</value>
+    <comment>ቀን</comment>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>ሰርዝ</value>
+    <comment>ሰርዝ</comment>
   </data>
   <data name="Description" xml:space="preserve">
     <value>ማብራሪያ</value>
@@ -205,17 +244,37 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>ዲዛይን የተደረገውና የበለጸገው በ</value>
     <comment>ዲዛይን የተደረገውና የበለጸገው በ</comment>
   </data>
+  <data name="doc" xml:space="preserve">
+    <value>ሰነድ</value>
+    <comment>ሰነድ</comment>
+  </data>
+  <data name="document_type" xml:space="preserve">
+    <value>የሰነዱ ዓይነት</value>
+    <comment>የሰነዱ ዓይነት</comment>
+  </data>
   <data name="documetations" xml:space="preserve">
     <value>ሰነዶች</value>
     <comment>ሰነዶች</comment>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>አርትዕ</value>
+    <comment>አርትዕ</comment>
   </data>
   <data name="Email_Address" xml:space="preserve">
     <value>ኢ_ሜይል</value>
     <comment>ኢ_ሜይል</comment>
   </data>
+  <data name="email_us" xml:space="preserve">
+    <value>እ-ሜይል</value>
+    <comment>እ-ሜይል</comment>
+  </data>
   <data name="files" xml:space="preserve">
     <value>ፋይል</value>
     <comment>ፋይል</comment>
+  </data>
+  <data name="full_Name" xml:space="preserve">
+    <value>ሙሉ ስም</value>
+    <comment>ሙሉ ስም</comment>
   </data>
   <data name="help" xml:space="preserve">
     <value>እገዛ</value>
@@ -4499,9 +4558,17 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
 ትብብርና አጋርነት
 ፍትሐዊነት</comment>
   </data>
+  <data name="MoneyAmmount" xml:space="preserve">
+    <value>የገንዘብ መጠን</value>
+    <comment>የገንዘብ መጠን</comment>
+  </data>
   <data name="new_requests" xml:space="preserve">
     <value>አዲስ ጥያቄዎች</value>
     <comment>አዲስ ጥያቄዎች</comment>
+  </data>
+  <data name="our_address" xml:space="preserve">
+    <value>አድራችን</value>
+    <comment>አድራችን</comment>
   </data>
   <data name="our_services" xml:space="preserve">
     <value>የምንሰጣቸው አገልግሎቶች</value>
@@ -4515,6 +4582,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>ስልክ ቁጥር</value>
     <comment>ስልክ ቁጥር</comment>
   </data>
+  <data name="priority" xml:space="preserve">
+    <value>ቅድሚያ ዓይነት</value>
+    <comment>ቅድሚያ ዓይነት</comment>
+  </data>
   <data name="recomendations" xml:space="preserve">
     <value>ምክሮች</value>
     <comment>ምክሮች</comment>
@@ -4527,6 +4598,14 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>Registering different document stypes like Proclamations, Policy and so on</value>
     <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
   </data>
+  <data name="replys" xml:space="preserve">
+    <value>ምላሾች</value>
+    <comment>ምላሾች</comment>
+  </data>
+  <data name="RequestRound" xml:space="preserve">
+    <value>ዙር</value>
+    <comment>ዙር</comment>
+  </data>
   <data name="requests" xml:space="preserve">
     <value>ጥያቄዎች</value>
     <comment>ጥያቄዎች</comment>
@@ -4535,6 +4614,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>ምላሾች</value>
     <comment>ምላሾች</comment>
   </data>
+  <data name="Select_requests" xml:space="preserve">
+    <value>ጥያቄ ምረጥ</value>
+    <comment>ጥያቄ ምረጥ</comment>
+  </data>
   <data name="send" xml:space="preserve">
     <value>ይላኩ</value>
     <comment>ይላኩ</comment>
@@ -4542,6 +4625,14 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
   <data name="services" xml:space="preserve">
     <value>የምንሰጣቸው አገልግሎቶች </value>
     <comment>የምንሰጣቸው አገልግሎቶች</comment>
+  </data>
+  <data name="service_types" xml:space="preserve">
+    <value>የጥያቄው አይነት</value>
+    <comment>የጥያቄው አይነት</comment>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>የጥያቄው ሁኔታ</value>
+    <comment>የጥያቄው ሁኔታ</comment>
   </data>
   <data name="useful_Links" xml:space="preserve">
     <value>ጠቃሚ መስፈንጠሪያዎች</value>

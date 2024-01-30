@@ -56,6 +56,7 @@ namespace ATSManagementExternal.Controllers
                 TblContactInformation tblContact = new TblContactInformation();
                 var userEmails = _context.TblInternalUsers.Where(x => x.IsDeputy == true || x.IsDepartmentHead == true).Select(s => s.EmailAddress).ToList();
                 tblContact.ContactPhoneNumber = model.ContactPhoneNumber;
+                tblContact.FullName = model.FullName;
                 tblContact.ContactEmail = model.ContactEmail;
                 tblContact.ContactDetaiMessage = model.ContactDetaiMessage;
                 tblContact.ContactCountry = model.ContactCountry;

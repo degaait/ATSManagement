@@ -24,7 +24,7 @@
                 <img src="assets/img/Temoty.jpeg" class="img-fluid" alt="">
             </div>
             <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right">
-                <h3>የፍትህ ሚኒስቴሩ መልዕክት</h3>
+                <h3>የፍትህ ሚኒስቴሩ መልዕክት  </h3>
                 <p class="fst-italic">
                     የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት
                 </p>
@@ -56,21 +56,21 @@
         </div>
         <div class="row">
             <div class="col-lg-4" data-aos="fade-up">
-                <div class="box">
+                <div class="box text-center">
                     <span>ራዕይ</span>
                     <p>በ2022 የአፍሪካ የፍትሕ ተቋማት ተምሳሌት ሆኖ ማየት</p>
                 </div>
             </div>
 
             <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="150">
-                <div class="box">
+                <div class="box text-center">
                     <span>ተልዕኮ</span>
                     <p>የህግ የበላይነትንና ሰብዓዊ መብትን በማክበርና በማስከበር፤ ወንጀልን በመከላከል፣ ሰላምና ደህንነት በማረጋገጥና የመንግስትንና የህዝብን ጥቅም በማስጠበቅ፤ የሕዝብ ዓመኔታ ያተረፈ ተደራሽ፣ ቀልጣፋ፣ ፍትሃዊና ውጤታማ የፍትህ አገልግሎት መስጠት፡፡</p>
                 </div>
             </div>
 
             <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
-                <div class="box">
+                <div class="box text-center">
                     <span>እሴቶች</span>
                     <p>
                         ሰብዓዊ ክብር
@@ -146,10 +146,10 @@
 </section>
 <section id="cta" class="cta">
     <div class="container" data-aos="zoom-in">
-        <div class="text-center">
-            <h3>Call To Action</h3>
-            <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <a class="cta-btn" href="#">Call To Action</a>
+        <div class="text-center" style="color: #f90202">
+            <h3>“ለሕግ፣ ለፍትህ፣ ለርትዕ ”</h3>
+            <p> “Endangering human life for profit should be a universal crime.”</p>
+            
         </div>
     </div>
 </section>
@@ -157,14 +157,14 @@
 <section id="contact" class="contact" style="background: #f6f9fd">
     <div class="container" style="background:#fff">
         <div class="section-title">
-            <span>Contact</span>
-            <h2>Contact</h2>
+            <span>@_localization.Getkey("contact_us")</span>
+            <h2>@_localization.Getkey("contact_us")</h2>
         </div>
         <div class="row" data-aos="fade-up">
             <div class="col-lg-6">
                 <div class="info-box mb-4">
                     <i class="bx bx-map"></i>
-                    <h3>Our Address</h3>
+                    <h3>@_localization.Getkey("our_address") </h3>
                     <p>
                         Bambis, Jomo Kenyatta Avenue,Addis Ababa, Ethiopia
                     </p>
@@ -173,14 +173,14 @@
             <div class="col-lg-3 col-md-6">
                 <div class="info-box  mb-4">
                     <i class="bx bx-envelope"></i>
-                    <h3>Email Us</h3>
+                    <h3>@_localization.Getkey("email_us")</h3>
                     <p>info@eag.gov.et</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="info-box  mb-4">
                     <i class="bx bx-phone-call"></i>
-                    <h3>Call Us</h3>
+                    <h3>@_localization.Getkey("call_us")</h3>
                     <p>011 551 5099</p>
                 </div>
             </div>
@@ -193,22 +193,22 @@
                 <form asp-action="Index" method="post" role="form" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" asp-for="ContactPhoneNumber" id="subject" placeholder="Phone Number" required>
+                            <input type="text" class="form-control" asp-for="ContactPhoneNumber" id="subject" placeholder="@_localization.Getkey("Phone_Number")" required>
                         </div>
                         <div class="col-md-6 form-group mt-3 mt-md-0">
-                            <input type="email" class="form-control" asp-for="ContactEmail" id="email" placeholder="Your Email" required>
+                            <input type="email" class="form-control" asp-for="ContactEmail" id="email" placeholder="@_localization.Getkey("Email_Address")" required>
                         </div>
                     </div>
                     <div class="form-group mt-3">                           
-                        <input type="text" asp-for="ContactCountry" class="form-control" id="name" placeholder="Country" required>
+                        <input type="text" asp-for="ContactCountry" class="form-control" id="name" placeholder="@_localization.Getkey("Country")" required>
                     </div>
                     <div class="form-group mt-3">
-                        <textarea class="form-control" asp-for="ContactDetaiMessage"  rows="5" placeholder="Message" required></textarea>
+                        <textarea class="form-control" asp-for="ContactDetaiMessage"  rows="5" placeholder="@_localization.Getkey("message")" required></textarea>
                     </div>
                     <div class="form-group mt-3">
                         <input asp-for="formFile" class="form-control" />
                     </div>
-                    <div class="form-group mt-3"><input type="submit" class="btn btn-success" value="Send Message"/></div>
+                    <div class="form-group mt-3"><input type="submit" class="btn btn-success" value="@_localization.Getkey("send")"/></div>
                 </form>
             </div>
         </div>

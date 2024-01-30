@@ -4,9 +4,9 @@ namespace ATSManagementExternal.ViewModels
 {
     public class ContactModel
     {
-        [Required(ErrorMessage ="*")]
-        [Display(Name ="Message")]
-        [DisplayFormat(ApplyFormatInEditMode = true)] 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Message")]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
         public string? ContactDetaiMessage { get; set; }
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
@@ -15,12 +15,14 @@ namespace ATSManagementExternal.ViewModels
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
-        public string? ContactPhoneNumber { get; set;}
+        public string? ContactPhoneNumber { get; set; }
         [Required(ErrorMessage = "*")]
         [Display(Name = "Country")]
-        public string? ContactCountry { get; set;}
-        [Required(ErrorMessage = "*")]
-        [Display(Name ="File")]
+        public string? ContactCountry { get; set; }
+        [Display(Name = "File")]
         public IFormFile? formFile { get; set; }
+        [Display(Name = "Full Name")]
+        [Required(ErrorMessage = "*")]
+        public string? FullName { get; set; }
     }
 }

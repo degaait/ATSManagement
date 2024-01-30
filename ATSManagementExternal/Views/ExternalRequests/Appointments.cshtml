@@ -58,22 +58,27 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Appointment Detail
+                                            @_localization.Getkey("created_Date")
+
                                         </th>
                                         <th>
-                                            Final Result
+                                            @_localization.Getkey("Description")
                                         </th>
                                         <th>
-                                            Created Date
+                                            @_localization.Getkey("appointment_Result")
+
+                                        </th>
+
+                                        <th>
+                                            @_localization.Getkey("appointment_date")
+                                        </th>
+
+                                        <th>
+                                            @_localization.Getkey("Participants")
                                         </th>
                                         <th>
-                                            Appointment Date
+                                            @_localization.Getkey("Response")
                                         </th>
-                                       
-                                        <th>
-                                            Participants
-                                        </th>
-                                        <th>Response</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -91,18 +96,17 @@
                                                            }).ToList();
                                         <tr>
                                             <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                            </td>
+                                            <td>
                                                 @Html.Raw(item.AppointmentDetail)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.DescusionFinalComeup)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                                            </td>
-                                            <td>
                                                 @Html.DisplayFor(modelItem => item.AppointmentDate)
                                             </td>
-                                          
                                             <td>
                                                 @foreach (var parts in particpants)
                                                 {
