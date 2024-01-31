@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Models;
+
 public partial class AtsdbContext : DbContext
 {
     public AtsdbContext()
@@ -165,14 +168,13 @@ public partial class AtsdbContext : DbContext
     public virtual DbSet<TblYear> TblYears { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        var configSection = configBuilder.GetSection("ConnectionStrings");
-        var connectionString = configSection["ATSDB"] ?? null;
-        optionsBuilder.UseSqlServer(connectionString);
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-12IJ13A;Database=ATSDB;User ID=sa;Password=pass;Integrated Security=True; Trusted_Connection=True; TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Latin1_General_CI_AS");
+
         modelBuilder.Entity<TblActivity>(entity =>
         {
             entity.HasKey(e => e.ActivityId);
@@ -316,6 +318,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.DueDate).HasColumnType("date");
             entity.Property(e => e.ProgressStatus).HasMaxLength(250);
             entity.Property(e => e.StatusId).HasColumnName("StatusID");
+            entity.Property(e => e.Torattachment).HasColumnName("TORAttachment");
 
             entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TblAssignedYearlyPlanAssignedByNavigations)
                 .HasForeignKey(d => d.AssignedBy)
@@ -527,6 +530,7 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.ContactCountry).HasMaxLength(100);
             entity.Property(e => e.ContactEmail).HasMaxLength(100);
             entity.Property(e => e.ContactPhoneNumber).HasMaxLength(50);
+            entity.Property(e => e.FullName).HasMaxLength(350);
         });
 
         modelBuilder.Entity<TblDebatePerformance>(entity =>
@@ -1252,11 +1256,6 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.InistId)
                 .HasConstraintName("FK_tbl_Plan_Inistitution_tbl_Inistitutions");
 
-            entity.HasOne(d => d.Plan).WithMany(p => p.TblPlanInistitutions)
-                .HasForeignKey(d => d.PlanId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_tbl_Plan_Inistitution_tbl_YearlyPlans");
-
             entity.HasOne(d => d.SpecificPlan).WithMany(p => p.TblPlanInistitutions)
                 .HasForeignKey(d => d.SpecificPlanId)
                 .HasConstraintName("FK_tbl_Plan_Inistitution_tbl_SpecificPlans");
@@ -1379,15 +1378,32 @@ public partial class AtsdbContext : DbContext
             entity.Property(e => e.RequestId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("RequestID");
+            entity.Property(e => e.ActingAs).HasMaxLength(300);
+            entity.Property(e => e.Adrtype)
+                .HasMaxLength(300)
+                .HasColumnName("ADRType");
             entity.Property(e => e.AssignedDate).HasColumnType("datetime");
+            entity.Property(e => e.Bench).HasMaxLength(400);
             entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
+            entity.Property(e => e.Claimant).HasMaxLength(300);
+            entity.Property(e => e.Country).HasMaxLength(400);
+            entity.Property(e => e.CourtCenter).HasMaxLength(350);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.DateOfAdjournment).HasColumnType("date");
+            entity.Property(e => e.DateofJudgement).HasColumnType("date");
+            entity.Property(e => e.Defendent).HasMaxLength(400);
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.EmailAddress).HasMaxLength(300);
             entity.Property(e => e.ExternalRequestStatusId).HasColumnName("ExternalRequestStatusID");
             entity.Property(e => e.FullName).HasMaxLength(300);
+            entity.Property(e => e.Jursidiction).HasMaxLength(400);
+            entity.Property(e => e.LitigationType).HasMaxLength(350);
+            entity.Property(e => e.MoneyCurrency).HasMaxLength(50);
             entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+            entity.Property(e => e.Plaintiful).HasMaxLength(500);
             entity.Property(e => e.QuestTypeId).HasColumnName("QuestTypeID");
+            entity.Property(e => e.Reasult).HasMaxLength(300);
+            entity.Property(e => e.Respondent).HasMaxLength(300);
             entity.Property(e => e.ReturningRemark).HasColumnName("returningRemark");
             entity.Property(e => e.SentDate)
                 .HasColumnType("date")
@@ -1399,7 +1415,7 @@ public partial class AtsdbContext : DbContext
                 .HasForeignKey(d => d.AssignedBy)
                 .HasConstraintName("FK_tbl_Requests_tbl_InternalUsers1");
 
-            entity.HasOne(d => d.CaseType).WithMany(p => p.TblRequests)
+            entity.HasOne(d => d.CaseTypeNavigation).WithMany(p => p.TblRequests)
                 .HasForeignKey(d => d.CaseTypeId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_Requests_tbl_CivilJusticeCaseType");

@@ -15,6 +15,10 @@ public partial class TblNotification
 
     public Guid? CreatedBy { get; set; }
 
+    public bool? IsChecked { get; set; }
+
+    public string? Icon { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblInternalUser? User { get; set; }

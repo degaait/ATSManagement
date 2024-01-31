@@ -16,4 +16,6 @@ public partial class TblContactInformation
     public string? FileUplaod { get; set; }
 
     public int ContactId { get; set; }
+
+    public string? FullName { get; set; }
 }

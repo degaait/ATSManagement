@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace ATSManagementExternal.Models;
+
 public partial class TblRequest
 {
     public Guid RequestId { get; set; }
@@ -75,15 +76,54 @@ public partial class TblRequest
     public bool? IsReturned { get; set; }
 
     public string? ReturningRemark { get; set; }
-    public int? MoneyAmount {  get; set; }
-    public string? MoneyCurrency { get; set; }
+
     public DateTime? SentDate { get; set; }
 
     public string? SendingRemark { get; set; }
 
+    public int? MoneyAmount { get; set; }
+
+    public string? MoneyCurrency { get; set; }
+
+    public string? Adrtype { get; set; }
+
+    public string? Claimant { get; set; }
+
+    public string? ActingAs { get; set; }
+
+    public string? Respondent { get; set; }
+
+    public string? Reasult { get; set; }
+
+    public string? ResultDescription { get; set; }
+
+    public string? CaseType { get; set; }
+
+    public string? Specialization { get; set; }
+
+    public string? Country { get; set; }
+
+    public string? CourtCenter { get; set; }
+
+    public DateTime? DateOfAdjournment { get; set; }
+
+    public string? Remark { get; set; }
+
+    public string? LitigationType { get; set; }
+
+    public string? Jursidiction { get; set; }
+
+    public string? Bench { get; set; }
+
+    public string? Plaintiful { get; set; }
+
+    public string? Defendent { get; set; }
+
+    public DateTime? DateofJudgement { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
-    public virtual TblCivilJusticeCaseType? CaseType { get; set; }
+    public virtual TblCivilJusticeCaseType? CaseTypeNavigation { get; set; }
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 

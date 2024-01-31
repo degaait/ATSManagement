@@ -91,10 +91,14 @@ namespace ATSManagementExternal.ViewModels
         public List<SelectListItem>? CompletedRequests { get; set; }
         public List<SelectListItem>? RoundTypes { get; set; }
         public int RoundTypeId { get; set; }
-        [DataType(DataType.PhoneNumber,ErrorMessage ="Only Numbers")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Only Numbers")]
         public String? MoneyAmount { get; set; }
         public string? CurrencyId { get; set; }
         public List<SelectListItem>? Currency { get; set; }
+
+
+
+        //
     }
     public class RoundModel
     {
@@ -104,7 +108,7 @@ namespace ATSManagementExternal.ViewModels
     }
     public class CompletedRequests
     {
-        public Guid CompleteRequestID { get; set;}
+        public Guid CompleteRequestID { get; set; }
         public string? RequestDetail { get; set; }
     }
     public class CurrencyModel

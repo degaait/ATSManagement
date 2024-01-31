@@ -35,6 +35,18 @@ public partial class TblSpecificPlan
 
     public Guid? ProId { get; set; }
 
+    public string? FinalReport { get; set; }
+
+    public Guid? IsUprovedByDeputy { get; set; }
+
+    public Guid? IsUpprovedbyTeam { get; set; }
+
+    public Guid? IsUpprovedbyDepartment { get; set; }
+
+    public bool? FinalStatus { get; set; }
+
+    public Guid? IsUserUproved { get; set; }
+
     public virtual TblAssignementType? AssigneeType { get; set; }
 
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
@@ -42,6 +54,14 @@ public partial class TblSpecificPlan
     public virtual TblInistitution? Inist { get; set; }
 
     public virtual TblInspectionPlan? InspectionPlan { get; set; }
+
+    public virtual TblDecisionStatus? IsUpprovedbyDepartmentNavigation { get; set; }
+
+    public virtual TblDecisionStatus? IsUpprovedbyTeamNavigation { get; set; }
+
+    public virtual TblDecisionStatus? IsUprovedByDeputyNavigation { get; set; }
+
+    public virtual TblDecisionStatus? IsUserUprovedNavigation { get; set; }
 
     public virtual TblPlanCatagory? PlanCat { get; set; }
 

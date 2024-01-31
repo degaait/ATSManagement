@@ -39,6 +39,8 @@ public partial class TblAssignedYearlyPlan
 
     public Guid? SpecificPlanId { get; set; }
 
+    public string? Torattachment { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
     public virtual TblInternalUser? AssignedToNavigation { get; set; }

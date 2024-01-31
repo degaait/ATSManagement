@@ -103,7 +103,7 @@
 
                                 var instr = (from ints in ats.TblPlanInistitutions
                                              join related in ats.TblInistitutions on ints.InistId equals related.InistId
-                                             where ints.PlanId == item.InspectionPlanId
+                                             where ints.SpecificPlanId == item.SpecificPlanId
                                              select new
                                              {
                                                  Name = related.Name

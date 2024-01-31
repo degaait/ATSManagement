@@ -1,14 +1,13 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -30,12 +29,12 @@ namespace ATSManagement.Controllers
         {
 
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var user=_context.TblInternalUsers.Find(userId);
-            if (user.IsSuperAdmin==true||user.IsDeputy==true||user.IsDepartmentHead==true)
+            var user = _context.TblInternalUsers.Find(userId);
+            if (user.IsSuperAdmin == true || user.IsDeputy == true || user.IsDepartmentHead == true)
             {
                 IQueryable<TblAssignedYearlyPlan>? atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.SpecificPlan).Include(p => p.Status).Include(s => s.AssignedByNavigation);
                 return View(await atsdbContext.ToListAsync());
-            }            
+            }
             else
             {
                 IQueryable<TblAssignedYearlyPlan>? atsdbContext = _context.TblAssignedYearlyPlans.Include(t => t.AssignedToNavigation).Include(t => t.SpecificPlan).Include(p => p.Status).Include(s => s.AssignedByNavigation).Where(a => a.AssignedTo == userId);
@@ -74,7 +73,7 @@ namespace ATSManagement.Controllers
             {
                 tblAssignedYearlyPlan.Id = Guid.NewGuid();
                 _context.Add(tblAssignedYearlyPlan);
-             int saved=   await _context.SaveChangesAsync();
+                int saved = await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AssignedTo"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblAssignedYearlyPlan.AssignedTo);
@@ -172,10 +171,10 @@ namespace ATSManagement.Controllers
         public IActionResult AddCheckList(Guid? id)
         {
             InspectionAssignModel model = new InspectionAssignModel();
-            TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);          
+            TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
             var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
             model.Id = assignedTasks.Id;
-            model.AssignedBy= assignedTasks.AssignedBy;
+            model.AssignedBy = assignedTasks.AssignedBy;
             model.PlanTitle = yearlyPlan.Title;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
             return View(model);
@@ -185,7 +184,7 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCheckList(InspectionAssignModel? model)
         {
-            var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s=>s.EmailAddress).ToList();
+            var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
             assignedTasks.EvaluationCheckLists = model.EvaluationCheckLists;
             int added = _context.SaveChanges();
@@ -199,7 +198,7 @@ namespace ATSManagement.Controllers
             {
                 _notifyService.Error("Check Lists aren't successfully created. Please try again");
                 return View(model);
-            }           
+            }
         }
         public IActionResult AddEngagementLetter(Guid? id)
         {
@@ -214,7 +213,7 @@ namespace ATSManagement.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task< IActionResult> AddEngagementLetter(InspectionAssignModel? model)
+        public async Task<IActionResult> AddEngagementLetter(InspectionAssignModel? model)
         {
             try
             {
@@ -257,7 +256,7 @@ namespace ATSManagement.Controllers
                 _notifyService.Error($"Error:{ex.Message} happened. Engagement letter isn't added successfully. Please try again");
                 return View(model);
             }
-         
+
         }
 
         public IActionResult AddTORAttachement(Guid? id)
@@ -266,11 +265,11 @@ namespace ATSManagement.Controllers
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
             var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
             model.Id = assignedTasks.Id;
-            if (yearlyPlan!=null)
+            if (yearlyPlan != null)
             {
                 model.PlanTitle = yearlyPlan.Title;
             }
-           
+
             return View(model);
         }
         [HttpPost]
@@ -293,7 +292,7 @@ namespace ATSManagement.Controllers
             }
             string dbPath = "/Files/" + fileName;
             assignedTasks.Remark = model.Remark;
-            assignedTasks.TORAttachment = dbPath;
+            assignedTasks.Torattachment = dbPath;
             int updated = _context.SaveChanges();
             if (updated > 0)
             {
@@ -306,7 +305,7 @@ namespace ATSManagement.Controllers
         }
         public IActionResult UpdateProgressStatus(Guid? id)
         {
-           
+
             InspectionAssignModel model = new InspectionAssignModel();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
             var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
@@ -315,7 +314,7 @@ namespace ATSManagement.Controllers
             model.PlanTitle = yearlyPlan.Title;
             model.Remark = assignedTasks.Remark;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
-            model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user"&& a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
+            model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
             {
                 Value = p.ProId.ToString(),
                 Text = p.ProstatusTitle,
@@ -330,12 +329,12 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task< IActionResult> UpdateProgressStatus(InspectionAssignModel? model)
+        public async Task<IActionResult> UpdateProgressStatus(InspectionAssignModel? model)
         {
             try
             {
                 var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
-                var desicionStatus=_context.TblDecisionStatuses.Where(s=>s.StatusName== "Waiting for Upproval").FirstOrDefault();
+                var desicionStatus = _context.TblDecisionStatuses.Where(s => s.StatusName == "Waiting for Upproval").FirstOrDefault();
                 TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
                 var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
                 if (model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport == null)
@@ -354,7 +353,7 @@ namespace ATSManagement.Controllers
 
                     return View(model);
                 }
-                else if(model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport != null)
+                else if (model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport != null)
                 {
                     assignedTasks.ProgressStatus = model.ProgressStatus;
                     yearlyPlan.IsUserUproved = _context.TblDecisionStatuses.Where(s => s.StatusName == "Upproved").Select(s => s.DesStatusId).FirstOrDefault(); ;
@@ -397,15 +396,15 @@ namespace ATSManagement.Controllers
                         return View(model);
                     }
                 }
-              
+
             }
             catch (Exception ex)
             {
-                ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle",model.StatusID);
+                ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
 
                 _notifyService.Error($"Error:{ex.Message} happened. Progress isn't successfully uppdated. Please try again");
                 return View(model);
-            }          
+            }
         }
         public IActionResult AddFinalReport(Guid? id)
         {
@@ -430,14 +429,14 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task< IActionResult> AddFinalReport(InspectionAssignModel? model)
-        {           
+        public async Task<IActionResult> AddFinalReport(InspectionAssignModel? model)
+        {
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(model.Id);
-            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);            
+            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
             try
             {
-                var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();              
-                if (assignedTasks.EngagementLetter==null||assignedTasks.EvaluationCheckLists==null)
+                var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
+                if (assignedTasks.EngagementLetter == null || assignedTasks.EvaluationCheckLists == null)
                 {
                     _notifyService.Error("Before Upploading final report you should add evaluation criteria and Engagement letter");
                     return View(model);
@@ -492,7 +491,7 @@ namespace ATSManagement.Controllers
                 _notifyService.Error($"Error:{ex.Message} happened. Report isn't successfully upploaded");
                 return View(model);
             }
-        
+
         }
         [HttpGet]
         [Route("DownloadFile")]

@@ -48,4 +48,12 @@ public partial class TblDecisionStatus
     public virtual ICollection<TblRequest> TblRequestTeamUpprovalStatusNavigations { get; set; } = new List<TblRequest>();
 
     public virtual ICollection<TblRequest> TblRequestUserUpprovalStatusNavigations { get; set; } = new List<TblRequest>();
+
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlanIsUpprovedbyDepartmentNavigations { get; set; } = new List<TblSpecificPlan>();
+
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlanIsUpprovedbyTeamNavigations { get; set; } = new List<TblSpecificPlan>();
+
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlanIsUprovedByDeputyNavigations { get; set; } = new List<TblSpecificPlan>();
+
+    public virtual ICollection<TblSpecificPlan> TblSpecificPlanIsUserUprovedNavigations { get; set; } = new List<TblSpecificPlan>();
 }

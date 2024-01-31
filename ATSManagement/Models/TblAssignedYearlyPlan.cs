@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace ATSManagement.Models;
+
 public partial class TblAssignedYearlyPlan
 {
     public Guid Id { get; set; }
@@ -29,7 +30,6 @@ public partial class TblAssignedYearlyPlan
     public Guid? StatusId { get; set; }
 
     public string? FinalReport { get; set; }
-    public string? TORAttachment { get; set; }
 
     public bool? IsUprovedByDeputy { get; set; }
 
@@ -38,6 +38,8 @@ public partial class TblAssignedYearlyPlan
     public bool? IsUpprovedbyDepartment { get; set; }
 
     public Guid? SpecificPlanId { get; set; }
+
+    public string? Torattachment { get; set; }
 
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
