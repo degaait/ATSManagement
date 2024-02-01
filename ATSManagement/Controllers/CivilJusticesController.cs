@@ -1,16 +1,14 @@
-﻿using System.Net.Http;
-using ATSManagement.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http.Extensions;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -38,12 +36,12 @@ namespace ATSManagement.Controllers
                 tblRequest = _context.TblRequests
                     .Include(t => t.AssignedByNavigation)
                     .Include(t => t.Inist)
-                    .Include(s=>s.TopStatus)
-                    .Include(s=>s.ServiceType)
+                    .Include(s => s.TopStatus)
+                    .Include(s => s.ServiceType)
                     .Include(t => t.RequestedByNavigation)
                     .Include(t => t.CreatedByNavigation)
                     .Include(x => x.ExternalRequestStatus)
-                    .Include (x => x.UserUpprovalStatusNavigation)
+                    .Include(x => x.UserUpprovalStatusNavigation)
                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                     .Include(x => x.DeputyUprovalStatusNavigation)
                     .Include(y => y.TeamUpprovalStatusNavigation)
@@ -138,10 +136,9 @@ namespace ATSManagement.Controllers
                 return NotFound();
             }
             ViewBag.backUrl = HttpContext.Request.GetEncodedUrl();
-            
+
             var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
@@ -730,9 +727,9 @@ namespace ATSManagement.Controllers
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var replays = await _context.TblReplays.Where(a => a.RequestId == id).ToListAsync();
             RepliesModel replies = new RepliesModel();
-            replies.RequestId= id;
+            replies.RequestId = id;
             replies.ReplyDate = DateTime.UtcNow;
-            replies.InternalReplayedBy= userId;
+            replies.InternalReplayedBy = userId;
             replies.IsSent = false;
             ViewData["Replies"] = _context.TblReplays
                 .Include(x => x.InternalReplayedByNavigation)
@@ -755,7 +752,7 @@ namespace ATSManagement.Controllers
                 replay.ReplayDetail = model.ReplayDetail;
                 replay.IsExternal = false;
                 replay.IsInternal = true;
-                if (model.IsSent==true)
+                if (model.IsSent == true)
                 {
                     replay.IsSent = true;
                 }
@@ -785,18 +782,18 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> EditReplies(Guid? ReplyId)
         {
             var reply = _context.TblReplays.Where(s => s.ReplyId == ReplyId).FirstOrDefault();
-            RepliesModel repliesModel= new RepliesModel();
+            RepliesModel repliesModel = new RepliesModel();
             repliesModel.ReplyId = reply.ReplyId;
-            repliesModel.RequestId= reply.RequestId;
-            if (reply.IsSent==null||reply.IsSent==false)
+            repliesModel.RequestId = reply.RequestId;
+            if (reply.IsSent == null || reply.IsSent == false)
             {
                 repliesModel.IsSent = false;
             }
             else
             {
-                repliesModel.IsSent= true;
+                repliesModel.IsSent = true;
             }
-            repliesModel.ReplayDetail = reply.ReplayDetail;           
+            repliesModel.ReplayDetail = reply.ReplayDetail;
             return View(repliesModel);
         }
         [HttpPost]
@@ -806,8 +803,8 @@ namespace ATSManagement.Controllers
         {
             try
             {
-                TblReplay replay = _context.TblReplays.Find(model.ReplyId);             
-                replay.ReplayDetail = model.ReplayDetail;               
+                TblReplay replay = _context.TblReplays.Find(model.ReplyId);
+                replay.ReplayDetail = model.ReplayDetail;
                 if (model.IsSent == true)
                 {
                     replay.IsSent = true;
@@ -852,11 +849,11 @@ namespace ATSManagement.Controllers
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
-                                                    .Include(t => t.AssignedByNavigation)                                                    
+                                                    .Include(t => t.AssignedByNavigation)
                                                     .Include(t => t.Inist)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
-                                                    .Include(t=>t.TopStatus)
+                                                    .Include(t => t.TopStatus)
                                                     .Include(x => x.ExternalRequestStatus)
                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
@@ -879,17 +876,17 @@ namespace ATSManagement.Controllers
             foreach (var item in moreDeps)
             {
                 tblRequest = _context.TblRequests
-                                                    .Include(t => t.AssignedByNavigation)                                                    
+                                                    .Include(t => t.AssignedByNavigation)
                                                     .Include(t => t.Inist)
-                                                    .Include(t=>t.TopStatus)
+                                                    .Include(t => t.TopStatus)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
                                                     .Include(x => x.ExternalRequestStatus)
-                                                    .Include(s=>s.UserUpprovalStatusNavigation)
+                                                    .Include(s => s.UserUpprovalStatusNavigation)
                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
                                                     .Include(y => y.TeamUpprovalStatusNavigation)
-                                                    .Include(t => t.Priority).Where(x=>x.RequestId == item).FirstOrDefault();
+                                                    .Include(t => t.Priority).Where(x => x.RequestId == item).FirstOrDefault();
                 if (tblRequest != null)
                 {
                     atsdbContext.Add(tblRequest);
@@ -914,7 +911,7 @@ namespace ATSManagement.Controllers
                 Request = _context.TblRequests
                                  .Include(t => t.AssignedByNavigation)
                                  .Include(t => t.Inist)
-                                 .Include(s=>s.TopStatus)
+                                 .Include(s => s.TopStatus)
                                  .Include(t => t.RequestedByNavigation)
                                  .Include(t => t.CreatedByNavigation)
                                  .Include(x => x.ExternalRequestStatus)
@@ -974,7 +971,7 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> AddAdjornyDates(Guid? id)
         {
-            ViewData["Adjornies"] = _context.TblAdjornments.Include(X=>X.Request).Where(x=>x.RequestId==id).ToList();
+            ViewData["Adjornies"] = _context.TblAdjornments.Include(X => X.Request).Where(x => x.RequestId == id).ToList();
             AjornyDateModel model = new AjornyDateModel();
             model.RequestId = id;
             model.CreatedDate = DateTime.UtcNow;
@@ -1007,7 +1004,7 @@ namespace ATSManagement.Controllers
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             model.RequestId = id;
             model.CreatedDate = DateTime.UtcNow;
-            model.CreatedBy = userId;           
+            model.CreatedBy = userId;
 
             List<SelectListItem> myList = new List<SelectListItem>();
             var data = new[]{
@@ -1015,7 +1012,7 @@ namespace ATSManagement.Controllers
                  new SelectListItem{ Value="2",Text="Witness"},
              };
             model.EvidenceTypes = data.ToList();
-            ViewData["evidences"] = _context.TblWitnessEvidences.Include(X=>X.Request).Where(x => x.RequestId==id).ToList();
+            ViewData["evidences"] = _context.TblWitnessEvidences.Include(X => X.Request).Where(x => x.RequestId == id).ToList();
             if (id == null)
             {
                 return NotFound();
@@ -1201,19 +1198,20 @@ namespace ATSManagement.Controllers
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
             model.RequestDetail = tblCivilJustice.RequestDetail;
             model.RequestId = tblCivilJustice.RequestId;
-            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName != "New"&& x.StatusName != "Assigned to user" && x.StatusName != "Assigned to team").Select(x => new SelectListItem
+            model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName != "New" && x.StatusName != "Assigned to user" && x.StatusName != "Assigned to team").Select(x => new SelectListItem
             {
                 Text = x.StatusName,
                 Value = x.ExternalRequestStatusId.ToString()
             }).ToList();
             return View(model);
         }
-        [HttpPost][ValidateAntiForgeryToken]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UppdateProgressStatus(CivilJusticeExternalRequestModel model)
         {
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(model.RequestId);
             TblDecisionStatus status = _context.TblDecisionStatuses.Where(x => x.StatusName == "Waiting for Upproval").FirstOrDefault();
-            if (model.ExternalRequestStatusID==Guid.Parse("2521c2b7-a886-439b-b4ba-6c0167d74940")&& tblCivilJustice.FinalReport==null)
+            if (model.ExternalRequestStatusID == Guid.Parse("2521c2b7-a886-439b-b4ba-6c0167d74940") && tblCivilJustice.FinalReport == null)
             {
                 _notifyService.Error("Before you make complete status. Please uppload final report");
                 model.ExternalStatus = _context.TblExternalRequestStatuses.Where(x => x.StatusName == "Completed").Select(x => new SelectListItem
@@ -1241,9 +1239,9 @@ namespace ATSManagement.Controllers
             TblRequest tblCivilJustice = await _context.TblRequests.FindAsync(id);
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             TblInternalUser user = await _context.TblInternalUsers.FindAsync(userId);
-            if (user.IsDepartmentHead==true)
+            if (user.IsDepartmentHead == true)
             {
-                ViewBag.visible ="visible";
+                ViewBag.visible = "visible";
             }
             else
             {
@@ -1271,16 +1269,16 @@ namespace ATSManagement.Controllers
             {
                 tblCivilJustice.TeamUpprovalStatus = model.DesStatusId;
             }
-            else if(user.IsDepartmentHead == true)
+            else if (user.IsDepartmentHead == true)
             {
                 tblCivilJustice.DepartmentUpprovalStatus = model.DesStatusId;
                 if (model.IsDeputyApprovalNeeded == true)
                 {
                     tblCivilJustice.TopStatusId = topStatus.TopStatusId;
-                    tblCivilJustice.DeputyUprovalStatus=model.DesStatusId;
+                    tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;
                 }
             }
-            else if(user.IsDeputy == true)
+            else if (user.IsDeputy == true)
             {
                 tblCivilJustice.DeputyUprovalStatus = model.DesStatusId;
                 tblCivilJustice.TopStatusId = topStatus.TopStatusId;
@@ -1358,7 +1356,9 @@ namespace ATSManagement.Controllers
             }
             return model;
         }
-        [HttpPost][ValidateAntiForgeryToken][AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> AddHistory(DocumentHistoryModel? model)
         {
             List<string> emails = new List<string>();
@@ -1456,7 +1456,9 @@ namespace ATSManagement.Controllers
             model.PriorityId = drafting.PriorityId;
             return View(model);
         }
-        [HttpPost][AllowAnonymous][ValidateAntiForgeryToken]
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignFromTeam(CivilJusticeExternalRequestModel model)
         {
             List<string>? emails = new List<string>();
@@ -1618,12 +1620,12 @@ namespace ATSManagement.Controllers
         {
             try
             {
-                string dbPath = null, FinallySentReport=null;
+                string dbPath = null, FinallySentReport = null;
                 TblRequest request = _context.TblRequests.Where(s => s.RequestId == sendModel.RequestId).FirstOrDefault(); ;
                 request.SendingRemark = sendModel.SendingRemark;
                 request.IsSenttoInst = true;
                 request.SentDate = DateTime.Now;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");               
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
                 if (sendModel.ApprovalLetter != null)
@@ -1648,8 +1650,8 @@ namespace ATSManagement.Controllers
                     FinallySentReport = "/Files/" + file;
                     request.SentReport = FinallySentReport;
                 }
-                int sent =await _context.SaveChangesAsync();
-                if (sent>0)
+                int sent = await _context.SaveChangesAsync();
+                if (sent > 0)
                 {
                     _notifyService.Success("Final report is sent successfully!");
                     return RedirectToAction(nameof(SentBackRequests));
@@ -1657,19 +1659,19 @@ namespace ATSManagement.Controllers
                 else
                 {
                     _notifyService.Error("Final report isn't sent successfully. Please try again ");
-                    return View(sendModel); 
+                    return View(sendModel);
                 }
             }
             catch (Exception ex)
             {
                 _notifyService.Error($"Error: {ex.Message} happened. Please try again");
                 return View(sendModel);
-            }         
+            }
 
         }
         public async Task<IActionResult> SentBackRequests()
         {
-            TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();           
+            TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
             var moreDeps = _context.TblRequestDepartmentRelations.Where(x => x.Dep.DepCode == "CVA").Select(a => a.RequestId).ToList();
@@ -1677,7 +1679,6 @@ namespace ATSManagement.Controllers
             {
                 tblRequest = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)

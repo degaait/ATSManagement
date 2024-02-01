@@ -125,9 +125,17 @@
     <value>ይላኩ</value>
     <comment>ይላኩ</comment>
   </data>
+  <data name="ActingAs" xml:space="preserve">
+    <value>Acting As(እንደ)</value>
+    <comment>Acting As(እንደ)</comment>
+  </data>
   <data name="additional_Question" xml:space="preserve">
     <value>ተጨማሪ ጥያቄዎች </value>
     <comment>ተጨማሪ ጥያቄዎች</comment>
+  </data>
+  <data name="ADR_Type" xml:space="preserve">
+    <value>የADR ዓይነት</value>
+    <comment>የADR ዓይነት</comment>
   </data>
   <data name="All_rights_reserved." xml:space="preserve">
     <value>መብቱ በህግ የተጠበቀ ነው::</value>
@@ -163,6 +171,14 @@
     <value>ወደ ኋላ</value>
     <comment>ወደ ኋላ</comment>
   </data>
+  <data name="backlist" xml:space="preserve">
+    <value>ተመለስ</value>
+    <comment>ተመለስ</comment>
+  </data>
+  <data name="Bench" xml:space="preserve">
+    <value>ቤንች</value>
+    <comment>ቤንች</comment>
+  </data>
   <data name="call_us" xml:space="preserve">
     <value>ይደውሉልን</value>
     <comment>ይደውሉልን</comment>
@@ -170,6 +186,14 @@
   <data name="cancel" xml:space="preserve">
     <value>ሰርዝ</value>
     <comment>ሰርዝ</comment>
+  </data>
+  <data name="CaseType" xml:space="preserve">
+    <value>የጉዳይ ዓይነት</value>
+    <comment>የጉዳይ ዓይነት</comment>
+  </data>
+  <data name="Claimant" xml:space="preserve">
+    <value>የይገባኛል ጥያቄ አቅራቢ</value>
+    <comment>የይገባኛል ጥያቄ አቅራቢ</comment>
   </data>
   <data name="close" xml:space="preserve">
     <value>ዝጋው</value>
@@ -217,6 +241,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>ሀገር</value>
     <comment>ሀገር</comment>
   </data>
+  <data name="CourtCenter" xml:space="preserve">
+    <value>የፍርድ ቤት ማዕከል</value>
+    <comment>የፍርድ ቤት ማዕከል</comment>
+  </data>
   <data name="Create" xml:space="preserve">
     <value />
   </data>
@@ -235,6 +263,18 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="date" xml:space="preserve">
     <value>ቀን</value>
     <comment>ቀን</comment>
+  </data>
+  <data name="DateOfAdjournment" xml:space="preserve">
+    <value>የቀጠሮ ቀን</value>
+    <comment>የቀጠሮ ቀን</comment>
+  </data>
+  <data name="DateofJudgement" xml:space="preserve">
+    <value>የፍርድ ቀን</value>
+    <comment>የፍርድ ቀን</comment>
+  </data>
+  <data name="Defendent" xml:space="preserve">
+    <value>ተከሳሽ</value>
+    <comment>ተከሳሽ</comment>
   </data>
   <data name="delete" xml:space="preserve">
     <value>ሰርዝ</value>
@@ -276,6 +316,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>ፋይል</value>
     <comment>ፋይል</comment>
   </data>
+  <data name="FollowUp" xml:space="preserve">
+    <value>ክትትል</value>
+    <comment>ክትትል</comment>
+  </data>
   <data name="full_Name" xml:space="preserve">
     <value>ሙሉ ስም</value>
     <comment>ሙሉ ስም</comment>
@@ -308,6 +352,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>Internation cases can be served</value>
     <comment>Internation cases can be served</comment>
   </data>
+  <data name="Jursidiction" xml:space="preserve">
+    <value>ስልጣን</value>
+    <comment>ስልጣን</comment>
+  </data>
   <data name="justice_Minister" xml:space="preserve">
     <value>ፍትህ ሚኒስቴር</value>
     <comment>ፍትህ ሚኒስቴር</comment>
@@ -327,6 +375,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="litigations" xml:space="preserve">
     <value>ሙግቶች</value>
     <comment>ሙግቶች</comment>
+  </data>
+  <data name="LitigationType" xml:space="preserve">
+    <value>የሙግት አይነት</value>
+    <comment>የሙግት አይነት</comment>
   </data>
   <data name="litigation_description" xml:space="preserve">
     <value>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
@@ -4586,6 +4638,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>ስልክ ቁጥር</value>
     <comment>ስልክ ቁጥር</comment>
   </data>
+  <data name="Plaintiful" xml:space="preserve">
+    <value>ከሳሽ</value>
+    <comment>ከሳሽ</comment>
+  </data>
   <data name="priority" xml:space="preserve">
     <value>ቅድሚያ ዓይነት</value>
     <comment>ቅድሚያ ዓይነት</comment>
@@ -4602,6 +4658,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>Registering different document stypes like Proclamations, Policy and so on</value>
     <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
   </data>
+  <data name="remark" xml:space="preserve">
+    <value>አስተያየት</value>
+    <comment>አስተያየት</comment>
+  </data>
   <data name="replys" xml:space="preserve">
     <value>ምላሾች</value>
     <comment>ምላሾች</comment>
@@ -4613,6 +4673,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
   <data name="requests" xml:space="preserve">
     <value>ጥያቄዎች</value>
     <comment>ጥያቄዎች</comment>
+  </data>
+  <data name="Respondent" xml:space="preserve">
+    <value>ምላሽ ሰጪ</value>
+    <comment>ምላሽ ሰጪ</comment>
   </data>
   <data name="Response" xml:space="preserve">
     <value>ምላሾች</value>
@@ -4633,6 +4697,10 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
   <data name="service_types" xml:space="preserve">
     <value>የጥያቄው አይነት</value>
     <comment>የጥያቄው አይነት</comment>
+  </data>
+  <data name="Specialization" xml:space="preserve">
+    <value>ስፔሻላይዜሽን</value>
+    <comment>ስፔሻላይዜሽን</comment>
   </data>
   <data name="status" xml:space="preserve">
     <value>የጥያቄው ሁኔታ</value>

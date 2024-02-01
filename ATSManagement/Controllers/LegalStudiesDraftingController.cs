@@ -160,7 +160,6 @@ namespace ATSManagement.Controllers
             ViewBag.backUrl = HttpContext.Request.GetDisplayUrl();
             var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
@@ -1760,7 +1759,6 @@ namespace ATSManagement.Controllers
             {
                 tblRequest = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)

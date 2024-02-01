@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<ATSManagementExternal.Models.TblRequest>
 @inject IHttpContextAccessor httpsSession;
+@using ATSManagementExternal.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
 @inject AtsdbContext ats;
 @{
     ViewData["Title"] = "Sent Requests";
@@ -40,7 +43,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Requests</h4>
+                        <h2 class="card-title">@_localization.Getkey("requests") </h2>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -48,38 +51,29 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Detail
+                                            @_localization.Getkey("created_Date")
                                         </th>
                                         <th>
-                                            Created Date
+                                            @_localization.Getkey("service_types")
                                         </th>
                                         <th>
-                                            Sending Remark
+                                            @_localization.Getkey("Description")
+
                                         </th>
                                         <th>
-                                            Priority
+                                            @_localization.Getkey("document_type")
                                         </th>
                                         <th>
-                                            Final status
+                                            @_localization.Getkey("priority")
                                         </th>
                                         <th>
-                                            Assigned by
+                                            @_localization.Getkey("status")
                                         </th>
                                         <th>
-                                            Experts
+                                            @_localization.Getkey("remark")
                                         </th>
-                                        <th>
-                                            Case type
-                                        </th>
-                                        <th>
-                                            Department
-                                        </th>
-                                        <th>
-                                            Inistitution
-                                        </th>
-                                        <th>
-                                            External User
-                                        </th>
+
+
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -88,13 +82,37 @@
                                     {
                                         // var isRequest = (from items in ats.TblRequests where items.RequestId == item.RequestId select items).FirstOrDefault();
                                         var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
+                                        var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
 
                                         <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                            </td>
                                             <td>
                                                 @Html.Raw(item.RequestDetail)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                @Html.DisplayFor(modelItem => item.DocType.DocName)
+                                                <br />
+                                                @if (documents != null)
+                                                {
+                                                    foreach (var paths in documents)
+                                                    {
+                                                        <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                                <path d="M12 17v-6"></path>
+                                                                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                            </svg>
+                                                            View
+                                                        </a>
+                                                    }
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.SendingRemark)
@@ -109,40 +127,15 @@
                                                 @Html.Raw(item.TopStatus.StatusName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
-                                            </td>
-                                            <td>
-                                                @foreach (var assignees in assigneess)
-                                                {
-                                                    @Html.DisplayFor(modelItem => assignees.FirstName)
-                                                    @Html.DisplayFor(modelItem => assignees.MidleName)
-                                                }
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CaseType)
-                                            </td>
-                                            <td>
-                                                <label>Civil Justice Administration</label>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Inist.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                            </td>
-                                            <td>
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">
                                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                            Actions
+                                                            ...
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-
                                                             <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                                Responses
+                                                                @_localization.Getkey("Response")
                                                             </a>
                                                             <a class="dropdown-item" asp-controller="Followups" asp-action="Index" asp-route-RequestId="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -153,7 +146,7 @@
                                                                     <path d="M13 19h5"></path>
                                                                     <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                     <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                </svg> &nbsp;Follow Up
+                                                                </svg> &nbsp;  @_localization.Getkey("FollowUp")
                                                             </a>
 
                                                         </div>

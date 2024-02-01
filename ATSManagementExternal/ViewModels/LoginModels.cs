@@ -5,7 +5,7 @@ namespace ATSManagementExternal.ViewModels
     public class LoginModels
     {
         public Guid UserId { get; set; }
-        [Required(ErrorMessage = ".")]
+        [Required(ErrorMessage = "*")]
         [Display(Name = "User name")]
         public string? UserName { get; set; }
         [Required(ErrorMessage = "*")]

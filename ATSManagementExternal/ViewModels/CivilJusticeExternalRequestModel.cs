@@ -98,7 +98,43 @@ namespace ATSManagementExternal.ViewModels
 
 
 
-        //
+        //New Rows
+        [Display(Name = "ADR Type")]
+        public string? Adrtype { get; set; }
+        [Display(Name = "Claimant")]
+        public string? Claimant { get; set; }
+        [Display(Name = "Acting As")]
+        public string? ActingAs { get; set; }
+        [Display(Name = "Respondent")]
+        public string? Respondent { get; set; }
+        [Display(Name = "Reasult")]
+        public string? Reasult { get; set; }
+        [Display(Name = "Result Description")]
+        public string? ResultDescription { get; set; }
+        [Display(Name = "CaseType")]
+        public string? CaseType { get; set; }
+        [Display(Name = "Specialization")]
+        public string? Specialization { get; set; }
+        [Display(Name = "Country")]
+        public string? Country { get; set; }
+        [Display(Name = "Court Center")]
+        public string? CourtCenter { get; set; }
+        [Display(Name = "Date Of Adjournment")]
+        public DateTime? DateOfAdjournment { get; set; }
+        [Display(Name = "Remark")]
+        public string? Remark { get; set; }
+        [Display(Name = "Litigation Type")]
+        public string? LitigationType { get; set; }
+        [Display(Name = "Jursidiction")]
+        public string? Jursidiction { get; set; }
+        [Display(Name = "Bench")]
+        public string? Bench { get; set; }
+        [Display(Name = "Plaintiful")]
+        public string? Plaintiful { get; set; }
+        [Display(Name = "Defendent")]
+        public string? Defendent { get; set; }
+        [Display(Name = "Date of Judgement")]
+        public DateTime? DateofJudgement { get; set; }
     }
     public class RoundModel
     {

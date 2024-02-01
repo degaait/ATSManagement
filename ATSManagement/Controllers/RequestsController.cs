@@ -1,14 +1,13 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
+using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -29,15 +28,15 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> Index()
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var userinfor=_context.TblInternalUsers.Where(x=>x.UserId == userId).FirstOrDefault();
-            if (userinfor==null)
+            var userinfor = _context.TblInternalUsers.Where(x => x.UserId == userId).FirstOrDefault();
+            if (userinfor == null)
             {
                 return NotFound();
             }
-            if (userinfor.IsDeputy==false&&userinfor.IsSuperAdmin!=true)
+            if (userinfor.IsDeputy == false && userinfor.IsSuperAdmin != true)
             {
                 _notifyService.Information("Only users who have deputy role can access this page");
-                return RedirectToAction("Index", "Home", new { type ="0", message = "Only users who have deputy role can access this page" });
+                return RedirectToAction("Index", "Home", new { type = "0", message = "Only users who have deputy role can access this page" });
             }
             var atsdbContext = _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
@@ -53,7 +52,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ServiceType)
                 .Include(t => t.TeamUpprovalStatusNavigation)
-                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.IsAssignedTodepartment == false||x.IsAssignedTodepartment==null);
+                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.IsAssignedTodepartment == false || x.IsAssignedTodepartment == null);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> AssignToDepartment(Guid? id)
@@ -144,7 +143,6 @@ namespace ATSManagement.Controllers
 
             var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
@@ -272,7 +270,7 @@ namespace ATSManagement.Controllers
             ViewData["AssignedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.AssignedBy);
             ViewData["CaseTypeId"] = new SelectList(_context.TblCivilJusticeCaseTypes, "CaseTypeId", "CaseTypeId", tblRequest.CaseTypeId);
             ViewData["CreatedBy"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblRequest.CreatedBy);
-           
+
             ViewData["DepartmentUpprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DepartmentUpprovalStatus);
             ViewData["DeputyUprovalStatus"] = new SelectList(_context.TblDecisionStatuses, "DesStatusId", "DesStatusId", tblRequest.DeputyUprovalStatus);
             ViewData["DocTypeId"] = new SelectList(_context.TblLegalDraftingDocTypes, "DocId", "DocId", tblRequest.DocTypeId);
@@ -352,7 +350,7 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-            if(userinfor.IsDeputy == false && userinfor.IsSuperAdmin != true)
+            if (userinfor.IsDeputy == false && userinfor.IsSuperAdmin != true)
             {
                 _notifyService.Information("Only users who have deputy role can access this page");
                 return RedirectToAction("Index", "Home", new { type = "0", message = "Only users who have deputy role can access this page" });
@@ -372,7 +370,7 @@ namespace ATSManagement.Controllers
                 .Include(t => t.RequestedByNavigation)
                 .Include(t => t.ServiceType)
                 .Include(t => t.TeamUpprovalStatusNavigation)
-                .Include(t => t.UserUpprovalStatusNavigation).Where(x =>  x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73"));
+                .Include(t => t.UserUpprovalStatusNavigation).Where(x => x.PriorityId == Guid.Parse("12fba758-fa2a-406a-ae64-0a561d0f5e73"));
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> DownloadEvidenceFile(string path)

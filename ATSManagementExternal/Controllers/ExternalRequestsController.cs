@@ -34,7 +34,6 @@ namespace ATSManagementExternal.Controllers
             var instName = _context.TblExternalUsers.FindAsync(userId).Result;
             var atsdbContext = _context.TblRequests
                                                      .Include(t => t.AssignedByNavigation)
-                                                     .Include(t => t.CaseType)
                                                      .Include(t => t.Inist)
                                                      .Include(t => t.TopStatus)
                                                      .Include(t => t.RequestedByNavigation)
@@ -211,19 +210,32 @@ namespace ATSManagementExternal.Controllers
         }
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.TblExternalRequests == null)
+            if (id == null || _context.TblRequests == null)
             {
                 return NotFound();
             }
-            var tblExternalRequest = await _context.TblExternalRequests
-                .Include(t => t.ExterUser)
-                .Include(t => t.Int)
+
+            var tblRequest = await _context.TblRequests
+                .Include(t => t.AssignedByNavigation)
+                .Include(t => t.CreatedByNavigation)
+                .Include(t => t.DepartmentUpprovalStatusNavigation)
+                .Include(t => t.DeputyUprovalStatusNavigation)
+                .Include(t => t.DocType)
+                .Include(t => t.ExternalRequestStatus)
+                .Include(t => t.Inist)
+                .Include(t => t.Priority)
+                .Include(t => t.QuestType)
+                .Include(t => t.RequestedByNavigation)
+                .Include(t => t.ServiceType)
+                .Include(t => t.TeamUpprovalStatusNavigation)
+                .Include(t => t.UserUpprovalStatusNavigation)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
-            if (tblExternalRequest == null)
+            if (tblRequest == null)
             {
                 return NotFound();
             }
-            return View(tblExternalRequest);
+
+            return View(tblRequest);
         }
         public IActionResult Create()
         {
@@ -287,6 +299,23 @@ namespace ATSManagementExternal.Controllers
                 request.FullName = model.FullName;
                 request.PhoneNumber = model.PhoneNumber;
                 request.EmailAddress = model.EmailAddress;
+
+                request.Specialization = model.Specialization;
+                request.Adrtype = model.Adrtype;
+                request.ActingAs = model.ActingAs;
+                request.Bench = model.Bench;
+                request.Respondent = model.Respondent;
+                request.Claimant = model.Claimant;
+                request.Country = model.Country;
+                request.DateOfAdjournment = model.DateOfAdjournment;
+                request.CaseType = model.CaseType;
+                request.Defendent = model.Defendent;
+                request.Plaintiful = model.Plaintiful;
+                request.DateofJudgement = model.DateofJudgement;
+                request.Jursidiction = model.Jursidiction;
+                request.LitigationType = model.LitigationType;
+                request.CourtCenter = model.CourtCenter;
+
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
                 if (model.DocumentFile != null)
                 {
@@ -981,7 +1010,6 @@ namespace ATSManagementExternal.Controllers
             {
                 tblRequest = _context.TblRequests
                                                         .Include(t => t.AssignedByNavigation)
-                                                        .Include(t => t.CaseType)
                                                         .Include(t => t.Inist)
                                                         .Include(t => t.RequestedByNavigation)
                                                         .Include(t => t.CreatedByNavigation)
