@@ -40,7 +40,6 @@ namespace ATSManagement.Controllers
             }
             var atsdbContext = _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
@@ -358,7 +357,6 @@ namespace ATSManagement.Controllers
 
             var atsdbContext = _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)

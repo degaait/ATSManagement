@@ -41,13 +41,13 @@
                                             <div class="accordion-body pt-0">
                                                 <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>. This request is created by
                                                 @{
-                                                    if (Model.CreatedBy != Guid.Empty)
+                                                   if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
                                                     {
                                                         <strong>Secretary</strong>
                                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
                                                         @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
                                                     }
-                                                    else if (Model.RequestedBy != Guid.Empty)
+                                                    if (Model.RequestedBy != Guid.Empty&&Model.RequestedBy!=null)
                                                     {
                                                         <strong>Externa User</strong>
                                                         @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>

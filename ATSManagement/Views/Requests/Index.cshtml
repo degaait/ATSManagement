@@ -40,34 +40,31 @@
                         <thead>
                             <tr>
                                 <th>
+                                    @_localization.Getkey("CreatedDate")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("serviceType")
+                                </th>
+                                <th>
                                     @_localization.Getkey("Detail")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("CreatedDate")
-                                </th>
-
-                                <th>
-                                    @_localization.Getkey("assingment_remark")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("progress_status")
+                                    @_localization.Getkey("doctype")
                                 </th>
                                 <th>
                                     @_localization.Getkey("priority")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("serviceType")
+                                    @_localization.Getkey("progress_status")
                                 </th>
 
                                 <th>
-                                    @_localization.Getkey("doctype")
+                                    @_localization.Getkey("assingment_remark")
                                 </th>
+
                                 <th>
                                     @_localization.Getkey("institution")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("external_User")
-                                </th>
+                                </th> 
                                 <th></th>
                             </tr>
                         </thead>
@@ -77,27 +74,13 @@
                                 var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
                                 <tr>
                                     <td>
-                                        @Html.Raw(item.RequestDetail)
-                                    </td>
-                                    <td>
                                         @Html.DisplayFor(modelItem => item.CreatedDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
-                                    </td>
-                                    <td>
-                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
-                                    </td>
-                                    <td>
-                                        @if (item.PriorityId != null)
-                                        {
-                                            @Html.Raw(item.Priority.PriorityNameWithColor)
-                                        }
-
-                                    </td>
-
-                                    <td>
                                         @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.RequestDetail)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.DocType.DocName)
@@ -121,12 +104,27 @@
                                         }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Inist.Name)
+                                        @if (item.PriorityId != null)
+                                        {
+                                            @Html.Raw(item.Priority.PriorityNameWithColor)
+                                        }
+
                                     </td>
                                     <td>
+                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Inist.Name)
+                                        <br />
                                         @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
                                         @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
                                     </td>
+                                   
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">

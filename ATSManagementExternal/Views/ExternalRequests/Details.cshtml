@@ -13,7 +13,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("requests")
+                        @_localization.Getkey("requests") @_localization.Getkey("Detail")
                     </h2>
                 </div>
             </div>
@@ -26,7 +26,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -41,13 +40,13 @@
                                             <div class="accordion-body pt-0">
                                                 <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>. This request is created by
                                                 @{
-                                                    if (Model.CreatedBy != Guid.Empty)
+                                                    if (Model.CreatedBy != Guid.Empty&&Model.CreatedBy!=null)
                                                     {
                                                         <strong>Secretary</strong>
                                                         @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
                                                         @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
                                                     }
-                                                    else if (Model.RequestedBy != Guid.Empty)
+                                                     if (Model.RequestedBy != Guid.Empty&&Model.RequestedBy!=null)
                                                     {
                                                         <strong>Externa User</strong>
                                                         @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
@@ -81,5 +80,6 @@
                 </div>
             </div>
         </div>
+       <br />
     </div>
 </div>

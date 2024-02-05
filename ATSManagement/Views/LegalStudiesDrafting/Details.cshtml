@@ -53,13 +53,11 @@
                                             @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
                                             @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
                                         }
-
                                         if (Model.ExternalRequestStatusId != null)
                                         {
                                             <label>
                                                 Currently the status of request this request is at
                                                 <strong>
-
                                                     @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
                                                 </strong>
                                             </label>
