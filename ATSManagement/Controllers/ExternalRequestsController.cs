@@ -1,13 +1,12 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
+using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -41,7 +40,6 @@ namespace ATSManagement.Controllers
             }
             var atsdbContext = _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
@@ -74,7 +72,6 @@ namespace ATSManagement.Controllers
 
             var tblRequest = await _context.TblRequests
                 .Include(t => t.AssignedByNavigation)
-                .Include(t => t.CaseType)
                 .Include(t => t.CreatedByNavigation)
                 .Include(t => t.DepartmentUpprovalStatusNavigation)
                 .Include(t => t.DeputyUprovalStatusNavigation)
@@ -310,7 +307,7 @@ namespace ATSManagement.Controllers
                 }
             }
         }
-        
+
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblExternalRequests == null)
@@ -409,7 +406,7 @@ namespace ATSManagement.Controllers
         {
             CivilJusticeExternalRequestModel model = new CivilJusticeExternalRequestModel();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-           
+
             model.RequestedDate = DateTime.Now;
             model.CreatedDate = DateTime.Now;
             model.ExterUserId = userId;
@@ -436,8 +433,8 @@ namespace ATSManagement.Controllers
             }).ToList();
             model.Intitutions = _context.TblInistitutions.Select(s => new SelectListItem
             {
-                Value=s.InistId.ToString(),
-                Text=s.Name.ToString()
+                Value = s.InistId.ToString(),
+                Text = s.Name.ToString()
             }).ToList();
             model.LegalStadiesQuestiontypes = _context.TblLegalDraftingQuestionTypes.Select(x => new SelectListItem
             {

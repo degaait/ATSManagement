@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ATSManagement.Models;
+﻿namespace ATSManagement.Models;
 
 public partial class TblRequest
 {
@@ -60,6 +57,7 @@ public partial class TblRequest
     public bool? IsArchived { get; set; }
 
     public string? FullName { get; set; }
+    public string? DeputyRemark { get; set; }
 
     public string? EmailAddress { get; set; }
 

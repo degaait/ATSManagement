@@ -1,13 +1,12 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
-using ATSManagement.IModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
+using ATSManagement.IModels;
+using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -24,13 +23,13 @@ namespace ATSManagement.Controllers
 
             _notifyService = notyfService;
             _context = context;
-            _mail=mail;
+            _mail = mail;
         }
 
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            var atsdbContext = _context.TblAppointments.Include(t => t.Inist).Include(t => t.RequestedByNavigation).OrderBy(s=>s.CreatedDate);
+            var atsdbContext = _context.TblAppointments.Include(t => t.Inist).Include(t => t.RequestedByNavigation).OrderBy(s => s.CreatedDate);
             return View(await atsdbContext.ToListAsync());
         }
 
@@ -142,15 +141,15 @@ namespace ATSManagement.Controllers
         {
             AppointmentModel app = new AppointmentModel();
             var appointment = _context.TblAppointments.FirstOrDefault(x => x.AppointmentId == id);
-            app.Users = _context.TblInternalUsers.Select(a => new SelectListItem
+            app.Users = _context.TblInternalUsers.Where(s => s.IsDepartmentHead == true).Select(a => new SelectListItem
             {
                 Text = a.FirstName + " " + a.MidleName,
                 Value = a.UserId.ToString()
             }).ToList();
             app.CreatedDate = appointment.CreatedDate;
-            app.AppointmentDate= appointment.AppointmentDate;
+            app.AppointmentDate = appointment.AppointmentDate;
             app.AppointmentID = id;
-            app.Remark=appointment.Remark;
+            app.Remark = appointment.Remark;
             app.AppointmentDetail = appointment.AppointmentDetail;
             app.Institution = _context.TblInistitutions.Where(a => a.InistId == appointment.InistId).Select(s => s.Name).FirstOrDefault();
 
@@ -183,7 +182,7 @@ namespace ATSManagement.Controllers
             if (updated > 0)
             {
                 _notifyService.Success("Appointment Participants are assigned succeesfully. Email notification is will be sent to respective institution focal person.");
-                await SendMail(externalUser,"Appointment request from "+ tblAppointment.Inist.Name,"<h3>Please review the detail on Task Tracking Dashboard and reply</h3>");
+                await SendMail(externalUser, "Appointment request from " + tblAppointment.Inist.Name, "<h3>Please review the detail on Task Tracking Dashboard and reply</h3>");
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -295,8 +294,8 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> ReplyBack(AppointmentModel model)
         {
             TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(model.AppointmentID);
-            var externalUser = _context.TblExternalUsers.Include(x=>x.Inist).Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Email).ToList();
-            var instname = _context.TblInistitutions.Where(x=>x.InistId==tblAppointment.InistId).Select(x=>x.Name).FirstOrDefault();
+            var externalUser = _context.TblExternalUsers.Include(x => x.Inist).Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Email).ToList();
+            var instname = _context.TblInistitutions.Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Name).FirstOrDefault();
             tblAppointment.Remark = model.Remark;
             int saved = await _context.SaveChangesAsync();
             if (saved > 0)

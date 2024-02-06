@@ -225,13 +225,13 @@
     <value>Country</value>
     <comment>Country</comment>
   </data>
-  <data name="CreatedDate" xml:space="preserve">
-    <value>Created Date</value>
-    <comment>Created Date</comment>
-  </data>
   <data name="created_by" xml:space="preserve">
     <value>Created By</value>
     <comment>Created By</comment>
+  </data>
+  <data name="created_Date" xml:space="preserve">
+    <value>Created Date</value>
+    <comment>Created Date</comment>
   </data>
   <data name="CreateNew" xml:space="preserve">
     <value>Create New</value>
@@ -277,13 +277,13 @@
     <value>Case Description</value>
     <comment>Case Description</comment>
   </data>
-  <data name="doctype" xml:space="preserve">
-    <value>Document type</value>
-    <comment>Document type</comment>
-  </data>
   <data name="documentation" xml:space="preserve">
     <value>Documentation</value>
     <comment>Documentation</comment>
+  </data>
+  <data name="document_type" xml:space="preserve">
+    <value>Document type</value>
+    <comment>Document type</comment>
   </data>
   <data name="dueDate" xml:space="preserve">
     <value>Anticipated date of Delivery </value>
@@ -357,6 +357,10 @@
     <value>Follow Ups</value>
     <comment>Follow Ups</comment>
   </data>
+  <data name="Get_Started" xml:space="preserve">
+    <value>Get Started</value>
+    <comment>Get Started</comment>
+  </data>
   <data name="help" xml:space="preserve">
     <value>Help</value>
     <comment>Help</comment>
@@ -390,7 +394,7 @@
     <comment>IsActive?</comment>
   </data>
   <data name="isDefaultUser" xml:space="preserve">
-    <value>Default User</value>
+    <value>Expert</value>
     <comment>Default User</comment>
   </data>
   <data name="isDeleted" xml:space="preserve">
@@ -398,7 +402,7 @@
     <comment>isDeleted?</comment>
   </data>
   <data name="isDepartment" xml:space="preserve">
-    <value>Is Department head?</value>
+    <value>Department head?</value>
     <comment>Is Department head?</comment>
   </data>
   <data name="isDeputy" xml:space="preserve">
@@ -410,7 +414,7 @@
     <comment>Is Superadmin?</comment>
   </data>
   <data name="isTeam" xml:space="preserve">
-    <value>Is Team Leader?</value>
+    <value>Team Leader?</value>
     <comment>Is Team Leader?</comment>
   </data>
   <data name="key_plans" xml:space="preserve">
@@ -449,6 +453,18 @@
     <value>Middle Name</value>
     <comment>Middle Name</comment>
   </data>
+  <data name="minister_message" xml:space="preserve">
+    <value>The message of the Ministry of Justice</value>
+    <comment>The message of the Ministry of Justice</comment>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+    <comment>Mission</comment>
+  </data>
+  <data name="mission_detail" xml:space="preserve">
+    <value>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</value>
+    <comment>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</comment>
+  </data>
   <data name="modificationDate" xml:space="preserve">
     <value>Modification date</value>
     <comment>Modification date</comment>
@@ -484,6 +500,28 @@
   <data name="other_Requests" xml:space="preserve">
     <value>Other request</value>
     <comment>Other request</comment>
+  </data>
+  <data name="paragraph_five" xml:space="preserve">
+    <value>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</value>
+    <comment>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</comment>
+  </data>
+  <data name="paragraph_four" xml:space="preserve">
+    <value>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</value>
+    <comment>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</comment>
+  </data>
+  <data name="paragraph_one" xml:space="preserve">
+    <value>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
+ It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</value>
+    <comment>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
+ It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</comment>
+  </data>
+  <data name="paragraph_three" xml:space="preserve">
+    <value>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</value>
+    <comment>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</comment>
+  </data>
+  <data name="paragraph_two" xml:space="preserve">
+    <value>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</value>
+    <comment>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</comment>
   </data>
   <data name="password" xml:space="preserve">
     <value>Password</value>
@@ -613,8 +651,8 @@
     <value>Sent Recomendation</value>
     <comment>Sent Recomendation</comment>
   </data>
-  <data name="serviceType" xml:space="preserve">
-    <value>Service type</value>
+  <data name="service_types" xml:space="preserve">
+    <value>Service types</value>
     <comment>Service type</comment>
   </data>
   <data name="special_roles" xml:space="preserve">
@@ -668,6 +706,10 @@
   <data name="Team_Uproval" xml:space="preserve">
     <value>Team approval</value>
     <comment>Team aproval</comment>
+  </data>
+  <data name="temoty_message" xml:space="preserve">
+    <value>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</value>
+    <comment>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</comment>
   </data>
   <data name="title" xml:space="preserve">
     <value>Title</value>
@@ -729,6 +771,30 @@
     <value>User aproval</value>
     <comment>User aproval</comment>
   </data>
+  <data name="Values" xml:space="preserve">
+    <value>Values</value>
+    <comment>Values</comment>
+  </data>
+  <data name="values_detail" xml:space="preserve">
+    <value>Human dignity
+ The rule of law
+ Loyalty
+ Accountability and transparency
+ Professionalism
+ Cooperation and partnership
+ Justice</value>
+    <comment>Human dignity
+ The rule of law
+ Loyalty
+ Accountability and transparency
+ Professionalism
+ Cooperation and partnership
+ Justice</comment>
+  </data>
+  <data name="values_vision_mission" xml:space="preserve">
+    <value>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</value>
+    <comment>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</comment>
+  </data>
   <data name="video" xml:space="preserve">
     <value>Videos</value>
     <comment>Videos</comment>
@@ -736,6 +802,24 @@
   <data name="view_file" xml:space="preserve">
     <value>View file</value>
     <comment>View file</comment>
+  </data>
+  <data name="vision" xml:space="preserve">
+    <value>Vision</value>
+    <comment>Vision</comment>
+  </data>
+  <data name="vision_detail" xml:space="preserve">
+    <value>In 2022, seeing it as a model of African justice institutions</value>
+    <comment>In 2022, seeing it as a model of African justice institutions</comment>
+  </data>
+  <data name="welcome_one" xml:space="preserve">
+    <value>Welcome to Ministry of Justice</value>
+    <comment>Welcome to Ministry of Justice</comment>
+  </data>
+  <data name="welcome_two" xml:space="preserve">
+    <value>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
+In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</value>
+    <comment>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
+In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</comment>
   </data>
   <data name="what_is_done" xml:space="preserve">
     <value>What is Done?</value>

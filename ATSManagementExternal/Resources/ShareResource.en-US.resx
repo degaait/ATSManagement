@@ -309,6 +309,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>Full Name</value>
     <comment>Full Name</comment>
   </data>
+  <data name="Get_Started" xml:space="preserve">
+    <value>Get Started</value>
+    <comment>Get Started</comment>
+  </data>
   <data name="help" xml:space="preserve">
     <value>Helps</value>
     <comment>Helps</comment>
@@ -4403,6 +4407,18 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Message</value>
     <comment>Message</comment>
   </data>
+  <data name="minister_message" xml:space="preserve">
+    <value>The message of the Ministry of Justice</value>
+    <comment>The message of the Ministry of Justice</comment>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+    <comment>Mission</comment>
+  </data>
+  <data name="mission_detail" xml:space="preserve">
+    <value>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</value>
+    <comment>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</comment>
+  </data>
   <data name="Mission_Vision" xml:space="preserve">
     <value>Mission &amp; Vision</value>
     <comment>Mission &amp; Vision</comment>
@@ -4455,6 +4471,28 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
   <data name="our_services" xml:space="preserve">
     <value>Our Services</value>
     <comment>Our Services</comment>
+  </data>
+  <data name="paragraph_five" xml:space="preserve">
+    <value>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</value>
+    <comment>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</comment>
+  </data>
+  <data name="paragraph_four" xml:space="preserve">
+    <value>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</value>
+    <comment>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</comment>
+  </data>
+  <data name="paragraph_one" xml:space="preserve">
+    <value>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
+ It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</value>
+    <comment>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
+ It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</comment>
+  </data>
+  <data name="paragraph_three" xml:space="preserve">
+    <value>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</value>
+    <comment>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</comment>
+  </data>
+  <data name="paragraph_two" xml:space="preserve">
+    <value>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</value>
+    <comment>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</comment>
   </data>
   <data name="Participants" xml:space="preserve">
     <value>Participants</value>
@@ -4528,6 +4566,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Progress Status</value>
     <comment>Progress Status</comment>
   </data>
+  <data name="temoty_message" xml:space="preserve">
+    <value>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</value>
+    <comment>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</comment>
+  </data>
   <data name="The_List_Of_Prosecutors" xml:space="preserve">
     <value>The List Of Prosecutors</value>
     <comment>The List Of Prosecutors</comment>
@@ -4535,5 +4577,47 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
   <data name="useful_Links" xml:space="preserve">
     <value>Useful Links</value>
     <comment>Useful Links</comment>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>Values</value>
+    <comment>Values</comment>
+  </data>
+  <data name="values_detail" xml:space="preserve">
+    <value>Human dignity
+ The rule of law
+ Loyalty
+ Accountability and transparency
+ Professionalism
+ Cooperation and partnership
+ Justice</value>
+    <comment>Human dignity
+ The rule of law
+ Loyalty
+ Accountability and transparency
+ Professionalism
+ Cooperation and partnership
+ Justice</comment>
+  </data>
+  <data name="values_vision_mission" xml:space="preserve">
+    <value>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</value>
+    <comment>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</comment>
+  </data>
+  <data name="vision" xml:space="preserve">
+    <value>Vision</value>
+    <comment>Vision</comment>
+  </data>
+  <data name="vision_detail" xml:space="preserve">
+    <value>In 2022, seeing it as a model of African justice institutions</value>
+    <comment>In 2022, seeing it as a model of African justice institutions</comment>
+  </data>
+  <data name="welcome_one" xml:space="preserve">
+    <value>Welcome to Ministry of Justice</value>
+    <comment>Welcome to Ministry of Justice</comment>
+  </data>
+  <data name="welcome_two" xml:space="preserve">
+    <value>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
+In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</value>
+    <comment>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
+In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</comment>
   </data>
 </root>

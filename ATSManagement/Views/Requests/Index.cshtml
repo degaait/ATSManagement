@@ -28,7 +28,6 @@
                         @_localization.Getkey("requests")
                     </h2>
                 </div>
-         
             </div>
         </div>
     </div>
@@ -36,7 +35,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-striped table-bordered" id="role">
+                    <table class="table table-striped" id="role">
                         <thead>
                             <tr>
                                 <th>
@@ -57,14 +56,9 @@
                                 <th>
                                     @_localization.Getkey("progress_status")
                                 </th>
-
-                                <th>
-                                    @_localization.Getkey("assingment_remark")
-                                </th>
-
                                 <th>
                                     @_localization.Getkey("institution")
-                                </th> 
+                                </th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -114,22 +108,21 @@
                                         @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
                                     </td>
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
-                                    </td>
 
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Inist.Name)
-                                        <br />
-                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
-                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                        <br /> by <strong>
+                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
+                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                        </strong>
+
                                     </td>
-                                   
+
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="AssignToDepartment" asp-route-id="@item.RequestId">

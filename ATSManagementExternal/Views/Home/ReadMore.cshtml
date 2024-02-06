@@ -9,19 +9,12 @@
     ViewData["Title"] = "Task Tracking Dashboard";
 }
 
-<section id="hero" class="d-flex align-items-center">
-    <div class="container position-relative" data-aos="fade-up" data-aos-delay="500">
-        <h1>@_localization.Getkey("welcome_one")</h1>
-        <h2>@_localization.Getkey("welcome_two")</h2>
-        <a href="#about" class="btn-get-started scrollto">@_localization.Getkey("Get_Started")</a>
-    </div>
-</section>
 <section id="about" class="about" style="background: #f6f9fd">
     <div class="container" style="background:#fff">
 
         <div class="row">
             <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left">
-                <img src="assets/img/Temoty.jpeg" class="img-fluid" alt="">
+                <img src="/assets/img/Temoty.jpeg" class="img-fluid" alt="">
             </div>
             <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right">
                 <h3>@_localization.Getkey("minister_message")  </h3>
@@ -32,14 +25,12 @@
                     <li>
                         <i class="bi bi-check-circle"></i>
                         @_localization.Getkey("paragraph_one")
-
                     </li>
                     <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_two")</li>
                     <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_three")</li>
-
-
+                    <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_four")</li>
+                    <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_five")</li>
                 </ul>
-                <a asp-action="ReadMore" asp-controller="Home" class="btn-get-started scrollto">Read More...</a>
             </div>
         </div>
     </div>
@@ -78,69 +69,13 @@
         </div>
 
     </div>
-</section>
-<section id="services" class="services" style="background: #f6f9fd">
-    <div class="container" style="background:#fff">
-
-        <div class="section-title">
-            <span>@_localization.Getkey("our_services")</span>
-            <h2>@_localization.Getkey("our_services")</h2>
-            <p>@_localization.Getkey("our_services")</p>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bxl-dribbble"></i></div>
-                    <h4><a href="">@_localization.Getkey("litigations")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("litigation_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="150">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-file"></i></div>
-                    <h4><a href="">@_localization.Getkey("Contract_Negotation")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("contract_Negotiation_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-tachometer"></i></div>
-                    <h4><a href="">@_localization.Getkey("Inspection_Followup")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("Inspection_Followup_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="750">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-arch"></i></div>
-                    <h4><a asp-controller="Recomendations" asp-action="Index">@Html.Raw(@_localization.Getkey("recomendations"))</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("registration_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-slideshow"></i></div>
-                    <h4><a href="">@_localization.Getkey("registration")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("registration_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="450">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-world"></i></div>
-                    <h4><a href="">@_localization.Getkey("International_Cases")</a></h4>
-                    <p> @Html.Raw(@_localization.Getkey("International_Cases_description"))</p>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</section>
+</section>        
 <section id="cta" class="cta">
     <div class="container" data-aos="zoom-in">
         <div class="text-center" style="color: #f90202">
             <h3>“ለሕግ፣ ለፍትህ፣ ለርትዕ ”</h3>
             <p> “Endangering human life for profit should be a universal crime.”</p>
-            
+
         </div>
     </div>
 </section>
@@ -190,18 +125,18 @@
                             <input type="email" class="form-control" asp-for="ContactEmail" id="email" placeholder="@_localization.Getkey("Email_Address")" required>
                         </div>
                     </div>
-                    <div class="form-group mt-3">                           
+                    <div class="form-group mt-3">
                         <input type="text" asp-for="ContactCountry" class="form-control" id="name" placeholder="@_localization.Getkey("Country")" required>
                     </div>
                     <div class="form-group mt-3">
-                        <textarea class="form-control" asp-for="ContactDetaiMessage"  rows="5" placeholder="@_localization.Getkey("message")" required></textarea>
+                        <textarea class="form-control" asp-for="ContactDetaiMessage" rows="5" placeholder="@_localization.Getkey("message")" required></textarea>
                     </div>
                     <div class="form-group mt-3">
                         <input asp-for="formFile" class="form-control" />
                     </div>
-                    <div class="form-group mt-3"><input type="submit" class="btn btn-success" value="@_localization.Getkey("send")"/></div>
+                    <div class="form-group mt-3"><input type="submit" class="btn btn-success" value="@_localization.Getkey("send")" /></div>
                 </form>
             </div>
         </div>
     </div>
-</section><!-- End Contact Section -->
+</section>

@@ -67,6 +67,7 @@ namespace ATSManagement.Controllers
                 tblRequest = _context.TblRequests
                     .Include(t => t.AssignedByNavigation)
                     .Include(t => t.Inist)
+                    .Include(t => t.ServiceType)
                     .Include(t => t.RequestedByNavigation)
                     .Include(t => t.CreatedByNavigation)
                     .Include(x => x.ExternalRequestStatus)
@@ -854,6 +855,7 @@ namespace ATSManagement.Controllers
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
                                                     .Include(t => t.TopStatus)
+                                                    .Include(t => t.ServiceType)
                                                     .Include(x => x.ExternalRequestStatus)
                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
@@ -878,6 +880,7 @@ namespace ATSManagement.Controllers
                 tblRequest = _context.TblRequests
                                                     .Include(t => t.AssignedByNavigation)
                                                     .Include(t => t.Inist)
+                                                    .Include(t => t.ServiceType)
                                                     .Include(t => t.TopStatus)
                                                     .Include(t => t.RequestedByNavigation)
                                                     .Include(t => t.CreatedByNavigation)
@@ -911,6 +914,7 @@ namespace ATSManagement.Controllers
                 Request = _context.TblRequests
                                  .Include(t => t.AssignedByNavigation)
                                  .Include(t => t.Inist)
+                                 .Include(t => t.ServiceType)
                                  .Include(s => s.TopStatus)
                                  .Include(t => t.RequestedByNavigation)
                                  .Include(t => t.CreatedByNavigation)
@@ -1319,7 +1323,7 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> RequestActivities(Guid? id)
         {
-            var atsdbContext = _context.TblActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request);
+            var atsdbContext = _context.TblActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request).Where(s => s.RequestId == id);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> RequestAdjornies(Guid? id)

@@ -41,41 +41,29 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <table class="table table-striped table-bordered" id="role">
+                        <table class="table table-striped" id="role">
                             <thead>
                                 <tr>
                                     <th>
+                                        @_localization.Getkey("created_Date")
+                                    </th>
+                                    <th>
+                                        @_localization.Getkey("service_types")
+                                    </th>
+                                    <th>
                                         @_localization.Getkey("Detail")
-                                    </th>
-                                    <th>
-                                        @_localization.Getkey("CreatedDate")
-                                    </th>
-                                    <th>
-                                        @_localization.Getkey("Sending_Remark")
                                     </th>
                                     <th>
                                         @_localization.Getkey("priority")
                                     </th>
                                     <th>
-                                        @_localization.Getkey("final_status")
-                                    </th>
-                                    <th>
-                                        @_localization.Getkey("Assigned_by")
-                                    </th>
-                                    <th>
-                                        @_localization.Getkey("user")
-                                    </th>
-                                    <th>
-                                        @_localization.Getkey("serviceType")
-                                    </th>
-                                    <th>
-                                        @_localization.Getkey("department")
+                                        @_localization.Getkey("Sending_Remark")
                                     </th>
                                     <th>
                                         @_localization.Getkey("institution")
                                     </th>
                                     <th>
-                                        @_localization.Getkey("external_users")
+                                        @_localization.Getkey("final_status")
                                     </th>
                                     <th></th>
                                 </tr>
@@ -88,13 +76,13 @@
 
                                     <tr>
                                         <td>
-                                            @Html.Raw(item.RequestDetail)
-                                        </td>
-                                        <td>
                                             @Html.DisplayFor(modelItem => item.CreatedDate)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.SendingRemark)
+                                            @Html.Raw(item.RequestDetail)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
                                         </td>
                                         <td>
                                             @if (item.PriorityId != null)
@@ -103,32 +91,21 @@
                                             }
                                         </td>
                                         <td>
-                                            @Html.Raw(item.TopStatus.StatusName)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
-                                            @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
-                                        </td>
-                                        <td>
-                                            @foreach (var assignees in assigneess)
-                                            {
-                                                @Html.DisplayFor(modelItem => assignees.FirstName)
-                                                @Html.DisplayFor(modelItem => assignees.MidleName)
-                                            }
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.CaseType)
-                                        </td>
-                                        <td>
-                                            <label>Civil Justice Administration</label>
+                                            @Html.DisplayFor(modelItem => item.SendingRemark)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Inist.Name)
+                                            by <strong>
+                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
+                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                            </strong>
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                            @Html.Raw(item.TopStatus.StatusName)
                                         </td>
+
+
+
                                         <td>
                                             <div class="btn-list flex-nowrap">
                                                 <div class="dropdown">

@@ -73,6 +73,7 @@ namespace ATSManagement.Controllers
             List<String> depHeadEmail = new List<string>();
             request.ServiceTypeId = requestModel.ServiceTypeID;
             request.IsAssignedTodepartment = true;
+            request.DeputyRemark = requestModel.DeputyRemark;
             if (requestModel.DepId.Length > 0)
             {
                 departmentRelations = new List<TblRequestDepartmentRelation>();

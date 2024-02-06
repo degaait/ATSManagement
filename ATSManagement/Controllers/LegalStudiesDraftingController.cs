@@ -1132,7 +1132,6 @@ namespace ATSManagement.Controllers
                 Request = new TblRequest();
                 Request = _context.TblRequests
                                   .Include(t => t.AssignedByNavigation)
-                                  .Include(t => t.CaseType)
                                   .Include(t => t.Inist)
                                   .Include(s => s.DocType)
                                   .Include(s => s.ServiceType)
@@ -1351,7 +1350,7 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> RequestActivities(Guid? id)
         {
-            var atsdbContext = _context.TblActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request);
+            var atsdbContext = _context.TblActivities.Include(t => t.CreatedByNavigation).Include(t => t.Request).Where(s => s.RequestId == id);
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> DeleteReply(Guid? id)
@@ -1493,21 +1492,56 @@ namespace ATSManagement.Controllers
                 Value = d.DocId.ToString(),
                 Text = d.DocName
             }).ToList();
+            model.Year = _context.TblYears.Select(s => new SelectListItem
+            {
+                Value = s.YearId.ToString(),
+                Text = s.Year
+
+            }).ToList();
 
 
-            //IQueryable<TblRequest>? atsdbContext = _context.TblRequests
-            //   .Include(t => t.AssignedByNavigation)
-            //   .Include(t => t.DocType)
-            //   .Include(x => x.ServiceType)
-            //   .Include(t => t.Dep)
-            //   .Include(t => t.Inist)
-            //   .Include(t => t.RequestedByNavigation)
-            //   .Include(x => x.ExternalRequestStatus)
-            //   .Include(x => x.DepartmentUpprovalStatusNavigation)
-            //   .Include(x => x.DeputyUprovalStatusNavigation)
-            //   .Include(y => y.TeamUpprovalStatusNavigation)
-            //   .Include(t => t.Priority).Where(x => x.Dep.DepCode == "LSDC"&&x.IsArchived==true);
             return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> ArchivedRequests(ArchiveFilterModel filterModel)
+        {
+            List<TblRequest>? atsdbContext = new List<TblRequest>();
+            var departmental = _context.TblRequestDepartmentRelations
+                                                                  .Include(s => s.Request)
+                                                                  .Where(s => s.Request.IsArchived == true && s.Dep.DepCode == "LSDC").ToList();
+            foreach (var item in departmental)
+            {
+
+            }
+            ViewBag.Requests = departmental;
+
+            ArchiveFilterModel model = new ArchiveFilterModel();
+            model.ServiceType = _context.TblServiceTypes.Where(x => x.DepId == Guid.Parse("159f57e9-bc26-4b6e-859e-c577ce8a86a8")).Select(x => new SelectListItem
+            {
+                Value = x.ServiceTypeId.ToString(),
+                Text = x.ServiceTypeName
+            }).ToList();
+            model.Institution = _context.TblInistitutions.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.InistId.ToString()
+
+            }).ToList();
+            model.DocumentType = _context.TblLegalDraftingDocTypes.Select(d => new SelectListItem
+            {
+                Value = d.DocId.ToString(),
+                Text = d.DocName
+            }).ToList();
+            model.Year = _context.TblYears.Select(s => new SelectListItem
+            {
+                Value = s.YearId.ToString(),
+                Text = s.Year
+
+            }).ToList();
+            return View(filterModel);
+
         }
         public async Task<IActionResult> AssignFromTeam(Guid id)
         {

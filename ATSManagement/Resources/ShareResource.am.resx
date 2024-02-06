@@ -225,13 +225,13 @@
     <value>ከየት ሀገር</value>
     <comment>ከየት ሀገር</comment>
   </data>
-  <data name="CreatedDate" xml:space="preserve">
-    <value>የገባበት ቀን</value>
-    <comment>የገባበት ቀን</comment>
-  </data>
   <data name="created_by" xml:space="preserve">
     <value>የተፈጠረው በ</value>
     <comment>የተፈጠረው በ</comment>
+  </data>
+  <data name="created_Date" xml:space="preserve">
+    <value>የገባበት ቀን</value>
+    <comment>የገባበት ቀን</comment>
   </data>
   <data name="CreateNew" xml:space="preserve">
     <value>አዲስ ጨምር</value>
@@ -277,13 +277,13 @@
     <value>የጉዳይ መግለጫ</value>
     <comment>የጉዳይ መግለጫ</comment>
   </data>
-  <data name="doctype" xml:space="preserve">
-    <value>የሰነድ አይነት</value>
-    <comment>የሰነድ አይነት</comment>
-  </data>
   <data name="documentation" xml:space="preserve">
     <value>ሰነዶች</value>
     <comment>ሰነዶች</comment>
+  </data>
+  <data name="document_type" xml:space="preserve">
+    <value>የሰነድ አይነት</value>
+    <comment>የሰነድ አይነት</comment>
   </data>
   <data name="dueDate" xml:space="preserve">
     <value>የሚጠበቀው የመለኪያ ቀን</value>
@@ -632,7 +632,7 @@
     <value>ማብራሪያ</value>
     <comment>ማብራሪያ</comment>
   </data>
-  <data name="serviceType" xml:space="preserve">
+  <data name="service_types" xml:space="preserve">
     <value>የአገልግሎት ዓይነት</value>
     <comment>የአገልግሎት ዓይነት</comment>
   </data>

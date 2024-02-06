@@ -10,10 +10,9 @@
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 
     var requestLists = (from item in ats.TblRequests
-                        join doctype in ats.TblLegalDraftingDocTypes on item.DocTypeId equals doctype.DocId
                         join priority in ats.TblPriorities on item.PriorityId equals priority.PriorityId
                         join serviceType in ats.TblServiceTypes on item.ServiceTypeId equals serviceType.ServiceTypeId
-                        join insts in ats.TblInspectionInstitutions on item.InistId equals insts.InstitutionId
+                        join insts in ats.TblInspectionInstitutions on item.InistId equals insts.InstitutionId 
                         select new
                         {
                             CreatedDate = item.CreatedDate,
@@ -49,20 +48,22 @@
     </div>
     <div class="col-12">
         <div class="card">
-            <form asp-action="ArchiveRequests" method="post" enctype="multipart/form-data">
+            <br />
+            <form asp-action="ArchivedRequests" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                     <div class="row">
+                        <br />
                         <div class="col-md-6">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="mb-6 row">
                                 <label asp-for="Year" class="col-3 col-form-label">  @_localization.Getkey("year")</label>
                                 <div class="col">
-                                    <input asp-for="Year" class="form-control" />
-                                    <span asp-validation-for="Year" class="text-danger"></span>
+                                    @Html.DropDownListFor(model => model.YearID, new SelectList(Model.Year, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="YearID" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-6 row" id="divServiceType">
-                                <label asp-for="DoctypeId" class="col-3 col-form-label">  @_localization.Getkey("doctype")</label>
+                                <label asp-for="DoctypeId" class="col-3 col-form-label">  @_localization.Getkey("document_type")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.DoctypeId, new SelectList(Model.DocumentType, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="DoctypeId" class="text-danger"></span>
@@ -71,7 +72,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-6 row" id="divServiceType">
-                                <label asp-for="ServiceTypeId" class="col-3 col-form-label">@_localization.Getkey("serviceType")</label>
+                                <label asp-for="ServiceTypeId" class="col-3 col-form-label">@_localization.Getkey("service_types")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceType, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
@@ -100,16 +101,16 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("doctype")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("serviceType")
+                                    @_localization.Getkey("service_Types")
                                 </th>
                                 <th>
                                     @_localization.Getkey("Details")
                                 </th>
                                 <th>
                                     @_localization.Getkey("year")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("document_type")
                                 </th>
                                 <th>
                                     @_localization.Getkey("institution")

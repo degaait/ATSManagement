@@ -5,7 +5,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Home Page";
-
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var loggedUser = ats.TblInternalUsers.Find(userId);
 }
 
 <div class="pagetitle">
@@ -17,21 +18,159 @@
     <div class="row">
         <div class="col-xxl-6 col-xl-6">
             <div class="card info-card sales-card">
-                <a asp-action="Index" asp-controller="Requests">
-                    <div class="card-body">
-                        <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
 
-                        <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bx bx-help-circle"></i>
-                            </div>
-                            <div class="ps-3" style="justify-content:center">
-                                <h6>( @ViewBag.NewRequests )</h6>
-                                <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                @if (loggedUser.IsSuperAdmin == true || loggedUser.IsDeputy == true)
+                {
+                    <a asp-action="Index" asp-controller="Requests">
+                        <div class="card-body">
+                            <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bx bx-help-circle"></i>
+                                </div>
+                                <div class="ps-3" style="justify-content:center">
+                                    <h6>( @ViewBag.NewRequests )</h6>
+                                    <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+
+                }
+                else if (loggedUser.IsDepartmentHead == true)
+                {
+                    if (loggedUser.Dep.DepCode == "LSDC")
+                    {
+                        <a asp-action="Index" asp-controller="LegalStudiesDrafting">
+                            <div class="card-body">
+                                <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bx bx-help-circle"></i>
+                                    </div>
+                                    <div class="ps-3" style="justify-content:center">
+                                        <h6>( @ViewBag.NewRequests )</h6>
+                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                    else if (loggedUser.Dep.DepCode == "CVA")
+                    {
+                        <a asp-action="Index" asp-controller="CivilJustices">
+                            <div class="card-body">
+                                <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bx bx-help-circle"></i>
+                                    </div>
+                                    <div class="ps-3" style="justify-content:center">
+                                        <h6>( @ViewBag.NewRequests )</h6>
+                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+                else if (loggedUser.IsTeamLeader == true)
+                {
+                    if (loggedUser.Dep.DepCode == "LSDC")
+                    {
+                        <a asp-action="Index" asp-controller="LegalStudiesDrafting">
+                            <div class="card-body">
+                                <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bx bx-help-circle"></i>
+                                    </div>
+                                    <div class="ps-3" style="justify-content:center">
+                                        <h6>( @ViewBag.NewRequests )</h6>
+                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                    else if (loggedUser.Dep.DepCode == "CVA")
+                    {
+                        <a asp-action="Index" asp-controller="CivilJustices">
+                            <div class="card-body">
+                                <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bx bx-help-circle"></i>
+                                    </div>
+                                    <div class="ps-3" style="justify-content:center">
+                                        <h6>( @ViewBag.NewRequests )</h6>
+                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    } 
+                }
+                else if (loggedUser.IsDefaultUser == true)
+                {
+                    if (loggedUser.Dep.DepCode == "LSDC")
+                    {
+                        <a asp-action="Index" asp-controller="LegalStudiesDrafting">
+                            <div class="card-body">
+                                <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bx bx-help-circle"></i>
+                                    </div>
+                                    <div class="ps-3" style="justify-content:center">
+                                        <h6>( @ViewBag.NewRequests )</h6>
+                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Index" asp-controller="CivilJustices">
+                            <div class="card-body">
+                                <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bx bx-help-circle"></i>
+                                    </div>
+                                    <div class="ps-3" style="justify-content:center">
+                                        <h6>( @ViewBag.NewRequests )</h6>
+                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                    <a asp-action="Index" asp-controller="Requests">
+                        <div class="card-body">
+                            <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bx bx-help-circle"></i>
+                                </div>
+                                <div class="ps-3" style="justify-content:center">
+                                    <h6>( @ViewBag.NewRequests )</h6>
+                                    <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+
+
 
             </div>
         </div>

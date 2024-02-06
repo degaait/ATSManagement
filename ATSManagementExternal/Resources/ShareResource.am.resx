@@ -324,6 +324,10 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>ሙሉ ስም</value>
     <comment>ሙሉ ስም</comment>
   </data>
+  <data name="Get_Started" xml:space="preserve">
+    <value>ጀምር</value>
+    <comment>ጀምር</comment>
+  </data>
   <data name="help" xml:space="preserve">
     <value>እገዛ</value>
     <comment>እገዛ</comment>
@@ -4554,6 +4558,18 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>መልዕክት/ጥያቄ</value>
     <comment>መልዕክት/ጥያቄ</comment>
   </data>
+  <data name="minister_message" xml:space="preserve">
+    <value>የፍትህ ሚኒስቴሩ መልዕክት</value>
+    <comment>የፍትህ ሚኒስቴሩ መልዕክት</comment>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>ተልዕኮ</value>
+    <comment>ተልዕኮ</comment>
+  </data>
+  <data name="mission_detail" xml:space="preserve">
+    <value>የህግ የበላይነትንና ሰብዓዊ መብትን በማክበርና በማስከበር፤ ወንጀልን በመከላከል፣ ሰላምና ደህንነት በማረጋገጥና የመንግስትንና የህዝብን ጥቅም በማስጠበቅ፤ የሕዝብ ዓመኔታ ያተረፈ ተደራሽ፣ ቀልጣፋ፣ ፍትሃዊና ውጤታማ የፍትህ አገልግሎት መስጠት፡፡</value>
+    <comment>የህግ የበላይነትንና ሰብዓዊ መብትን በማክበርና በማስከበር፤ ወንጀልን በመከላከል፣ ሰላምና ደህንነት በማረጋገጥና የመንግስትንና የህዝብን ጥቅም በማስጠበቅ፤ የሕዝብ ዓመኔታ ያተረፈ ተደራሽ፣ ቀልጣፋ፣ ፍትሃዊና ውጤታማ የፍትህ አገልግሎት መስጠት፡፡</comment>
+  </data>
   <data name="Mission_Vision" xml:space="preserve">
     <value>ራዕይ፣ተልዕኮና እሴቶች</value>
     <comment>ራዕይ፣ተልዕኮና እሴቶች</comment>
@@ -4629,6 +4645,28 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
   <data name="our_services" xml:space="preserve">
     <value>የምንሰጣቸው አገልግሎቶች</value>
     <comment>የምንሰጣቸው አገልግሎቶች</comment>
+  </data>
+  <data name="paragraph_five" xml:space="preserve">
+    <value>ፍትህ የምክንያታዊነትና የእውነት ማንፀባረቂያ ሲሆን የሕግ የበላይነትን በማክበርና በማስከበር አገራችን በሁሉም መስክ የተለወጠችና የበለጸገች፣ የዴሞክራሲና የፍትህ ተምሳሌት እንድትሆን ለማድረግ በሚከናውኑ ተግባራት ላይ መላው የአገራችን ህዝብ ከጎናችን በመቆም የሕግ የበላይነትን በማስፈንና ተቋማዊ ለውጡን ለማረጋገጥ በምንሰራው ስራ በባለቤትነት ንቁ ተሳትፎ በማድረግ የለውጡ ፈፃሚና ዋና ተዋናኝ እንድትሆኑ መልዕክቴን አስተላልፋለሁ፡፡</value>
+    <comment>ፍትህ የምክንያታዊነትና የእውነት ማንፀባረቂያ ሲሆን የሕግ የበላይነትን በማክበርና በማስከበር አገራችን በሁሉም መስክ የተለወጠችና የበለጸገች፣ የዴሞክራሲና የፍትህ ተምሳሌት እንድትሆን ለማድረግ በሚከናውኑ ተግባራት ላይ መላው የአገራችን ህዝብ ከጎናችን በመቆም የሕግ የበላይነትን በማስፈንና ተቋማዊ ለውጡን ለማረጋገጥ በምንሰራው ስራ በባለቤትነት ንቁ ተሳትፎ በማድረግ የለውጡ ፈፃሚና ዋና ተዋናኝ እንድትሆኑ መልዕክቴን አስተላልፋለሁ፡፡</comment>
+  </data>
+  <data name="paragraph_four" xml:space="preserve">
+    <value>ተቋሙ የህብረተሰቡን ተሳትፎ በማረጋገጥ የህዝብና የመንግስት አመኔታ የተቸረው ተቋም በመሆን የሀገራችንን ሰላም አስተማማኝና ዘላቂ በማድረግ የተጀመረው የልማት፣ የሰላም፣ የዲሞክራሲ ስርዓት ግንባታ እንዲጎለብት ብሎም የፍትህ ሥርዓትን ግልፅነት፣ ነፃነትና ተጠያቂነት አሰራርን በማሻሻል በርካታ ተግባራት የተከናወኑ ሲሆን በዘላቂነት ለውጡን ለማፋጠን የነቃና የተጠናከረ የህዝብ እና የባለድርሻ አካላት ተሳትፎ ከመቸውም ጊዜ በላይ ያስፈልጋል፡፡ ፍትህ የምርጫ ጉዳይ ሳይሆን የህልውና መሰረት ነው፡፡</value>
+    <comment>ተቋሙ የህብረተሰቡን ተሳትፎ በማረጋገጥ የህዝብና የመንግስት አመኔታ የተቸረው ተቋም በመሆን የሀገራችንን ሰላም አስተማማኝና ዘላቂ በማድረግ የተጀመረው የልማት፣ የሰላም፣ የዲሞክራሲ ስርዓት ግንባታ እንዲጎለብት ብሎም የፍትህ ሥርዓትን ግልፅነት፣ ነፃነትና ተጠያቂነት አሰራርን በማሻሻል በርካታ ተግባራት የተከናወኑ ሲሆን በዘላቂነት ለውጡን ለማፋጠን የነቃና የተጠናከረ የህዝብ እና የባለድርሻ አካላት ተሳትፎ ከመቸውም ጊዜ በላይ ያስፈልጋል፡፡ ፍትህ የምርጫ ጉዳይ ሳይሆን የህልውና መሰረት ነው፡፡</comment>
+  </data>
+  <data name="paragraph_one" xml:space="preserve">
+    <value>ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ ተግባራዊ እንቅስቃሴ ሊረጋገጥ አይችልም፡፡
+ የአገራችን የፍትህ ዘርፍ ታሪክ ስር በሰደዱ አናቂ የሕግና የአሰራር እንዲሁም የአመለካካት ችግሮች የተተበተበ እና የጉልበተኞች ምርኮኛ እንደነበር ይታወሳል፡፡</value>
+    <comment>ፍትህ ሚኒስቴር የሀገራችን የዴሞክራሲና ፍትህ መሰፈን፣ ፈጣንና ቀጣይነት ያለው ልማት እንዲሁም የህዝቡ የላቀ ተጠቃሚነት ያለ ሕግ የበላይነትና የፍትህ ዘርፍ ተግባራዊ እንቅስቃሴ ሊረጋገጥ አይችልም፡፡
+ የአገራችን የፍትህ ዘርፍ ታሪክ ስር በሰደዱ አናቂ የሕግና የአሰራር እንዲሁም የአመለካካት ችግሮች የተተበተበ እና የጉልበተኞች ምርኮኛ እንደነበር ይታወሳል፡፡</comment>
+  </data>
+  <data name="paragraph_three" xml:space="preserve">
+    <value>ፍትህ ሚኒስቴር በአገራዊ የለውጥ ጉዞ ዳር ለማድረስ በሚደረገው ሰፊና ሁለንተናዊ ርብርብ ምቹ ሁኔታ በመፍጠር በአዋጅ ቁጥር 943/2008 በተሰጠው ስልጣን የፍትህ እና ሕገ መንግስታዊ ሥርዓቱን በማክበርና ማስከበር፣ የሕግ የበላይነትን ማረጋገጥ፣ ፍትህን በማስፈን፣ የዜጎች ሰብአዊና ዴሞክራሲያዊ መብቶች እንዲረጋገጡ ሀገራዊ ተልዕኮውን ከመቸውም ጊዜ በላቀ ደረጃ በመወጣት ላይ ነው፡፡</value>
+    <comment>ፍትህ ሚኒስቴር በአገራዊ የለውጥ ጉዞ ዳር ለማድረስ በሚደረገው ሰፊና ሁለንተናዊ ርብርብ ምቹ ሁኔታ በመፍጠር በአዋጅ ቁጥር 943/2008 በተሰጠው ስልጣን የፍትህ እና ሕገ መንግስታዊ ሥርዓቱን በማክበርና ማስከበር፣ የሕግ የበላይነትን ማረጋገጥ፣ ፍትህን በማስፈን፣ የዜጎች ሰብአዊና ዴሞክራሲያዊ መብቶች እንዲረጋገጡ ሀገራዊ ተልዕኮውን ከመቸውም ጊዜ በላቀ ደረጃ በመወጣት ላይ ነው፡፡</comment>
+  </data>
+  <data name="paragraph_two" xml:space="preserve">
+    <value>በተጀመረው አዲስ የለውጥ ምዕራፍ ተቋማችን የሕግ እና ፍትህ ሪፎርም በማከናወን እንዲሁም የአሰራር ችግሮችን በማሻሻል፣ ከሰብአዊ መብት አኳያ የሕግ ታራሚዎችን አያያዝ በማስተካከል ተቋማዊ አግልግሎትን ቀልጣፋ፣ ፍትሀዊና ውጤታማ የሆኑ የፍትህ ተደራሽነትን በማረጋገጥ ዘርፈ ብዙ መሠረታዊ የለውጥ ተግባራትን አከናውኗል፣በማከናወን ላይም ይገኛል፡፡</value>
+    <comment>በተጀመረው አዲስ የለውጥ ምዕራፍ ተቋማችን የሕግ እና ፍትህ ሪፎርም በማከናወን እንዲሁም የአሰራር ችግሮችን በማሻሻል፣ ከሰብአዊ መብት አኳያ የሕግ ታራሚዎችን አያያዝ በማስተካከል ተቋማዊ አግልግሎትን ቀልጣፋ፣ ፍትሀዊና ውጤታማ የሆኑ የፍትህ ተደራሽነትን በማረጋገጥ ዘርፈ ብዙ መሠረታዊ የለውጥ ተግባራትን አከናውኗል፣በማከናወን ላይም ይገኛል፡፡</comment>
   </data>
   <data name="Participants" xml:space="preserve">
     <value>የስብሰባዉ ተሳታፊዎች </value>
@@ -4706,8 +4744,52 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>የጥያቄው ሁኔታ</value>
     <comment>የጥያቄው ሁኔታ</comment>
   </data>
+  <data name="temoty_message" xml:space="preserve">
+    <value>የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት</value>
+    <comment>የክቡር ፍትህ ሚኒስቴሩ ዶክተር ጌዲዮን ጢሞቲዎስ መልዕክት</comment>
+  </data>
   <data name="useful_Links" xml:space="preserve">
     <value>ጠቃሚ መስፈንጠሪያዎች</value>
     <comment>ጠቃሚ መስፈንጠሪያዎች</comment>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>እሴቶች</value>
+    <comment>እሴቶች</comment>
+  </data>
+  <data name="values_detail" xml:space="preserve">
+    <value>ሰብዓዊ ክብር
+ የሕግ የበላይነት
+ ታማኝነት
+ ተጠያቂነትና ግልጽነት
+ ሙያዊ ብቃት/ፕሮፌሽናሊዝም/
+ ትብብርና አጋርነት
+ ፍትሐዊነት</value>
+    <comment>ሰብዓዊ ክብር
+ የሕግ የበላይነት
+ ታማኝነት
+ ተጠያቂነትና ግልጽነት
+ ሙያዊ ብቃት/ፕሮፌሽናሊዝም/
+ ትብብርና አጋርነት
+ ፍትሐዊነት</comment>
+  </data>
+  <data name="values_vision_mission" xml:space="preserve">
+    <value>የኢ.ፌ.ዲ.ሪ ፍትሕ ሚኒስቴር ራዕይ፣ተልዕኮና እሴቶች</value>
+    <comment>የኢ.ፌ.ዲ.ሪ ፍትሕ ሚኒስቴር ራዕይ፣ተልዕኮና እሴቶች</comment>
+  </data>
+  <data name="vision" xml:space="preserve">
+    <value>ራዕይ</value>
+    <comment>ራዕይ</comment>
+  </data>
+  <data name="vision_detail" xml:space="preserve">
+    <value>በ2022 የአፍሪካ የፍትሕ ተቋማት ተምሳሌት ሆኖ ማየት</value>
+    <comment>በ2022 የአፍሪካ የፍትሕ ተቋማት ተምሳሌት ሆኖ ማየት</comment>
+  </data>
+  <data name="welcome_one" xml:space="preserve">
+    <value>እንኳን ወደ ፍትህ ሚኒስቴር በደህና መጡ</value>
+    <comment>እንኳን ወደ ፍትህ ሚኒስቴር በደህና መጡ</comment>
+  </data>
+  <data name="welcome_two" xml:space="preserve">
+    <value>በ2024/25 የህግ የበላይነትን የሚያረጋግጥ የህዝብና የመንግስት እምነትን በህዝብ ተሳትፎ የሚያሸንፍ የፍትህ ሚኒስቴር ተቋምን ማየት።</value>
+    <comment>በ2024/25 የህግ የበላይነትን የሚያረጋግጥ የህዝብና የመንግስት እምነትን በህዝብ ተሳትፎ የሚያሸንፍ የፍትህ ሚኒስቴር ተቋምን ማየት።</comment>
   </data>
 </root>

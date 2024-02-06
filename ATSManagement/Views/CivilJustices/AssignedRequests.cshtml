@@ -37,26 +37,32 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-striped table-bordered" id="role">
+                    <table class="table table-striped" id="role">
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("Details")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("assingment_remark")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("progress_status")
-                                </th>
-                                <th>
-                                    Approval status
-                                </th>
-                                <th>
-                                    @_localization.Getkey("final_status")
+                                    @_localization.Getkey("created_Date")
                                 </th>
                                 <th>
                                     @_localization.Getkey("institution")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("service_types")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Description")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("document_type")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("priority")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("status")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("assingment_remark")
                                 </th>
                                 <th>
                                     @_localization.Getkey("final_report")
@@ -68,56 +74,58 @@
                             @foreach (var item in Model)
                             {
                                 var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
+                                var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
+
                                 <tr>
+
                                     <td>
-                                        @Html.Raw(item.RequestDetail) --> with service type <strong> @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)</strong>
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
-                                        <label>
-                                            .--> @_localization.Getkey("Assigned_to")
-                                            @if (assigneess != null)
-                                            {
-                                                foreach (var assignees in assigneess)
-                                                {
-                                                    @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(modelItem => assignees.MidleName)
-                                                }
-                                            }
-                                        </label> and @_localization.Getkey("Assigned_by")--> <strong>
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                        </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
-                                        <label>
-                                            . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
-                                        </label>
+                                        @Html.DisplayFor(modelItem => item.Inist.Name) <p>
+                                            <label>
+                                                by  <strong>
+                                                    (
+                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                    )
+                                                </strong>
+                                            </label>
+                                        </p>
                                     </td>
                                     <td>
-                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                        @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
                                     </td>
                                     <td>
-                                        <label>Team:-</label>
-                                        @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
-                                        <label>Department:</label>
-                                        @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                        <label>Deputy:</label>
-                                        @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
+                                        @Html.Raw(item.RequestDetail)
                                     </td>
                                     <td>
-                                        @if (item.TopStatus != null)
+                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
+                                        <br />
+                                        @if (documents != null)
                                         {
-                                            @Html.Raw(item.TopStatus.StatusName)
+                                            foreach (var paths in documents)
+                                            {
+                                                <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
+
+                                                    View
+                                                </a>
+                                            }
                                         }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Inist.Name) <label>
-                                            -->
-                                            . Focal person <strong>
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                            </strong>
-                                        </label>
+                                        @if (item.PriorityId != null)
+                                        {
+                                            @Html.Raw(item.Priority.PriorityNameWithColor)
+                                        }
                                     </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
+
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                    </td>    
                                     <td>
                                         @if (item.FinalReport != null)
                                         {

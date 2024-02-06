@@ -47,30 +47,32 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <table class="ttable cell-border table-bordered" id="role">
+                <table class="ttable cell-border" id="role">
                     <thead>
                         <tr>
+                            <th>
+                                @_localization.Getkey("created_Date")
+                            </th>
                             <th>
                                 @_localization.Getkey("institution")
                             </th>
                             <th>
-                                @_localization.Getkey("serviceType")
-                            </th>
-
-                            <th>
-                                @_localization.Getkey("Details")
+                                @_localization.Getkey("service_types")
                             </th>
                             <th>
-                                @_localization.Getkey("progress_status")
+                                @_localization.Getkey("Description")
+                            </th>
+                            <th>
+                                @_localization.Getkey("document_type")
+                            </th>
+                            <th>
+                                @_localization.Getkey("priority")
+                            </th>
+                            <th>
+                                @_localization.Getkey("status")
                             </th>
                             <th>
                                 @_localization.Getkey("assingment_remark")
-                            </th>
-                            <th>
-                                @_localization.Getkey("final_status")
-                            </th>
-                            <th>
-                                Approval status
                             </th>
                             <th></th>
                         </tr>
@@ -81,79 +83,58 @@
                             var isRequest = (from items in ats.TblLegalStudiesDraftings where items.RequestId == item.RequestId select items).FirstOrDefault();
                             var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
                             var team = (from teamsrelations in ats.TblRequestDepartmentRelations join teams in ats.TblTeams on teamsrelations.TeamId equals teams.TeamId where teamsrelations.RequestId == item.RequestId select teams).FirstOrDefault();
+                            var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
+
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Inist.Name) <label>
-                                        -->
-                                        . Focal person <strong>
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                        </strong>
-                                    </label>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Inist.Name) <p>
+                                        <label>
+                                            by  <strong>
+                                                (
+                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+                                                )
+                                            </strong>
+                                        </label>
+                                    </p>
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
-                                    <label>. And Document type is </label>
+                                </td>
+                                <td>
+                                    @Html.Raw(item.RequestDetail)
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.DocType.DocName)
                                     <br />
-                                    @if (item.DocumentFile != null)
+                                    @if (documents != null)
                                     {
-                                        <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.DocumentFile">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                <path d="M12 17v-6"></path>
-                                                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                            </svg>
-                                            @_localization.Getkey("view_file")
-                                        </a>
+                                        foreach (var paths in documents)
+                                        {
+                                            <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
+
+                                                View
+                                            </a>
+                                        }
                                     }
                                 </td>
                                 <td>
-                                    @Html.Raw(item.RequestDetail) --> with service type <strong> @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)</strong>
+                                    @if (item.PriorityId != null)
+                                    {
+                                        @Html.Raw(item.Priority.PriorityNameWithColor)
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AssingmentRemark)
+
                                 </td>
                                 <td>
                                     @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
                                     -->   @Html.DisplayFor(modelItem => team.TeamName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AssingmentRemark)
-                                    <label>
-                                        .--> @_localization.Getkey("Assigned_to")
-                                        @if (assigneess != null)
-                                        {
-                                            foreach (var assignees in assigneess)
-                                            {
-                                                @Html.DisplayFor(modelItem => assignees.FirstName)<label>&nbsp;</label>
-                                                @Html.DisplayFor(modelItem => assignees.MidleName)
-                                            }
-                                        }
-                                    </label> and @_localization.Getkey("Assigned_by")--> <strong>
-                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                        @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                    </strong> on @Html.DisplayFor(modelItem => item.AssignedDate) with @_localization.Getkey("dueDate") of @Html.DisplayFor(modelItem => item.DueDate)
-                                    <label>
-                                        . This request has @Html.DisplayFor(modelItem => item.Priority.PriorityName)
-                                    </label>
-                                </td>
-
-                                <td>
-                                    <label>Team:-</label>
-                                    @Html.Raw(item.TeamUpprovalStatusNavigation.StatusWithColor)
-                                    <label>Department:</label>
-                                    @Html.Raw(item.DepartmentUpprovalStatusNavigation.StatusWithColor)
-                                    <label>Deputy:</label>
-                                    @Html.Raw(item.DeputyUprovalStatusNavigation.StatusWithColor)
-                                </td>
-                                <td>
-                                    @if (item.TopStatus != null)
-                                    {
-                                        @Html.Raw(item.TopStatus.StatusName)
-                                    }
-                                </td>
-
-
+                                </td>   
                                 <td>
                                     <div class="btn-list flex-nowrap">
                                         <div class="dropdown">

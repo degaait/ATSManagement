@@ -17,8 +17,8 @@ namespace ATSManagement.ViewModels
         public DateTime? CreatedDate { get; set; }
 
         public Guid? CreatedBy { get; set; }
+        public string? DeputyRemark { get; set; }
 
-      
 
         public Guid? CaseTypeId { get; set; }
 

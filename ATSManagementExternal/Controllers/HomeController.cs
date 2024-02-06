@@ -177,5 +177,10 @@ namespace ATSManagementExternal.Controllers
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
 
+        public IActionResult ReadMore()
+        {
+            return View();
+        }
+
     }
 }
