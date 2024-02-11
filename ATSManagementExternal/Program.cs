@@ -1,15 +1,15 @@
-using AspNetCoreHero.ToastNotification;
-using AspNetCoreHero.ToastNotification.Extensions;
-using ATSManagementExternal.IModels;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.Services;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 using NToastNotify;
-using System.Globalization;
 using System.Reflection;
+using System.Globalization;
+using ATSManagementExternal.Models;
+using Microsoft.Extensions.Options;
+using ATSManagementExternal.IModels;
+using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.Services;
+using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.FileProviders;
+using AspNetCoreHero.ToastNotification.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AtsdbContext>(options =>
@@ -53,7 +53,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(300);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

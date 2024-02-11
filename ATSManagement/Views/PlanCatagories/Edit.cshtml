@@ -1,4 +1,4 @@
-﻿@model ATSManagement.Models.TblPlanCatagory
+﻿@model ATSManagement.ViewModels.AnnualPlanCatagory
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -24,7 +24,7 @@
         <div class="card">
             <div class="card-header">
             </div>
-            <form asp-action="Edit">
+            <form asp-action="Edit" asp-controller="PlanCatagories">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">

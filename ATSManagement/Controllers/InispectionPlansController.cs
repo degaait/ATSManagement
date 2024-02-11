@@ -350,7 +350,10 @@ namespace ATSManagement.Controllers
             }
         }
 
-
+        public async Task<IActionResult> Accordion()
+        {
+            return View();
+        }
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblInspectionPlans == null)

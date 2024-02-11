@@ -277,6 +277,10 @@
     <value>የጉዳይ መግለጫ</value>
     <comment>የጉዳይ መግለጫ</comment>
   </data>
+  <data name="diaries" xml:space="preserve">
+    <value>ማስታወሻ ደብተር</value>
+    <comment>ማስታወሻ ደብተር</comment>
+  </data>
   <data name="documentation" xml:space="preserve">
     <value>ሰነዶች</value>
     <comment>ሰነዶች</comment>
@@ -391,6 +395,10 @@
   <data name="institution" xml:space="preserve">
     <value>ተቋም</value>
     <comment>ተቋም</comment>
+  </data>
+  <data name="institution_report" xml:space="preserve">
+    <value>የተቋማት ሪፖርት</value>
+    <comment>የተቋማት ሪፖርት</comment>
   </data>
   <data name="internal_users" xml:space="preserve">
     <value>የውስጥ ተጠቃሚዎች</value>
@@ -520,9 +528,17 @@
     <value>የሂደት ሁኔታ</value>
     <comment>የሂደት ሁኔታ</comment>
   </data>
+  <data name="read_more" xml:space="preserve">
+    <value>ተጨማሪ ያንብቡ</value>
+    <comment>ተጨማሪ ያንብቡ</comment>
+  </data>
   <data name="reassign" xml:space="preserve">
     <value>እንደገና መድብ</value>
     <comment>እንደገና መድብ</comment>
+  </data>
+  <data name="recent_activitiies" xml:space="preserve">
+    <value>የቅርብ ጊዜ ክንውኖች</value>
+    <comment>የቅርብ ጊዜ ክንውኖች</comment>
   </data>
   <data name="Recomendations" xml:space="preserve">
     <value>ምክሮች</value>
@@ -531,6 +547,10 @@
   <data name="recomendation_laws" xml:space="preserve">
     <value>የምክር ህጎች</value>
     <comment>የምክር ህጎች</comment>
+  </data>
+  <data name="recomendation_report" xml:space="preserve">
+    <value>ምክሮች ሪፖርት</value>
+    <comment>ምክሮች ሪፖርት</comment>
   </data>
   <data name="Recommendation_file" xml:space="preserve">
     <value>የምክር ፋይል</value>
@@ -696,6 +716,10 @@
     <value>ርዕስ (አማርኛ)</value>
     <comment>ርዕስ (አማርኛ)</comment>
   </data>
+  <data name="total_inistitution" xml:space="preserve">
+    <value>እነዚህ በዚህ ሥርዓት ውስጥ መለያ ያላቸው ተቋማት ጠቅላላ ቁጥር ናቸው።</value>
+    <comment>እነዚህ በዚህ ሥርዓት ውስጥ መለያ ያላቸው ተቋማት ጠቅላላ ቁጥር ናቸው።</comment>
+  </data>
   <data name="total_inspections" xml:space="preserve">
     <value>ጠቅላላ ምርመራዎች</value>
     <comment>ጠቅላላ ምርመራዎች</comment>
@@ -708,9 +732,17 @@
     <value>ጠቅላላ ተቋማት</value>
     <comment>ጠቅላላ ተቋማት</comment>
   </data>
+  <data name="total_new_question" xml:space="preserve">
+    <value>እነዚህ ለተጠያቂው ክፍል ያልተመደቡ አጠቃላይ የጥያቄዎች ብዛት ነው።</value>
+    <comment>እነዚህ ለተጠያቂው ክፍል ያልተመደቡ አጠቃላይ የጥያቄዎች ብዛት ነው።</comment>
+  </data>
   <data name="total_requests_from_LSDC" xml:space="preserve">
     <value>አጠቃላይ የኤልኤስዲሲ ዲፓርትመንት ጥያቄዎች</value>
     <comment>አጠቃላይ የኤልኤስዲሲ ዲፓርትመንት ጥያቄዎች</comment>
+  </data>
+  <data name="total_urgent_question" xml:space="preserve">
+    <value>እነዚህ አስቸኳይ ምላሽ የሚያስፈልጋቸው አጠቃላይ የጥያቄዎች ብዛት ናቸው።</value>
+    <comment>እነዚህ አስቸኳይ ምላሽ የሚያስፈልጋቸው አጠቃላይ የጥያቄዎች ብዛት ናቸው።</comment>
   </data>
   <data name="unassigned_requests" xml:space="preserve">
     <value>ያልተመደቡ ጥያቄዎች</value>

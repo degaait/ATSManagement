@@ -55,6 +55,9 @@
                     <thead>
                         <tr>
                             <th>
+                                @_localization.Getkey("CreatedDate")
+                            </th>
+                            <th>
                                 @_localization.Getkey("Recomendations")
                             </th>
                             <th>
@@ -66,9 +69,7 @@
                             <th>
                                 @_localization.Getkey("created_by")
                             </th>
-                            <th>
-                                @_localization.Getkey("CreatedDate")
-                            </th>
+
                             <th>
                                 @_localization.Getkey("modificationDate")
                             </th>
@@ -86,6 +87,9 @@
                         {
                             <tr>
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.CreatinDate)
+                                </td>
+                                <td>
                                     @Html.Raw(item.Recomendation)
                                 </td>
                                 <td>
@@ -98,9 +102,7 @@
                                     @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
                                     @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CreatinDate)
-                                </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ModifyDate)
                                 </td>
@@ -114,7 +116,7 @@
                                     <div class="btn-list flex-nowrap">
                                         <div class="dropdown">
                                             <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                Actions
+                                                ...
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RecoId">

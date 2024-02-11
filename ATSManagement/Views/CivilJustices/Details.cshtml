@@ -1,9 +1,11 @@
 ﻿@model ATSManagement.Models.TblRequest
 @using ATSManagement.Services;
+@inject AtsdbContext ats;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = @_localization.Getkey("Detail");
+    var assignees = (from users in ats.TblRequestAssignees where users.RequestId == Model.RequestId select users.User).ToList();
 }
 
 <section class="content-header">
@@ -20,108 +22,154 @@
                 </div>
             </div>
         </div>
-       </div>
-    </section>
-        <section class="content">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="accordion" id="accordion-example">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="heading-1">
-                                            <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
-                                                Request from @Html.DisplayFor(model => model.Inist.Name)  by (
-                                                @if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
-                                                {
-                                                    <strong>Secretary &nbsp;</strong>
-                                                    @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
-                                                }
-                                                @if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
-                                                {
-                                                    <strong> Externa User &nbsp;</strong>
-                                                    @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
-                                                }
-                                                )
-                                            </button>
-                                        </h2>
-                                        <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
-                                            <div class="accordion-body pt-0">
-                                                <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>with the priority of @Html.DisplayFor(model => model.Priority.PriorityName) .It's Case type is <strong>@Html.DisplayFor(model => model.ServiceType.ServiceTypeName)<label>.</label></strong>
-                                                @if (Model.ServiceType.ServiceTypeName == "Contract Negotiation/drafting/review")
-                                                {
-                                                    <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
-                                                }
-                                                else if (Model.ServiceType.ServiceTypeName == "International cases")
-                                                {
-                                                    <label>Specialization: @Html.DisplayFor(model => model.Specialization)</label>
-                                                    <label>Country: @Html.DisplayFor(model => model.Country)</label>
-                                                    <label>Court Center: @Html.DisplayFor(model => model.CourtCenter)</label>
-                                                    <label>Clainmant: @Html.DisplayFor(model => model.Claimant)</label>
-                                                    <label>Respondent: @Html.DisplayFor(model => model.Respondent)</label>
-                                                    <label>Date of Adjournment: @Html.DisplayFor(model => model.DateOfAdjournment)</label>
-                                                    <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
-                                                }
-                                                else if (Model.ServiceType.ServiceTypeName == "ADR activities")
-                                                {
-                                                    <label>ADR Type: @Html.DisplayFor(model => model.Adrtype)</label>
-                                                    <label>Acting as: @Html.DisplayFor(model => model.ActingAs)</label>
-                                                    <label>Claimant: @Html.DisplayFor(model => model.Claimant)</label>
-                                                    <label>Respondent: @Html.DisplayFor(model => model.Respondent)</label>
-                                                    <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
-                                                }
-                                                else if (Model.ServiceType.ServiceTypeName == "Litigation")
-                                                {
-                                                    <label>Litigation Type: @Html.DisplayFor(model => model.LitigationType)</label>
-                                                    <label>Jurisdiction: @Html.DisplayFor(model => model.Jursidiction)</label>
-                                                    <label>Benchi: @Html.DisplayFor(model => model.Bench)</label>
-                                                    <label>Plaintif: @Html.DisplayFor(model => model.Plaintiful)</label>
-                                                    <label>Defendant: @Html.DisplayFor(model => model.Defendent)</label>
-                                                    <label>Date of Judgement: @Html.DisplayFor(model => model.DateofJudgement)</label>
-                                                    <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
-                                                }
-                                                else if (Model.ServiceType.ServiceTypeName == "Legal Advice")
-                                                {
-                                                    <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
-
-                                                }
-                                                @{
-                                                  
-
-                                                    if (Model.ExternalRequestStatusId != null)
+    </div>
+</section>
+<section class="content">
+    <div class="col-12">
+        <div class="card">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="accordion" id="accordion-example">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-1">
+                                    <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                        Request from @Html.DisplayFor(model => model.Inist.Name)  by (
+                                        @if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
+                                        {
+                                            <strong>Secretary &nbsp;</strong>
+                                            @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
+                                            @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
+                                        }
+                                        @if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
+                                        {
+                                            <strong> Externa User &nbsp;</strong>
+                                            @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                            @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
+                                        }
+                                        )
+                                    </button>
+                                </h2>
+                                <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
+                                    <div class="accordion-body pt-0">
+                                        <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate)</code>with the priority of @Html.DisplayFor(model => model.Priority.PriorityName) .It's Case type is <strong>@Html.DisplayFor(model => model.ServiceType.ServiceTypeName)<label>.</label></strong>
+                                        @if (Model.ServiceType.ServiceTypeName == "Contract Negotiation/drafting/review")
+                                        {
+                                            <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                        }
+                                        else if (Model.ServiceType.ServiceTypeName == "International cases")
+                                        {
+                                            <label>Specialization: @Html.DisplayFor(model => model.Specialization)</label>
+                                            <label>Country: @Html.DisplayFor(model => model.Country)</label>
+                                            <label>Court Center: @Html.DisplayFor(model => model.CourtCenter)</label>
+                                            <label>Clainmant: @Html.DisplayFor(model => model.Claimant)</label>
+                                            <label>Respondent: @Html.DisplayFor(model => model.Respondent)</label>
+                                            <label>Date of Adjournment: @Html.DisplayFor(model => model.DateOfAdjournment)</label>
+                                            <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                        }
+                                        else if (Model.ServiceType.ServiceTypeName == "ADR activities")
+                                        {
+                                            <label>ADR Type: @Html.DisplayFor(model => model.Adrtype)</label>
+                                            <label>Acting as: @Html.DisplayFor(model => model.ActingAs)</label>
+                                            <label>Claimant: @Html.DisplayFor(model => model.Claimant)</label>
+                                            <label>Respondent: @Html.DisplayFor(model => model.Respondent)</label>
+                                            <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                        }
+                                        else if (Model.ServiceType.ServiceTypeName == "Litigation")
+                                        {
+                                            <label>Litigation Type: @Html.DisplayFor(model => model.LitigationType)</label>
+                                            <label>Jurisdiction: @Html.DisplayFor(model => model.Jursidiction)</label>
+                                            <label>Benchi: @Html.DisplayFor(model => model.Bench)</label>
+                                            <label>Plaintif: @Html.DisplayFor(model => model.Plaintiful)</label>
+                                            <label>Defendant: @Html.DisplayFor(model => model.Defendent)</label>
+                                            <label>Date of Judgement: @Html.DisplayFor(model => model.DateofJudgement)</label>
+                                            <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                        }
+                                        else if (Model.ServiceType.ServiceTypeName == "Legal Advice")
+                                        {
+                                            <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                        }
+                                        @{
+                                            if (assignees != null)
+                                            {
+                                                <p>
+                                                    <strong>Experts/Handled by </strong>
+                                                    @foreach (var item in assignees)
                                                     {
-                                                        <label>
-                                                            Currently the status of request this request is at
-                                                            <strong>
-
-                                                                @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
-                                                            </strong>
-                                                        </label>
+                                                        <label>@item.FirstName @item.MidleName</label>
                                                     }
+                                                </p>
+                                            }
 
-                                                }
+                                            if (Model.ExternalRequestStatusId != null)
+                                            {
+                                                <label>
+                                                    Currently the status of request this request is at
+                                                    <strong>
 
-                                            </div>
-                                        </div>
+                                                        @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
+                                                    </strong>
+                                                </label>
+                                            }
+                                            if (Model.UserUpprovalStatus != null)
+                                            {
+
+                                                <label>
+                                                    User Uproval
+                                                    <strong>
+
+                                                        @Html.Raw(Model.UserUpprovalStatusNavigation.StatusWithColor)
+                                                    </strong>
+                                                </label>
+                                            }
+                                            if (Model.TeamUpprovalStatus != null)
+                                            {
+                                                <label>
+                                                    Team Uproval
+                                                    <strong>
+
+                                                        @Html.Raw(Model.TeamUpprovalStatusNavigation.StatusWithColor)
+                                                    </strong>
+                                                </label>
+                                            }
+                                            if (Model.DepartmentUpprovalStatus != null)
+                                            {
+                                                <label>
+                                                    Department Uproval
+                                                    <strong>
+
+                                                        @Html.Raw(Model.DepartmentUpprovalStatusNavigation.StatusWithColor)
+                                                    </strong>
+                                                </label>
+                                            }
+                                            if (Model.DeputyUprovalStatus != null)
+                                            {
+                                                <label>
+                                                    Deputy Uproval
+                                                    <strong>
+
+                                                        @Html.Raw(Model.DeputyUprovalStatusNavigation.StatusWithColor)
+                                                    </strong>
+                                                </label>
+                                            }
+                                        }
                                     </div>
                                 </div>
-
-                            </div>
-                        </div>
-                        <div class="card-footer text-end">
-                            <div class="d-flex">
-                                <a asp-action="Index">@_localization.Getkey("backlist")</a>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
 
 
-        </section>
+</section>

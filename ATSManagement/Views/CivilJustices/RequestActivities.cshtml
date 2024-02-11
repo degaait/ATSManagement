@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = _localization.Getkey("Progress_Activities") + ":-Index";
+    ViewData["Title"] = _localization.Getkey("Progress_Activities");
 }
 
 <style type="text/css">
@@ -20,15 +20,12 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("Progress_Activities")+":-Index";
+                        @_localization.Getkey("Progress_Activities");
                     </h2>
                 </div>
-                <!-- Page title actions -->
-
             </div>
         </div>
     </div>
-
 
     <div class="col-12">
         <div class="card">
@@ -40,10 +37,10 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("Detail")
+                                    @_localization.Getkey("datetime")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("datetime")
+                                    @_localization.Getkey("Detail")
                                 </th>
                                 <th>
                                     @_localization.Getkey("created_by")
@@ -58,10 +55,10 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.Raw(item.ActivityDetail)
+                                        @Html.DisplayFor(modelItem => item.AddedDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AddedDate)
+                                        @Html.Raw(item.ActivityDetail)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
@@ -70,7 +67,6 @@
                                     <td>
                                         @Html.Raw(item.Request.RequestDetail)
                                     </td>
-
                                 </tr>
                             }
                         </tbody>

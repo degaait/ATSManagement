@@ -1,10 +1,14 @@
 ﻿@model ATSManagement.ViewModels.RepliesModel
 @using ATSManagement.Services;
 @inject LanguageService _localization
+@inject IHttpContextAccessor _contextAccessor;
+@inject AtsdbContext _context;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = _localization.Getkey("replies") + ":Edit";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
+    Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+    var userInfo = _context.TblInternalUsers.Find(userId);
 }
 <style type="text/css">
     .table thead th {
@@ -97,14 +101,17 @@
                                     <span asp-validation-for="ReplayDetail" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <label asp-for="IsSent" class=" col-3 col-form-label">@_localization.Getkey("you_want_tosend_inst")</label>
-                                <div class="col">
-                                    <input asp-for="IsSent" type="checkbox" class="form-check" />
-                                    <span asp-validation-for="IsSent" class="text-danger"></span>
+                            @if (userInfo.IsDepartmentHead == true)
+                            {
+                                <div class="mb-3 row">
+                                    <label asp-for="IsSent" class=" col-3 col-form-label">@_localization.Getkey("you_want_tosend_inst")</label>
+                                    <div class="col">
+                                        <input asp-for="IsSent" type="checkbox" class="form-check" />
+                                        <span asp-validation-for="IsSent" class="text-danger"></span>
+                                    </div>
                                 </div>
+                            }
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card-footer text-end">

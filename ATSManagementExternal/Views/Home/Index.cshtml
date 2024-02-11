@@ -32,14 +32,11 @@
                     <li>
                         <i class="bi bi-check-circle"></i>
                         @_localization.Getkey("paragraph_one")
-
                     </li>
                     <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_two")</li>
                     <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_three")</li>
-
-
                 </ul>
-                <a asp-action="ReadMore" asp-controller="Home" class="btn-get-started scrollto">Read More...</a>
+                <a asp-action="ReadMore" asp-controller="Home" class="btn-get-started scrollto">@_localization.Getkey("read_more")</a>
             </div>
         </div>
     </div>
@@ -88,48 +85,88 @@
             <p>@_localization.Getkey("our_services")</p>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bxl-dribbble"></i></div>
-                    <h4><a href="">@_localization.Getkey("litigations")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("litigation_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="150">
+
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="150">
                 <div class="icon-box">
                     <div class="icon"><i class="bx bx-file"></i></div>
                     <h4><a href="">@_localization.Getkey("Contract_Negotation")</a></h4>
                     <p>@Html.Raw(@_localization.Getkey("contract_Negotiation_description"))</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-tachometer"></i></div>
-                    <h4><a href="">@_localization.Getkey("Inspection_Followup")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("Inspection_Followup_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="750">
-                <div class="icon-box">
-                    <div class="icon"><i class="bx bx-arch"></i></div>
-                    <h4><a asp-controller="Recomendations" asp-action="Index">@Html.Raw(@_localization.Getkey("recomendations"))</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("registration_description"))</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
                 <div class="icon-box">
                     <div class="icon"><i class="bx bx-slideshow"></i></div>
-                    <h4><a href="">@_localization.Getkey("registration")</a></h4>
-                    <p>@Html.Raw(@_localization.Getkey("registration_description"))</p>
+                    <h4><a href="">@_localization.Getkey("alternativ_disputes")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("alternativ_disputes_description"))</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="450">
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-slideshow"></i></div>
+                    <h4><a href="">@_localization.Getkey("desicion")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("desicion_descrption"))</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="450">
                 <div class="icon-box">
                     <div class="icon"><i class="bx bx-world"></i></div>
                     <h4><a href="">@_localization.Getkey("International_Cases")</a></h4>
                     <p> @Html.Raw(@_localization.Getkey("International_Cases_description"))</p>
                 </div>
             </div>
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-slideshow"></i></div>
+                    <h4><a href="">@_localization.Getkey("commenting")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("commenting_description"))</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-slideshow"></i></div>
+                    <h4><a href="">@_localization.Getkey("registration")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("registration_description"))</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-slideshow"></i></div>
+                    <h4><a href="">@_localization.Getkey("Legal_Advices")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("legal_advice_description"))</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-slideshow"></i></div>
+                    <h4><a href="">@_localization.Getkey("legal_drafting")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("legal_drafting_description"))</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                    <h4><a href="">@_localization.Getkey("litigations")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("litigation_description"))</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-tachometer"></i></div>
+                    <h4><a href="">@_localization.Getkey("Inspection_Followup")</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("Inspection_Followup_description"))</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="750">
+                <div class="icon-box">
+                    <div class="icon"><i class="bx bx-arch"></i></div>
+                    <h4><a asp-controller="Recomendations" asp-action="Index">@Html.Raw(@_localization.Getkey("recomendations"))</a></h4>
+                    <p>@Html.Raw(@_localization.Getkey("registration_description"))</p>
+                </div>
+            </div>
+
+
 
         </div>
 
@@ -199,7 +236,7 @@
                     <div class="form-group mt-3">
                         <input asp-for="formFile" class="form-control" />
                     </div>
-                    <div class="form-group mt-3"><input type="submit" class="btn btn-success" value="@_localization.Getkey("send")"/></div>
+                    <div class="form-group mt-3"><input type="submit" class="btn btn-secondary" value="@_localization.Getkey("send")"/></div>
                 </form>
             </div>
         </div>

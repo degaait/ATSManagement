@@ -1,13 +1,13 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using ATSManagement.Models;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
-using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -69,11 +69,13 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> AssignToDepartment(RequestModel requestModel)
         {
             TblRequest request = await _context.TblRequests.FindAsync(requestModel.RequestId);
+            TblTopStatus topStatus = _context.TblTopStatuses.Where(s => s.StatusName == "In Progress").FirstOrDefault();
             List<TblRequestDepartmentRelation> departmentRelations;
             List<String> depHeadEmail = new List<string>();
             request.ServiceTypeId = requestModel.ServiceTypeID;
             request.IsAssignedTodepartment = true;
             request.DeputyRemark = requestModel.DeputyRemark;
+            request.TopStatusId = topStatus.TopStatusId;
             if (requestModel.DepId.Length > 0)
             {
                 departmentRelations = new List<TblRequestDepartmentRelation>();
@@ -384,5 +386,7 @@ namespace ATSManagement.Controllers
             var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
             return File(bytes, contenttype, Path.GetFileName(filepath));
         }
+
+       
     }
 }

@@ -79,6 +79,7 @@ namespace ATSManagement.Controllers
                 {
                     tblInternalUser.UserId = Guid.NewGuid();
                     tblInternalUser.IsSuperAdmin = userModel.IsSuperAdmin;
+                  
                     if (userModel.specialRoles.ToString() == "IsDeputy")
                     {
                         tblInternalUser.IsDeputy = true;
@@ -97,7 +98,12 @@ namespace ATSManagement.Controllers
                     }
                     if (userModel.specialRoles.ToString() == "IsTeamLeader")
                     {
-                        tblInternalUser.IsTeamLeader = true;
+                       
+                        if (userModel.TeamID.ToString() != "00000000-0000-0000-0000-000000000000" || userModel.TeamID.ToString() != null)
+                        {
+                            tblInternalUser.TeamId = userModel.TeamID;
+                            tblInternalUser.IsTeamLeader = true;
+                        }
                     }
                     else
                     {
@@ -128,10 +134,7 @@ namespace ATSManagement.Controllers
                     tblInternalUser.Password = PawwordEncryption.EncryptPasswordBase64Strig(userModel.Password);
                     tblInternalUser.EmailAddress = userModel.EmailAddress;
                     tblInternalUser.DepId = userModel.DepId;
-                    if (userModel.TeamID.ToString() != "00000000-0000-0000-0000-000000000000"|| userModel.TeamID.ToString()!=null)
-                    {
-                        tblInternalUser.TeamId = userModel.TeamID;
-                    }
+                  
                     _context.Add(tblInternalUser);
                     int saved = await _context.SaveChangesAsync();                   
                     if (saved > 0)

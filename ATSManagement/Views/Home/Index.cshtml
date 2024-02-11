@@ -1,12 +1,13 @@
 ﻿@using ATSManagement.Services;
 @inject AtsdbContext ats;
+@using Microsoft.EntityFrameworkCore;
 @inject IHttpContextAccessor httpsSession;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Home Page";
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
-    var loggedUser = ats.TblInternalUsers.Find(userId);
+    var loggedUser = ats.TblInternalUsers.Include(s=>s.Dep).Where(s=>s.UserId==userId).FirstOrDefault();
 }
 
 <div class="pagetitle">
@@ -30,7 +31,7 @@
                                 </div>
                                 <div class="ps-3" style="justify-content:center">
                                     <h6>( @ViewBag.NewRequests )</h6>
-                                    <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                    <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +52,7 @@
                                     </div>
                                     <div class="ps-3" style="justify-content:center">
                                         <h6>( @ViewBag.NewRequests )</h6>
-                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                        <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +70,7 @@
                                     </div>
                                     <div class="ps-3" style="justify-content:center">
                                         <h6>( @ViewBag.NewRequests )</h6>
-                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                        <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +91,7 @@
                                     </div>
                                     <div class="ps-3" style="justify-content:center">
                                         <h6>( @ViewBag.NewRequests )</h6>
-                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                        <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +109,7 @@
                                     </div>
                                     <div class="ps-3" style="justify-content:center">
                                         <h6>( @ViewBag.NewRequests )</h6>
-                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                        <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +130,7 @@
                                     </div>
                                     <div class="ps-3" style="justify-content:center">
                                         <h6>( @ViewBag.NewRequests )</h6>
-                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                        <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                     </div>
                                 </div>
                             </div>
@@ -147,31 +148,13 @@
                                     </div>
                                     <div class="ps-3" style="justify-content:center">
                                         <h6>( @ViewBag.NewRequests )</h6>
-                                        <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
+                                        <span class="text-primary small pt-1 fw-bold"> @_localization.Getkey("total_new_question")</span> <span class="text-muted small pt-2 ps-1"></span>
                                     </div>
                                 </div>
                             </div>
                         </a>
                     }
-                    <a asp-action="Index" asp-controller="Requests">
-                        <div class="card-body">
-                            <h5 class="card-title"> @_localization.Getkey("new_request") </h5>
-
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bx bx-help-circle"></i>
-                                </div>
-                                <div class="ps-3" style="justify-content:center">
-                                    <h6>( @ViewBag.NewRequests )</h6>
-                                    <span class="text-primary small pt-1 fw-bold"> These are total number of requests that aren't not assigned to responsible department</span> <span class="text-muted small pt-2 ps-1"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
                 }
-
-
-
             </div>
         </div>
         <div class="col-xxl-6 col-xl-6">
@@ -185,7 +168,7 @@
                             </div>
                             <div class="ps-3">
                                 <h6>( @ViewBag.HighPriorityRequests )</h6>
-                                <span class="text-primary small pt-1 fw-bold">These are total number of request those needs urgent response. </span>
+                                <span class="text-primary small pt-1 fw-bold">@_localization.Getkey("total_urgent_question") </span>
                             </div>
                         </div>
                     </div>
@@ -203,7 +186,7 @@
                         </div>
                         <div class="ps-3">
                             <h6>( @ViewBag.Insititutions )</h6>
-                            <span class="text-info small pt-1 fw-bold">These are total number of Inistitutions those have accounts in this dashboard. </span>
+                            <span class="text-info small pt-1 fw-bold">@_localization.Getkey("total_inistitution") </span>
 
                         </div>
                     </div>
@@ -220,7 +203,7 @@
                         </div>
                         <div class="ps-3">
                             <h6>  ( @ViewBag.ReturnedRequests )</h6>
-                            <span class="text-warning small pt-1 fw-bold">These are total number of Inistitutions those have accounts in this dashboard. </span>
+                            <span class="text-warning small pt-1 fw-bold"> @_localization.Getkey("total_inistitution")  </span>
 
 
                         </div>
@@ -238,7 +221,7 @@
     <div class="card">
 
         <div class="card-body">
-            <h5 class="card-title">Recent Activity </h5>
+            <h5 class="card-title">@_localization.Getkey("recent_activitiies") </h5>
             <div class="activity">
                 @{
                     var notifications = (from notes in ats.TblNotifications select notes).ToList();
@@ -298,7 +281,7 @@
 <div class="col-lg-6">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Institution wise report</h5>
+            <h5 class="card-title">@_localization.Getkey("institution_report")</h5>
 
             <!-- Pie Chart -->
             <div id="pieChart"></div>
@@ -327,7 +310,7 @@
 <div class="col-lg-6">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Recomendations report</h5>
+            <h5 class="card-title">@_localization.Getkey("recomendation_report")</h5>
 
             <!-- Donut Chart -->
             <div id="donutChart"></div>

@@ -35,7 +35,7 @@ namespace ATSManagement.Controllers
         public IActionResult Login()
         {
             LoginModels models = new LoginModels();
-            models.Languages = _context.TblLanguages.Select(s => new SelectListItem
+            models.Languages = _context.TblLanguages.OrderByDescending(s=>s.LangId).Select(s => new SelectListItem
             {
                 Value = s.LangId.ToString(),
                 Text = s.Language

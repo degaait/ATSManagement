@@ -74,9 +74,6 @@
                                         <th>
                                             @_localization.Getkey("status")
                                         </th>
-
-
-
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -116,15 +113,7 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.ExternalRequestStatus.StatusName != "New" && item.ExternalRequestStatus.StatusName != "Completed")
-                                                {
-                                                    <div class="p-3 mb-2 bg-warning text-center" style="color: white;">In Progress</div>
-                                                }
-                                                else
-                                                {
-                                                    @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
-                                                }
-
+                                                    @Html.Raw(item.TopStatus.StatusHtml)
                                             </td>
                                             <td>
                                                 <div class="btn-list flex-nowrap">

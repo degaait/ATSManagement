@@ -64,6 +64,9 @@
                                 <th>
                                     @_localization.Getkey("assingment_remark")
                                 </th>
+                                <th>
+                                    @_localization.Getkey("diaries")
+                                </th>
                                 <th></th>
 
                             </tr>
@@ -118,17 +121,25 @@
                                         }
                                     </td>
                                     <td>
-
-                                        <div class="p-3 mb-2 bg-primary text-center" style="color: white;">In Progress</div>
-
-
-
+                                        <div class="p-3 mb-2 bg-warning text-center" style="color: white;">In Progress</div>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                        <strong>Deputy: </strong>@Html.DisplayFor(modelItem => item.AssingmentRemark)  <br />
+                                        <strong>Department: </strong>  @Html.DisplayFor(modelItem => item.DeputyRemark)
                                     </td>
-
-
+                                    <td>
+                                        <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M13 5h8"></path>
+                                                <path d="M13 9h5"></path>
+                                                <path d="M13 15h8"></path>
+                                                <path d="M13 19h5"></path>
+                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                            </svg> &nbsp;
+                                        </a>
+                                    </td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
@@ -150,39 +161,7 @@
                                                             </svg>&nbsp;
                                                             @_localization.Getkey("Uppdate_progress_status")
                                                         </a>
-                                                        <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M13 5h8"></path>
-                                                                <path d="M13 9h5"></path>
-                                                                <path d="M13 15h8"></path>
-                                                                <path d="M13 19h5"></path>
-                                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                            </svg> &nbsp;@_localization.Getkey("Progress_Activities")
-                                                        </a>
-                                                        <a class="dropdown-item" asp-action="RequestAdjornies" asp-route-id="@item.RequestId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M13 5h8"></path>
-                                                                <path d="M13 9h5"></path>
-                                                                <path d="M13 15h8"></path>
-                                                                <path d="M13 19h5"></path>
-                                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                            </svg> &nbsp;@_localization.Getkey("adjournment")
-                                                        </a>
-                                                        <a class="dropdown-item" asp-action="WitnessesandEvidences" asp-route-id="@item.RequestId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M13 5h8"></path>
-                                                                <path d="M13 9h5"></path>
-                                                                <path d="M13 15h8"></path>
-                                                                <path d="M13 19h5"></path>
-                                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                            </svg> &nbsp;@_localization.Getkey("Witnesses_and_Evidences")
-                                                        </a>
+
                                                         <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -227,5 +206,5 @@
         });
 
     </script>
-   
+
 }

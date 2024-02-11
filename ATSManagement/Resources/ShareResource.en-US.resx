@@ -277,6 +277,10 @@
     <value>Case Description</value>
     <comment>Case Description</comment>
   </data>
+  <data name="diaries" xml:space="preserve">
+    <value>Diaries</value>
+    <comment>Diaries</comment>
+  </data>
   <data name="documentation" xml:space="preserve">
     <value>Documentation</value>
     <comment>Documentation</comment>
@@ -384,6 +388,10 @@
   <data name="institution" xml:space="preserve">
     <value>Inistitution</value>
     <comment>Inistitution</comment>
+  </data>
+  <data name="institution_report" xml:space="preserve">
+    <value>Institution wise report</value>
+    <comment>Institution wise report</comment>
   </data>
   <data name="internal_users" xml:space="preserve">
     <value>Internal Users</value>
@@ -527,7 +535,7 @@
     <value>Password</value>
     <comment>Password</comment>
   </data>
-  <data name="Pending_Requests" xml:space="preserve">
+  <data name="pending_requests" xml:space="preserve">
     <value>Pending Requests</value>
     <comment>Pending Requests</comment>
   </data>
@@ -547,6 +555,10 @@
     <value>Progress status</value>
     <comment>Progress status</comment>
   </data>
+  <data name="recent_activitiies" xml:space="preserve">
+    <value>Recent Activity</value>
+    <comment>Recent Activity</comment>
+  </data>
   <data name="Recomendations" xml:space="preserve">
     <value>Recomendations</value>
     <comment>Recomendations</comment>
@@ -554,6 +566,10 @@
   <data name="recomendation_laws" xml:space="preserve">
     <value>Recommendation Laws</value>
     <comment>Recomendation Laws</comment>
+  </data>
+  <data name="recomendation_report" xml:space="preserve">
+    <value>Recomendations report</value>
+    <comment>Recomendations report</comment>
   </data>
   <data name="Recommendation_file" xml:space="preserve">
     <value>Recommendation file</value>
@@ -719,6 +735,10 @@
     <value>Title (Amharic)</value>
     <comment>Title (Amharic)</comment>
   </data>
+  <data name="total_inistitution" xml:space="preserve">
+    <value>These are total number of Inistitutions those have accounts in this system.</value>
+    <comment>These are total number of Inistitutions those have accounts in this system.</comment>
+  </data>
   <data name="total_inspections" xml:space="preserve">
     <value>Total Inspections</value>
     <comment>Total Inspections</comment>
@@ -727,6 +747,10 @@
     <value>Total Institutions</value>
     <comment>Total Institutions</comment>
   </data>
+  <data name="total_new_question" xml:space="preserve">
+    <value>These are total number of requests that aren't not assigned to responsible department</value>
+    <comment>These are total number of requests that aren't not assigned to responsible department</comment>
+  </data>
   <data name="total_requests_from_CJAD" xml:space="preserve">
     <value>Total Requests for CJAD Department</value>
     <comment>Total Requests for CJAD Department</comment>
@@ -734,6 +758,10 @@
   <data name="total_requests_from_LSDC" xml:space="preserve">
     <value>Total Requests for LSDC Department</value>
     <comment>Total Requests for LSDC Department</comment>
+  </data>
+  <data name="total_urgent_question" xml:space="preserve">
+    <value>These are total number of request those needs urgent response.</value>
+    <comment>These are total number of request those needs urgent response.</comment>
   </data>
   <data name="unassigned_requests" xml:space="preserve">
     <value>UnAssigned Request</value>

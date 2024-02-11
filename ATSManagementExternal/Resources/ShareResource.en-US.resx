@@ -141,6 +141,14 @@
     <value>All rights reserved.</value>
     <comment>All rights reserved.</comment>
   </data>
+  <data name="alternativ_disputes" xml:space="preserve">
+    <value>Alternative dispute resolution</value>
+    <comment>Alternative dispute resolution</comment>
+  </data>
+  <data name="alternativ_disputes_description" xml:space="preserve">
+    <value>A service that is requested for resolving civil and commercial disputes through arbitration, negotiation, mediation, conciliation, or other ADR mechanism other than court, requested by the government or by indigent citizens, and such requests include a request to take part in an ADR process</value>
+    <comment>A service that is requested for resolving civil and commercial disputes through arbitration, negotiation, mediation, conciliation, or other ADR mechanism other than court, requested by the government or by indigent citizens, and such requests include a request to take part in an ADR process</comment>
+  </data>
   <data name="appointments" xml:space="preserve">
     <value>Appointments</value>
     <comment>Appointments</comment>
@@ -192,12 +200,14 @@
     <comment>Close</comment>
   </data>
   <data name="commenting" xml:space="preserve">
-    <value>Commenting</value>
-    <comment>Commenting</comment>
+    <value>Legal Commenting</value>
+    <comment>Legal Commenting</comment>
   </data>
   <data name="commenting_description" xml:space="preserve">
-    <value>Commenting different document types like Policy, Strategy and so on.</value>
-    <comment>Commenting different document types like Policy, Strategy and so on.</comment>
+    <value>The Law Editing Service is prepared by the Ministry of Justice to ensure that the draft policies, strategies, laws (proclamations, regulations, guidelines) are prepared in accordance with the Constitution, international agreements accepted by our country, other national laws and follow the principles of law drafting. General work is the work of drafting examination and preparation of comments carried out by the department.
+When a request for legal correction is submitted, it is expected from the requesting government institution to provide a policy prepared on the issue, a preliminary study on the issue, a copy of the draft law in Amharic and English, and an explanation of the draft law in Word format in soft copy and hard copy.</value>
+    <comment>The Law Editing Service is prepared by the Ministry of Justice to ensure that the draft policies, strategies, laws (proclamations, regulations, guidelines) are prepared in accordance with the Constitution, international agreements accepted by our country, other national laws and follow the principles of law drafting. General work is the work of drafting examination and preparation of comments carried out by the department.
+When a request for legal correction is submitted, it is expected from the requesting government institution to provide a policy prepared on the issue, a preliminary study on the issue, a copy of the draft law in Amharic and English, and an explanation of the draft law in Word format in soft copy and hard copy.</comment>
   </data>
   <data name="completed_requests" xml:space="preserve">
     <value>Completed Requests</value>
@@ -216,14 +226,12 @@
     <comment>Contract Negotation</comment>
   </data>
   <data name="Contract_Negotation_description" xml:space="preserve">
-    <value>The role being played by CJADG in this specific task is twofold. One is, serving as a mediator/arbitrator. As per Proclamation No. 1263/2014, MoJ has a mandate to give decisions on a civil dispute arising between two or more government offices. It also mediate or arbitrate disputes between government institutions against private entities based on consents. The second role is CJADG representing government institutions in negotiation/mediation or arbitration. 
-Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which the dispute arising between federal government offices are resolved through judicial means or other than court alternative such as negotiation, mediation, arbitration.</value>
-    <comment>The role being played by CJADG in this specific task is twofold. One is, serving as a mediator/arbitrator. As per Proclamation No. 1263/2014, MoJ has a mandate to give decisions on a civil dispute arising between two or more government offices. It also mediate or arbitrate disputes between government institutions against private entities based on consents. The second role is CJADG representing government institutions in negotiation/mediation or arbitration. 
-Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which the dispute arising between federal government offices are resolved through judicial means or other than court alternative such as negotiation, mediation, arbitration.</comment>
+    <value>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</value>
+    <comment>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</comment>
   </data>
   <data name="contract_Negotiation_description" xml:space="preserve">
-    <value>The CJADG provides Contract Negotiation, Drafting, Review and advices relating to matters of contract amendments/revisions and other contract related issues. Contract preparation and review service to government institutions pursuant to proclamation No. 943/2016 and 1210/20202. It participates or advises concerned government bodies in contract preparation and negotiation of mega projects and in other contracts when it believes that public and government interest could be affected.</value>
-    <comment>The CJADG provides Contract Negotiation, Drafting, Review and advices relating to matters of contract amendments/revisions and other contract related issues. Contract preparation and review service to government institutions pursuant to proclamation No. 943/2016 and 1210/20202. It participates or advises concerned government bodies in contract preparation and negotiation of mega projects and in other contracts when it believes that public and government interest could be affected.</comment>
+    <value>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</value>
+    <comment>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</comment>
   </data>
   <data name="Copyright" xml:space="preserve">
     <value>Copyright</value>
@@ -272,6 +280,14 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="Description" xml:space="preserve">
     <value>Description</value>
     <comment>Description</comment>
+  </data>
+  <data name="desicion" xml:space="preserve">
+    <value>Decision</value>
+    <comment>Decision</comment>
+  </data>
+  <data name="desicion_descrption" xml:space="preserve">
+    <value>A service that is requested for decisions on civil disputes arising between Federal Government Offices in accordance with Article 40(2)(a) of Proclamation No. 1263/2021)</value>
+    <comment>A service that is requested for decisions on civil disputes arising between Federal Government Offices in accordance with Article 40(2)(a) of Proclamation No. 1263/2021)</comment>
   </data>
   <data name="developed_by" xml:space="preserve">
     <value>Designed and Developed by</value>
@@ -338,8 +354,8 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <comment>International Cases</comment>
   </data>
   <data name="International_Cases_description" xml:space="preserve">
-    <value>Internation cases can be served</value>
-    <comment>Internation cases can be served</comment>
+    <value>(Regarding International Civil Cases:- a service that is requested to respond to matters pertaining to international commerce and civil cases that involve FDRE and its instrumentalities; requests to negotiate; requests to defend international commerce and civil lawsuits by providing legal representation; or other requested responses relating to international suits.)</value>
+    <comment>(Regarding International Civil Cases:- a service that is requested to respond to matters pertaining to international commerce and civil cases that involve FDRE and its instrumentalities; requests to negotiate; requests to defend international commerce and civil lawsuits by providing legal representation; or other requested responses relating to international suits.)</comment>
   </data>
   <data name="Jursidiction" xml:space="preserve">
     <value>Jursidiction</value>
@@ -361,6 +377,16 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <value>The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.</value>
     <comment>The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.</comment>
   </data>
+  <data name="legal_drafting" xml:space="preserve">
+    <value>Legal Drafting</value>
+    <comment>Legal Drafting</comment>
+  </data>
+  <data name="legal_drafting_description" xml:space="preserve">
+    <value>One of the responsibilities assigned to the Ministry of Justice is the drafting of laws or drafting of laws, which is carried out by the Directorate General of Legal Research, Drafting and Compilation. It can be a policy, strategy, law (decree, regulation or directive).
+In order to get the services of the Ministry of Justice, government institutions that want to draft a law for them, submit a request for a law draft to get the service, if there is a policy document prepared on the issue, a study document on the issue, and if a draft law is being prepared, the number of the law to be amended or the rule or directive of the draft law, the mother law (authority to issue the rule or directive Proclamation No.) are mentioned and notified as a condition.</value>
+    <comment>One of the responsibilities assigned to the Ministry of Justice is the drafting of laws or drafting of laws, which is carried out by the Directorate General of Legal Research, Drafting and Compilation. It can be a policy, strategy, law (decree, regulation or directive).
+In order to get the services of the Ministry of Justice, government institutions that want to draft a law for them, submit a request for a law draft to get the service, if there is a policy document prepared on the issue, a study document on the issue, and if a draft law is being prepared, the number of the law to be amended or the rule or directive of the draft law, the mother law (authority to issue the rule or directive Proclamation No.) are mentioned and notified as a condition.</comment>
+  </data>
   <data name="litigations" xml:space="preserve">
     <value>Litigation and Representation</value>
     <comment>Litigation and Representation</comment>
@@ -370,16 +396,8 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <comment>Litigation Type</comment>
   </data>
   <data name="litigation_description" xml:space="preserve">
-    <value>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
-The Directorate General represents the federal government offices in civil litigation. It institutes civil suits on behalf of the federal government office; and represent them in civil litigation where they sue or being sued. It represents victims of crime and citizens who do not have financial capacity to institute civil action under federal court.
-It represents institutions in an ongoing civil litigation fully or whenever necessary it run cases jointly or may give direction to government offices on their handling, and to entertain the case by their own. It has responsibilities to implement decisions and causes execution of judgment in accordance with law. 
- 	&lt;strong&gt;Handling International Cases &lt;/strong&gt;
-It also represents the FDRE government at international judicial and quasi-judicial institutions, litigate in consultation with relevant parties the decision.</value>
-    <comment>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
-The Directorate General represents the federal government offices in civil litigation. It institutes civil suits on behalf of the federal government office; and represent them in civil litigation where they sue or being sued. It represents victims of crime and citizens who do not have financial capacity to institute civil action under federal court.
-It represents institutions in an ongoing civil litigation fully or whenever necessary it run cases jointly or may give direction to government offices on their handling, and to entertain the case by their own. It has responsibilities to implement decisions and causes execution of judgment in accordance with law. 
- 	&lt;strong&gt;Handling International Cases &lt;/strong&gt;
-It also represents the FDRE government at international judicial and quasi-judicial institutions, litigate in consultation with relevant parties the decision.</comment>
+    <value>A service that is requested for legal representation by a government institution or indigents relating to civil and commercial suits or on claims of rights and interests, in particular for legal services relating to instituting petitions, responding to pleadings, applying restraint orders, or lodging an appeal before courts or judicial bodies on behalf of or jointly with the federal government office and indigent citizens.</value>
+    <comment>A service that is requested for legal representation by a government institution or indigents relating to civil and commercial suits or on claims of rights and interests, in particular for legal services relating to instituting petitions, responding to pleadings, applying restraint orders, or lodging an appeal before courts or judicial bodies on behalf of or jointly with the federal government office and indigent citizens.</comment>
   </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
@@ -4510,9 +4528,21 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Priority</value>
     <comment>Priority</comment>
   </data>
+  <data name="read_more" xml:space="preserve">
+    <value>Read More...</value>
+    <comment>Read More...</comment>
+  </data>
   <data name="recomendations" xml:space="preserve">
     <value>Recomendations</value>
     <comment>Recomendations</comment>
+  </data>
+  <data name="recomendation_dashboard" xml:space="preserve">
+    <value>Recomendation Dashboard</value>
+    <comment>Recomendation Dashboard</comment>
+  </data>
+  <data name="recomendation_dashboard_description" xml:space="preserve">
+    <value>The Ministry of Justice makes recommendations to different Ethiopina Ministry offices to promote effectiveness, efficiency, economy, and integrity of all programs and operations, including those performed by its contractors and grantees. Recommendations are considered resolved when Ministry offices and Ministry agree on the required corrective actions. After the agreed-upon corrective actions have been completed, the recommendations are considered closed. This Recommendation Dashboard provides the status of Ministry of Justice recommendations.</value>
+    <comment>The Ministry of Justice makes recommendations to different Ethiopina Ministry offices to promote effectiveness, efficiency, economy, and integrity of all programs and operations, including those performed by its contractors and grantees. Recommendations are considered resolved when Ministry offices and Ministry agree on the required corrective actions. After the agreed-upon corrective actions have been completed, the recommendations are considered closed. This Recommendation Dashboard provides the status of Ministry of Justice recommendations.</comment>
   </data>
   <data name="registration" xml:space="preserve">
     <value>Registrations</value>

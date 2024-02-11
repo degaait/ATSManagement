@@ -17,6 +17,7 @@ namespace ATSManagement.ViewModels
         public DateTime? CreatedDate { get; set; }
 
         public Guid? CreatedBy { get; set; }
+        [DataType(DataType.MultilineText)]
         public string? DeputyRemark { get; set; }
 
 

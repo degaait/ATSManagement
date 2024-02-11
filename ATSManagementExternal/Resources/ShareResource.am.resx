@@ -141,6 +141,14 @@
     <value>መብቱ በህግ የተጠበቀ ነው::</value>
     <comment>መብቱ በህግ የተጠበቀ ነው::</comment>
   </data>
+  <data name="alternativ_disputes" xml:space="preserve">
+    <value>አማራጭ የአለመግባባት መፍቻ ዘዴዎች</value>
+    <comment>አማራጭ የአለመግባባት መፍቻ ዘዴዎች</comment>
+  </data>
+  <data name="alternativ_disputes_description" xml:space="preserve">
+    <value>የመንግሥት ተቋማት እርስ በርስ ወይም የመንግሥት ተቋማት ከግለሰቦች ወይም የግል ድርጅቶች የሚኖራቸውን ንግድ ነክና ፍትሐብሔር አለመግባባት በድርድር፣ በስምምነት፣ በዕርቅ ወይም በሌላ ከፍርድ ቤት ውጭ ባለ አማራጭ እንዲፈታ ለማድረግ ወይም አቅመ ደካማ የሆኑ ዜጎች አለመግባባታቸውን ከፍርድ ቤት ውጭ ባለ አማራጭ እንዲፈታላቸው የሚቀርብ አገልግሎት ሲሆን በድርድር፣ የግልግል ዳኝነትና የፍርድ ቤት ወይም ከፊል የዳኝነት አካል በተጀመረ ሂደት ላይ እገዛ እንዲደረግ የሚቀርብ ጥያቄን ያካትታል፡፡</value>
+    <comment>የመንግሥት ተቋማት እርስ በርስ ወይም የመንግሥት ተቋማት ከግለሰቦች ወይም የግል ድርጅቶች የሚኖራቸውን ንግድ ነክና ፍትሐብሔር አለመግባባት በድርድር፣ በስምምነት፣ በዕርቅ ወይም በሌላ ከፍርድ ቤት ውጭ ባለ አማራጭ እንዲፈታ ለማድረግ ወይም አቅመ ደካማ የሆኑ ዜጎች አለመግባባታቸውን ከፍርድ ቤት ውጭ ባለ አማራጭ እንዲፈታላቸው የሚቀርብ አገልግሎት ሲሆን በድርድር፣ የግልግል ዳኝነትና የፍርድ ቤት ወይም ከፊል የዳኝነት አካል በተጀመረ ሂደት ላይ እገዛ እንዲደረግ የሚቀርብ ጥያቄን ያካትታል፡፡</comment>
+  </data>
   <data name="appointments" xml:space="preserve">
     <value>ቀጠሮዎች</value>
     <comment>ቀጠሮዎች</comment>
@@ -200,12 +208,14 @@
     <comment>ዝጋው</comment>
   </data>
   <data name="commenting" xml:space="preserve">
-    <value>አስተያየት መስጠት</value>
-    <comment>አስተያየት መስጠት</comment>
+    <value>የህግ ማረም</value>
+    <comment>የህግ ማረም</comment>
   </data>
   <data name="commenting_description" xml:space="preserve">
-    <value>Commenting different document types like Policy, Strategy and so on.</value>
-    <comment>Commenting different document types like Policy, Strategy and so on.</comment>
+    <value>የህግ ማረም አገልግሎት በመንግስት ተቋማት የተዘጋጀውን ረቂቅ ፖሊሲ፣ ስትራቴጂ፣ ህግ (አዋጅ፣ ደንብ፣ መመሪያ) ከህገ መንግስቱ፣ ሀገራችን ከተቀበለቻቸው ዓለም አቀፍ ስምምነቶች፣ ሌሎች ብሔራዊ ህጎች ጋር ተጣጥሞ የተዘጋጀ መሆኑን እና የህግ ማርቀቅ መርሆችን የተከተለ መሆኑን ለማረጋገጥ በፍትህ ሚኒስቴር የህግ ጥናት፣ ማርቀቅና ማጠቃለል ዳይሬክቶሬት ጄኔራል ስራ ክፍል የሚከናወን የረቂቅ ምርመራ እና አስተያየት ዝግጅት ስራ ነው። 
+የህግ እርማት ጥያቄ ሲቀርብ በጉዳዩ ላይ የተዘጋጀ ፖሊሲ፣ በጉዳዩ ላይ የተደረገ መነሻ ጥናት፣ የረቂቅ ሕጉ የአማርኛ እና የእንግሊዝኛ ቅጂ እንዲሁም የረቂቅ ህጉ ማብራሪያ በዎርድ ፎርማት በሶፍት ኮፒ እና በሃርድ ኮፒ ማቅረብ ከአገልግሎት ጠያቂው የመንግስት ተቋም ይጠበቃል።</value>
+    <comment>የህግ ማረም አገልግሎት በመንግስት ተቋማት የተዘጋጀውን ረቂቅ ፖሊሲ፣ ስትራቴጂ፣ ህግ (አዋጅ፣ ደንብ፣ መመሪያ) ከህገ መንግስቱ፣ ሀገራችን ከተቀበለቻቸው ዓለም አቀፍ ስምምነቶች፣ ሌሎች ብሔራዊ ህጎች ጋር ተጣጥሞ የተዘጋጀ መሆኑን እና የህግ ማርቀቅ መርሆችን የተከተለ መሆኑን ለማረጋገጥ በፍትህ ሚኒስቴር የህግ ጥናት፣ ማርቀቅና ማጠቃለል ዳይሬክቶሬት ጄኔራል ስራ ክፍል የሚከናወን የረቂቅ ምርመራ እና አስተያየት ዝግጅት ስራ ነው። 
+የህግ እርማት ጥያቄ ሲቀርብ በጉዳዩ ላይ የተዘጋጀ ፖሊሲ፣ በጉዳዩ ላይ የተደረገ መነሻ ጥናት፣ የረቂቅ ሕጉ የአማርኛ እና የእንግሊዝኛ ቅጂ እንዲሁም የረቂቅ ህጉ ማብራሪያ በዎርድ ፎርማት በሶፍት ኮፒ እና በሃርድ ኮፒ ማቅረብ ከአገልግሎት ጠያቂው የመንግስት ተቋም ይጠበቃል።</comment>
   </data>
   <data name="completed_requests" xml:space="preserve">
     <value>የተጠናቀቁ ጥያቄዎች </value>
@@ -223,15 +233,9 @@
     <value>የኮንትራት ድርድር</value>
     <comment>የኮንትራት ድርድር</comment>
   </data>
-  <data name="Contract_Negotation_description" xml:space="preserve">
-    <value>The role being played by CJADG in this specific task is twofold. One is, serving as a mediator/arbitrator. As per Proclamation No. 1263/2014, MoJ has a mandate to give decisions on a civil dispute arising between two or more government offices. It also mediate or arbitrate disputes between government institutions against private entities based on consents. The second role is CJADG representing government institutions in negotiation/mediation or arbitration. 
-Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which the dispute arising between federal government offices are resolved through judicial means or other than court alternative such as negotiation, mediation, arbitration.</value>
-    <comment>The role being played by CJADG in this specific task is twofold. One is, serving as a mediator/arbitrator. As per Proclamation No. 1263/2014, MoJ has a mandate to give decisions on a civil dispute arising between two or more government offices. It also mediate or arbitrate disputes between government institutions against private entities based on consents. The second role is CJADG representing government institutions in negotiation/mediation or arbitration. 
-Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which the dispute arising between federal government offices are resolved through judicial means or other than court alternative such as negotiation, mediation, arbitration.</comment>
-  </data>
   <data name="contract_Negotiation_description" xml:space="preserve">
-    <value>The CJADG provides Contract Negotiation, Drafting, Review and advices relating to matters of contract amendments/revisions and other contract related issues. Contract preparation and review service to government institutions pursuant to proclamation No. 943/2016 and 1210/20202. It participates or advises concerned government bodies in contract preparation and negotiation of mega projects and in other contracts when it believes that public and government interest could be affected.</value>
-    <comment>The CJADG provides Contract Negotiation, Drafting, Review and advices relating to matters of contract amendments/revisions and other contract related issues. Contract preparation and review service to government institutions pursuant to proclamation No. 943/2016 and 1210/20202. It participates or advises concerned government bodies in contract preparation and negotiation of mega projects and in other contracts when it believes that public and government interest could be affected.</comment>
+    <value>ግዙፍ የመንግስት ፕሮጀክቶችን ጨምሮ እንደ ግንባታ፣ የእቃ ወይም ምክርን ጨምሮ የአገልግሎት ግዥ ወይም ሌሎች ውሎችን በተመለከተ የተዘጋጁ ረቂቆች እንዲመረመሩ ለማድረግ ወይም ለአንድ ግዢ ለሚከናወንበት ጉዳይ ወይም በግዢ ህጉ መሰረት ለሚሰጥ ስራ ረቂቅ ስምምነት እንዲዘጋጅ ለሚቀርብ ጥያቄ የሚሰጥ አገልግሎት ሲሆን ከውሉ መፈረም አስቀድሞ በሚደረግ የውል ድርድር ተሳትፎ ለማድረግ የሚጠየቅ አገልግሎትን ይጨምራል፡፡</value>
+    <comment>ግዙፍ የመንግስት ፕሮጀክቶችን ጨምሮ እንደ ግንባታ፣ የእቃ ወይም ምክርን ጨምሮ የአገልግሎት ግዥ ወይም ሌሎች ውሎችን በተመለከተ የተዘጋጁ ረቂቆች እንዲመረመሩ ለማድረግ ወይም ለአንድ ግዢ ለሚከናወንበት ጉዳይ ወይም በግዢ ህጉ መሰረት ለሚሰጥ ስራ ረቂቅ ስምምነት እንዲዘጋጅ ለሚቀርብ ጥያቄ የሚሰጥ አገልግሎት ሲሆን ከውሉ መፈረም አስቀድሞ በሚደረግ የውል ድርድር ተሳትፎ ለማድረግ የሚጠየቅ አገልግሎትን ይጨምራል፡፡</comment>
   </data>
   <data name="Copyright" xml:space="preserve">
     <value>የቅጂ መብት</value>
@@ -283,6 +287,14 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
   <data name="Description" xml:space="preserve">
     <value>ማብራሪያ</value>
     <comment>ማብራሪያ</comment>
+  </data>
+  <data name="desicion" xml:space="preserve">
+    <value>አስገዳጅ ውሳኔ መስጠት፡</value>
+    <comment>አስገዳጅ ውሳኔ መስጠት፡</comment>
+  </data>
+  <data name="desicion_descrption" xml:space="preserve">
+    <value>የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ባልተግባቡበት የፍትሐብሔር ጉዳይ ላይ በአዋጅ ቁጥር 1263/2021 አንቀጽ 40(2)(ሀ) መሰረት ውሳኔ እንዲሰጥ የሚቀርብ ጥያቄ ነው፡፡</value>
+    <comment>የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ባልተግባቡበት የፍትሐብሔር ጉዳይ ላይ በአዋጅ ቁጥር 1263/2021 አንቀጽ 40(2)(ሀ) መሰረት ውሳኔ እንዲሰጥ የሚቀርብ ጥያቄ ነው፡፡</comment>
   </data>
   <data name="developed_by" xml:space="preserve">
     <value>ዲዛይን የተደረገውና የበለጸገው በ</value>
@@ -341,8 +353,8 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <comment>ምርመራ እና ክትትል</comment>
   </data>
   <data name="Inspection_Followup_description" xml:space="preserve">
-    <value>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</value>
-    <comment>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</comment>
+    <value>ሁሉም የመንግስት ተቋማት የሚገቡትን ውል እና የፍትሐ ብሔር ጉዳዮች ተፈጥሮ ምንም ይሁን ምን መረጃ እንዲሰጡ በሕግ ይገደዳሉ። ስለዚህ ጉዳያቸው ምን ያህል እንደሆነ ለማወቅና የህዝብን ጥቅም በሚያስጠብቅ መልኩ በተቋማቱ በአግባቡ እየተስተናገዱ መሆኑን ለመፈተሽ ሲኢአድጂ የመንግስት ተቋማትን በአካል ይጎበኛል። በግኝቶቹ መሰረት፣ CJADG ምክሮችን ይሰጣል እና የውሳኔ ሃሳቦቹን አፈፃፀም ይከታተላል። የመረጣቸውን ጉዳዮች በቀጥታ በማስተናገድ ላይም ይሠራል።</value>
+    <comment>ሁሉም የመንግስት ተቋማት የሚገቡትን ውል እና የፍትሐ ብሔር ጉዳዮች ተፈጥሮ ምንም ይሁን ምን መረጃ እንዲሰጡ በሕግ ይገደዳሉ። ስለዚህ ጉዳያቸው ምን ያህል እንደሆነ ለማወቅና የህዝብን ጥቅም በሚያስጠብቅ መልኩ በተቋማቱ በአግባቡ እየተስተናገዱ መሆኑን ለመፈተሽ ሲኢአድጂ የመንግስት ተቋማትን በአካል ይጎበኛል። በግኝቶቹ መሰረት፣ CJADG ምክሮችን ይሰጣል እና የውሳኔ ሃሳቦቹን አፈፃፀም ይከታተላል። የመረጣቸውን ጉዳዮች በቀጥታ በማስተናገድ ላይም ይሠራል።</comment>
   </data>
   <data name="Inspection_Reports" xml:space="preserve">
     <value>የኢንስፔክሽን ሪፖርቶች</value>
@@ -353,8 +365,8 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <comment>ዓለም አቀፍ ጉዳዮች</comment>
   </data>
   <data name="International_Cases_description" xml:space="preserve">
-    <value>Internation cases can be served</value>
-    <comment>Internation cases can be served</comment>
+    <value>የፌዴራል መንግሥት ወይም ተቋማት በውጭ ሀገር የገጠማቸውን ክስ ወይም ንግድ ነክ አለመግባባት አስመልክቶ ምላሽ እንዲሰጥ ወይም ድርድር ላይ ተሳትፎ እንዲደረግ ወይም በዳኝነት አካላት ክርክር እንዲደረግ ወይም ማናቸውም ከአለም አቀፍ ፍትሐብሄር ጉዳይ ጋር በተያያዘ በተቋማት የሚቀርብ የድጋፍ ጥያቄ ነው፡፡</value>
+    <comment>የፌዴራል መንግሥት ወይም ተቋማት በውጭ ሀገር የገጠማቸውን ክስ ወይም ንግድ ነክ አለመግባባት አስመልክቶ ምላሽ እንዲሰጥ ወይም ድርድር ላይ ተሳትፎ እንዲደረግ ወይም በዳኝነት አካላት ክርክር እንዲደረግ ወይም ማናቸውም ከአለም አቀፍ ፍትሐብሄር ጉዳይ ጋር በተያያዘ በተቋማት የሚቀርብ የድጋፍ ጥያቄ ነው፡፡</comment>
   </data>
   <data name="Jursidiction" xml:space="preserve">
     <value>ስልጣን</value>
@@ -369,32 +381,36 @@ Moreover, CJADG as per Proclamation No. 943/2008 determines the manner in which 
     <comment>ቋንቋ</comment>
   </data>
   <data name="Legal_Advices" xml:space="preserve">
-    <value>የህግ ምክሮች</value>
-    <comment>የህግ ምክሮች</comment>
+    <value>የህግ ምክር</value>
+    <comment>የህግ ምክር</comment>
   </data>
   <data name="legal_advice_description" xml:space="preserve">
-    <value>The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.</value>
-    <comment>The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.</comment>
+    <value>ፍትህ ሚኒስቴር በሕግ ጉዳዮች የፌዴራል መንግስትን የማማከር ኃላፊነት በህግ ተሰጥቶታል። ይህን መነሻ በማድረግ ለመንግስት ተቋማት የህግ ምክር አገልግሎት በመስጠት ላይ የሚገኝ ሲሆን በረቂቅ ህግ ዝግጅት፣ በስራ ሂደት የሚያጋጥሙ ህግ ነክ ችግሮች እና በመሳሰሉት ጉዳዮች ላይ ምክር/አስተያየት የሚሰጥበት ሂደት ነው።
+የህግ ምክር አገልግሎት ለማግኘት ምክር የሚፈለግበት ጉዳይ ዝርዝር እና የጉዳዩ አመጣጥ በአግባቡ ተብራርቶ፣ በተቋሙ የስራ ኃላፊ ተፈርሞ እና የተቋሙ ማህተም የተደረገበት ደብዳቤ መቅረብ አስፈላጊ ነው።</value>
+    <comment>ፍትህ ሚኒስቴር በሕግ ጉዳዮች የፌዴራል መንግስትን የማማከር ኃላፊነት በህግ ተሰጥቶታል። ይህን መነሻ በማድረግ ለመንግስት ተቋማት የህግ ምክር አገልግሎት በመስጠት ላይ የሚገኝ ሲሆን በረቂቅ ህግ ዝግጅት፣ በስራ ሂደት የሚያጋጥሙ ህግ ነክ ችግሮች እና በመሳሰሉት ጉዳዮች ላይ ምክር/አስተያየት የሚሰጥበት ሂደት ነው።
+የህግ ምክር አገልግሎት ለማግኘት ምክር የሚፈለግበት ጉዳይ ዝርዝር እና የጉዳዩ አመጣጥ በአግባቡ ተብራርቶ፣ በተቋሙ የስራ ኃላፊ ተፈርሞ እና የተቋሙ ማህተም የተደረገበት ደብዳቤ መቅረብ አስፈላጊ ነው።</comment>
+  </data>
+  <data name="legal_drafting" xml:space="preserve">
+    <value>የሕግ ማርቀቅ</value>
+    <comment>የሕግ ማርቀቅ</comment>
+  </data>
+  <data name="legal_drafting_description" xml:space="preserve">
+    <value>ለፍትህ ሚኒስቴር በህግ ከተሰጡት ኃላፊነቶች መካከል የሕግ ማርቀቅ ወይም የህግ ረቂቅ ማዘጋጀት አገልግሎት አንዱ ሲሆን በሕግ ጥናት፣ ማርቀቅ እና ማጠቃለል ዳሬክቶሬት ጄኔራል የሥራ ክፍል የሚከናወን ነው። የሚረቀቀውም ፖሊሲ፣ ስትራቴጂ፣ ህግ (አዋጅ፣ ደንብ ወይም መመሪያ) ሊሆን ይችላል።
+በፍትሕ ሚኒስቴር ሕግ እንዲረቀቅላቸው የሚፈልጉ የመንግስት ተቋማት አገልግሎቱን ለማግኘት የሕግ ይረቀቅልኝ ጥያቄ ማቅረብ፣ በጉዳዩ ላይ የተዘጋጀ ፖሊሲ ሰነድ ካለ፣ በጉዳዩ ላይ የተደረገ የጥናት ሰነድ እንዲሁም ማሻሻያ ረቂቅ ህግ የሚዘጋጅ ከሆነ የሚሻሻለው ሕግ ቁጥር ወይም የሚረቀቀው ሕግ ደንብ ወይም መመሪያ ከሆነ እናት ሕጉ (ደንብ ወይም መመሪያውን እንዲወጣ ሥልጣን የሚሰጠው አዋጅ ቁጥር) ጠቅሶ ማሳወቅ እንደ ቅድመ ሁኔታ ተቀምጠዋል።</value>
+    <comment>ለፍትህ ሚኒስቴር በህግ ከተሰጡት ኃላፊነቶች መካከል የሕግ ማርቀቅ ወይም የህግ ረቂቅ ማዘጋጀት አገልግሎት አንዱ ሲሆን በሕግ ጥናት፣ ማርቀቅ እና ማጠቃለል ዳሬክቶሬት ጄኔራል የሥራ ክፍል የሚከናወን ነው። የሚረቀቀውም ፖሊሲ፣ ስትራቴጂ፣ ህግ (አዋጅ፣ ደንብ ወይም መመሪያ) ሊሆን ይችላል።
+በፍትሕ ሚኒስቴር ሕግ እንዲረቀቅላቸው የሚፈልጉ የመንግስት ተቋማት አገልግሎቱን ለማግኘት የሕግ ይረቀቅልኝ ጥያቄ ማቅረብ፣ በጉዳዩ ላይ የተዘጋጀ ፖሊሲ ሰነድ ካለ፣ በጉዳዩ ላይ የተደረገ የጥናት ሰነድ እንዲሁም ማሻሻያ ረቂቅ ህግ የሚዘጋጅ ከሆነ የሚሻሻለው ሕግ ቁጥር ወይም የሚረቀቀው ሕግ ደንብ ወይም መመሪያ ከሆነ እናት ሕጉ (ደንብ ወይም መመሪያውን እንዲወጣ ሥልጣን የሚሰጠው አዋጅ ቁጥር) ጠቅሶ ማሳወቅ እንደ ቅድመ ሁኔታ ተቀምጠዋል።</comment>
   </data>
   <data name="litigations" xml:space="preserve">
-    <value>ሙግቶች</value>
-    <comment>ሙግቶች</comment>
+    <value>ክርክር</value>
+    <comment>ክርክር</comment>
   </data>
   <data name="LitigationType" xml:space="preserve">
-    <value>የሙግት አይነት</value>
-    <comment>የሙግት አይነት</comment>
+    <value>ክርክር አይነት</value>
+    <comment>ክርክር አይነት</comment>
   </data>
   <data name="litigation_description" xml:space="preserve">
-    <value>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
-The Directorate General represents the federal government offices in civil litigation. It institutes civil suits on behalf of the federal government office; and represent them in civil litigation where they sue or being sued. It represents victims of crime and citizens who do not have financial capacity to institute civil action under federal court.
-It represents institutions in an ongoing civil litigation fully or whenever necessary it run cases jointly or may give direction to government offices on their handling, and to entertain the case by their own. It has responsibilities to implement decisions and causes execution of judgment in accordance with law. 
- 	&lt;strong&gt;Handling International Cases &lt;/strong&gt;
-It also represents the FDRE government at international judicial and quasi-judicial institutions, litigate in consultation with relevant parties the decision.</value>
-    <comment>&lt;strong&gt;Domestic Representation Cases&lt;/strong&gt;
-The Directorate General represents the federal government offices in civil litigation. It institutes civil suits on behalf of the federal government office; and represent them in civil litigation where they sue or being sued. It represents victims of crime and citizens who do not have financial capacity to institute civil action under federal court.
-It represents institutions in an ongoing civil litigation fully or whenever necessary it run cases jointly or may give direction to government offices on their handling, and to entertain the case by their own. It has responsibilities to implement decisions and causes execution of judgment in accordance with law. 
- 	&lt;strong&gt;Handling International Cases &lt;/strong&gt;
-It also represents the FDRE government at international judicial and quasi-judicial institutions, litigate in consultation with relevant parties the decision.</comment>
+    <value>የፌዴራል የመንግስት ተቋማት ወይም የገንዘብ አቅም የሌላቸው ዜጎች የገጠማቸውን የፍትሐብሔር ወይም ንግድ ነክ የመብትና ጥቅም ጥያቄ በተለይ ለፌዴራል ፍርድ ቤት ወይም ለሌላ የዳኝነት አካል ክስ አቤቱታ እንዲቀርብ፣ ለአቤቱታዎች ምላሽ እንዲሰጥ፣ ወይም እግድና ይግባኝ እንዲቀርብ እንደ አግባብነቱ በጋራ ወይም በተናጠል ክርክር ለማድረግ የሚጠየቅ አገልግሎት ነው፡፡</value>
+    <comment>የፌዴራል የመንግስት ተቋማት ወይም የገንዘብ አቅም የሌላቸው ዜጎች የገጠማቸውን የፍትሐብሔር ወይም ንግድ ነክ የመብትና ጥቅም ጥያቄ በተለይ ለፌዴራል ፍርድ ቤት ወይም ለሌላ የዳኝነት አካል ክስ አቤቱታ እንዲቀርብ፣ ለአቤቱታዎች ምላሽ እንዲሰጥ፣ ወይም እግድና ይግባኝ እንዲቀርብ እንደ አግባብነቱ በጋራ ወይም በተናጠል ክርክር ለማድረግ የሚጠየቅ አገልግሎት ነው፡፡</comment>
   </data>
   <data name="login" xml:space="preserve">
     <value>ግባ</value>
@@ -4684,17 +4700,31 @@ Ebrima;mso-fareast-language:ZH-CN"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/p
     <value>ቅድሚያ ዓይነት</value>
     <comment>ቅድሚያ ዓይነት</comment>
   </data>
+  <data name="read_more" xml:space="preserve">
+    <value>ተጨማሪ ያንብቡ...</value>
+    <comment>ተጨማሪ ያንብቡ...</comment>
+  </data>
   <data name="recomendations" xml:space="preserve">
     <value>ምክሮች</value>
     <comment>ምክሮች</comment>
   </data>
+  <data name="recomendation_dashboard" xml:space="preserve">
+    <value>ምክረ ሀሳቦች ዳሽቦርድ</value>
+    <comment>ምክረ ሀሳቦች ዳሽቦርድ</comment>
+  </data>
+  <data name="recomendation_dashboard_description" xml:space="preserve">
+    <value>የፍትህ ሚኒስቴር በተለያዩ የኢትዮፒና ሚኒስቴር መሥሪያ ቤቶች የሁሉንም ፕሮግራሞች እና ተግባራት ውጤታማነት፣ ቅልጥፍና፣ ኢኮኖሚ እና ታማኝነት ለማሳደግ በተቋራጮች እና በስጦታዎቹ የሚከናወኑትን ጨምሮ የውሳኔ ሃሳቦችን ያቀርባል። የሚኒስቴር መስሪያ ቤቶች እና ሚኒስቴር መስሪያ ቤቶች በሚያስፈልጉት የማስተካከያ ስራዎች ላይ ሲስማሙ ምክረ ሃሳቦች መፍትሄ ያገኛሉ ተብሎ ይታሰባል። የተስማሙበት የእርምት እርምጃዎች ከተጠናቀቁ በኋላ, ምክሮቹ እንደተዘጋ ይቆጠራሉ. ይህ የውሳኔ ሃሳብ ዳሽቦርድ የፍትህ ሚኒስቴር ምክሮችን ሁኔታ ያቀርባል።</value>
+    <comment>የፍትህ ሚኒስቴር በተለያዩ የኢትዮፒና ሚኒስቴር መሥሪያ ቤቶች የሁሉንም ፕሮግራሞች እና ተግባራት ውጤታማነት፣ ቅልጥፍና፣ ኢኮኖሚ እና ታማኝነት ለማሳደግ በተቋራጮች እና በስጦታዎቹ የሚከናወኑትን ጨምሮ የውሳኔ ሃሳቦችን ያቀርባል። የሚኒስቴር መስሪያ ቤቶች እና ሚኒስቴር መስሪያ ቤቶች በሚያስፈልጉት የማስተካከያ ስራዎች ላይ ሲስማሙ ምክረ ሃሳቦች መፍትሄ ያገኛሉ ተብሎ ይታሰባል። የተስማሙበት የእርምት እርምጃዎች ከተጠናቀቁ በኋላ, ምክሮቹ እንደተዘጋ ይቆጠራሉ. ይህ የውሳኔ ሃሳብ ዳሽቦርድ የፍትህ ሚኒስቴር ምክሮችን ሁኔታ ያቀርባል።</comment>
+  </data>
   <data name="registration" xml:space="preserve">
-    <value>ምዝገባዎች</value>
-    <comment>ምዝገባዎች</comment>
+    <value>የመመሪያ ምዝገባ</value>
+    <comment>የመመሪያ ምዝገባ</comment>
   </data>
   <data name="registration_description" xml:space="preserve">
-    <value>Registering different document stypes like Proclamations, Policy and so on</value>
-    <comment>Registering different document stypes like Proclamations, Policy and so on</comment>
+    <value>መመሪያ ሕግ አውጪው አካል በሚሰጠው የውክልና ስልጣን መሰረት በአስተዳደር ተቋም የሚወጣና የተቋሙን ስራ ለማቀላጠፍ የሚያስችል የሕግ ሰነድ ነው። የሚዘጋጀው መመሪያ አዲስ፣ በስራ ላይ ያለ መመሪያን የሚያሻሻል ወይም የሚሽር ሊሆን ይችላል። በአስተዳደር ሥነ ሥርዓት አዋጅ ቁጥር 1183/2012 መሰረት ፍትህ ሚኒስቴር በመንግስት ተቋማት የሚዘጋጁ መመሪያዎችን መዝግቦ ቁጥር በመስጠት ለተደራሽነት በመስሪያ ቤቱ ድረ ገፅ ላይ የመጫን ኃላፊነት ተሰጥቶታል። 
+በተቋማት የሚዘጋጁ መመሪያዎች ከመጽደቃቸው በፊት ከሕዝብ እና ባለድርሻ አካላት ጋር ውይይት ማድረግ፣ ረቂቅ መመሪያውን ለፍትህ ሚኒስቴር አቅርቦ አስተያየት እንዲሰጥበት ማድረግ ይጠበቃል። ይህን ሂደት አልፎ ለምዝገባ የሚላክ መመሪያ በተደረጉት ውይይቶች እና በተሰጡት አስተያየቶች መሰረት ማስተካከያ የተደረገበት እና የአርትኦት ስራ የተሰራበት፣ መመሪያው በአማርኛ እና በኢንግሊዝኛ ቅጂ የተዘጋጀ፣ የመመሪያው ማብራሪያ፣ መመሪያው በአዘጋጅ ተቋሙ በሚመለከተው አካል (ስራ አመራር) የፀደቀ መሆኑን የሚያሳይ ደብዳቤ ተያይዞ መቅረብ አለበት። እነዚህ ሰነዶች በሀርድ ኮፒ እና በሶፍት ኮፒ (በሲዲ) መላክ አለባቸው።</value>
+    <comment>መመሪያ ሕግ አውጪው አካል በሚሰጠው የውክልና ስልጣን መሰረት በአስተዳደር ተቋም የሚወጣና የተቋሙን ስራ ለማቀላጠፍ የሚያስችል የሕግ ሰነድ ነው። የሚዘጋጀው መመሪያ አዲስ፣ በስራ ላይ ያለ መመሪያን የሚያሻሻል ወይም የሚሽር ሊሆን ይችላል። በአስተዳደር ሥነ ሥርዓት አዋጅ ቁጥር 1183/2012 መሰረት ፍትህ ሚኒስቴር በመንግስት ተቋማት የሚዘጋጁ መመሪያዎችን መዝግቦ ቁጥር በመስጠት ለተደራሽነት በመስሪያ ቤቱ ድረ ገፅ ላይ የመጫን ኃላፊነት ተሰጥቶታል። 
+በተቋማት የሚዘጋጁ መመሪያዎች ከመጽደቃቸው በፊት ከሕዝብ እና ባለድርሻ አካላት ጋር ውይይት ማድረግ፣ ረቂቅ መመሪያውን ለፍትህ ሚኒስቴር አቅርቦ አስተያየት እንዲሰጥበት ማድረግ ይጠበቃል። ይህን ሂደት አልፎ ለምዝገባ የሚላክ መመሪያ በተደረጉት ውይይቶች እና በተሰጡት አስተያየቶች መሰረት ማስተካከያ የተደረገበት እና የአርትኦት ስራ የተሰራበት፣ መመሪያው በአማርኛ እና በኢንግሊዝኛ ቅጂ የተዘጋጀ፣ የመመሪያው ማብራሪያ፣ መመሪያው በአዘጋጅ ተቋሙ በሚመለከተው አካል (ስራ አመራር) የፀደቀ መሆኑን የሚያሳይ ደብዳቤ ተያይዞ መቅረብ አለበት። እነዚህ ሰነዶች በሀርድ ኮፒ እና በሶፍት ኮፒ (በሲዲ) መላክ አለባቸው።</comment>
   </data>
   <data name="remark" xml:space="preserve">
     <value>አስተያየት</value>

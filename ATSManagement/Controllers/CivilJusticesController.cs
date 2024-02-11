@@ -1,14 +1,14 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using ATSManagement.Models;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
-using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http.Extensions;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -723,6 +723,32 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
         }
+        public async Task<IActionResult> SendReply(Guid? ReplyId)
+        {
+            TblReplay replay = _context.TblReplays.Find(ReplyId);
+            try
+            {
+
+                replay.IsSent = true;
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Reply successfully sent.");
+                    return RedirectToAction("Replies", new { id = replay.RequestId });
+                }
+                else
+                {
+                    _notifyService.Error("Reply isn't sent. Please try again");
+                    return RedirectToAction("Replies", new { id = replay.RequestId });
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error($"Error: {ex.Message} happened. Please try again.");
+                return RedirectToAction("Replies", new { id = replay.RequestId });
+            }
+
+        }
         public async Task<IActionResult> Replies(Guid? id)
         {
             Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
@@ -842,7 +868,6 @@ namespace ATSManagement.Controllers
         public async Task<IActionResult> CompletedRequests()
         {
             TblTopStatus tblTopStatus = _context.TblTopStatuses.Where(x => x.StatusName == "Completed").FirstOrDefault();
-            Guid? guid = _context.TblExternalRequestStatuses.Where(s => s.StatusName == "Completed").Select(s => s.ExternalRequestStatusId).FirstOrDefault();
 
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
@@ -871,6 +896,7 @@ namespace ATSManagement.Controllers
         }
         public async Task<IActionResult> PendingRequests()
         {
+            TblTopStatus topStatus = _context.TblTopStatuses.Where(s => s.StatusName == "In Progress").FirstOrDefault();
 
             List<TblRequest>? atsdbContext = new List<TblRequest>();
             TblRequest tblRequest;
@@ -889,7 +915,7 @@ namespace ATSManagement.Controllers
                                                     .Include(x => x.DepartmentUpprovalStatusNavigation)
                                                     .Include(x => x.DeputyUprovalStatusNavigation)
                                                     .Include(y => y.TeamUpprovalStatusNavigation)
-                                                    .Include(t => t.Priority).Where(x => x.RequestId == item).FirstOrDefault();
+                                                    .Include(t => t.Priority).Where(x => x.RequestId == item && x.TopStatusId == topStatus.TopStatusId).FirstOrDefault();
                 if (tblRequest != null)
                 {
                     atsdbContext.Add(tblRequest);
@@ -923,7 +949,10 @@ namespace ATSManagement.Controllers
                                  .Include(x => x.DeputyUprovalStatusNavigation)
                                  .Include(y => y.TeamUpprovalStatusNavigation)
                                  .Include(t => t.Priority).Where(a => a.RequestId == item.RequestId).FirstOrDefault();
-                atsdbContext.Add(Request);
+                if (Request != null)
+                {
+                    atsdbContext.Add(Request);
+                }
 
             }
 
