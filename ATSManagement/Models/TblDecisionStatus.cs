@@ -33,6 +33,12 @@ public partial class TblDecisionStatus
 
     public virtual ICollection<TblInspectionPlan> TblInspectionPlanIsUserUprovedNavigations { get; set; } = new List<TblInspectionPlan>();
 
+    public virtual ICollection<TblInternalRequest> TblInternalRequestDepartmentUpprovalStatusNavigations { get; set; } = new List<TblInternalRequest>();
+
+    public virtual ICollection<TblInternalRequest> TblInternalRequestTeamUpprovalStatusNavigations { get; set; } = new List<TblInternalRequest>();
+
+    public virtual ICollection<TblInternalRequest> TblInternalRequestUserUpprovalStatusNavigations { get; set; } = new List<TblInternalRequest>();
+
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingDepartmentUpprovalStatusNavigations { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftingDeputyUprovalStatusNavigations { get; set; } = new List<TblLegalStudiesDrafting>();

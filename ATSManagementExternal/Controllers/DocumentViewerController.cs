@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using ATSManagementExternal.Filters;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ATSManagementExternal.Controllers
 {
+    [CheckSessionIsAvailable]
     public class DocumentViewerController : Controller
-    {       
+    {
         public ActionResult Index()
         {
             return View();
@@ -64,10 +66,38 @@ namespace ATSManagementExternal.Controllers
                 return View();
             }
         }
-        public ActionResult DocumentViewer(string path)
+        public ActionResult DocumentViewer(string path, string? methodController, string? method)
         {
             ViewBag.path = path;
+            ViewBag.controller = methodController;
+            ViewBag.action = method;
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> DownloadEvidenceFile(string path, string? methodController, string? method)
+        {
+            string filename = path.Substring(7);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "admin\\", filename);
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            if (!System.IO.File.Exists(filepath))
+            {
+                return RedirectToAction(nameof(FileNotFound), new { path = path, methodController = methodController, method = method });
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
+
+        }
+
+        public async Task<IActionResult>? FileNotFound(string path, string? methodController, string? method)
+        {
+            ViewBag.controller = methodController;
+            ViewBag.action = method;
+            return View();
+        }
+
     }
 }

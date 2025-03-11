@@ -45,6 +45,13 @@
                                     <span asp-validation-for="CatDescription" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="mb-3 row">
+                                <label asp-for="DoesHaveSpecificPlan" class="col-3 col-form-label">@_localization.Getkey("DoesHaveSpecificPlan")</label>
+                                <div class="col">
+                                    <input asp-for="DoesHaveSpecificPlan" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="DoesHaveSpecificPlan" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

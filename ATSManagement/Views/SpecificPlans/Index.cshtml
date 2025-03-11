@@ -8,8 +8,8 @@
     ViewData["Title"] = @_localization.Getkey("specific_plans");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
- 
-    }
+
+}
 
 <style type="text/css">
     .table thead th {
@@ -31,6 +31,11 @@
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
+                        <a asp-action="Index" asp-controller="PlanCatagories" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" class="btn btn-primary d-none d-sm-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                                <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8z" />
+                            </svg>
+                        </a>
                         <a asp-action="Create" asp-controller="SpecificPlans" asp-route-PlanCatId="@ViewBag.PlanCatId" class="btn btn-primary d-none d-sm-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
@@ -55,16 +60,13 @@
                         <thead>
                             <tr>
                                 <th>
+                                    @_localization.Getkey("created_Date")
+                                </th>
+                                <th>
                                     @_localization.Getkey("title")
                                 </th>
                                 <th>
                                     @_localization.Getkey("Description")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("CreatedDate")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("modificationDate")
                                 </th>
                                 <th>
                                     @_localization.Getkey("targeted_institutions")
@@ -74,6 +76,9 @@
                                 </th>
                                 <th>
                                     @_localization.Getkey("task_status")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Assigned_to")
                                 </th>
                                 <th></th>
                             </tr>
@@ -96,16 +101,13 @@
                                              select assignee).ToList();
                                 <tr>
                                     <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                                    </td>
+                                    <td>
                                         @Html.DisplayFor(modelItem => item.Title)
                                     </td>
                                     <td>
                                         @Html.Raw(item.Description)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ModificationDate)
                                     </td>
                                     <td>
                                         @foreach (var items in instr)
@@ -128,6 +130,16 @@
                                         }
                                     </td>
                                     <td>
+                                        @if (users.Count != 0)
+                                        {
+                                            foreach (var collectiontem in users)
+                                            {
+                                                @Html.DisplayFor(modelItem => collectiontem.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(modelItem => collectiontem.MidleName)
+                                            }
+                                        }
+                                    </td>
+                                    <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
@@ -147,7 +159,7 @@
                                                             </a>
                                                         }
                                                     }
-                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SpecificPlanId">
+                                                    <a class="dropdown-item" asp-action="Edit" asp-controller="SpecificPlans" asp-route-id="@item.SpecificPlanId" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@item.PlanCatId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
@@ -156,7 +168,7 @@
                                                             <path d="M19 16v6"></path>
                                                         </svg>&nbsp;@_localization.Getkey("edit")
                                                     </a>
-                                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.SpecificPlanId">
+                                                    <a class="dropdown-item" asp-action="Details" asp-controller="SpecificPlans" asp-route-id="@item.SpecificPlanId" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@item.PlanCatId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M13 5h8"></path>
@@ -167,7 +179,7 @@
                                                             <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                         </svg> &nbsp;   @_localization.Getkey("Detail")
                                                     </a>
-                                                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SpecificPlanId">
+                                                    <a class="dropdown-item" asp-action="Delete" asp-controller="SpecificPlans" asp-route-id="@item.SpecificPlanId" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@item.PlanCatId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
@@ -193,6 +205,7 @@
 
         $(document).ready(function () {
             $('#role').DataTable({
+                order: [[0, 'desc']],
                 dom: 'Bfrtip',
                 deferRender: true,
                 scrollCollapse: true,

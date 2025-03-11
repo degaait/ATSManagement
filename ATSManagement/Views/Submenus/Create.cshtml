@@ -1,4 +1,4 @@
-﻿@model ATSManagement.Models.TblSubmenu
+﻿@model ATSManagement.ViewModels.SubmenuModel
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -23,7 +23,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> @_localization.Getkey("submenus")</h4>
             </div>
             <form asp-action="Create">
                 <div class="card-body">
@@ -31,49 +30,99 @@
                         <div class="col-md-4">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="mb-3 row">
-                                <label asp-for="Submenu" class="col-3 col-form-label">@_localization.Getkey("name")</label>
+                                <label asp-for="SubMenuName" class="col-3 col-form-label">@_localization.Getkey("name")</label>
                                 <div class="col">
-                                    <input asp-for="Submenu" class="form-control" />
-                                    <span asp-validation-for="Submenu" class="text-danger"></span>
+                                    <input asp-for="SubMenuName" class="form-control" />
+                                    <span asp-validation-for="SubMenuName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="Controller" class="col-3 col-form-label">Controller</label>
+                                <label asp-for="SubmenuAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
                                 <div class="col">
-                                    <input asp-for="Controller" class="form-control" />
-                                    <span asp-validation-for="Controller" class="text-danger"></span>
+                                    <input asp-for="SubmenuAmharic" class="form-control" />
+                                    <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="Action" class="col-3 col-form-label">Action</label>
+                                <label asp-for="ControllerName" class="col-3 col-form-label">Controller</label>
                                 <div class="col">
-                                    <input asp-for="Action" class="form-control" />
-                                    <span asp-validation-for="Action" class="text-danger"></span>
+                                    <input asp-for="ControllerName" class="form-control" />
+                                    <span asp-validation-for="ControllerName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="MenuId" class="col-3 col-form-label">@_localization.Getkey("main_menu")</label>
+                                <label asp-for="ActionName" class="col-3 col-form-label">Action</label>
                                 <div class="col">
-                                    <select asp-for="MenuId" class="form-select" asp-items="ViewBag.MenuId"></select>
+                                    <input asp-for="ActionName" class="form-control" />
+                                    <span asp-validation-for="ActionName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="IsActive" class="col-3 col-form-label">@_localization.Getkey("IsActive")</label>
+                                <label asp-for="MainMenuId" class="col-3 col-form-label">@_localization.Getkey("main_menu")</label>
                                 <div class="col">
-                                    <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
-                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                    @Html.DropDownListFor(model => model.MainMenuId, new SelectList(Model.MainMenus, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label asp-for="DepId" class="col-3 col-form-label">@_localization.Getkey("department")</label>
                                 <div class="col">
-                                    <select asp-for="DepId" class="form-select" asp-items="ViewBag.DepId"></select>
+                                    @Html.DropDownListFor(model => model.DepId, new SelectList(Model.Departments, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                 </div>
-                            </div><div class="mb-3 row">
-                                <label asp-for="SubmenuAmharic" class="col-3 col-form-label">@_localization.Getkey("name_amharic")</label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forSuperAdmin" class="col-3 col-form-label">For system administrator</label>
                                 <div class="col">
-                                    <input asp-for="SubmenuAmharic" class="form-control" />
-                                    <span asp-validation-for="SubmenuAmharic" class="text-danger"></span>
+                                    <input asp-for="forSuperAdmin" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forSuperAdmin" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forDeputy" class="col-3 col-form-label">For deputy</label>
+                                <div class="col">
+                                    <input asp-for="forDeputy" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forDeputy" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forDepHead" class="col-3 col-form-label">For department head</label>
+                                <div class="col">
+                                    <input asp-for="forDepHead" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forDepHead" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forTeamLeader" class="col-3 col-form-label">For team leader</label>
+                                <div class="col">
+                                    <input asp-for="forTeamLeader" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forTeamLeader" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forSecretary" class="col-3 col-form-label">For secretary</label>
+                                <div class="col">
+                                    <input asp-for="forSecretary" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forSecretary" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forInternalUser" class="col-3 col-form-label">For Internal User</label>
+                                <div class="col">
+                                    <input asp-for="forInternalUser" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forInternalUser" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forBranchOfficer" class="col-3 col-form-label">For branch office expert</label>
+                                <div class="col">
+                                    <input asp-for="forBranchOfficer" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forBranchOfficer" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="forDefaulUser" class="col-3 col-form-label">For Expert</label>
+                                <div class="col">
+                                    <input asp-for="forDefaulUser" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="forDefaulUser" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>

@@ -130,16 +130,15 @@
     <comment>Acting As</comment>
   </data>
   <data name="additional_Question" xml:space="preserve">
-    <value>Additional Questions</value>
-    <comment>Additional Questions</comment>
+    <value>Explanation</value>
+    <comment>Explanation</comment>
   </data>
-  <data name="ADR_Type" xml:space="preserve">
+  <data name="Adrtype" xml:space="preserve">
     <value>ADR Type</value>
     <comment>ADR Type</comment>
   </data>
-  <data name="All_rights_reserved" xml:space="preserve">
+  <data name="All_rights_reserved." xml:space="preserve">
     <value>All rights reserved.</value>
-    <comment>All rights reserved.</comment>
   </data>
   <data name="alternativ_disputes" xml:space="preserve">
     <value>Alternative dispute resolution</value>
@@ -149,17 +148,36 @@
     <value>A service that is requested for resolving civil and commercial disputes through arbitration, negotiation, mediation, conciliation, or other ADR mechanism other than court, requested by the government or by indigent citizens, and such requests include a request to take part in an ADR process</value>
     <comment>A service that is requested for resolving civil and commercial disputes through arbitration, negotiation, mediation, conciliation, or other ADR mechanism other than court, requested by the government or by indigent citizens, and such requests include a request to take part in an ADR process</comment>
   </data>
+  <data name="appointment" xml:space="preserve">
+    <value>Appointment Form</value>
+    <comment>Appointment Form</comment>
+  </data>
   <data name="appointments" xml:space="preserve">
     <value>Appointments</value>
     <comment>Appointments</comment>
+  </data>
+  <data name="appointment_Added_date" xml:space="preserve">
+    <value>Asked Date</value>
+    <comment>Asked Date</comment>
   </data>
   <data name="appointment_date" xml:space="preserve">
     <value>Appointment Date</value>
     <comment>Appointment Date</comment>
   </data>
+  <data name="Appointment_Reason" xml:space="preserve">
+    <value>Appointment Reason</value>
+    <comment>Appointment Reason</comment>
+  </data>
   <data name="appointment_Result" xml:space="preserve">
     <value>Final Result</value>
     <comment>Final Result</comment>
+  </data>
+  <data name="appoitnment_reason" xml:space="preserve">
+    <value>Appointment Reason</value>
+    <comment>Appointment Reason</comment>
+  </data>
+  <data name="Attachment" xml:space="preserve">
+    <value>Attachement</value>
   </data>
   <data name="Attorney_General_Message" xml:space="preserve">
     <value>Attorney General Message</value>
@@ -187,6 +205,13 @@
     <value>Call Us</value>
     <comment>Call Us</comment>
   </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="cannot_open_file" xml:space="preserve">
+    <value> We could not find this file.</value>
+    <comment>Oops! Document not found.</comment>
+  </data>
   <data name="CaseType" xml:space="preserve">
     <value>Case Type</value>
     <comment>Case Type</comment>
@@ -200,14 +225,18 @@
     <comment>Close</comment>
   </data>
   <data name="commenting" xml:space="preserve">
-    <value>Legal Commenting</value>
-    <comment>Legal Commenting</comment>
+    <value>Legal Review</value>
+    <comment>Legal Review</comment>
   </data>
   <data name="commenting_description" xml:space="preserve">
     <value>The Law Editing Service is prepared by the Ministry of Justice to ensure that the draft policies, strategies, laws (proclamations, regulations, guidelines) are prepared in accordance with the Constitution, international agreements accepted by our country, other national laws and follow the principles of law drafting. General work is the work of drafting examination and preparation of comments carried out by the department.
 When a request for legal correction is submitted, it is expected from the requesting government institution to provide a policy prepared on the issue, a preliminary study on the issue, a copy of the draft law in Amharic and English, and an explanation of the draft law in Word format in soft copy and hard copy.</value>
     <comment>The Law Editing Service is prepared by the Ministry of Justice to ensure that the draft policies, strategies, laws (proclamations, regulations, guidelines) are prepared in accordance with the Constitution, international agreements accepted by our country, other national laws and follow the principles of law drafting. General work is the work of drafting examination and preparation of comments carried out by the department.
 When a request for legal correction is submitted, it is expected from the requesting government institution to provide a policy prepared on the issue, a preliminary study on the issue, a copy of the draft law in Amharic and English, and an explanation of the draft law in Word format in soft copy and hard copy.</comment>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>Completed</value>
+    <comment>Completed</comment>
   </data>
   <data name="completed_requests" xml:space="preserve">
     <value>Completed Requests</value>
@@ -225,10 +254,6 @@ When a request for legal correction is submitted, it is expected from the reques
     <value>Contract Negotation</value>
     <comment>Contract Negotation</comment>
   </data>
-  <data name="Contract_Negotation_description" xml:space="preserve">
-    <value>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</value>
-    <comment>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</comment>
-  </data>
   <data name="contract_Negotiation_description" xml:space="preserve">
     <value>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</value>
     <comment>A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.</comment>
@@ -244,6 +269,9 @@ When a request for legal correction is submitted, it is expected from the reques
   <data name="CourtCenter" xml:space="preserve">
     <value>Court Center</value>
     <comment>Court Center</comment>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
   </data>
   <data name="created_Date" xml:space="preserve">
     <value>Created Date</value>
@@ -293,6 +321,9 @@ When a request for legal correction is submitted, it is expected from the reques
     <value>Designed and Developed by</value>
     <comment>Designed and Developed by</comment>
   </data>
+  <data name="doc" xml:space="preserve">
+    <value>Document</value>
+  </data>
   <data name="document_type" xml:space="preserve">
     <value>Document Types</value>
     <comment>Document Types</comment>
@@ -300,6 +331,10 @@ When a request for legal correction is submitted, it is expected from the reques
   <data name="documetations" xml:space="preserve">
     <value>Documentations</value>
     <comment>Documentations</comment>
+  </data>
+  <data name="download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Download</comment>
   </data>
   <data name="edit" xml:space="preserve">
     <value>Edit</value>
@@ -313,13 +348,33 @@ When a request for legal correction is submitted, it is expected from the reques
     <value>Email Us</value>
     <comment>Email Us</comment>
   </data>
+  <data name="Expected_appointment_date" xml:space="preserve">
+    <value>Expected Appointment Date</value>
+    <comment>Expected Appointment Date</comment>
+  </data>
+  <data name="Expected_response_date" xml:space="preserve">
+    <value>Expected response date</value>
+    <comment>Expected response date</comment>
+  </data>
   <data name="files" xml:space="preserve">
     <value>Files</value>
     <comment>Files</comment>
   </data>
+  <data name="file_not_finde" xml:space="preserve">
+    <value>Oops! Document not found.</value>
+    <comment>We could not find this file.</comment>
+  </data>
+  <data name="final_report" xml:space="preserve">
+    <value>Final Report</value>
+    <comment>Final Report</comment>
+  </data>
   <data name="FollowUp" xml:space="preserve">
     <value>Follow Up</value>
     <comment>Follow Up</comment>
+  </data>
+  <data name="from_justice_minister" xml:space="preserve">
+    <value>ከፍትሕ ሚኒስቴር</value>
+    <comment>ከፍትሕ ሚኒስቴር</comment>
   </data>
   <data name="full_Name" xml:space="preserve">
     <value>Full Name</value>
@@ -345,25 +400,48 @@ When a request for legal correction is submitted, it is expected from the reques
     <value>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</value>
     <comment>All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations. It also directly engages in handling the cases that it selects.</comment>
   </data>
-  <data name="Inspection_Reports" xml:space="preserve">
-    <value>Inspection Reports</value>
-    <comment>Inspection Reports</comment>
+  <data name="Inspection Report" xml:space="preserve">
+    <value>Monitoring Report</value>
+    <comment>Monitoring Report</comment>
   </data>
-  <data name="International Cases" xml:space="preserve">
+  <data name="Inspection Report1" xml:space="preserve">
+    <value>Monitoring Report</value>
+    <comment>Monitoring Report</comment>
+  </data>
+  <data name="Inspection_Reports" xml:space="preserve">
+    <value>Monitoring Reports</value>
+    <comment>Monitoring Reports</comment>
+  </data>
+  <data name="institution" xml:space="preserve">
+    <value>Institution</value>
+    <comment>Institution</comment>
+  </data>
+  <data name="International_Cases" xml:space="preserve">
     <value>International Cases</value>
-    <comment>International Cases</comment>
   </data>
   <data name="International_Cases_description" xml:space="preserve">
     <value>(Regarding International Civil Cases:- a service that is requested to respond to matters pertaining to international commerce and civil cases that involve FDRE and its instrumentalities; requests to negotiate; requests to defend international commerce and civil lawsuits by providing legal representation; or other requested responses relating to international suits.)</value>
     <comment>(Regarding International Civil Cases:- a service that is requested to respond to matters pertaining to international commerce and civil cases that involve FDRE and its instrumentalities; requests to negotiate; requests to defend international commerce and civil lawsuits by providing legal representation; or other requested responses relating to international suits.)</comment>
   </data>
+  <data name="IsSecretary" xml:space="preserve">
+    <value>Is Secretary?</value>
+    <comment>Is Secretary?</comment>
+  </data>
+  <data name="IsSuperAdmin" xml:space="preserve">
+    <value>Is Super Admin?</value>
+    <comment>Is Super Admin?</comment>
+  </data>
   <data name="Jursidiction" xml:space="preserve">
     <value>Jursidiction</value>
     <comment>Jursidiction</comment>
   </data>
+  <data name="justice_law_order" xml:space="preserve">
+    <value>"For law, justice, Equity"</value>
+    <comment>"For law, justice, Equity"</comment>
+  </data>
   <data name="justice_Minister" xml:space="preserve">
-    <value>Justice Minister</value>
-    <comment>Justice Minister</comment>
+    <value>Ministry of Justice</value>
+    <comment>Ministry of Justice</comment>
   </data>
   <data name="language" xml:space="preserve">
     <value>Language</value>
@@ -402,6 +480,10 @@ In order to get the services of the Ministry of Justice, government institutions
   <data name="login" xml:space="preserve">
     <value>Login</value>
     <comment>Login</comment>
+  </data>
+  <data name="login_to_account" xml:space="preserve">
+    <value>Login to your account</value>
+    <comment>Login to your account</comment>
   </data>
   <data name="Mandates" xml:space="preserve">
     <value>Mandates</value>
@@ -4425,9 +4507,13 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Message</value>
     <comment>Message</comment>
   </data>
+  <data name="midib" xml:space="preserve">
+    <value>Category</value>
+    <comment>Category</comment>
+  </data>
   <data name="minister_message" xml:space="preserve">
-    <value>The message of the Ministry of Justice</value>
-    <comment>The message of the Ministry of Justice</comment>
+    <value>Message from the Honorable Minister</value>
+    <comment>Message from the Honorable Minister</comment>
   </data>
   <data name="Mission" xml:space="preserve">
     <value>Mission</value>
@@ -4482,6 +4568,18 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>New Requests</value>
     <comment>New Requests</comment>
   </data>
+  <data name="not_sent" xml:space="preserve">
+    <value>Not Sent</value>
+    <comment>Not Sent</comment>
+  </data>
+  <data name="Official_letter" xml:space="preserve">
+    <value>Official letter</value>
+    <comment>Official letter</comment>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>Other...</value>
+    <comment>Other..</comment>
+  </data>
   <data name="our_address" xml:space="preserve">
     <value>Our Address</value>
     <comment>Our Address</comment>
@@ -4516,6 +4614,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Participants</value>
     <comment>Participants</comment>
   </data>
+  <data name="password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Password</comment>
+  </data>
   <data name="Phone_Number" xml:space="preserve">
     <value>Phone Number</value>
     <comment>Phone Number</comment>
@@ -4537,7 +4639,7 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <comment>Recomendations</comment>
   </data>
   <data name="recomendation_dashboard" xml:space="preserve">
-    <value>Recomendation Dashboard</value>
+    <value>Recomendations</value>
     <comment>Recomendation Dashboard</comment>
   </data>
   <data name="recomendation_dashboard_description" xml:space="preserve">
@@ -4556,6 +4658,13 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Remark</value>
     <comment>Remark</comment>
   </data>
+  <data name="reply" xml:space="preserve">
+    <value>Reply</value>
+    <comment>Reply</comment>
+  </data>
+  <data name="replys" xml:space="preserve">
+    <value>Replies</value>
+  </data>
   <data name="RequestRound" xml:space="preserve">
     <value>Request Round</value>
     <comment>Request Round</comment>
@@ -4563,6 +4672,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
   <data name="requests" xml:space="preserve">
     <value>Requests</value>
     <comment>Requests</comment>
+  </data>
+  <data name="Responded_Date" xml:space="preserve">
+    <value>Responded Date</value>
+    <comment>Responded Date</comment>
   </data>
   <data name="Respondent" xml:space="preserve">
     <value>Respondent</value>
@@ -4572,6 +4685,18 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Responses</value>
     <comment>Responses</comment>
   </data>
+  <data name="result" xml:space="preserve">
+    <value>Result</value>
+    <comment>Result</comment>
+  </data>
+  <data name="saving_data" xml:space="preserve">
+    <value>Please wait while Saving Data...</value>
+    <comment>Please wait while Saving Data...</comment>
+  </data>
+  <data name="select_here" xml:space="preserve">
+    <value>--Select--</value>
+    <comment>--Select--</comment>
+  </data>
   <data name="Select_requests" xml:space="preserve">
     <value>Select requests</value>
     <comment>Select requests</comment>
@@ -4580,13 +4705,33 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Send</value>
     <comment>Send</comment>
   </data>
+  <data name="send_for_expert" xml:space="preserve">
+    <value>Send for Expert</value>
+    <comment>Send for Expert</comment>
+  </data>
+  <data name="send_for_State_Minister" xml:space="preserve">
+    <value>Send for State Ministry</value>
+    <comment>Send for State Ministry</comment>
+  </data>
+  <data name="Sent_Date" xml:space="preserve">
+    <value>Sent Date</value>
+    <comment>Sent Date</comment>
+  </data>
   <data name="services" xml:space="preserve">
     <value>Our Services</value>
     <comment>Our Services</comment>
   </data>
+  <data name="service_type" xml:space="preserve">
+    <value>Service Type</value>
+    <comment>Service Type</comment>
+  </data>
   <data name="service_types" xml:space="preserve">
     <value>Service Types</value>
     <comment>Service Types</comment>
+  </data>
+  <data name="sign_in" xml:space="preserve">
+    <value>Sign In</value>
+    <comment>Sign In</comment>
   </data>
   <data name="Specialization" xml:space="preserve">
     <value>Specialization</value>
@@ -4596,13 +4741,25 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>Progress Status</value>
     <comment>Progress Status</comment>
   </data>
+  <data name="summary_report" xml:space="preserve">
+    <value>Report Summary</value>
+    <comment>Report Summary</comment>
+  </data>
   <data name="temoty_message" xml:space="preserve">
-    <value>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</value>
+    <value>The message of the Honorable Minister of Justice, Hanna Arayaselassie Zemichael</value>
     <comment>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</comment>
   </data>
-  <data name="The_List_Of_Prosecutors" xml:space="preserve">
-    <value>The List Of Prosecutors</value>
-    <comment>The List Of Prosecutors</comment>
+  <data name="termsandconditions" xml:space="preserve">
+    <value>Terms and Conditions</value>
+    <comment>Terms and Conditions</comment>
+  </data>
+  <data name="terms_conditions" xml:space="preserve">
+    <value>&lt;p class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal;" align="left"&gt;&lt;span style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: EN-GB;"&gt;The civil service client should attach a brief explanation to the text to be submitted first, as appropriate, provide an explanation explaining the procedures of the case, prohibited and non-added cases, reasons, strengths and weaknesses, and the level reached, etc. Accordingly:&lt;/span&gt;&lt;/p&gt;&lt;ol start="1" type="1"&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: EN-GB;"&gt;Service related to accountability, to organize text, e-mail sound, image, moving image, etc. information and evidence in their respective categories and in chronological order and keep evidence when requested to be submitted.&lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: EN-GB;"&gt;To notify in writing a representative who has an understanding of the matter presented, who can respond to questions asked during the service delivery process and who can make decisions on behalf of the institution on behalf of the institution;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;To immediately inform about events, new information and evidence regarding the matter, &lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;To provide explanations to the questions asked from the Ministry of Justice during the service delivery process, to carry out the orders and decisions given and to perform other related activities within the time limits set;&lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;Not to attempt to resolve the matter through negotiation or any other administrative means without the knowledge of the Ministry of Justice from the time the service began to be provided. &lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;To cover the expenses necessary for the provision of services, to make the physical presence of the institution's leaders or experts necessary, as well as to carry out other orders given according to other relevant instructions, I agree and understand that failure to fulfill the prescribed responsibilities will result in termination of service by the Ministry of Justice.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p class="MsoNormal"&gt;&amp;nbsp;&lt;/p&gt;</value>
+    <comment>&lt;p class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal;" align="left"&gt;&lt;span style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: EN-GB;"&gt;The civil service client should attach a brief explanation to the text to be submitted first, as appropriate, provide an explanation explaining the procedures of the case, prohibited and non-added cases, reasons, strengths and weaknesses, and the level reached, etc. Accordingly:&lt;/span&gt;&lt;/p&gt;&lt;ol start="1" type="1"&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: EN-GB;"&gt;Service related to accountability, to organize text, e-mail sound, image, moving image, etc. information and evidence in their respective categories and in chronological order and keep evidence when requested to be submitted.&lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: EN-GB;"&gt;To notify in writing a representative who has an understanding of the matter presented, who can respond to questions asked during the service delivery process and who can make decisions on behalf of the institution on behalf of the institution;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;To immediately inform about events, new information and evidence regarding the matter, &lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;To provide explanations to the questions asked from the Ministry of Justice during the service delivery process, to carry out the orders and decisions given and to perform other related activities within the time limits set;&lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;Not to attempt to resolve the matter through negotiation or any other administrative means without the knowledge of the Ministry of Justice from the time the service began to be provided. &lt;/span&gt;&lt;/li&gt;&lt;li class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; text-align: left; line-height: normal; mso-list: l0 level1 lfo1; tab-stops: list .5in;"&gt;&lt;span lang="EN" style="font-size: 12.0pt; font-family: 'Times New Roman',serif; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN; mso-fareast-language: EN-GB;"&gt;To cover the expenses necessary for the provision of services, to make the physical presence of the institution's leaders or experts necessary, as well as to carry out other orders given according to other relevant instructions, I agree and understand that failure to fulfill the prescribed responsibilities will result in termination of service by the Ministry of Justice.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p class="MsoNormal"&gt;&amp;nbsp;&lt;/p&gt;</comment>
+  </data>
+  <data name="uproved_appointment_date" xml:space="preserve">
+    <value>Approved appoinment date</value>
+    <comment>Approved appoinment date</comment>
   </data>
   <data name="useful_Links" xml:space="preserve">
     <value>Useful Links</value>
@@ -4632,6 +4789,10 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <value>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</value>
     <comment>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</comment>
   </data>
+  <data name="view_file" xml:space="preserve">
+    <value>View file</value>
+    <comment>View file</comment>
+  </data>
   <data name="vision" xml:space="preserve">
     <value>Vision</value>
     <comment>Vision</comment>
@@ -4645,9 +4806,43 @@ documents authentication and registration.&lt;/p&gt;            &lt;/div&gt;
     <comment>Welcome to Ministry of Justice</comment>
   </data>
   <data name="welcome_two" xml:space="preserve">
-    <value>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
-In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</value>
-    <comment>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
-In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</comment>
+    <value>Its main mission is to promote fair and efficient legal frameworks, respect justice, equality, human rights and ensure the benefit of an efficient legal system for every Ethiopian people.</value>
+    <comment>Its main mission is to promote fair and efficient legal frameworks, respect justice, equality, human rights and ensure the benefit of an efficient legal system for every Ethiopian people.</comment>
+  </data>
+  <data name="Yearly_Inispection_Reports" xml:space="preserve">
+    <value>Yearly Inispection Reports</value>
+    <comment>Yearly Inispection Reports</comment>
+  </data>
+  <data name="International Cases" xml:space="preserve">
+    <value>International Cases</value>
+    <comment>International Cases</comment>
+  </data>
+  <data name="The_List_Of_Prosecutors" xml:space="preserve">
+    <value>The List Of Prosecutors</value>
+    <comment>The List Of Prosecutors</comment>
+  </data>
+  <data name="recomendation_reports" xml:space="preserve">
+    <value>Recommendations and Reports</value>
+  </data>
+  <data name="monitoring_report" xml:space="preserve">
+    <value>Monitoring Report</value>
+  </data>
+  <data name="total_reports" xml:space="preserve">
+    <value>Total Reports</value>
+  </data>
+  <data name="submitted" xml:space="preserve">
+    <value>Submitted </value>
+  </data>
+  <data name="civil_justice_legal_advice" xml:space="preserve">
+    <value>Civil Justice Legal Studies</value>
+  </data>
+  <data name="inspected_Institution" xml:space="preserve">
+    <value>Inspected Institution</value>
+  </data>
+  <data name="inspected_laws" xml:space="preserve">
+    <value>Inspection Laws</value>
+  </data>
+  <data name="cased_handlingDepartment" xml:space="preserve">
+    <value>Case Handling Department</value>
   </data>
 </root>

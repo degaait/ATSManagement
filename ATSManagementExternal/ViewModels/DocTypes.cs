@@ -5,5 +5,6 @@
         public Guid DocId { get; set; }
 
         public string? DocName { get; set; }
+        public int Order { get; set; }
     }
 }

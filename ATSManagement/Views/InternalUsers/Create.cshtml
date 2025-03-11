@@ -27,7 +27,7 @@
             <form asp-action="Create">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="mb-3 row">
                                 <label asp-for="FirstName" class="col-3 col-form-label">@_localization.Getkey("first_name")</label>
@@ -94,26 +94,54 @@
                                 <label asp-for="specialRoles" class="col-3 col-form-label">@_localization.Getkey("special_roles")</label>
                                 <div class="col">
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="IsDeputy" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="IsDeputy" onclick="HideDiv(0)" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isDeputy")</span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" checked value="IsDepartmentHead" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" checked value="IsDepartmentHead" onclick="HideDiv(0)" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isDepartment") </span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="IsTeamLeader" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="IsTeamLeader" onclick="HideDiv(0)" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isTeam")</span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="DefaultUser" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="DefaultUser" onclick="HideDiv(0)" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isDefaultUser")</span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="IsSecretary" class="form-check-input" />
-                                        <span class="form-check-label">IsSecretary?</span>
+                                        <input asp-for="specialRoles" type="radio" value="IsSecretary" onclick="HideDiv(1)" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("IsSecretary")</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsInternalRequestUser" onclick="HideDiv(0)" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("IsInternalRequestUser")</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsBranchOfficeUser" onclick="ShowDiv()" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("IsBranchOfficeUser") </span>
                                     </label>
                                     <span asp-validation-for="specialRoles" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row" id="divSecs" style="display:none">
+                                <label asp-for="SecID" class="col-3 col-form-label"> @_localization.Getkey("secretaryTpes") </label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.SecID, new SelectList(Model.SecretaryTypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                </div>
+                            </div>
+                            <div class="mb-3 row" id="divBranches" style="display:none">
+                                <label asp-for="BranchId" class="col-3 col-form-label"> @_localization.Getkey("branchoffice") </label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.BranchId, new SelectList(Model.Branches, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="IsSuperAdmin" class="col-3 col-form-label">@_localization.Getkey("isSuperadmin")</label>
+                                <div class="col">
+                                    <input asp-for="IsSuperAdmin" type="checkbox" class="form-check-input m-0" />
+                                    <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -150,10 +178,21 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script type="text/javascript">
-        $(document).ready(function () {
-
-
-        });
+        function ShowDiv() {
+            $("#divBranches").show(); 
+            $("#divSecs").hide();
+        }
+        function HideDiv(x) {
+            if (x == 1) {
+                $("#divSecs").show();
+            }
+            else {
+                $("#divSecs").hide();
+            }
+            
+            $("#divBranches").hide();
+        }
+      
     </script>
     <script type="text/javascript">
      $(document).ready(function () {

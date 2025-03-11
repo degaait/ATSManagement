@@ -1,4 +1,4 @@
-﻿@model ATSManagement.Models.TblDebateWorkPerformanceReport
+﻿@model ATSManagement.ViewModels.DebateWorkPerformance
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -20,9 +20,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">
-                    የረቂቅ ውል ምርመራ/ዝግጅት
-                </h4>
             </div>
             <form asp-action="Create">
                 <div class="card-body">
@@ -32,21 +29,23 @@
                             <div class="mb-3 row">
                                 <label asp-for="SubPerformanceId" class="col-4 col-form-label">የክርክር አፈጻጸም</label>
                                 <div class="col">
-                                    <select asp-for="SubPerformanceId" id="drpSubPerformanceTypes" class="form-select" asp-items="ViewBag.subDebateTypes"></select>
+                                    @Html.DropDownListFor(model => model.SubPerformanceId, new SelectList(Model.TblSubDebatePerformances, "Value", "Text"), "--ምረጥ--", htmlAttributes: new { @class = "form-select" })
+
                                     <span asp-validation-for="SubPerformanceId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label asp-for="Id" class="col-4 col-form-label">ክንውን</label>
                                 <div class="col">
-                                    <select asp-for="Id" class="form-select" id="drpEventTypes" asp-items="@(new SelectList(string.Empty,"Id","WorkPerformanceEventType"))"></select>
+                                   @Html.DropDownListFor(model => model.Id, new SelectList(Model.TblDebatePerformanceEventTypes, "Value", "Text"), "--ምረጥ--", htmlAttributes: new { @class = "form-select" })
+                                    
                                     <span asp-validation-for="Id" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label asp-for="Womens" class="col-4 col-form-label">ሴት</label>
                                 <div class="col">
-                                    <input asp-for="Womens" type="number" required required class="form-control" />
+                                    <input asp-for="Womens" type="number" required class="form-control" />
                                     <span asp-validation-for="Womens" class="text-danger"></span>
                                 </div>
                             </div>
@@ -150,13 +149,15 @@
                             <div class="mb-3 row">
                                 <label asp-for="YearId" class="col-4 col-form-label">ዓመት</label>
                                 <div class="col">
-                                    <select asp-for="YearId" class="form-select" asp-items="ViewBag.YearId"></select>
+                                    @Html.DropDownListFor(model => model.YearId, new SelectList(Model.TblYears, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label asp-for="MonthId" class="col-4 col-form-label">ወር</label>
                                 <div class="col">
-                                    <select asp-for="MonthId" class="form-select" asp-items="ViewBag.MonthId"></select>
+                                    @Html.DropDownListFor(model => model.MonthId, new SelectList(Model.TblMonths, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+
+                                  @*  <select asp-for="MonthId" class="form-select" asp-items="ViewBag.MonthId" aria-label="Select your country"></select>*@
                                 </div>
                             </div>
                         </div>
@@ -164,8 +165,8 @@
                 </div>
                 <div class="card-footer text-end">
                     <div class="d-flex">
-                        <input type="submit" value="Create" class="btn btn-primary" />|
-                        <a asp-action="Index">Back to List</a>
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="Index"> @_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>
@@ -173,28 +174,27 @@
     </div>
 </div>
 
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script type="text/javascript">
         $(document).ready(function () {
             var items = "<option value='00000000-0000-0000-0000-000000000000'>--ምረጥ--</option>";
-            $('#drpEventTypes').html(items);
+            $('#Id').html(items);
         });
     </script>
     <script type="text/javascript">
        $(document).ready(function () {
-           $('#drpSubPerformanceTypes').change(function () {
+           $('#SubPerformanceId').change(function () {
                var url = '@Url.Content("~/")' + "DebateWorkPerformanceReports/GetEventTypes";
-               var ddlsource = "#drpSubPerformanceTypes";
+               var ddlsource = "#SubPerformanceId";
                $.getJSON(url, { SubPerformanceId: $(ddlsource).val() }, function (data) {
                    var items = '';
-                   $("#drpEventTypes").empty();
+                   $("#Id").empty();
                    $.each(data, function (i, eventTypes) {
                        items += "<option value='" + eventTypes.value + "'>" + eventTypes.text + "</option>";
                    });
-                   $('#drpEventTypes').html(items);
+                   $('#Id').html(items);
                });
            });
        });

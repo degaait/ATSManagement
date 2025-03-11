@@ -71,7 +71,7 @@
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="SpecificPlanId" />
                         <input type="submit" value="@_localization.Getkey("delete")" class="btn btn-danger" /> |
-                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
+                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@ViewBag.PlanCatId" >@_localization.Getkey("backlist")</a>
                     </form>
                 </div>
             </div>

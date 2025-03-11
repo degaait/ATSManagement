@@ -19,7 +19,13 @@ public partial class TblNotification
 
     public string? Icon { get; set; }
 
+    public Guid? ExterUserId { get; set; }
+
+    public bool? FromExternal { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
+
+    public virtual TblExternalUser? ExterUser { get; set; }
 
     public virtual TblInternalUser? User { get; set; }
 }

@@ -11,6 +11,7 @@
                 .Include(x => x.Request)
                 .Include(x => x.CreatedByNavigation)
                 .Where(x => x.RequestId == ID).ToList();
+    int no = 0;
 }
 <style type="text/css">
     .table thead th {
@@ -33,118 +34,157 @@
             </div>
         </div>
     </div>
-   
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <form asp-action="AddActivity">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="AddActivity">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                                        <input asp-for="RequestId" type="hidden" class="form-control" />
-                                        <input asp-for="CreatedBy" type="hidden" class="form-control" />
-                                        <div class="mb-3 row">
-                                            <label asp-for="ActivityDetail" class=" col-3 col-form-label">@_localization.Getkey("Progress_Activities")</label>
-                                            <div class="col">
-                                                <input asp-for="ActivityDetail" class="form-control" />
-                                                <span asp-validation-for="ActivityDetail" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label asp-for="AddedDate" class=" col-3 col-form-label">@_localization.Getkey("datetime")</label>
-                                            <div class="col">
-                                                <input asp-for="AddedDate" readonly class="form-control" />
-                                                <span asp-validation-for="AddedDate" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <input asp-for="RequestId" type="hidden" class="form-control" />
+                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="ActivityDetail" class=" col-3 col-form-label">@_localization.Getkey("action_performed")</label>
+                                <div class="col">
+                                    <input asp-for="ActivityDetail" class="form-control" />
+                                    <span asp-validation-for="ActivityDetail" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <div class="d-flex">
-                                    <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                                    <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
+                            <div class="mb-3 row">
+                                <label asp-for="TimeTakenTocomplete" class=" col-3 col-form-label">@_localization.Getkey("time_taken")</label>
+                                <div class="col">
+                                    <input asp-for="TimeTakenTocomplete" class="form-control" />
+                                    <span asp-validation-for="TimeTakenTocomplete" class="text-danger"></span>
                                 </div>
                             </div>
-                        </form>
-                        <br />
-
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title"> @_localization.Getkey("Progress_Activities")</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <table class="table table-striped table-bordered" id="role">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                @_localization.Getkey("Details")
-                                            </th>
-                                            <th>
-                                                @_localization.Getkey("datetime")
-                                            </th>
-                                            <th>
-                                                @_localization.Getkey("user")
-                                            </th>
-                                            <th>
-                                                @_localization.Getkey("request")
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in activities)
-                                        {
-
-                                            <tr>
-                                                @{
-                                                    var requestName = _context.TblRequests.Where(a => a.RequestId == item.RequestId).FirstOrDefault();
-                                                }
-                                                <td>
-                                                    @Html.Raw(item.ActivityDetail)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.AddedDate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                                    @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
-                                                </td>
-                                                <td>
-                                                    @Html.Raw(requestName.RequestDetail)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId"> @_localization.Getkey("delete")</a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                            <div class="mb-3 row">
+                                <label asp-for="Remark" class=" col-3 col-form-label">@_localization.Getkey("remark_given")</label>
+                                <div class="col">
+                                    <input asp-for="Remark" class="form-control" />
+                                    <span asp-validation-for="Remark" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="AddedDate" class=" col-3 col-form-label">@_localization.Getkey("datetime")</label>
+                                <div class="col">
+                                    <input asp-for="AddedDate" readonly class="form-control" />
+                                    <span asp-validation-for="AddedDate" class="text-danger"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> @_localization.Getkey("Progress_Activities")</h4>
             </div>
-        
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-borderless datatable" id="role">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @_localization.Getkey("No.")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("datetime")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("action_performed")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("time_taken")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("remark_given")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("user")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("requests")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in activities)
+                            {
+
+                                var requestName = _context.TblRequests.Where(a => a.RequestId == item.RequestId).FirstOrDefault();
+
+                                no = no + 1;
+                                <tr>
+
+                                    <td>
+                                        @no
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AddedDate)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.ActivityDetail)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimeTakenTocomplete)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Remark)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(requestName.RequestDetail)
+                                    </td>
+                                    <td>
+                                        <a asp-action="EditActivity" asp-route-ActivityId="@item.ActivityId"> <i class="bi bi-pencil-square"></i></a>
+                                        <a asp-action="DeleteActivity" asp-route-id="@item.ActivityId"><i class="bi bi-file-earmark-x-fill"></i></a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
+    <script>
 
-    $(document).ready(function () {
-        $('#role').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'excel', 'print'
-            ]
+        $(document).ready(function () {
+            $('#role').DataTable({
+                    order: [[1, 'desc']],
+                    dom: 'Bfrtip',
+                    deferRender: true,
+                    scrollCollapse: true,
+                    scroller: true,
+                    buttons: [
+                        'excel', 'print'
+                ]
+            });
         });
-    });
 
-</script>
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

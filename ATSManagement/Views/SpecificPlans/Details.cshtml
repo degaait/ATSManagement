@@ -39,7 +39,7 @@
                         @Html.Raw(Model.Description)
                     </dd>
                     <dt class="col-sm-2">
-                        <label asp-for="Title" class="col-form-label">@_localization.Getkey("CreatedDate")</label>
+                        <label asp-for="Title" class="col-form-label">@_localization.Getkey("created_Date")</label>
                     </dt>
                     <dd class="col-sm-10">
                         @Html.DisplayFor(model => model.CreatedDate)
@@ -67,12 +67,10 @@
             </div>
             <div class="card-footer text-end">
                 <div class="d-flex">
-                    <a asp-action="Edit" asp-route-id="@Model?.SpecificPlanId">@_localization.Getkey("edit")</a>
-                    <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
+                    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.SpecificPlanId">@_localization.Getkey("edit")</a>
+                    <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@Model?.PlanCatId">@_localization.Getkey("backlist")</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-

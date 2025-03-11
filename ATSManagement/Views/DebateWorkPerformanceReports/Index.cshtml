@@ -2,9 +2,15 @@
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IHttpContextAccessor httpsSession;
+@inject AtsdbContext ats;
 @{
     ViewData["Title"] = "የፍትሐ ብሔር ሥራ አፈፃፀም ሪፖርት";
     List<TblDebatePerformance> tblDebatePerformances = ViewData["DebateTypes"] as List<TblDebatePerformance>;
+    var tblDebatePerformancess = ats.TblDebatePerformances.OrderByDescending(s => s.PerformanceNameEnglish).ToList();
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+
 }
 
 <style type="text/css">
@@ -25,22 +31,24 @@
                 </div>
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list" style="display:flex !important">
-                        @foreach (var item in tblDebatePerformances)
-                        {
-                            <a asp-controller="DebateWorkPerformanceReports" asp-action="Create" asp-route-id="@item.PerformanceId" class="btn btn-primary d-none d-sm-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    @if (user.IsBranchOfficeUser == true)
+                    {
+                        <div class="btn-list" style="display:flex !important">
+                            @foreach (var item in tblDebatePerformancess)
+                            {
+                                <a asp-controller="DebateWorkPerformanceReports" asp-action="Create" asp-route-id="@item.PerformanceId" class="btn btn-primary d-none d-sm-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    @item.PreformanceName
+                                </a>
+                                <br />
+                            }
+                        </div>
+                    }
 
-                                @item.PreformanceName
-                            </a>
-                            <br />
-                        }
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -117,12 +125,18 @@
                                 <th>
                                     የተወሰነ የገንዘብ መጠን
                                 </th>
-
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                var reporter = (from items in ats.TblInternalUsers
+                                                join bra in ats.TblBranchOffices on items.BranchId equals bra.BranchId
+                                                where items.UserId == item.CreatedBy
+                                                select new
+                                                {
+                                                    Nam = bra.Name
+                                                }).FirstOrDefault();
                                 <tr>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.IdNavigation.WorkPerformanceEventType)
@@ -172,6 +186,11 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
                                         @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                        <br />
+                                        @if (reporter != null)
+                                        {
+                                            <label style="color:cornflowerblue">@reporter.Nam</label>
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Month.MonthName)
@@ -183,7 +202,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.WorkPerformId">

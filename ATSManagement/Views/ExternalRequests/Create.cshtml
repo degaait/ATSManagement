@@ -1,145 +1,404 @@
 ﻿@model ATSManagement.ViewModels.CivilJusticeExternalRequestModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
 @{
-    ViewData["Title"] = "Create";
 }
-<div class="page-wrapper">
-    <!-- Page header -->
-    <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
-                        New Request
-                    </h2>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-            </div>
-            <form asp-action="Create" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input asp-for="ExterUserId" type="hidden" class="form-control" />
-                            <input asp-for="IntId" type="hidden" class="form-control" />
-                            <div class="mb-3 row" id="divRoundTypes">
-                                <label asp-for="RoundTypeId" class="col-3 col-form-label">Request Round</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.RoundTypeId, new SelectList(Model.RoundTypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="RoundTypeId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="divCompletedRequests" style="display:none">
-                                <label asp-for="CompleteRequestID" class="col-3 col-form-label">Select requests</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.CompleteRequestID, new SelectList(Model.CompletedRequests, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="CompleteRequestID" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="divRoundTypes">
-                                <label asp-for="IntId" class="col-3 col-form-label">Institutions</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="IntId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="divRequestDetail">
-                                <label asp-for="RequestDetail" class="col-3 col-form-label">Request Detail</label>
-                                <div class="col">
-                                    <input asp-for="RequestDetail" class="form-control" />
-                                    <span asp-validation-for="RequestDetail" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="DivRequestedDate">
-                                <label asp-for="RequestedDate" class="col-3 col-form-label">Creation Date</label>
-                                <div class="col">
-                                    <input asp-for="CreatedDate" class="form-control" readonly />
-                                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="divServiceType">
-                                <label asp-for="ServiceTypeID" class="col-3 col-form-label">Service types</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="divDocType" style="display:none">
-                                <label asp-for="DocId" class="col-3 col-form-label">Document type</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="DocId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="DivDocumentFile">
-                                <label class="col-3 col-form-label">Document file</label>
-                                <div class="col">
-                                    <input asp-for="DocumentFile" type="file" class="form-file-button" />
-                                    <span asp-validation-for="DocumentFile" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="DivPriority" style="display:none">
-                                <label asp-for="Priorities" class="col-3 col-form-label">Priority</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="PriorityId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3 row" id="priorityQuestionType" style="display:none">
-                                <label class="col-3 col-form-label">Additional Questions</label>
-                                <div class="col">
-                                    @for (var i = 0; i < Model.PrioritiesQues.Count(); i++)
-                                    {
-                                        @Html.CheckBoxFor(model => model.PrioritiesQues[i].IsSelected)
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+<br />
+<style>
+    @@media only screen and (max-width : 960px) {
+        .mb-3row {
+        }
 
-                                        @Html.HiddenFor(model => model.PrioritiesQues[i].PriorityQueId)
-                                        @Html.DisplayFor(model => model.PrioritiesQues[i].Title)
-                                        <br />
-                                    }
-                                </div>
+        .mb-3rowlabel {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<div class="col-12">
+    <div class="card">
+
+        <div class="card-header">
+            <h2 class="card-title">@_localization.Getkey("new_request") </h2>
+        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="ExterUserId" type="hidden" class="form-control" />
+                        <input asp-for="IntId" type="hidden" class="form-control" />
+                        <div class="mb-3 row mb-3row" id="DivRequestedDate">
+                            <label asp-for="RequestedDate" class="mb-3rowlabel col-3 col-form-label"> @_localization.Getkey("created_Date")</label>
+                            <div class="col">
+                                <input asp-for="CreatedDate" class="mb-3rowlabel form-control" readonly />
+                                <span asp-validation-for="CreatedDate" class="text-danger"></span>
                             </div>
-                            <div class="mb-3 row" id="DivFullName">
-                                <label asp-for="FullName" class="col-3 col-form-label">Full Name</label>
-                                <div class="col">
-                                    <input asp-for="FullName" class="form-control" />
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divInstitutions">
+                            <label asp-for="InistId" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("institution")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="InistId" class="text-danger"></span>
                             </div>
-                            <div class="mb-3 row" id="DivPhoneNumber">
-                                <label asp-for="PhoneNumber" class="col-3 col-form-label">Phone number</label>
-                                <div class="col">
-                                    <input asp-for="PhoneNumber" class="form-control" />
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divRoundTypes">
+                            <label asp-for="RoundTypeId" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("RequestRound")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.RoundTypeId, new SelectList(Model.RoundTypes, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="RoundTypeId" class="text-danger"></span>
                             </div>
-                            <div class="mb-3 row" id="DivRequestedDate">
-                                <label asp-for="EmailAddress" class="col-3 col-form-label">Email Address</label>
-                                <div class="col">
-                                    <input asp-for="EmailAddress" class="form-control" />
-                                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                                </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divCompletedRequests" style="display:none">
+                            <label asp-for="CompleteRequestID" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("Select_requests")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.CompleteRequestID, new SelectList(Model.CompletedRequests, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="CompleteRequestID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row mb-3row" id="divServiceType">
+                            <label asp-for="ServiceTypeID" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("service_types")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divOtherServiceType" style="display:none">
+                            <label asp-for="OtherServiceType" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("other")</label>
+                            <div class="col">
+                                <input asp-for="OtherServiceType" class="form-control" />
+                                <span asp-validation-for="OtherServiceType" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divDocType" style="display:none">
+                            <label asp-for="DocId" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("document_type")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesCasetypes, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="DocId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divOtherDocumentType" style="display:none">
+                            <label asp-for="OtherDocumentType" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("other")</label>
+                            <div class="col">
+                                <input asp-for="OtherDocumentType" class="form-control" />
+                                <span asp-validation-for="OtherDocumentType" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divRequestDetail">
+                            <label asp-for="RequestDetail" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("Description")</label>
+                            <div class="col">
+                                <input asp-for="RequestDetail" class="form-control" />
+                                <span asp-validation-for="RequestDetail" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="priorityQuestionType" style="display:none">
+                            <label class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("additional_Question") </label>
+                            <div class="col">
+                                @for (var i = 0; i < Model.PrioritiesQues.Count(); i++)
+                                {
+                                    @Html.CheckBoxFor(model => model.PrioritiesQues[i].IsSelected)
+
+                                    @Html.HiddenFor(model => model.PrioritiesQues[i].PriorityQueId)
+                                    @Html.DisplayFor(model => model.PrioritiesQues[i].Title)
+                                    <br />
+                                }
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divMoneyAmmount" style="display:none">
+                            <label asp-for="MoneyAmount" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("MoneyAmmount")</label>
+                            <div class="col" style="display:flex !important">
+                                <input asp-for="MoneyAmount" class="form-control" />
+                                @Html.DropDownListFor(model => model.CurrencyId, new SelectList(Model.Currency, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="MoneyAmount" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row" id="DivDocumentFile">
+                            <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
+                            <div class="col">
+                                <input asp-for="MultipleFiles" type="file" multiple accept=".pdf,.docx,.png,.jpg" class="file-button" />
+                                <span asp-validation-for="MultipleFiles" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="DivFullName">
+                            <label asp-for="FullName" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("full_Name")</label>
+                            <div class="col">
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="DivPhoneNumber">
+                            <label asp-for="PhoneNumber" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("phone_number") </label>
+                            <div class="col">
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="DivRequestedDate">
+                            <label asp-for="EmailAddress" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("email_address") </label>
+                            <div class="col">
+                                <input asp-for="EmailAddress" class="form-control" />
+                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer text-end">
-                    <div class="d-flex">
-                        <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                    <div class="col-md-5">
+                        <div class="mb-3 row mb-3row" id="divAdrtype" style="display:none">
+                            <label asp-for="ADRTypeId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Adrtype")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.ADRTypeId, new SelectList(Model.Adrtypes, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="ADRTypeId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divContractNegotiationsOther" style="display:none">
+                            <label asp-for="ContractNegotiationsOther" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("other")</label>
+                            <div class="col">
+                                <input asp-for="ContractNegotiationsOther" class="form-control" />
+                                <span asp-validation-for="ContractNegotiationsOther" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divAdrtypeStatus" style="display:none">
+                            <label asp-for="AdrStatusId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("status")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.AdrStatusId, new SelectList(Model.AdrStatus, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="AdrStatusId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        @*<div class="mb-3 row mb-3row" id="divAdrtypeResult" style="display:none">
+            <label asp-for="AdrResultID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("result")</label>
+            <div class="col">
+                @Html.DropDownListFor(model => model.AdrResultID, new SelectList(Model.AdrResults, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                <span asp-validation-for="AdrResultID" class="text-danger"></span>
+            </div>
+        </div>*@
+                        <div class="mb-3 row mb-3row" id="divClaimant" style="display:none">
+                            <label asp-for="Claimant" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Claimant")</label>
+                            <div class="col">
+                                <input asp-for="Claimant" class="form-control" />
+                                <span asp-validation-for="Claimant" class="text-danger"></span>
+                            </div>
+                        </div>
+                        @*<div class="mb-3 row mb-3row" id="divActingAs" style="display:none">
+            <label asp-for="ActingAsId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("ActingAs")</label>
+            <div class="col">
+                @Html.DropDownListFor(model => model.ActingAsId, new SelectList(Model.ActingAs, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
 
-                        <a asp-action="Index">Back to List</a>
+                <span asp-validation-for="ActingAsId" class="text-danger"></span>
+            </div>
+        </div>*@
+                        <div class="mb-3 row mb-3row" id="divRespondent" style="display:none">
+                            <label asp-for="Respondent" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Respondent")</label>
+                            <div class="col">
+                                <input asp-for="Respondent" class="form-control" />
+                                <span asp-validation-for="Respondent" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divCaseType" style="display:none">
+                            <label asp-for="CaseTypeID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("CaseType")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.CaseTypeID, new SelectList(Model.CaseType, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="CaseTypeID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divSpecialization" style="display:none">
+                            <label asp-for="SpecializationId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Specialization")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.SpecializationId, new SelectList(Model.Specializations, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="SpecializationId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divSpecializationStatus" style="display:none">
+                            <label asp-for="InternationalCaseStatusID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("status")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.InternationalCaseStatusID, new SelectList(Model.InternationCaseStatus, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="InternationalCaseStatusID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divSpecializationResult" style="display:none">
+                            <label asp-for="InternationalCaseResultID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("result")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.InternationalCaseResultID, new SelectList(Model.InternationCaseResult, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+
+                                <span asp-validation-for="InternationalCaseResultID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divCountry" style="display:none">
+                            <label asp-for="CountryId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("country")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.CountryId, new SelectList(Model.Countries, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="CountryId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divCourtCenter" style="display:none">
+                            <label asp-for="CourtCenter" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("CourtCenter")</label>
+                            <div class="col">
+                                <input asp-for="CourtCenter" class="form-control" />
+                                <span asp-validation-for="CourtCenter" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divDateOfAdjournment" style="display:none">
+                            <label asp-for="DateOfAdjournment" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("DateOfAdjournment")</label>
+                            <div class="col">
+                                <input asp-for="DateOfAdjournment" class="form-control" />
+                                <span asp-validation-for="DateOfAdjournment" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row" id="divLitigationType" style="display:none">
+                            <label asp-for="LitigationtypeId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("LitigationType")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.LitigationtypeId, new SelectList(Model.LitigationTypes, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="LitigationtypeId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divLitigationStatus" style="display:none">
+                            <label asp-for="LitigationStatusID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("status")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.LitigationStatusID, new SelectList(Model.LitigationStatus, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="LitigationStatusID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divLitigationResult" style="display:none">
+                            <label asp-for="LitigationResultID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("result")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.LitigationResultID, new SelectList(Model.LitigationResults, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="LitigationResultID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divJursidiction" style="display:none">
+                            <label asp-for="JuristrictionId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Jursidiction")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.JuristrictionId, new SelectList(Model.Jursidictions, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="JuristrictionId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divBench" style="display:none">
+                            <label asp-for="Bench" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Bench")</label>
+                            <div class="col">
+                                <input asp-for="Bench" class="form-control" />
+                                <span asp-validation-for="Bench" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divmidib" style="display:none">
+                            <label asp-for="midib" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("midib")</label>
+                            <div class="col">
+                                <input asp-for="midib" class="form-control" />
+                                <span asp-validation-for="midib" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row mb-3row" id="divPlaintiful" style="display:none">
+                            <label asp-for="Plaintiful" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Plaintiful")</label>
+                            <div class="col">
+                                <input asp-for="Plaintiful" class="form-control" />
+                                <span asp-validation-for="Plaintiful" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divDefendent" style="display:none">
+                            <label asp-for="Defendent" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("Defendent")</label>
+                            <div class="col">
+                                <input asp-for="Defendent" class="form-control" />
+                                <span asp-validation-for="Defendent" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divDateofJudgement" style="display:none">
+                            <label asp-for="DateofJudgement" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("DateofJudgement")</label>
+                            <div class="col">
+                                <input asp-for="DateofJudgement" class="form-control" />
+                                <span asp-validation-for="DateofJudgement" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row mb-3row" id="divContractNegotiation" style="display:none">
+                            <label asp-for="ContractNegotiationId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("service_type")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.ContractNegotiationId, new SelectList(Model.ContractNegotiations, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="ContractNegotiationId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row mb-3row" id="divContractNegotiationStatus" style="display:none">
+                            <label asp-for="ContractNegotiationStatusId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("status")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.ContractNegotiationStatusId, new SelectList(Model.ContractNegotiationsStatus, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="ContractNegotiationStatusId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row mb-3row" id="divContractNegotiationResult" style="display:none">
+                            <label asp-for="ContractNegotiationResultId" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("result")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.ContractNegotiationResultId, new SelectList(Model.ContractNegotiationResult, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="ContractNegotiationResultId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row mb-3row" id="divLegalAdviceStatus" style="display:none">
+                            <label asp-for="LegalAdviceStatusID" class="mb-3rowlabel col-4 col-form-label">@_localization.Getkey("status")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.LegalAdviceStatusID, new SelectList(Model.LegalAdviceStatus, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="LegalAdviceStatusID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">@_localization.Getkey("send")</button>
+
+                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
+
+<br />
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script>
+        $(document).ready(function (e) {
+            pond = FilePond.create(
+                document.querySelector('.form-file-button'), {
+                allowMultiple: true,
+                instantUpload: false,
+                allowProcess: false
+            });
+
+            $("#uploadform").submit(function (e) {
+                e.preventDefault();
+                var formdata = new FormData(this);
+                // append FilePond files into the form data
+                pondFiles = pond.getFiles();
+                for (var i = 0; i < pondFiles.length; i++) {
+                    // append the blob file
+                    formdata.append('MultipleFiles', pondFiles[i].file);
+                }
+
+                $.ajax({
+                    url: "/ExternalRequests/Create",
+                    data: formdata,
+
+                    processData: false,
+                    contentType: false,
+                    method: "post"
+
+                });
+
+            })
+        });
+    </script>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {
@@ -198,6 +457,7 @@
             $(document).ready(function () {
                 $("#ServiceTypeID").change(function () {
                     var value = $("#ServiceTypeID").val();
+                   // alert(value);
                     var url = '@Url.Content("~/")' + "ExternalRequests/GetDoctypes";
                     var ddlsource = "#ServiceTypeID";
                     $.getJSON(url, { ServiceTypeID: $(ddlsource).val() }, function (data) {
@@ -207,8 +467,8 @@
                             items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
                         });
                         $('#DocId').html(items);
-                    });
-
+                    }); 
+                   
                     if (value == "F935DCD1-2651-4C64-947C-0A877F652FB5" ||
                         value == "ACB92222-4872-4A9D-8EDB-8BCD5317129A" ||
                         value == "6E00B0EA-7B4D-40C4-8289-A566FE16E88E" ||
@@ -216,10 +476,209 @@
                         value == "C792938C-7952-488C-A23E-1A27F8B2B8E6") {
                         $("#divDocType").show();
                         $("#priorityQuestionType").hide();
+                        $("#divMoneyAmmount").hide();
                     }
                     else {
                         $("#divDocType").hide();
                         $("#priorityQuestionType").show();
+                        $("#divMoneyAmmount").show();
+                    }
+
+                    if (value == "3A63B223-1F6C-4BD1-8E6E-82A2C468A623") {
+                        $("#divOtherServiceType").show();
+                    }
+                    else {
+                        $("#divOtherServiceType").hide();
+                    }
+
+                    if (value == "CB41651E-F316-4C57-8466-38326777DFD8") {
+                        //Litigations
+                        $("#divLitigationType").show();
+                        $("#divLitigationTypeStatus").show();
+                        $("#divLitigationTypeResult").show();
+                        $("#divJursidiction").show();
+                        $("#divDateofJudgement").show();
+                        $("#divBench").show();
+                        $("#divmidib").show();
+                        $("#divPlaintiful").show();
+                        $("#divDefendent").show();
+                        $("#divCaseType").hide();
+                        $("#divSpecialization").hide();
+                        $("#divSpecializationStatus").hide();
+                        $("#divSpecializationResult").hide();
+                        $("#divCountry").hide();
+                        $("#divCourtCenter").hide();
+                        $("#divClaimant").hide();
+                        $("#divRespondent").hide();
+                        $("#divDateOfAdjournment").hide();
+                        $("#divAdrtype").hide();
+                        $("#divAdrtypeStus").hide();
+                        $("#divAdrtypeResult").hide();
+                        $("#divActingAs").hide();
+                        $("#LegalAdviceStatus").hide();
+                        $("#LegalAdviceResult").hide();
+                        $("#divMoneyAmmount").show();
+
+                    }
+                    else if (value =="40231461-38AC-45C6-B98C-08D88BB26C69") {
+                        $("#divContractNegotiation").show();
+                        $("#divContractNegotiationStatus").show();
+                        $("#divContractNegotiationResult").hide();
+
+                        $("#divCaseType").hide();
+                        $("#divSpecialization").hide();
+                        $("#divSpecializationStatus").hide();
+                        $("#divSpecializationResult").hide();
+                        $("#divCountry").hide();
+                        $("#divCourtCenter").hide();
+                        $("#divClaimant").hide();
+                        $("#divRespondent").hide();
+                        $("#divDateOfAdjournment").hide();
+                        $("#divAdrtype").hide();
+                        $("#divAdrtypeStus").hide();
+                        $("#divAdrtypeResult").hide();
+                        $("#divActingAs").hide();
+                        $("#divLitigationType").hide();
+                        $("#divLitigationTypeStatus").hide();
+                        $("#divLitigationTypeResult").hide();
+                        $("#divJursidiction").hide();
+                        $("#divDateofJudgement").hide();
+                        $("#divBench").hide();
+                        $("#divmidib").hide();
+                        $("#divPlaintiful").hide();
+                        $("#divDefendent").hide();
+                        $("#LegalAdviceStatus").hide();
+                        $("#LegalAdviceResult").hide();
+                        $("#divMoneyAmmount").show();
+
+                    }
+                    else if (value =="8ED63154-80C4-4595-98D1-8381402C62AB") {
+                        $("#divLegalAdviceStatus").show();
+                        $("#divLegalAdviceResult").show();
+
+                        $("#divCaseType").hide();
+                        $("#divSpecialization").hide();
+                        $("#divSpecializationStatus").hide();
+                        $("#divSpecializationResult").hide();
+                        $("#divCountry").hide();
+                        $("#divCourtCenter").hide();
+                        $("#divClaimant").hide();
+                        $("#divRespondent").hide();
+                        $("#divDateOfAdjournment").hide();
+                        $("#divAdrtype").hide();
+                        $("#divAdrtypeStus").hide();
+                        $("#divAdrtypeResult").hide();
+                        $("#divActingAs").hide();
+                        $("#divLitigationType").hide();
+                        $("#divLitigationTypeStatus").hide();
+                        $("#divLitigationTypeResult").hide();
+                        $("#divJursidiction").hide();
+                        $("#divDateofJudgement").hide();
+                        $("#divBench").hide();
+                        $("#divmidib").hide();
+                        $("#divPlaintiful").hide();
+                        $("#divDefendent").hide();
+                        $("#divContractNegotiation").hide();
+                        $("#divContractNegotiationStatus").hide();
+                        $("#divContractNegotiationResult").hide();
+                        $("#divMoneyAmmount").show();
+
+
+                    }
+                    else if (value == "F8CB3338-677B-410A-BAF8-89A7C9BDF6BD") {
+                        //ADR Activities
+                        $("#divAdrtype").show();
+                        $("#divAdrtypeStus").show();
+                        $("#divAdrtypeResult").show();
+                        $("#divRespondent").show();
+                        $("#divClaimant").show();
+                        $("#divActingAs").show();
+
+                        $("#divCaseType").hide();
+                        $("#divSpecialization").hide();
+                        $("#divSpecializationStatus").hide();
+                        $("#divSpecializationResult").hide();
+                        $("#divCountry").hide();
+                        $("#divCourtCenter").hide();
+                        $("#divDateOfAdjournment").hide();
+                        $("#divLitigationType").hide();
+                        $("#divLitigationTypeStatus").hide();
+                        $("#divLitigationTypeResult").hide();
+                        $("#divJursidiction").hide();
+                        $("#divDateofJudgement").hide();
+                        $("#divBench").hide();
+                        $("#divmidib").hide();
+                        $("#divPlaintiful").hide();
+                        $("#divDefendent").hide();
+                        $("#divContractNegotiation").hide();
+                        $("#divContractNegotiationStatus").hide();
+                        $("#divContractNegotiationResult").hide();
+                        $("#LegalAdviceStatus").hide();
+                        $("#LegalAdviceResult").hide();
+                        $("#divMoneyAmmount").show();
+                    }
+                    else if (value == "0A26804F-2017-4DC0-A9D6-C0061D22A173") {
+                        //Internal case
+                        $("#divCaseType").show();
+                        $("#divSpecialization").show();
+                        $("#divSpecializationStatus").show();
+                        $("#divSpecializationResult").show();
+                        $("#divCountry").show();
+                        $("#divCourtCenter").show();
+                        $("#divClaimant").show();
+                        $("#divRespondent").show();
+                        $("#divDateOfAdjournment").show();
+
+                        $("#divAdrtype").hide();
+                        $("#divAdrtypeStus").hide();
+                        $("#divAdrtypeResult").hide();
+                        $("#divActingAs").hide();
+                        $("#divLitigationType").hide();
+                        $("#divLitigationTypeStatus").hide();
+                        $("#divLitigationTypeResult").hide();
+                        $("#divJursidiction").hide();
+                        $("#divDateofJudgement").hide();
+                        $("#divBench").hide();
+                        $("#divmidib").hide();
+                        $("#divPlaintiful").hide();
+                        $("#divDefendent").hide();
+                        $("#divContractNegotiation").hide();
+                        $("#divContractNegotiationStatus").hide();
+                        $("#divContractNegotiationResult").hide();
+                        $("#LegalAdviceStatus").hide();
+                        $("#LegalAdviceResult").hide();
+                        $("#divMoneyAmmount").show();
+                    }
+                    else {
+                        $("#divCaseType").hide();
+                        $("#divSpecialization").hide();
+                        $("#divSpecializationStatus").hide();
+                        $("#divSpecializationResult").hide();
+                        $("#divCountry").hide();
+                        $("#divCourtCenter").hide();
+                        $("#divClaimant").hide();
+                        $("#divRespondent").hide();
+                        $("#divDateOfAdjournment").hide();
+                        $("#divAdrtype").hide();
+                        $("#divAdrtypeStus").hide();
+                        $("#divAdrtypeResult").hide();
+                        $("#divActingAs").hide();
+                        $("#divLitigationType").hide();
+                        $("#divLitigationTypeStatus").hide();
+                        $("#divLitigationTypeResult").hide();
+                        $("#divJursidiction").hide();
+                        $("#divDateofJudgement").hide();
+                        $("#divBench").hide();
+                        $("#divmidib").hide();
+                        $("#divPlaintiful").hide();
+                        $("#divDefendent").hide();
+                        $("#divContractNegotiation").hide();
+                        $("#divContractNegotiationStatus").hide();
+                        $("#divContractNegotiationResult").hide();
+                        $("#LegalAdviceStatus").hide();
+                        $("#LegalAdviceResult").hide();
+                        $("#divMoneyAmmount").hide();
+                        $("#divOtherDocumentType").hide();
                     }
                 });
 
@@ -238,6 +697,46 @@
                 }
             });
         });
-
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ADRTypeId").change(function () {
+                var orderId = $("#ADRTypeId").val();
+                if (orderId == "Other") {
+                    $("#divContractNegotiationsOther").show();
+                }
+                else {
+                    $("#divContractNegotiationsOther").hide();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ContractNegotiationId").change(function () {
+                var orderId = $("#ContractNegotiationId").val();
+                if (orderId == "Other") {
+                    $("#divContractNegotiationsOther").show();
+                }
+                else {
+                    $("#divContractNegotiationsOther").hide();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DocId").change(function () {
+                var orderId = $("#DocId").val().toLowerCase();
+                if (orderId == "3eb2b49e-4bf8-4e16-918a-356bcb6ba17e") {
+                    $("#divOtherDocumentType").show();
+                }
+                else {
+                    $("#divOtherDocumentType").hide();
+                }
+            });
+        });
+    </script>
+
 }

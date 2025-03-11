@@ -15,6 +15,10 @@ public partial class TblActivity
 
     public Guid? CreatedBy { get; set; }
 
+    public string? TimeTakenTocomplete { get; set; }
+
+    public string? Remark { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblRequest? Request { get; set; }

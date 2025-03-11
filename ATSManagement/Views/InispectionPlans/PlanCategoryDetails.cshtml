@@ -1,0 +1,56 @@
+﻿@model ATSManagement.Models.TblPlanCatagory
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@{
+    ViewData["Title"] = _localization.Getkey("key_plans") + _localization.Getkey("Details");
+}
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("key_plans")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @_localization.Getkey("title")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CatTitle)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @_localization.Getkey("Description")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.Raw( Model.CatDescription)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @_localization.Getkey("annual_plans")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.InspectionPlan.PlanTitle)
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -31,8 +31,8 @@
                         <div class="col-md-10">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="SpecificPlanId" />
-                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
-                            <input asp-for="PlanCatId" type="hidden" class="form-control" />
+                            <input asp-for="CreatedBy" type="hidden" />
+                            <input asp-for="PlanCatId" type="hidden" />
                             <div class="mb-3 row">
                                 <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
                                 <div class="col">
@@ -53,7 +53,7 @@
                 <div class="card-footer text-end">
                     <div class="d-flex">
                         <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />
-                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
+                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@ViewBag.PlanCatId">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>

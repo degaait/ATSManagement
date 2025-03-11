@@ -1,0 +1,252 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("Uppdate_progress_status");
+}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Uppdate_progress_status")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <a style="color:darkblue" asp-action="AssignedRequests">
+                    <i class="bi bi-backspace-fill"></i>
+                    @_localization.Getkey("backlist")
+                </a>
+            </div>
+            <form asp-action="UpdateProgressStatus" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    @Html.DisplayFor(model => model.PlanTitle)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Evaluation_criteria")</label>
+                                <div class="col">
+                                    @Html.Raw(Model.EvaluationCheckLists)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="StatusID" class="col-3 col-form-label">  @_localization.Getkey("status")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.StatusID, new SelectList(Model.status, "Value", "Text"), "--Select---", htmlAttributes: new { @class = "form-control" })
+                                    <span asp-validation-for="StatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row" id="divEngagementLetter" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("files")</label>
+                                <div class="col">
+                                    <input asp-for="EngagementLetter" type="file" accept=".pdf,.docx,.png,.jpg" required class="form-file-button" />
+                                    <span asp-validation-for="EngagementLetter" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-4 row" id="divEvaluationCheckLists" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Evaluation_criteria")</label>
+                                <div class="col">
+                                    <input asp-for="EvaluationCheckLists" type="text" id="checkList" class="form-control" />
+                                    <span asp-validation-for="EvaluationCheckLists" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-4 row" id="divDepartmentReview" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("department_review")</label>
+                                <div class="col">
+                                    <input asp-for="DepartmentReview" type="text" id="checkList" class="form-control" />
+                                    <span asp-validation-for="DepartmentReview" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-4 row" id="divExitConfirence" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Exit_Confirence")</label>
+                                <div class="col">
+                                    <input asp-for="ExitConfirence" type="text" id="checkList" class="form-control" />
+                                    <span asp-validation-for="ExitConfirence" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-4 row" id="divEvaluationCheckListsAttachmet" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("files")</label>
+                                <div class="col">
+                                    <input asp-for="EvaluationCheckListsAttachmet" type="file" accept=".pdf,.docx,.png,.jpg" class="form-control" />
+                                    <span asp-validation-for="EvaluationCheckListsAttachmet" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row" id="divTORAttachment" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("files")</label>
+                                <div class="col">
+                                    <input asp-for="TORAttachment" type="file" accept=".pdf,.docx,.png,.jpg" class="form-file-button" />
+                                    <span asp-validation-for="TORAttachment" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row" id="divFinalReport" style="display:none">
+                                <label class="col-3 col-form-label">@_localization.Getkey("files")</label>
+                                <div class="col">
+                                    <input asp-for="FinalReport" type="file" accept=".pdf,.docx,.png,.jpg" class="form-file-button" />
+                                    <span asp-validation-for="FinalReport" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#StatusID").change(function () {
+                var orderId = $("#StatusID").val();
+                if (orderId == "35265378-ec46-4983-80d8-13be67dbdd40") {
+                    $("#divEngagementLetter").hide();
+                    $("#divEvaluationCheckListsAttachmet").hide();
+                    $("#divEvaluationCheckLists").hide();
+                    $("#divTORAttachment").show();
+                    $("#divExitConfirence").hide();
+                    $("#divFinalReport").hide();
+                    $("#divDepartmentReview").hide();
+                }
+                else if (orderId == "3e11a64c-f972-4689-8d57-cf531c6ba9a5") {
+                    $("#divEngagementLetter").show();
+                    $("#divEvaluationCheckListsAttachmet").hide();
+                    $("#divEvaluationCheckLists").hide();
+                    $("#divTORAttachment").hide();
+                    $("#divExitConfirence").hide();
+                    $("#divFinalReport").hide();
+                    $("#divDepartmentReview").hide();
+                }
+                else if (orderId == "de873205-6f55-4b9f-b9dc-bb825b5b4237") {
+                    $("#divEngagementLetter").hide();
+                    $("#divEvaluationCheckListsAttachmet").show();
+                    $("#divEvaluationCheckLists").show();
+                    $("#divTORAttachment").hide();
+                    $("#divExitConfirence").hide();
+                    $("#divFinalReport").hide();
+                    $("#divDepartmentReview").hide();
+                }
+                else if (orderId == "2dc5bc83-0330-4b60-b142-44c1f7296e7c") {
+                    $("#divEngagementLetter").hide();
+                    $("#divEvaluationCheckListsAttachmet").hide();
+                    $("#divEvaluationCheckLists").hide();
+                    $("#divTORAttachment").hide();
+                    $("#divExitConfirence").hide();
+                    $("#divFinalReport").show();
+                    $("#divDepartmentReview").hide();
+                }
+                else if (orderId =="c32f9f29-e3c3-4bd9-b706-18f396d3df59") {
+                    $("#divEngagementLetter").hide();
+                    $("#divEvaluationCheckListsAttachmet").hide();
+                    $("#divEvaluationCheckLists").hide();
+                    $("#divTORAttachment").hide();
+                    $("#divExitConfirence").show();
+                    $("#divFinalReport").hide();
+                    $("#divDepartmentReview").hide();
+                }
+                else if (orderId == "b392849f-d542-470c-9556-8be5725d289d") {
+                    $("#divEngagementLetter").hide();
+                    $("#divEvaluationCheckListsAttachmet").hide();
+                    $("#divEvaluationCheckLists").hide();
+                    $("#divTORAttachment").hide();
+                    $("#divExitConfirence").hide();
+                    $("#divFinalReport").hide();
+                    $("#divDepartmentReview").show();
+                }
+                else {
+                    $("#divEngagementLetter").hide();
+                    $("#divEvaluationCheckListsAttachmet").hide();
+                    $("#divEvaluationCheckLists").hide();
+                    $("#divTORAttachment").hide();
+                    $("#divFinalReport").hide();
+                    $("#divExitConfirence").hide();
+                    $("#divDepartmentReview").hide();
+                }
+            });
+        });
+
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Remark',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#checkList',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

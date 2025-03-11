@@ -1,0 +1,150 @@
+﻿@model ATSManagement.ViewModels.AjornyDateModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject AtsdbContext _context;
+@{
+    ViewData["Title"] = _localization.Getkey("adjournment_date");
+   
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("adjournment_date")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="AddAdjornyDates" method="post">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <input type="hidden" asp-for="AdjoryId" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("expert_handling")</label>
+                                <div class="col">
+                                    <input asp-for="ExpertHanlingCase" class="form-control" />
+                                    <span asp-validation-for="ExpertHanlingCase" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("defendent_plantiful")</label>
+                                <div class="col">
+                                    <input asp-for="Plaintiff_Defendant" class="form-control" />
+                                    <span asp-validation-for="Plaintiff_Defendant" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("defendent_info")</label>
+                                <div class="col">
+                                    <input asp-for="Defendant_info" class="form-control" />
+                                    <span asp-validation-for="Defendant_info" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("case_court")</label>
+                                <div class="col">
+                                    <input asp-for="TheCourtCaseHanled" class="form-control" />
+                                    <span asp-validation-for="TheCourtCaseHanled" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("court_case_number")</label>
+                                <div class="col">
+                                    <input asp-for="CaseNumber" class="form-control" />
+                                    <span asp-validation-for="CaseNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("adjournment_reason")</label>
+                                <div class="col">
+                                    <input asp-for="AppointmentReason" class="form-control" />
+                                    <span asp-validation-for="AppointmentReason" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label"> @_localization.Getkey("adjournment_date")</label>
+                                <div class="col">
+                                    <input asp-for="AdjorneyDate" class="form-control" />
+                                    <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="AddAdjornyDates" asp-route-id="@Model.RequestId">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#WhatIsDone',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using ATSManagement.ViewModels;
 
 namespace ATSManagement.Controllers
 {
@@ -63,51 +64,117 @@ namespace ATSManagement.Controllers
         }
         public IActionResult Create(Guid? id)
         {
+            DebateWorkPerformance workPerformance = new DebateWorkPerformance();
             if (id==null)
             {
                 return NotFound();
             }
             _contextAccessor.HttpContext.Session.SetString("debateTypeId", id.ToString());
-            ViewData["Id"] = new SelectList(_context.TblDebatePerformanceEventTypes, "Id", "IWorkPerformanceEventTyped");
-            ViewData["subDebateTypes"]= new SelectList(_context.TblSubDebatePerformances.Where(x=>x.PerformanceId==id), "SubPerformanceId", "SubPerformanceName");
-            ViewData["MonthId"] = new SelectList(_context.TblMonths, "MonthId", "MonthName");
-            ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "Year");
-            return View();
+            workPerformance.TblSubDebatePerformances = _context.TblSubDebatePerformances.Select(s => new SelectListItem
+            {
+                Value = s.SubPerformanceId.ToString(),
+                Text = s.SubPerformanceName
+            }).ToList();
+            workPerformance.TblYears = _context.TblYears.Select(s => new SelectListItem
+            {
+                Value = s.YearId.ToString(),
+                Text = s.Year
+            }).ToList();
+            workPerformance.TblMonths = _context.TblMonths.Select(s => new SelectListItem
+            {
+                Value = s.MonthId.ToString(),
+                Text = s.MonthName
+            }).ToList();
+            workPerformance.TblDebatePerformanceEventTypes = _context.TblDebatePerformanceEventTypes.Where(s=>s.SubPerformanceId==id).Select(s => new SelectListItem
+            {
+                Text = s.WorkPerformanceEventType,
+                Value = s.Id.ToString()
+            }).ToList();
+           return View(workPerformance);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SubPerformanceId,WorkPerformId,Womens,Childrens,WomenElders,Hivpositives,Mens,OtherServants,TotalServant,OutofContact,Family,Property,WorkDebate,OtherCaseTypes,JudgementMoneyAmmount,JudgementVerifiedAmmount,Id,YearId,MonthId,CreatedBy")] TblDebateWorkPerformanceReport tblDebateWorkPerformanceReport)
+        public async Task<IActionResult> Create(DebateWorkPerformance debateWork)
         {
+            DebateWorkPerformance workPerformance = new DebateWorkPerformance();
+            TblDebateWorkPerformanceReport report = new TblDebateWorkPerformanceReport();
             Guid id = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("debateTypeId"));
-            if (tblDebateWorkPerformanceReport.Id==Guid.Empty)
+            if (debateWork.Id==Guid.Empty)
             {
                 _notifyService.Information("ክንውን አልተመረጠም። እባኮት ክንውን መርጠው እንደገና ይሞክሩ");
-                ViewData["subDebateTypes"] = new SelectList(_context.TblSubDebatePerformances.Where(x => x.PerformanceId == id), "SubPerformanceId", "SubPerformanceName");
-                ViewData["Id"] = new SelectList(_context.TblDebatePerformanceEventTypes, "Id", "WorkPerformanceEventType", tblDebateWorkPerformanceReport.Id);
-                ViewData["MonthId"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblDebateWorkPerformanceReport.MonthId);
-                ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "Year", tblDebateWorkPerformanceReport.YearId);
-                return View(tblDebateWorkPerformanceReport);
+                workPerformance.TblSubDebatePerformances = _context.TblSubDebatePerformances.Select(s => new SelectListItem
+                {
+                    Value = s.SubPerformanceId.ToString(),
+                    Text = s.SubPerformanceName
+                }).ToList();
+                workPerformance.TblYears = _context.TblYears.Select(s => new SelectListItem
+                {
+                    Value = s.YearId.ToString(),
+                    Text = s.Year
+                }).ToList();
+                workPerformance.TblMonths = _context.TblMonths.Select(s => new SelectListItem
+                {
+                    Value = s.MonthId.ToString(),
+                    Text = s.MonthName
+                }).ToList();
+                workPerformance.TblDebatePerformanceEventTypes = _context.TblDebatePerformanceEventTypes.Where(s => s.SubPerformanceId == id).Select(s => new SelectListItem
+                {
+                    Text = s.WorkPerformanceEventType,
+                    Value = s.Id.ToString()
+                }).ToList();
+                return View(workPerformance);
             }
             try
             {
                
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
                 var ceoEmail = (from items in _context.TblInternalUsers where items.Dep.DepCode == "CVA" && (items.IsDeputy == true || items.IsDepartmentHead == true) select items.EmailAddress).ToList();
-                var isExits = _context.TblDebateWorkPerformanceReports.Where(s => s.Month == tblDebateWorkPerformanceReport.Month && s.Year == tblDebateWorkPerformanceReport.Year && s.Id == tblDebateWorkPerformanceReport.Id).FirstOrDefault();
+                var isExits = _context.TblDebateWorkPerformanceReports.Where(s => s.MonthId == workPerformance.MonthId && s.YearId == workPerformance.YearId && s.Id == workPerformance.Id).FirstOrDefault();
                 if (isExits != null)
                 {
                     _notifyService.Information("This report already exists. Please atleast change one of these fields(Year, Month, Servant type)");
-                    ViewData["subDebateTypes"] = new SelectList(_context.TblSubDebatePerformances.Where(x => x.PerformanceId == id), "SubPerformanceId", "SubPerformanceName");
-                    ViewData["Id"] = new SelectList(_context.TblDebatePerformanceEventTypes, "Id", "WorkPerformanceEventType", tblDebateWorkPerformanceReport.Id);
-                    ViewData["MonthId"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblDebateWorkPerformanceReport.MonthId);
-                    ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "Year", tblDebateWorkPerformanceReport.YearId);
-                    return View(tblDebateWorkPerformanceReport);
+                    workPerformance.TblSubDebatePerformances = _context.TblSubDebatePerformances.Select(s => new SelectListItem
+                    {
+                        Value = s.SubPerformanceId.ToString(),
+                        Text = s.SubPerformanceName
+                    }).ToList();
+                    workPerformance.TblYears = _context.TblYears.Select(s => new SelectListItem
+                    {
+                        Value = s.YearId.ToString(),
+                        Text = s.Year
+                    }).ToList();
+                    workPerformance.TblMonths = _context.TblMonths.Select(s => new SelectListItem
+                    {
+                        Value = s.MonthId.ToString(),
+                        Text = s.MonthName
+                    }).ToList();
+                    workPerformance.TblDebatePerformanceEventTypes = _context.TblDebatePerformanceEventTypes.Where(s => s.SubPerformanceId == id).Select(s => new SelectListItem
+                    {
+                        Text = s.WorkPerformanceEventType,
+                        Value = s.Id.ToString()
+                    }).ToList();
+                    return View(workPerformance);
                 }
                 if (ModelState.IsValid)
                 {
-                    tblDebateWorkPerformanceReport.WorkPerformId = Guid.NewGuid();
-                    tblDebateWorkPerformanceReport.CreatedBy = userId;
-                    _context.Add(tblDebateWorkPerformanceReport);
+                    report.WorkPerformId = Guid.NewGuid();
+                    report.CreatedBy = userId;
+                    report.YearId = debateWork.YearId;
+                    report.MonthId = debateWork.MonthId;
+                    report.WorkDebate = debateWork.WorkDebate;
+                    report.Childrens = debateWork.Childrens;
+                    report.Family = debateWork.Family;
+                    report.Hivpositives = debateWork.Hivpositives;
+                    report.Mens = debateWork.Mens;
+                    report.WomenElders = debateWork.WomenElders;
+                    report.Id = debateWork.Id;
+                    report.TotalServant = debateWork.TotalServant;
+                    report.OutofContact = debateWork.OutofContact;
+                    report.WorkDebate = debateWork.WorkDebate;
+                    report.OtherServants = debateWork.OtherServants;
+                    report.Property = debateWork.Property;
+                    report.SubPerformanceId = debateWork.SubPerformanceId;
+                    _context.TblDebateWorkPerformanceReports.Add(report);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {
@@ -118,30 +185,78 @@ namespace ATSManagement.Controllers
                     else
                     {
                         _notifyService.Error("Report isn't added successfully!. Please try again");
-                        ViewData["subDebateTypes"] = new SelectList(_context.TblSubDebatePerformances.Where(x => x.PerformanceId == id), "SubPerformanceId", "SubPerformanceName");
-                        ViewData["Id"] = new SelectList(_context.TblDebatePerformanceEventTypes, "Id", "WorkPerformanceEventType", tblDebateWorkPerformanceReport.Id);
-                        ViewData["MonthId"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblDebateWorkPerformanceReport.MonthId);
-                        ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "Year", tblDebateWorkPerformanceReport.YearId);
-                        return View(tblDebateWorkPerformanceReport);
+                        workPerformance.TblSubDebatePerformances = _context.TblSubDebatePerformances.Select(s => new SelectListItem
+                        {
+                            Value = s.SubPerformanceId.ToString(),
+                            Text = s.SubPerformanceName
+                        }).ToList();
+                        workPerformance.TblYears = _context.TblYears.Select(s => new SelectListItem
+                        {
+                            Value = s.YearId.ToString(),
+                            Text = s.Year
+                        }).ToList();
+                        workPerformance.TblMonths = _context.TblMonths.Select(s => new SelectListItem
+                        {
+                            Value = s.MonthId.ToString(),
+                            Text = s.MonthName
+                        }).ToList();
+                        workPerformance.TblDebatePerformanceEventTypes = _context.TblDebatePerformanceEventTypes.Where(s => s.SubPerformanceId == id).Select(s => new SelectListItem
+                        {
+                            Text = s.WorkPerformanceEventType,
+                            Value = s.Id.ToString()
+                        }).ToList();
+                        return View(workPerformance);
                     }
                 }
                 else
                 {
-                    ViewData["subDebateTypes"] = new SelectList(_context.TblSubDebatePerformances.Where(x => x.PerformanceId == id), "SubPerformanceId", "SubPerformanceName");
-                    ViewData["Id"] = new SelectList(_context.TblDebatePerformanceEventTypes, "Id", "IWorkPerformanceEventTyped", tblDebateWorkPerformanceReport.Id);
-                    ViewData["MonthId"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblDebateWorkPerformanceReport.MonthId);
-                    ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "Year", tblDebateWorkPerformanceReport.YearId);
-                    return View(tblDebateWorkPerformanceReport);
+                    workPerformance.TblSubDebatePerformances = _context.TblSubDebatePerformances.Select(s => new SelectListItem
+                    {
+                        Value = s.SubPerformanceId.ToString(),
+                        Text = s.SubPerformanceName
+                    }).ToList();
+                    workPerformance.TblYears = _context.TblYears.Select(s => new SelectListItem
+                    {
+                        Value = s.YearId.ToString(),
+                        Text = s.Year
+                    }).ToList();
+                    workPerformance.TblMonths = _context.TblMonths.Select(s => new SelectListItem
+                    {
+                        Value = s.MonthId.ToString(),
+                        Text = s.MonthName
+                    }).ToList();
+                    workPerformance.TblDebatePerformanceEventTypes = _context.TblDebatePerformanceEventTypes.Where(s => s.SubPerformanceId == id).Select(s => new SelectListItem
+                    {
+                        Text = s.WorkPerformanceEventType,
+                        Value = s.Id.ToString()
+                    }).ToList();
+                    return View(workPerformance);
                 }     
             }
             catch (Exception ex)
             {
                 _notifyService.Error($"Error: {ex.Message}");
-                ViewData["subDebateTypes"] = new SelectList(_context.TblSubDebatePerformances.Where(x => x.PerformanceId == id), "SubPerformanceId", "SubPerformanceName");
-                ViewData["Id"] = new SelectList(_context.TblDebatePerformanceEventTypes, "Id", "WorkPerformanceEventType", tblDebateWorkPerformanceReport.Id);
-                ViewData["MonthId"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblDebateWorkPerformanceReport.MonthId);
-                ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "Year", tblDebateWorkPerformanceReport.YearId);
-                return View(tblDebateWorkPerformanceReport);
+                workPerformance.TblSubDebatePerformances = _context.TblSubDebatePerformances.Select(s => new SelectListItem
+                {
+                    Value = s.SubPerformanceId.ToString(),
+                    Text = s.SubPerformanceName
+                }).ToList();
+                workPerformance.TblYears = _context.TblYears.Select(s => new SelectListItem
+                {
+                    Value = s.YearId.ToString(),
+                    Text = s.Year
+                }).ToList();
+                workPerformance.TblMonths = _context.TblMonths.Select(s => new SelectListItem
+                {
+                    Value = s.MonthId.ToString(),
+                    Text = s.MonthName
+                }).ToList();
+                workPerformance.TblDebatePerformanceEventTypes = _context.TblDebatePerformanceEventTypes.Where(s => s.SubPerformanceId == id).Select(s => new SelectListItem
+                {
+                    Text = s.WorkPerformanceEventType,
+                    Value = s.Id.ToString()
+                }).ToList();
+                return View(workPerformance);
             }
           
         }

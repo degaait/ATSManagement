@@ -1,0 +1,123 @@
+﻿@model ATSManagement.ViewModels.ActivityModel
+@inject AtsdbContext _context;
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("Progress_Activities");
+   
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Progress_Activities")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="EditActivity">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="RequestId" type="hidden" class="form-control" />
+                            <input asp-for="ActivityId" type="hidden" class="form-control" />
+                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="ActivityDetail" class=" col-3 col-form-label">@_localization.Getkey("action_performed")</label>
+                                <div class="col">
+                                    <input asp-for="ActivityDetail" class="form-control" />
+                                    <span asp-validation-for="ActivityDetail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="TimeTakenTocomplete" class=" col-3 col-form-label">@_localization.Getkey("time_taken")</label>
+                                <div class="col">
+                                    <input asp-for="TimeTakenTocomplete" class="form-control" />
+                                    <span asp-validation-for="TimeTakenTocomplete" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="Remark" class=" col-3 col-form-label">@_localization.Getkey("remark_given")</label>
+                                <div class="col">
+                                    <input asp-for="Remark" class="form-control" />
+                                    <span asp-validation-for="Remark" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="AddedDate" class=" col-3 col-form-label">@_localization.Getkey("datetime")</label>
+                                <div class="col">
+                                    <input asp-for="AddedDate" readonly class="form-control" />
+                                    <span asp-validation-for="AddedDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="AddActivity" asp-route-id="@Model.RequestId">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ActivityDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

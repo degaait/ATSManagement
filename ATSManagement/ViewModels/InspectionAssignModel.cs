@@ -26,8 +26,13 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Evaluation checklists")]
         [DisplayFormat(HtmlEncode = true)]
         public string? EvaluationCheckLists { get; set; }
+
+        [Display(Name = "Evaluation checklists(Attachement)")]
+        public IFormFile? EvaluationCheckListsAttachmet { get; set; }
+
         [Display(Name = "Engagement Letter")]
         public IFormFile? EngagementLetter { get; set; }
+
         [Display(Name = "Meeting Letter")]
         public IFormFile? MeetingLetter { get; set; }
         [Display(Name = "Remark")]
@@ -72,5 +77,9 @@ namespace ATSManagement.ViewModels
 
         [Display(Name = "TOR Attachment")]
         public IFormFile? TORAttachment { get; set; }
+        [Display(Name = "Department Review")]
+        public IFormFile? DepartmentReview { get; set; }
+        public IFormFile? ExitConfirence { get; set; }
+
     }
 }

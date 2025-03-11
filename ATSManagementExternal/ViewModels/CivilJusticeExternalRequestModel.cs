@@ -63,7 +63,9 @@ namespace ATSManagementExternal.ViewModels
 
 
         [Display(Name = "Document File")]
-        public IFormFile DocumentFile { get; set; }
+        public IFormFile? DocumentFile { get; set; }
+        [Display(Name = "Document File")]
+        public IEnumerable<IFormFile>? MultipleFiles { get; set; }
         [Required(ErrorMessage = "*")]
         public Guid? PriorityId { get; set; }
         [Display(Name = "Priority")]
@@ -100,23 +102,63 @@ namespace ATSManagementExternal.ViewModels
 
         //New Rows
         [Display(Name = "ADR Type")]
-        public string? Adrtype { get; set; }
+        public List<SelectListItem>? Adrtypes { get; set; }
+        public String? ADRTypeId { get; set; }
+
+        public List<SelectListItem>? AdrStatus { get; set; }
+        public string? AdrStatusId { get; set; }
+        public List<SelectListItem>? AdrResults { get; set; }
+        public string? AdrResultID { get; set; }
+        public List<SelectListItem>? ContractNegotiations { get; set; }
+        public string? ContractNegotiationId { get; set; }
+        public string? ContractNegotiationsOther { get; set; }
+
+        public List<SelectListItem>? ContractNegotiationResult { get; set; }
+        public string? ContractNegotiationResultId { get; set; }
+
+
+
+        public List<SelectListItem>? ContractNegotiationsStatus { get; set; }
+        public string? ContractNegotiationStatusId { get; set; }
+
+        public List<SelectListItem>? InternationCaseResult { get; set; }
+        public string? InternationalCaseResultID { get; set; }
+
+        public List<SelectListItem>? InternationCaseStatus { get; set; }
+        public string? InternationalCaseStatusID { get; set; }
+
+        public List<SelectListItem>? LegalAdviceStatus { get; set; }
+        public string? LegalAdviceStatusID { get; set; }
+
+        public List<SelectListItem>? LegalAdviceResults { get; set; }
+        public string? LegalAdviceResultID { get; set; }
+
+
         [Display(Name = "Claimant")]
         public string? Claimant { get; set; }
         [Display(Name = "Acting As")]
-        public string? ActingAs { get; set; }
+        public List<SelectListItem>? ActingAs { get; set; }
+        public string? ActingAsId { get; set; }
+
         [Display(Name = "Respondent")]
         public string? Respondent { get; set; }
         [Display(Name = "Reasult")]
-        public string? Reasult { get; set; }
+        public List<SelectListItem>? Reasults { get; set; }
+        public String? ResultId { get; set; }
         [Display(Name = "Result Description")]
         public string? ResultDescription { get; set; }
-        [Display(Name = "CaseType")]
-        public string? CaseType { get; set; }
+
+        [Display(Name = "Case Type")]
+        public List<SelectListItem>? CaseType { get; set; }
+        public string? CaseTypeID { get; set; }
+
         [Display(Name = "Specialization")]
-        public string? Specialization { get; set; }
+        public List<SelectListItem>? Specializations { get; set; }
+        public string? SpecializationId { get; set; }
+
         [Display(Name = "Country")]
-        public string? Country { get; set; }
+        public int? CountryId { get; set; }
+        public List<SelectListItem>? Countries { get; set; }
         [Display(Name = "Court Center")]
         public string? CourtCenter { get; set; }
         [Display(Name = "Date Of Adjournment")]
@@ -124,9 +166,18 @@ namespace ATSManagementExternal.ViewModels
         [Display(Name = "Remark")]
         public string? Remark { get; set; }
         [Display(Name = "Litigation Type")]
-        public string? LitigationType { get; set; }
+        public List<SelectListItem>? LitigationTypes { get; set; }
+        public string? LitigationtypeId { get; set; }
+
+        public List<SelectListItem>? LitigationStatus { get; set; }
+        public string? LitigationStatusID { get; set; }
+        public List<SelectListItem>? LitigationResults { get; set; }
+        public string? LitigationResultID { get; set; }
+
         [Display(Name = "Jursidiction")]
-        public string? Jursidiction { get; set; }
+        public List<SelectListItem>? Jursidictions { get; set; }
+        public string? JuristrictionId { get; set; }
+
         [Display(Name = "Bench")]
         public string? Bench { get; set; }
         [Display(Name = "Plaintiful")]
@@ -135,9 +186,18 @@ namespace ATSManagementExternal.ViewModels
         public string? Defendent { get; set; }
         [Display(Name = "Date of Judgement")]
         public DateTime? DateofJudgement { get; set; }
+        [Required(ErrorMessage = "*")]
+        public string? OtherServiceType { get; set; }
+        [Required(ErrorMessage = "*")]
+        public string? OtherDocumentType { get; set; }
+        [Display(Name = "ምድብ")]
+        public string? midib { get; set; }
+
+
     }
     public class RoundModel
     {
+        [Required(ErrorMessage = "*")]
         public int RoundTypeId { get; set; }
         public string? Name { get; set; }
 
@@ -151,5 +211,112 @@ namespace ATSManagementExternal.ViewModels
     {
         public string? CurrencyId { get; set; }
         public string? CurrencyName { get; set; }
+    }
+    //Litiigation
+    public class Litigationtype
+    {
+        public string? LitigationtypeId { get; set; }
+        public string? LitigationtypeName { get; set; }
+    }
+    public class Juristriction
+    {
+        public string? JuristrictionId { get; set; }
+        public string? JuristrictionName { get; set; }
+    }
+    public class StatusReason
+    {
+        public string? StatusReasonId { get; set; }
+        public string? StatusReasonName { get; set; }
+    }
+    public class Result
+    {
+        public String? ResultId { get; set; }
+        public String? ResultName { get; set; }
+    }
+    //Adr Activities
+    public class ADRType
+    {
+        public String? ADRTypeId { get; set; }
+        public String? ADRTypeName { get; set; }
+    }
+    public class ActingAs
+    {
+        public string? ActingAsId { get; set; }
+        public string? ActingAsName { get; set; }
+    }
+    public class ContractNegotiation
+    {
+        public string? ContractNegotiationId { get; set; }
+        public string? ContractNegotiationName { get; set; }
+
+    }
+    public class ContractNegotiationStatus
+    {
+        public string? ContractNegotiationStatusId { get; set; }
+        public string? ContractNegotiationStatusName { get; set; }
+
+    }
+    public class ContractNegotiationResult
+    {
+        public string? ContractNegotiationResultId { get; set; }
+        public string? ContractNegotiationResultName { get; set; }
+
+    }
+    public class AdrStatus
+    {
+        public string? AdrStatusId { get; set; }
+        public string? AdrStatusName { get; set; }
+    }
+    public class AdrResult
+    {
+        public string? AdrResultID { get; set; }
+        public string? AdrResultName { get; set; }
+
+    }
+    public class LegalAdviceStatus
+    {
+        public string? LegalAdviceStatusID { get; set; }
+        public string? LegalAdviceStatusName { get; set; }
+    }
+    public class LegalAdviceResult
+    {
+        public string? LegalAdviceResultID { get; set; }
+        public string? LegalAdviceResultName { get; set; }
+    }
+    public class InternationalCaseStatus
+    {
+        public string? InternationalCaseStatusID { get; set; }
+        public string? InternationalCaseStatusName { get; set; }
+    }
+    public class InternationalCaseResult
+    {
+        public string? InternationalCaseResultID { get; set; }
+        public string? InternationalCaseResultName { get; set; }
+    }
+    public class LitigationStatus
+    {
+        public string? LitigationStatusID { get; set; }
+        public string? LitigationStatusName { get; set; }
+    }
+    public class LitigationResult
+    {
+        public string? LitigationResultID { get; set; }
+        public string? LitigationResultName { get; set; }
+    }
+    public class ServiceType
+    {
+        public string? ServiceTypeId { get; set; }
+        public string? ServiceTypeName { get; set; }
+    }
+    public class Specializations
+    {
+        public string? SpecializationId { get; set; }
+        public string? SpecializationName { get; set; }
+    }
+    public class CaseType
+    {
+        public string? CaseTypeID { get; set; }
+        public string? CaseTypeName { get; set; }
+
     }
 }

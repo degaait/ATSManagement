@@ -5,6 +5,7 @@
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
     ViewData["Title"] = _localization.Getkey("Assigned_Requests");
     //Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     //var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
@@ -37,9 +38,12 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-striped" id="role">
+                    <table class="table table-borderless datatable" id="role">
                         <thead>
                             <tr>
+                                <th>
+
+                                </th>
                                 <th>
                                     @_localization.Getkey("created_Date")
                                 </th>
@@ -59,13 +63,20 @@
                                     @_localization.Getkey("priority")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("status")
+                                    @_localization.Getkey("expert_status")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("dephead_desicion")
+                                </th>
+
+                                <th>
+                                    @_localization.Getkey("final_report")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Assigned_by")
                                 </th>
                                 <th>
                                     @_localization.Getkey("assingment_remark")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("final_report")
                                 </th>
                                 <th></th>
                             </tr>
@@ -77,7 +88,13 @@
                                 var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
 
                                 <tr>
-
+                                    <td>
+                                        <a asp-action="RequestChats" asp-route-id="@item.RequestId" asp-route-actionMethod="AssignedRequests" asp-route-controller="CivilJustices">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
+                                            </svg>
+                                        </a>
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CreatedDate)
                                     </td>
@@ -94,43 +111,90 @@
                                         </p>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        @if (cultur == "am")
+                                        {
+                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeNameAmharic)
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        }
                                     </td>
                                     <td>
                                         @Html.Raw(item.RequestDetail)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
-                                        <br />
                                         @if (documents != null)
                                         {
                                             foreach (var paths in documents)
                                             {
-                                                <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
-
-                                                    View
+                                                <a class="btn btn-primary" style="padding:0rem !important" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath" asp-route-method="AssignedRequests" asp-route-methodController="CivilJustices">
+                                                    @paths.ExactFileName
                                                 </a>
                                             }
                                         }
                                     </td>
                                     <td>
-                                        @if (item.PriorityId != null)
+                                        @if (cultur == "am")
                                         {
-                                            @Html.Raw(item.Priority.PriorityNameWithColor)
+                                            @if (item.PriorityId != null)
+                                            {
+                                                @Html.Raw(item.Priority.PriorityNameWithColorAmharic)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (item.PriorityId != null)
+                                            {
+                                                @Html.Raw(item.Priority.PriorityNameWithColor)
+                                            }
                                         }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
-
+                                        @if (cultur == "am")
+                                        {
+                                            @Html.Raw(item.ExternalRequestStatus.StatusWithColorAmharic)
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                        }
                                     </td>
                                     <td>
-                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
-                                    </td>    
+                                        @if (item.DepartmentUpprovalStatus != null)
+                                        {
+
+                                            var desicion = ats.TblDecisionStatuses.Where(s => s.DesStatusId == item.DepartmentUpprovalStatus).FirstOrDefault();
+                                            if (desicion.StatusName != "Not set")
+                                            {
+                                                @if (cultur == "am")
+                                                {
+                                                    @Html.Raw(desicion.StatusWithColorAmharic)
+                                                    @Html.Raw(item.DepartmentDesicionRemark)
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw(desicion.StatusWithColor)
+                                                    @Html.Raw(item.DepartmentDesicionRemark)
+                                                }
+                                            }
+
+
+                                        }
+                                    </td>
                                     <td>
                                         @if (item.FinalReport != null)
                                         {
-                                            <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.FinalReport"> @_localization.Getkey("view_file")</a>
+                                            <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.FinalReport" asp-route-method="AssignedRequests" asp-route-methodController="CivilJustices"> @_localization.Getkey("view_file")</a>
                                         }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
+                                        @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
+                                        <span>( @Html.DisplayFor(modelItem => item.AssignedByNavigation.PhoneNumber) )</span>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssingmentRemark)
                                     </td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
@@ -139,50 +203,7 @@
                                                     ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    @if (true)
-                                                    {
-                                                        <a class="dropdown-item" asp-action="AddEvidencesAndWitnesses" asp-route-id="@item.RequestId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
-                                                            </svg>&nbsp;
-                                                            @_localization.Getkey("Witnesses_and_Evidences")
-                                                        </a>
-                                                        <a class="dropdown-item" asp-action="AddAdjornyDates" asp-route-id="@item.RequestId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
-                                                            </svg>&nbsp;
-                                                            @_localization.Getkey("adjournment")
-                                                        </a>
-                                                    }
-                                                    <a class="dropdown-item" asp-action="AddActivity" asp-route-id="@item.RequestId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
-                                                        </svg>&nbsp;
-                                                        @_localization.Getkey("Progress_Activities")
-                                                    </a>
-                                                    <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                        @_localization.Getkey("replies")
-                                                    </a>
-                                                    <a class="dropdown-item" asp-action="UpploadFinalReport" asp-route-id="@item.RequestId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cloud-upload" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"></path>
-                                                            <path d="M9 15l3 -3l3 3"></path>
-                                                            <path d="M12 12l0 9"></path>
-                                                        </svg>&nbsp; @_localization.Getkey("final_report")
-                                                    </a>
-                                                    <a class="dropdown-item" asp-action="UppdateProgressStatus" asp-route-id="@item.RequestId">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
-                                                        </svg>
-                                                        @_localization.Getkey("Uppdate_progress_status")
-                                                    </a>
-                                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
+                                                    <a class="dropdown-item" asp-action="DetailsAssigned" asp-route-id="@item.RequestId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M13 5h8"></path>
@@ -191,7 +212,64 @@
                                                             <path d="M13 19h5"></path>
                                                             <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                             <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                        </svg> &nbsp; @_localization.Getkey("Details")
+                                                        </svg> &nbsp; @_localization.Getkey("Detail")
+                                                    </a>
+                                                    <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
+                                                        @_localization.Getkey("replies")
+                                                    </a>
+                                                    <a class="dropdown-item" asp-action="UppdateProgressStatus" asp-route-id="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
+                                                        </svg>
+                                                        @_localization.Getkey("Uppdate_progress_status")
+                                                    </a>
+                                                    <a class="dropdown-item" asp-action="AddActivity" asp-route-id="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+                                                        </svg>&nbsp;
+                                                        @_localization.Getkey("Progress_Activities")
+                                                    </a>
+                                                    @if (item.ServiceTypeId != Guid.Parse("8ed63154-80c4-4595-98d1-8381402c62ab") && item.ServiceTypeId != Guid.Parse("40231461-38ac-45c6-b98c-08d88bb26c69") && item.ServiceTypeId != Guid.Parse("8ed63154-80c4-4595-98d1-8381402c62ab"))
+                                                    {
+                                                        <a class="dropdown-item" asp-action="AddEvidencesAndWitnesses" asp-route-id="@item.RequestId">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+                                                            </svg>&nbsp;
+                                                            @_localization.Getkey("Witnesses_and_Evidences")
+                                                        </a>
+                                                        @if (item.ServiceType.ServiceTypeName == "Litigation")
+                                                        {
+                                                            <a class="dropdown-item" asp-action="AddAdjornyDates" asp-route-id="@item.RequestId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+                                                                </svg>&nbsp;
+                                                                @_localization.Getkey("adjournment")
+                                                            </a>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="dropdown-item" asp-action="AddAdjornyDates" asp-route-id="@item.RequestId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+                                                                </svg>&nbsp;
+                                                                @_localization.Getkey("next_adjournment")
+                                                            </a>
+                                                        }
+                                                    }
+                                                    <a class="dropdown-item" asp-action="UpploadFinalReport" asp-route-id="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cloud-upload" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"></path>
+                                                            <path d="M9 15l3 -3l3 3"></path>
+                                                            <path d="M12 12l0 9"></path>
+                                                        </svg>&nbsp; @_localization.Getkey("final_report")
                                                     </a>
                                                 </div>
                                             </div>
@@ -208,30 +286,5 @@
 </div>
 @section scripts{
 
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('#role').DataTable({
-                dom: 'Bfrtip',
-                deferRender: true,
-                scrollCollapse: true,
-                scroller: true,
-                buttons: [
-                    'excel', 'print'
-                ]
-            });
-        });
-
-    </script>
-    <script type="text/javascript">
-        var dp = $("#Date").datepicker({
-            format: "dd/mm/yyyy",
-            viewMode: "years",
-            minViewMode: "years",
-            autoclose: true
-        });
-        dp.on('changeDate', function (e) {
-            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
-        });
-    </script>
+  
 }

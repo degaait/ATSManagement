@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ATSManagement.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ATSManagement.ViewModels
 {
@@ -13,6 +14,11 @@ namespace ATSManagement.ViewModels
 
         public Guid? YearID { get; set; }
         public IEnumerable<SelectListItem>? Year { get; set; }
+
+        public string? CurrencyId { get; set; }
+        public IEnumerable<SelectListItem>? Currencies { get; set; }
+
+        public List<TblRequest>? requests { get; set; }= new List<TblRequest>();
 
     }
 }

@@ -48,10 +48,18 @@ namespace ATSManagement.ViewModels
         [Display(Name = "Department")]
         public Guid? DepId { get; set; }
         public IEnumerable<SelectListItem>? Departments { get; set; }
-        [Display(Name ="Team")]
+        [Display(Name = "Team")]
         public Guid? TeamID { get; set; }
         public IEnumerable<SelectListItem>? Teams { get; set; }
+        public int? BranchId { get; set; }
+        public IEnumerable<SelectListItem>? Branches { get; set; }
+        public bool IsDeputySecretary { get; set; }
 
+        public bool IsCivilJusticeSecretay { get; set; }
+        public bool IsLegalStudySecretary { get; set; }
+
+        public string? SecID { get; set; }
+        public IEnumerable<SelectListItem>? SecretaryTypes { get; set; }
 
     }
 
@@ -59,7 +67,7 @@ namespace ATSManagement.ViewModels
     {
         [DataMember(Name = "Is Deputy?")]
         IsDeputy,
-        [DataMember(Name ="Is Department head")]
+        [DataMember(Name = "Is Department head")]
         IsDepartmentHead,
         [DataMember(Name = "Is Team leader?")]
         IsTeamLeader,
@@ -67,6 +75,16 @@ namespace ATSManagement.ViewModels
         DefaultUser,
         [DataMember(Name = "Is Secretary?")]
         IsSecretary,
+        [DataMember(Name = "Is Branch User?")]
+        IsBranchOfficeUser,
+        [DataMember(Name = "Is Internal request user?")]
+        IsInternalRequestUser,
+    }
+    public class SecretaryTypes
+    {
+        public string? SecID { get; set; }
+        public string? SecName { get; set; }
+
     }
 
 }

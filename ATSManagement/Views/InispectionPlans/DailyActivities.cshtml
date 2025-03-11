@@ -1,0 +1,121 @@
+﻿@model IEnumerable<ATSManagement.Models.TblInpectionActivite>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("Progress_Activities");
+    int no = 0;
+}
+
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Progress_Activities");
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @_localization.Getkey("No.")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("datetime")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("action_performed")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("time_taken")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("remark_given")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("user")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("request")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                no = no + 1;
+                                <tr>
+
+                                    <td>
+                                        @no
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AddedDate)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.ActivityDetail)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimeTakenTocomplete)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Remark)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                    </td>
+                                    <td>
+                                        @if (item.SpecificPlan != null)
+                                        {
+                                            @Html.Raw(item.SpecificPlan.Title)
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+
+    </script>
+
+}

@@ -1,0 +1,68 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Updated task progress status";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Uppload_final_report")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="AddFinalReport" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    @Html.DisplayFor(model => model.PlanTitle)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Evaluation_criteria")</label>
+                                <div class="col">
+                                    @Html.Raw(Model.EvaluationCheckLists)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
+                                <div class="col">
+                                    <input asp-for="FinalReport" type="file" accept=".pdf,.docx,.png,.jpg" class="form-file-button" />
+                                    <span asp-validation-for="FinalReport" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

@@ -11,22 +11,19 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ATSManagement</title>
+    <title>@ViewData["Title"]</title>
 
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
+    <link href="~/assets/img/logo_one.jpg" rel="icon" type="image/x-icon">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" asp-append-version="true" />
- 
+
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -34,36 +31,33 @@
     <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
     <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet" />
     <!-- Template Main CSS File -->
     <link href="~/assets/css/style.css" rel="stylesheet">
-
 </head>
 <body>
     @{
         Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
         var user = (from userinfo in ats.TblInternalUsers where userinfo.UserId == userId select userinfo).FirstOrDefault();
-        var notifications = (from items in ats.TblNotifications where items.UserId == userId && items.IsChecked == false select items).ToList();
+        var notifications = (from items in ats.TblNotifications where items.UserId == userId && (items.IsChecked == false || items.IsChecked == null) select items).ToList();
         int id = 0;
     }
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
             <a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center">
                 <img src="~/dist/img/main_logo.png" style="max-height:139px" alt="">
-                
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
-        <div class="search-bar">
-            <form class="search-form d-flex align-items-center" method="POST" action="#">
-                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-            </form>
+        <div class="d-flex align-items-center justify-content-between" style="padding-left: 10px !important;">
+            <a class="nav-link nav-icon search-bar-toggle " asp-action="Index" asp-controller="Home">
+                <span>Home</span>
+            </a>
         </div>
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-
                 <li class="nav-item d-block d-lg-none">
                     <a class="nav-link nav-icon search-bar-toggle " href="#">
                         <i class="bi bi-search"></i>
@@ -78,28 +72,52 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                         <li class="dropdown-header">
-                            You have   @notifications.Count  new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                            @notifications.Count        @_localization.Getkey("you_have_notification")
+                            <a asp-action="Index" asp-controller="Notifications"><span class="badge rounded-pill bg-primary p-2 ms-2">@_localization.Getkey("view_all")</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         @foreach (var item in notifications)
                         {
-                            <li class="notification-item">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
-                                <div>
-                                    <h4>@item.CreatedByNavigation.FirstName @item.CreatedByNavigation.MidleName</h4>
-                                    <p>@item.NotificationDetail</p>
-                                    <p>@item.NotificationDate.Value.ToShortDateString()</p>
-                                </div>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            if (item.FromExternal == false || item.FromExternal == null)
+                            {
+                                var name = ats.TblInternalUsers.Where(s => s.UserId == item.CreatedBy).Select(s => s.FirstName + s.MidleName).FirstOrDefault();
+                                <li class="notification-item">
+                                    <a asp-controller="Notifications" asp-action="MarkAsReadLayout" asp-route-id="@item.NotificationId">
+                                        <i class="bi bi-exclamation-circle text-warning"></i>
+                                        <div>
+                                            <h4>@name</h4>
+                                            <p>@item.NotificationDetail</p>
+                                            <p>@item.NotificationDate.Value.ToShortDateString()</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            }
+                            else
+                            {
+                                var name = ats.TblExternalUsers.Where(s => s.ExterUserId == item.ExterUserId).Select(s => s.FirstName + s.MiddleName).FirstOrDefault();
+
+                                <li class="notification-item">
+                                    <a asp-controller="Notifications" asp-action="CheckIt" asp-route-id="@item.NotificationId">
+                                        <i class="bi bi-exclamation-circle text-warning"></i>
+                                        <div>
+                                            <h4>@name</h4>
+                                            <p>@item.NotificationDetail</p>
+                                            <p>@item.NotificationDate.Value.ToShortDateString()</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            }
                         }
                         <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
+                            <a asp-action="Index" asp-controller="Notifications">@_localization.Getkey("show_all_notification")</a>
                         </li>
                     </ul>
                 </li>
@@ -110,7 +128,6 @@
                             <img src="~/assets/img/user-circle.svg" alt="Profile" class="rounded-circle">
                             <span class="d-none d-md-block dropdown-toggle ps-2">@httpsSession.HttpContext.Session.GetString("UserFullname")</span>
                         </a>
-
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                             <li class="dropdown-header">
                                 <h6>@httpsSession.HttpContext.Session.GetString("DepName")</h6>
@@ -128,15 +145,6 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" asp-action="FeedBack" asp-controller="Account">
-                                    <i class="bi bi-gear"></i>
-                                    <span>Feedbacks</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>                           
-                            <li>
                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item d-flex align-items-center">
                                     <i class="bi bi-box-arrow-right"></i>
                                     <span>Sign Out</span>
@@ -151,12 +159,6 @@
     </header>
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link " asp-action="Index" asp-controller="Home">
-                    <i class="bi bi-grid"></i>
-                    <span>@_localization.Getkey("home")</span>
-                </a>
-            </li>
             @if (httpsSession.HttpContext.Session.GetString("MenuMaster") != null)
             {
                 var MenuMaster = JsonConvert.DeserializeObject<List<MenuModels>>(httpsSession.HttpContext.Session.GetString("MenuMaster"));
@@ -169,12 +171,12 @@
                         <a class="nav-link collapsed" data-bs-target="#components-@id" data-bs-toggle="collapse">
                             @Html.Raw(@classIcon)<span>@MenuList.Key</span><i class="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <ul id="components-@id" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <ul id="components-@id" data-bs-parent="#sidebar-nav" class="nav-content collapse">
                             @foreach (var SubMenuList in MenuList)
                             {
                                 <li>
                                     <a asp-action="@SubMenuList.ActionName" asp-controller="@SubMenuList.ControllerName">
-                                        <i class="bx bxl-adobe"></i> <span> @SubMenuList.SubMenuName</span>
+                                        <i class="bx bxs-chevron-right-circle" style="font-size:26px"></i> <span> @SubMenuList.SubMenuName</span>
                                     </a>
                                 </li>
                             }
@@ -195,15 +197,9 @@
         <div class="copyright">
             &copy; Copyright <strong><span>Minsrty of Jusctice</span></strong>. All Rights Reserved
         </div>
-        <div class="credits">
-            Designed and Developed by <a href="https://bootstrapmade.com/"> MG-Solutions</a>
-        </div>
     </footer>
-
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
     <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
@@ -211,18 +207,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>-->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <!-- Vendor JS Files -->
     <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
     <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
     <script src="~/assets/vendor/echarts/echarts.min.js"></script>
-    <script src="~/assets/vendor/quill/quill.min.js"></script>
+    <script src="~/assets/vendor/quill/quill.js"></script>
     <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="~/assets/vendor/php-email-form/validate.js"></script>
-    <!-- Template Main JS File -->
     <script src="~/assets/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("NToastNotify")

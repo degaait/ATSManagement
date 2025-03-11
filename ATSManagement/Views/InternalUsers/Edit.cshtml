@@ -27,7 +27,7 @@
             <form asp-action="Edit">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="UserId" />
                             <div class="mb-3 row">
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="mb-3 row">
-                                <label asp-for="IsActive" class="col-3 col-form-label"> @_localization.Getkey("isactive")</label>
+                                <label asp-for="IsActive" class="col-3 col-form-label"> @_localization.Getkey("IsActive")</label>
                                 <div class="col">
                                     <input asp-for="IsActive" type="checkbox" class="form-check-input m-0" />
                                     <span asp-validation-for="IsActive" class="text-danger"></span>
@@ -97,28 +97,81 @@
                                 <label asp-for="specialRoles" class="col-3 col-form-label">@_localization.Getkey("special_roles") </label>
                                 <div class="col">
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="IsDeputy" checked="@ViewBag.IsDeputy" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="IsDeputy" onclick="HideDiv()" checked="@ViewBag.IsDeputy" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isDeputy") </span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="IsDepartmentHead" checked="@ViewBag.IsDepartmentHead" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="IsDepartmentHead" onclick="HideDiv()" checked="@ViewBag.IsDepartmentHead" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isDepartment") </span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="IsTeamLeader" checked="@ViewBag.IsTeamLeader" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="IsTeamLeader" onclick="HideDiv()" checked="@ViewBag.IsTeamLeader" class="form-check-input" />
                                         <span class="form-check-label"> @_localization.Getkey("isTeam") </span>
                                     </label>
                                     <label class="form-check">
-                                        <input asp-for="specialRoles" type="radio" value="DefaultUser" checked="@ViewBag.IsDefaultUser" class="form-check-input" />
+                                        <input asp-for="specialRoles" type="radio" value="IsSecretary" onclick="HideDiv()" checked="@ViewBag.IsSecretary" class="form-check-input" />
+                                        <span class="form-check-label"> @_localization.Getkey("IsSecretary") </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsInternalRequestUser" onclick="HideDiv()" checked="@ViewBag.IsInternalRequestUser" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("IsInternalRequestUser")</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="DefaultUser" onclick="HideDiv()" checked="@ViewBag.IsDefaultUser" class="form-check-input" />
                                         <span class="form-check-label">@_localization.Getkey("isDefaultUser") </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input asp-for="specialRoles" type="radio" value="IsBranchOfficeUser" onclick="ShowDiv()" checked="@ViewBag.IsBranchOfficeUser" class="form-check-input" />
+                                        <span class="form-check-label">@_localization.Getkey("IsBranchOfficeUser") </span>
                                     </label>
                                     <span asp-validation-for="specialRoles" class="text-danger"></span>
                                 </div>
                             </div>
+                            @if (@ViewBag.IsSecretary == true)
+                            {
+                                <div class="mb-3 row" id="divSecs">
+                                    <label asp-for="SecID" class="col-3 col-form-label"> @_localization.Getkey("secretaryTpes") </label>
+                                    <div class="col">
+                                        @Html.DropDownListFor(model => model.SecID, new SelectList(Model.SecretaryTypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3 row" id="divSecs" style="display:none">
+                                    <label asp-for="SecID" class="col-3 col-form-label"> @_localization.Getkey("secretaryTpes") </label>
+                                    <div class="col">
+                                        @Html.DropDownListFor(model => model.SecID, new SelectList(Model.SecretaryTypes, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (Model.BranchId != null)
+                            {
+                                <div class="mb-3 row" id="divBranches">
+                                    <label asp-for="BranchId" class="col-3 col-form-label"> @_localization.Getkey("branchoffice") </label>
+                                    <div class="col">
+                                        @Html.DropDownListFor(model => model.BranchId, new SelectList(Model.Branches, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3 row" id="divBranches" style="display:none">
+                                    <label asp-for="BranchId" class="col-3 col-form-label"> @_localization.Getkey("branchoffice") </label>
+                                    <div class="col">
+                                        @Html.DropDownListFor(model => model.BranchId, new SelectList(Model.Branches, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+
+                                    </div>
+                                </div>
+                            }
+
                             <div class="mb-3 row">
                                 <label asp-for="IsSuperAdmin" class="col-3 col-form-label">@_localization.Getkey("isSuperadmin") </label>
                                 <div class="col">
-                                    <input asp-for="IsSuperAdmin" type="checkbox" class="form-check-input m-0" />
+                                    <input asp-for="IsSuperAdmin" type="checkbox" onclick="HideDiv()" class="form-check-input m-0" />
                                     <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
                                 </div>
                             </div>
@@ -142,11 +195,20 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script type="text/javascript">
-        $(document).ready(function () {
+        function ShowDiv() {
+            $("#divBranches").show();
+            $("#divSecs").hide();
+        }
+        function HideDiv(x) {
+            if (x == 1) {
+                $("#divSecs").show();
+            }
+            else {
+                $("#divSecs").hide();
+            }
 
-            // var items = "<option value='00000000-0000-0000-0000-000000000000'>--Select--</option>";
-            // $('#drpTeam').html(items);
-        });
+            $("#divBranches").hide();
+        }
     </script>
     <script type="text/javascript">
   $(document).ready(function () {

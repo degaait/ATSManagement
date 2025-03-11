@@ -1,0 +1,119 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("Uppdate_progress_status");
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Uppdate_progress_status")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <a style="color:darkblue" asp-action="OngoingPlanForDeputy">
+                    <i class="bi bi-backspace-fill"></i>
+                    @_localization.Getkey("backlist")
+                </a>
+            </div>
+            <form asp-action="UpdateProgressStatusbyDeapHeade" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    @Html.DisplayFor(model => model.PlanTitle)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("Evaluation_criteria")</label>
+                                <div class="col">
+                                    @Html.Raw(Model.EvaluationCheckLists)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="StatusID" class="col-3 col-form-label">@_localization.Getkey("status")</label>
+                                <div class="col">
+                                    @Html.DropDownList("StatusId", null, htmlAttributes: new { @class = "form-select" })
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("files")</label>
+                                <div class="col">
+                                    <input asp-for="FinalReport" type="file" accept=".pdf,.docx,.png,.jpg" class="form-file-button" />
+                                    <span asp-validation-for="FinalReport" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("remark")</label>
+                                <div class="col">
+                                    <input asp-for="Remark" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("Update")" class="btn btn-primary" />|
+                        <a asp-action="OngoingPlan">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Remark',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="DueDate" class="col-3 col-form-label">@_localization.Getkey("duedate")</label>
+                                <label asp-for="DueDate" class="col-3 col-form-label">@_localization.Getkey("dueDate")</label>
                                 <div class="col">
                                     <input asp-for="DueDate" class="form-control" />
                                     <span asp-validation-for="DueDate" class="text-danger"></span>
@@ -55,21 +55,22 @@
                             <div class="mb-4 row" id="divUsers">
                                 <label asp-for="AssignedTo" class="col-3 col-form-label">@_localization.Getkey("user")</label>
                                 <div class="col">
-                                    @Html.DropDownListFor(model => model.AssignedTo, new SelectList(Model.AssignedTos, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
+                                    <input type="hidden" id="selectedmemebers" placeholder="@_localization.Getkey("select_here")" value="@Model.AssignedTos" />
+                                    @Html.DropDownListFor(x => x.AssignedTo, Model.AssignedTos, htmlAttributes: new { @id = "Members", @class = "select2 form-select", @placeholder = "--Select here--", multiple = "multiple", })
                                     <span asp-validation-for="AssignedTo" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="ServiceTypeId" class="col-3 col-form-label">@_localization.Getkey("serviceType")</label>
+                                <label asp-for="ServiceTypeId" class="col-3 col-form-label">@_localization.Getkey("service_types")</label>
                                 <div class="col">
-                                    @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceTypes, "Value", "Text"), @_localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-4 row">
                                 <label asp-for="Priorities" class="col-3 col-form-label">@_localization.Getkey("priority")</label>
                                 <div class="col">
-                                    @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.Priorities, "Value", "Text"), @_localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="PriorityId" class="text-danger"></span>
                                 </div>
                             </div>
@@ -86,7 +87,7 @@
                 <div class="card-footer text-end">
                     <div class="d-flex">
                         <input type="submit" value="@_localization.Getkey("assign")" class="btn btn-primary" />|
-                        <a asp-action="Index">@_localization.Getkey("blacklist")</a>
+                        <a asp-action="TeamRequests">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>
@@ -96,6 +97,17 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(function () {
+            //get the selectedmember from the hidden field.
+            var selectedmembers = $("#selectedmemebers").val().split(",");
+            //set the value in the dropdownlist.
+            $("#Members").select2({
+                multiple: true,
+            });
+            $('#Members').val(selectedmembers).trigger('change');
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let options = {

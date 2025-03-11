@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using ATSManagementExternal.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using ATSManagementExternal.Models;
 using ATSManagementExternal.Security;
 using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -38,13 +38,11 @@ namespace ATSManagementExternal.Controllers
 
                 if (userinfo != null)
                 {
-                    LoginModels _loginCredentials = _context.TblExternalUsers.Where(x => x.UserName.Trim().ToLower() == collection.UserName.Trim().ToLower() && x.Password == password).Select(x => new LoginModels
-                    {
-                        UserName = x.UserName,
-                        UserId = x.ExterUserId,
-                        UserFullName = x.FirstName + " " + x.MiddleName + " " + x.LastName,
+                    LoginModels _loginCredentials = new LoginModels();
+                    _loginCredentials.UserFullName = userinfo.FirstName + " " + userinfo.MiddleName + " " + userinfo.LastName;
+                    _loginCredentials.UserName = userinfo.UserName;
+                    _loginCredentials.UserId = userinfo.ExterUserId;
 
-                    }).FirstOrDefault();
 
                     // Get the login user details and bind it to LoginModels class  
                     _menus = _context.TblExternalSubmenus.Where(x => x.IsActive == true && x.IsDeleted == false).Select(x => new MenuModels

@@ -132,7 +132,7 @@
                 <div class="card-footer text-end">
                     <div class="d-flex">
                         <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
-                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                        <a asp-action="PendingRequests">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>
@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="container">
-                                            <h3 class="time-right" style="color:dodgerblue">@_localization.Getkey("you")</h3>
+                                            <h5 class="time-right" style="color:dodgerblue">@_localization.Getkey("you")</h5>
                                             <br />
                                             <p class="time-right">
                                                 @Html.Raw(@item.ReplayDetail)
@@ -164,7 +164,7 @@
                                                 <span class="time-right">@item.ReplyDate</span>
                                                 @if (item.Attachment != null)
                                                 {
-                                                    <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                    <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment" asp-route-method="Replies" asp-route-id="@item.RequestId" asp-route-methodController="LegalStudiesDrafting" >@_localization.Getkey("view_file")</a>
                                                 }
                                             </p>
                                             <br />
@@ -179,7 +179,7 @@
                                             </a>
                                             @if (item.IsSent == false &&userInfo.IsDepartmentHead==true)
                                             {
-                                                <label style="color:red">Not sent </label>
+                                                <label style="color:red"> @_localization.Getkey("not_sent")  </label>
                                                 <a class="dropdown-item time-right" asp-action="SendReply" asp-route-ReplyId="@item.ReplyId">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -187,7 +187,7 @@
                                                         <path d="M13.5 6.5l4 4"></path>
                                                         <path d="M16 19h6"></path>
                                                         <path d="M19 16v6"></path>
-                                                    </svg>&nbsp;  Send 
+                                                    </svg>&nbsp; @_localization.Getkey("send")
                                                 </a>
                                             }
                                         </div>
@@ -201,7 +201,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="container">
-                                            <h3 class="time-left" style="color:dodgerblue">(@item.ExternalReplayedByNavigation.FirstName)</h3>
+                                            <h5 class="time-left" style="color:dodgerblue"> (@item.ExternalReplayedByNavigation.FirstName &nbsp; @item.ExternalReplayedByNavigation.MiddleName)</h5>
                                             <br />
                                             <div class="time-left">
                                                 @Html.Raw(@item.ReplayDetail)
@@ -209,7 +209,7 @@
                                                 <span class="time-left">@item.ReplyDate</span>
                                                 @if (item.Attachment != null)
                                                 {
-                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
+                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment" asp-route-method="Replies" asp-route-methodController="LegalStudiesDrafting" >@_localization.Getkey("view_file")</a>
                                                 }
                                             </div>
                                         </div>

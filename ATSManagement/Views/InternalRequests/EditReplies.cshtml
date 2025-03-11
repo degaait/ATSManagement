@@ -1,0 +1,159 @@
+﻿@model ATSManagement.ViewModels.RepliesModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _contextAccessor;
+@inject AtsdbContext _context;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("replies") + ":Edit";
+    IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
+    Guid? userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+    var userInfo = _context.TblInternalUsers.Find(userId);
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+
+    /* Chat containers */
+    .container {
+        border: 2px solid #dedede;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    /* Darker chat container */
+    .darker {
+        border-color: #ccc;
+        background-color: #ddd;
+    }
+
+    /* Clear floats */
+    .container::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    /* Style images */
+    .container img {
+        float: left;
+        max-width: 60px;
+        width: 100%;
+        margin-right: 0px;
+        border-radius: 50%;
+    }
+
+        /* Style the right image */
+        .container img.right {
+            float: right;
+            margin-left: 0px;
+            margin-right: 0;
+        }
+
+    /* Style time text */
+    .time-right {
+        float: right;
+        color: #aaa;
+    }
+
+    /* Style time text */
+    .time-left {
+        float: left;
+        color: #999;
+    }
+</style>
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("replies");
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="EditReplies">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="ReplyId" type="hidden" class="form-control" />
+                            <input asp-for="RequestId" type="hidden" class="form-control" />
+                            <div class="mb-3 row">
+                                <label asp-for="ReplayDetail" class=" col-3 col-form-label">@_localization.Getkey("reply")</label>
+                                <div class="col">
+                                    <input asp-for="ReplayDetail" class="form-control" />
+                                    <span asp-validation-for="ReplayDetail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @if (userInfo.IsDepartmentHead == true)
+                            {
+                                <div class="mb-3 row">
+                                    <label asp-for="IsSent" class=" col-3 col-form-label">@_localization.Getkey("you_want_tosend_inst")</label>
+                                    <div class="col">
+                                        <input asp-for="IsSent" type="checkbox" class="form-check" />
+                                        <span asp-validation-for="IsSent" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                            </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                        <a asp-action="Replies" asp-controller="InternalRequests" asp-route-id="@Model.RequestId">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ReplayDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

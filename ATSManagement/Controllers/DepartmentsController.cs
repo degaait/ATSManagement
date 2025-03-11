@@ -1,8 +1,10 @@
 ﻿using NToastNotify;
 using ATSManagement.Models;
 using ATSManagement.Filters;
+using ATSManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -10,14 +12,14 @@ namespace ATSManagement.Controllers
     public class DepartmentsController : Controller
     {
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public DepartmentsController(AtsdbContext context, IToastNotification toastNotification)
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly INotyfService _notifyService;
+        public DepartmentsController(AtsdbContext context, INotyfService notyfService, IHttpContextAccessor contextAccessor)
         {
-            _toastNotification = toastNotification;
+            _notifyService = notyfService;
             _context = context;
+            _contextAccessor = contextAccessor;
         }
-
-        // GET: Departments
         public async Task<IActionResult> Index()
         {
             return _context.TblDepartments != null ?
@@ -78,14 +80,11 @@ namespace ATSManagement.Controllers
             }
             return View(tblDepartment);
         }
-
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("DepId,DepName,DepNameAmharic")] TblDepartment tblDepartment)
         {
+            
             if (id != tblDepartment.DepId)
             {
                 return NotFound();
@@ -95,8 +94,19 @@ namespace ATSManagement.Controllers
             {
                 try
                 {
-                    _context.Update(tblDepartment);
-                    await _context.SaveChangesAsync();
+                    var deps = _context.TblDepartments.Find(tblDepartment.DepId);
+                    deps.DepName = tblDepartment.DepName;
+                    deps.DepNameAmharic = tblDepartment.DepNameAmharic;
+                    int updated = await _context.SaveChangesAsync();
+                    if (updated > 0)
+                    {
+                        _notifyService.Success("Department Successfully updated");
+                    }
+                    else
+                    {
+                        _notifyService.Error("Not successfully updated. Please try latter");
+                        return View(tblDepartment);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -106,12 +116,18 @@ namespace ATSManagement.Controllers
                     }
                     else
                     {
-                        throw;
+                        _notifyService.Error("Not successfully updated. Please try latter");
+                        return View(tblDepartment);
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tblDepartment);
+            else
+            {
+                _notifyService.Error("Invalid Model. Please try again latter");
+                return View(tblDepartment);
+            }
+            
         }
 
         // GET: Departments/Delete/5
@@ -137,18 +153,40 @@ namespace ATSManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.TblDepartments == null)
+            try
             {
-                return Problem("Entity set 'AtsdbContext.TblDepartments'  is null.");
+                if (_context.TblDepartments == null)
+                {
+                    
+                    return Problem("Entity set 'AtsdbContext.TblDepartments'  is null.");
+                }
+                var tblDepartment = await _context.TblDepartments.FindAsync(id);
+                if (tblDepartment != null)
+                {
+                    _context.TblDepartments.Remove(tblDepartment);
+                }
+
+               int deleted= await _context.SaveChangesAsync();
+                if (deleted>0)
+                {
+                    _notifyService.Success("Successfully Removed");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notifyService.Error("Not successfull. Please try again");
+                    return RedirectToAction(nameof(Delete), new { id =id});
+                }
+               
             }
-            var tblDepartment = await _context.TblDepartments.FindAsync(id);
-            if (tblDepartment != null)
+            catch (Exception ex) 
             {
-                _context.TblDepartments.Remove(tblDepartment);
+                _notifyService.Error(ex.Message+" happened. Not successfull. Please try again");
+                return RedirectToAction(nameof(Delete), new { id = id });
+               
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+          
         }
         private bool TblDepartmentExists(Guid id)
         {

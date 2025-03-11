@@ -62,17 +62,27 @@
                                 <th>
                                     Action
                                 </th>
-                                <th>
-                                    @_localization.Getkey("isactive")
-                                </th>
-                                <th>
-                                    @_localization.Getkey("isDeleted")
-                                </th>
+                               
                                 <th>
                                     @_localization.Getkey("department")
                                 </th>
                                 <th>
                                     @_localization.Getkey("main_menu")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Superadmin")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("deputy")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("deaphead")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Teamleader")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("defaultuser")
                                 </th>
                                 <th></th>
                             </tr>
@@ -93,12 +103,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Action)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.IsActive)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.IsDeleted)
-                                    </td>
+
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Dep.DepName)
                                     </td>
@@ -106,10 +111,25 @@
                                         @Html.DisplayFor(modelItem => item.Menu.MenuName)
                                     </td>
                                     <td>
+                                        @Html.DisplayFor(modelItem => item.ForSuperAdmin)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForDeputy)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForDepHead)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForTeamLeader)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForDefaulUser)
+                                    </td>    
+                                    <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                   ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">

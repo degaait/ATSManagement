@@ -1,0 +1,151 @@
+﻿@model ATSManagement.ViewModels.InternalRequestModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
+@{
+}
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+<br />
+<style>
+    @@media only screen and (max-width : 960px) {
+        .mb-3row {
+        }
+        .mb-3rowlabel {
+            width: 100% !important;
+        }
+    }
+</style>
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">@_localization.Getkey("new_request") </h2>
+        </div>
+        <form asp-action="Create" method="post" id="uploadform1" enctype="multipart/form-data">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3 row mb-3row" id="DivRequestedDate">
+                            <label asp-for="CreatedDate" class="mb-3rowlabel col-3 col-form-label"> @_localization.Getkey("created_Date")</label>
+                            <div class="col">
+                                <input asp-for="CreatedDate" class="mb-3rowlabel form-control" readonly />
+                                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                            </div>
+                        </div> 
+                        <div class="mb-3 row mb-3row" id="divServiceType">
+                            <label asp-for="ServiceTypeId" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("service_types")</label>
+                            <div class="col">
+                                @Html.DropDownListFor(model => model.ServiceTypeId, new SelectList(Model.ServiceTypes, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
+                            </div>
+                        </div>     
+                        <div class="mb-3 row mb-3row" id="divRequestDetail">
+                            <label asp-for="RequestDetail" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("Description")</label>
+                            <div class="col">
+                                <input asp-for="RequestDetail" class="form-control" />
+                                <span asp-validation-for="RequestDetail" class="text-danger"></span>
+                            </div>
+                        </div>   
+                        <div class="mb-3 row mb-3row" id="divMoneyAmmount" style="display:none">
+                            <label asp-for="MoneyAmount" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("MoneyAmmount")</label>
+                            <div class="col" style="display:flex !important">
+                                <input asp-for="MoneyAmount" class="form-control" />
+                                @Html.DropDownListFor(model => model.CurrencyId, new SelectList(Model.Currency, "Value", "Text"), _localization.Getkey("select_here"), htmlAttributes: new { @class = "form-select" })
+                                <span asp-validation-for="MoneyAmount" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row" id="DivDocumentFile">
+                            <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
+                            <div class="col">
+                                <input asp-for="MultipleFiles" type="file" multiple accept=".pdf,.docx,.png,.jpg" class="form-control-file" />
+                                <span asp-validation-for="MultipleFiles" class="text-danger"></span>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <div class="d-flex">
+                    <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">@_localization.Getkey("send")</button>
+
+                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<br />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script>
+        $(document).ready(function (e) {
+            pond = FilePond.create(
+                document.querySelector('.form-file-button'), {
+                allowMultiple: true,
+                instantUpload: false,
+                allowProcess: false
+            });
+
+            $("#uploadform").submit(function (e) {
+                e.preventDefault();
+                var formdata = new FormData(this);
+                // append FilePond files into the form data
+                pondFiles = pond.getFiles();
+                for (var i = 0; i < pondFiles.length; i++) {
+                    // append the blob file
+                    formdata.append('MultipleFiles', pondFiles[i].file);
+                }
+
+                $.ajax({
+                    url: "/InternalRequests/Create",
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    method: "post",
+                    success: function (response) {
+                        console.log(response);
+                        window.location.href = '/InternalRequests/Index'
+                    }
+
+                });
+
+            })
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#RequestDetail',
+                height: 400,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>        
+
+}

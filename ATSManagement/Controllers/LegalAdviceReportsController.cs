@@ -33,18 +33,20 @@ namespace ATSManagement.Controllers
         // GET: LegalAdviceReports
         public async Task<IActionResult> Index()
         {
-            Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
-            if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true)
-            {
-                var atsdbContext = _context.TblLegalAdviceReports.Include(t => t.ReportedByNavigation).Include(t => t.MonthNavigation).Include(t => t.YearNavigation).Include(t=>t.IdNavigation);
-                return View(await atsdbContext.ToListAsync());
-            }
-            else
-            {
-                var atsdbContext = _context.TblLegalAdviceReports.Include(t => t.ReportedByNavigation).Include(t => t.MonthNavigation).Include(t => t.YearNavigation).Include(s=>s.IdNavigation).Where(s => s.ReportedBy == userId);
-                return View(await atsdbContext.ToListAsync());
-            }
+            return View();
+            //Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+            //var users = _context.TblInternalUsers.Where(s => s.UserId == userId).FirstOrDefault();
+            //if (users.IsDeputy || users.IsDepartmentHead == true || users.IsSuperAdmin == true)
+            //{
+            //    var atsdbContext = _context.TblLegalAdviceReports.Include(t => t.ReportedByNavigation).Include(t => t.MonthNavigation).Include(t => t.YearNavigation).Include(t=>t.IdNavigation);
+            //    return View(atsdbContext.ToList());
+            //}
+            //else
+            //{
+            //    var reports = _context.TblLegalAdviceReports.Include(s=>s.MonthNavigation).Include(s=>s.YearNavigation).ToList();
+            //    var atsdbContext = _context.TblLegalAdviceReports.Include(t => t.ReportedByNavigation).Include(t => t.MonthNavigation).Include(t => t.YearNavigation).Where(s => s.ReportedBy == userId);
+            //    return View(atsdbContext.ToList());
+            //}
         }
 
         // GET: LegalAdviceReports/Details/5
@@ -77,30 +79,49 @@ namespace ATSManagement.Controllers
             return View();
         }
 
-        // POST: LegalAdviceReports/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReportId,Id,Amount,Investigation,Month,Year,ReportedBy")] TblLegalAdviceReport tblLegalAdviceReport)
+        public async Task<IActionResult> Create(TblLegalAdviceReport tblLegalAdviceReport)
         {
             try
             {
                 Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
                 var ceoEmail = (from items in _context.TblInternalUsers where items.Dep.DepCode == "CVA" && (items.IsDeputy == true || items.IsDepartmentHead == true) select items.EmailAddress).ToList();
-                var isExits=_context.TblLegalAdviceReports.Where(s=>s.Month==tblLegalAdviceReport.Month&&s.Year==tblLegalAdviceReport.Year&&s.Id==tblLegalAdviceReport.Id).FirstOrDefault();
+                var isExits=_context.TblLegalAdviceReports.Where(s=>s.Month==tblLegalAdviceReport.Month&&s.Year==tblLegalAdviceReport.Year).FirstOrDefault();
                 if (isExits != null)
                 {
                     _notifyService.Information("This report already exists. Please atleast change one of these fields(Year, Month, Servant type)");
                     ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                    ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
                     ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "Year", tblLegalAdviceReport.Year);
                     return View(tblLegalAdviceReport);
                 }
                 if (ModelState.IsValid)
                 {
-                    tblLegalAdviceReport.ReportedBy = userId;
-                    _context.Add(tblLegalAdviceReport);
+                    TblLegalAdviceReport tblLegalAdviceReport1 = new TblLegalAdviceReport();
+                    tblLegalAdviceReport1.TotalInvestigations=tblLegalAdviceReport.TotalInvestigations;
+                    tblLegalAdviceReport1.Total= tblLegalAdviceReport.Total;
+                    tblLegalAdviceReport1.DisablitiesInvestigation= tblLegalAdviceReport.DisablitiesInvestigation;
+                    tblLegalAdviceReport1.EldersInvestigations= tblLegalAdviceReport.EldersInvestigations ;
+                    tblLegalAdviceReport1.GovernmentInstitutes= tblLegalAdviceReport.GovernmentInstitutes;
+                    tblLegalAdviceReport1.GovernmentInstitutesInvestigations = tblLegalAdviceReport.GovernmentInstitutesInvestigations;
+                    tblLegalAdviceReport1.Hivpositive= tblLegalAdviceReport.Hivpositive;
+                    tblLegalAdviceReport1.HivpositiveInvestigation = tblLegalAdviceReport.HivpositiveInvestigation;
+                    tblLegalAdviceReport1.Womens= tblLegalAdviceReport.Womens;
+                    tblLegalAdviceReport1.WomensInvestigations = tblLegalAdviceReport.WomensInvestigations;
+                    tblLegalAdviceReport1.Mens= tblLegalAdviceReport.Mens;
+                    tblLegalAdviceReport1.MensInvestigations = tblLegalAdviceReport.MensInvestigations;
+                    tblLegalAdviceReport1.Elders= tblLegalAdviceReport.Elders;
+                    tblLegalAdviceReport1.PersecutionReturnies= tblLegalAdviceReport.PersecutionReturnies;
+                    tblLegalAdviceReport1.PersecutionReturniesInvestigations = tblLegalAdviceReport.PersecutionReturniesInvestigations;
+                    tblLegalAdviceReport1.Other= tblLegalAdviceReport.Other;
+                    tblLegalAdviceReport1.OtherInvestigations = tblLegalAdviceReport.OtherInvestigations;
+                    tblLegalAdviceReport1.Disablities= tblLegalAdviceReport.Disablities;
+                    tblLegalAdviceReport1.Childrens= tblLegalAdviceReport.Childrens;
+                    tblLegalAdviceReport1.ChildrensInvestigations= tblLegalAdviceReport.ChildrensInvestigations;
+                    tblLegalAdviceReport1.ReportedBy = userId;
+                    tblLegalAdviceReport1.Month = tblLegalAdviceReport.Month;
+                    tblLegalAdviceReport1.Year = tblLegalAdviceReport.Year;
+                    _context.TblLegalAdviceReports.Add(tblLegalAdviceReport1);
                     int saved = await _context.SaveChangesAsync();
                     if (saved > 0)
                     {
@@ -112,15 +133,13 @@ namespace ATSManagement.Controllers
                     {
                         _notifyService.Error("Report isn't added successfully!. Please try again");
                         ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                        ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
-                        ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "Year", tblLegalAdviceReport.Year);
+                       ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "Year", tblLegalAdviceReport.Year);
                         return View(tblLegalAdviceReport);
                     }
                 }
                 else
                 {
                     ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                    ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
                     ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "Year", tblLegalAdviceReport.Year);
                     return View(tblLegalAdviceReport);
                 }
@@ -129,7 +148,6 @@ namespace ATSManagement.Controllers
             {
                 _notifyService.Error($"Error: {ex.Message}");
                 ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
                 ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "Year", tblLegalAdviceReport.Year);
                 return View(tblLegalAdviceReport);
             }
@@ -155,7 +173,6 @@ namespace ATSManagement.Controllers
                 return NotFound();
             }
             ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-            ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
             ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "Year", tblLegalAdviceReport.Year);
             return View(tblLegalAdviceReport);
         }
@@ -187,8 +204,7 @@ namespace ATSManagement.Controllers
                     {
                         _notifyService.Error("Report isn't edited. Please try again.");
                         ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                        ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
-                        ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "YearId", tblLegalAdviceReport.Year);
+                       ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "YearId", tblLegalAdviceReport.Year);
                         return View(tblLegalAdviceReport);
                     }
                 }
@@ -202,7 +218,6 @@ namespace ATSManagement.Controllers
                     {
                         _notifyService.Error($"Error: {ex.Message}");
                         ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                        ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
                         ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "YearId", tblLegalAdviceReport.Year);
                         return View(tblLegalAdviceReport);
                     }
@@ -212,7 +227,6 @@ namespace ATSManagement.Controllers
             {
                 _notifyService.Error("Report isn't submitted successfully. Please fill all neccessary fields");
                 ViewData["Month"] = new SelectList(_context.TblMonths, "MonthId", "MonthName", tblLegalAdviceReport.Month);
-                ViewData["ServantTypes"] = new SelectList(_context.TblLegalAdviceServantTypes, "Id", "ServantTypeName", tblLegalAdviceReport.Id);
                 ViewData["Year"] = new SelectList(_context.TblYears, "YearId", "YearId", tblLegalAdviceReport.Year);
                 return View(tblLegalAdviceReport);
             }

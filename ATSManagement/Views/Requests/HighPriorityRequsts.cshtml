@@ -5,6 +5,7 @@
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
     ViewData["Title"] = @_localization.Getkey("requests");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
@@ -43,9 +44,8 @@
                                     @_localization.Getkey("Detail")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("CreatedDate")
+                                    @_localization.Getkey("created_Date")
                                 </th>
-
                                 <th>
                                     @_localization.Getkey("assingment_remark")
                                 </th>
@@ -56,11 +56,10 @@
                                     @_localization.Getkey("priority")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("serviceType")
+                                    @_localization.Getkey("service_types")
                                 </th>
-
                                 <th>
-                                    @_localization.Getkey("doctype")
+                                    @_localization.Getkey("service_types")
                                 </th>
                                 <th>
                                     @_localization.Getkey("institution")
@@ -101,25 +100,22 @@
                                         @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
-                                        <br />
                                         @if (documents != null)
                                         {
                                             foreach (var paths in documents)
                                             {
-                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
+                                                <a class="btn btn-primary" asp-controller="DocumentViewer" style="padding:0rem !important" asp-action="DocumentViewer" asp-route-path="@paths.DocPath" asp-route-method="HighPriorityRequsts" asp-route-methodController="Requests">
 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                        <path d="M12 17v-6"></path>
-                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                    </svg>
-                                                    @_localization.Getkey("view_file")
+                                                    @if (item.DocType != null)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
+                                                    }
+                                                    else
+                                                    {
+                                                        @_localization.Getkey("view_file")
+                                                    }
                                                 </a>
                                             }
-
                                         }
                                     </td>
                                     <td>
@@ -133,7 +129,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                   ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="AssignToDepartment" asp-route-id="@item.RequestId">

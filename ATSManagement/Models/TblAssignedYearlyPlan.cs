@@ -41,6 +41,12 @@ public partial class TblAssignedYearlyPlan
 
     public string? Torattachment { get; set; }
 
+    public string? EvaluationCheckListsAttachmet { get; set; }
+
+    public string? ExitConfrence { get; set; }
+
+    public string? DepartmentReview { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
     public virtual TblInternalUser? AssignedToNavigation { get; set; }
@@ -50,4 +56,10 @@ public partial class TblAssignedYearlyPlan
     public virtual TblSpecificPlan? SpecificPlan { get; set; }
 
     public virtual TblStatus? Status { get; set; }
+
+    public virtual ICollection<TblInspectionReportFile> TblInspectionReportFiles { get; set; } = new List<TblInspectionReportFile>();
+
+    public virtual ICollection<TblReplyResponseWithExpert> TblReplyResponseWithExperts { get; set; } = new List<TblReplyResponseWithExpert>();
+
+    public virtual ICollection<TblReplyResponseWithStateMinster> TblReplyResponseWithStateMinsters { get; set; } = new List<TblReplyResponseWithStateMinster>();
 }

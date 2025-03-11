@@ -25,6 +25,24 @@ public partial class TblSubmenu
 
     public string? SubmenuAmharic { get; set; }
 
+    public bool? ForDeputy { get; set; }
+
+    public bool? ForDepHead { get; set; }
+
+    public bool? ForDefaulUser { get; set; }
+
+    public bool? ForTeamLeader { get; set; }
+
+    public bool? ForSuperAdmin { get; set; }
+
+    public bool? ForSecretary { get; set; }
+
+    public bool? ForBranchOfficer { get; set; }
+
+    public bool? ForInternalUser { get; set; }
+
+    public int? SortOrder { get; set; }
+
     public virtual TblDepartment? Dep { get; set; }
 
     public virtual TblMainMenu? Menu { get; set; }

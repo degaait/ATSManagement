@@ -2,8 +2,13 @@
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IHttpContextAccessor httpsSession;
+@inject AtsdbContext ats;
 @{
     ViewData["Title"] = "የ ADR ስራዎች አፈፃፀም ሪፖርት ";
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+
 }
 <style type="text/css">
     .table thead th {
@@ -13,7 +18,6 @@
         font-weight: bolder;
     }
 </style>
-<!-- Page header -->
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row g-2 align-items-center">
@@ -22,25 +26,25 @@
                     የ ADR ስራዎች አፈፃፀም ሪፖርት
                 </h2>
             </div>
-            <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-                    <a asp-action="Create" asp-controller="AdractivitiesReports" class="btn btn-primary d-none d-sm-inline-block">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        @_localization.Getkey("CreateNew")
-                    </a>
-                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                    </a>
-                </div>
+                @if (user.IsBranchOfficeUser == true)
+                {
+                    <div class="btn-list">
+                        <a asp-action="Create" asp-controller="AdractivitiesReports" class="btn btn-primary d-none d-sm-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                            @_localization.Getkey("CreateNew")
+                        </a>
+                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
-
-
 <div class="col-12">
     <div class="card">
         <div class="card-header">
@@ -51,7 +55,6 @@
                 <table class="table table-striped table-bordered" id="role">
                     <thead>
                         <tr>
-
                             <th>
                                 ክንውን
                             </th>
@@ -110,53 +113,80 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
+                            var reporter = (from items in ats.TblInternalUsers
+                                            join bra in ats.TblBranchOffices on items.BranchId equals bra.BranchId
+                                            where items.UserId == item.CreatedBy
+                                            select new
+                                            {
+                                                Nam = bra.Name
+                                            }).FirstOrDefault();
+
                             <tr>
 
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Type.TypeNames)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Womens)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Childrens)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.WomeElders)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Hivpositives)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Mens)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.OtherServantType)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.OutofResponsibilty)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Family)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Property)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.AsserinaSerategna)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.LelochGudayAyine)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.YediridirGenzebMeten)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.YeteWosenewuGenzebMeten)
                                 </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
                                     @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                    <br />
+                                    @if (reporter != null)
+                                    {
+                                        <label style="color:cornflowerblue">@reporter.Nam</label>
+                                    }
                                 </td>
 
                                 <td>
@@ -169,7 +199,7 @@
                                     <div class="btn-list flex-nowrap">
                                         <div class="dropdown">
                                             <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                Actions
+                                                ...
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">

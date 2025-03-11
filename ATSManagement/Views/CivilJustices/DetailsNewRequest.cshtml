@@ -1,0 +1,265 @@
+﻿@model ATSManagement.Models.TblRequest
+@using ATSManagement.Services;
+@inject AtsdbContext ats;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IHttpContextAccessor httpsSession;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
+    ViewData["Title"] = @_localization.Getkey("Detail");
+    var assignees = (from users in ats.TblRequestAssignees where users.RequestId == Model.RequestId select users.User).ToList();
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            @_localization.Getkey("requests")
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="col-12">
+        <div class="card">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title btn-danger">@_localization.Getkey("Detail")</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="accordion" id="accordion-example">
+                            @if (cultur == "am")
+                            {
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-1">
+                                        <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                            የአገልግሎት ጉዳይ  የመጣው @Html.DisplayFor(model => model.Inist.Name)
+                                            @if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
+                                            {
+                                                <strong style="text-decoration:underline">የጸሓፊ ስም &nbsp;</strong>
+                                                @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>።</label>
+                                            }
+                                            @if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
+                                            {
+                                                <strong style="text-decoration:underline">በባለሙያው &nbsp;</strong>
+                                                @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>።</label>
+
+
+                                            }
+                                            
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
+                                        <div class="accordion-body pt-0">
+                                            @Html.Raw(Model.RequestDetail) በቀን &nbsp; <code>@Html.DisplayFor(model => model.CreatedDate)</code> እና የትኩረት ደረጃው @Html.DisplayFor(model => model.Priority.PriorityNameAmharic) ። የአገልግሎት አይነት <strong>@Html.DisplayFor(model => model.ServiceType.ServiceTypeNameAmharic)<label>።</label></strong>
+                                            @if (Model.ServiceType.ServiceTypeName == "Contract Negotiation/drafting/review")
+                                            {
+                                                <label>መጠን/የገንዘብ ዓይነት: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "International cases")
+                                            {
+                                                <label>የጉዳዩ ልዩ ሁኔታ  : @Html.DisplayFor(model => model.Specialization)</label>
+                                                <label>ሀገር: @Html.DisplayFor(model => model.Country)</label>
+                                                <label>የግልግል ማዕከል: @Html.DisplayFor(model => model.CourtCenter)</label>
+                                                <label>አመልካች: @Html.DisplayFor(model => model.Claimant)</label>
+                                                <label>ተጠሪ: @Html.DisplayFor(model => model.Respondent)</label>
+                                                <label>የቀጠሮ ቀን: @Html.DisplayFor(model => model.DateOfAdjournment)</label>
+                                                <label>መጠን/የገንዘብ ዓይነት: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "ADR activities")
+                                            {
+                                                <label>የአማራጭ አለመግባባት መፍቻው አይነት: @Html.DisplayFor(model => model.Adrtype)</label>
+                                                <label>ኃላፊነት/ሚና: @Html.DisplayFor(model => model.ActingAs)</label>
+                                                <label>የይገባኛል ጉዳይ  አቅራቢ: @Html.DisplayFor(model => model.Claimant)</label>
+                                                <label>ምላሽ ሰጪ: @Html.DisplayFor(model => model.Respondent)</label>
+                                                <label>መጠን/የገንዘብ ዓይነት: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "Litigation")
+                                            {
+                                                <label>የክርክር አይነት: @Html.DisplayFor(model => model.LitigationType)</label>
+                                                <label>የዳኝነት ሥልጣን/ፍ/ቤት : @Html.DisplayFor(model => model.Jursidiction)</label>
+                                                <label>ችሎት: @Html.DisplayFor(model => model.Bench)</label>
+                                                <label>ከሳሽ: @Html.DisplayFor(model => model.Plaintiful)</label>
+                                                <label>ተከሳሽ: @Html.DisplayFor(model => model.Defendent)</label>
+                                                <label>የፍርድ ቤት ቀጠሮ: @Html.DisplayFor(model => model.DateofJudgement)</label>
+                                                <label>መጠን/የገንዘብ ዓይነት: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "Legal Advice")
+                                            {
+                                                <label>መጠን/የገንዘብ ዓይነት: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            @{
+                                                if (assignees != null)
+                                                {
+                                                    <p>
+                                                        <strong>ጉዳዩን የያዘው ባለሙያ</strong>
+                                                        @foreach (var item in assignees)
+                                                        {
+                                                            <label>@item.FirstName @item.MidleName</label>
+                                                        }
+                                                    </p>
+                                                }
+
+                                                if (Model.ExternalRequestStatusId != null)
+                                                {
+                                                    <label>
+                                                        አሁን አገልግሎት ሁኔታ ያለበት ደረጃ
+                                                        <strong>
+
+                                                            @Html.DisplayFor(model => model.ExternalRequestStatus.StatusNameAmharic)
+                                                        </strong>
+                                                    </label>
+                                                }
+
+                                            }
+                                            @if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
+                                            {
+                                                <br />
+                                                <div style="background-color:azure">
+
+                                                    <strong style="text-decoration:underline">ለተጫማሪ መረጃ </strong>
+                                                    <br />
+                                                    &nbsp; ስሜ: @Html.DisplayFor(model => model.FullName)<label>&nbsp;</label>
+                                                    <br />
+                                                    &nbsp; ኢሜይል: @Html.DisplayFor(model => model.EmailAddress)<label>.</label>
+                                                    <br />
+                                                    &nbsp; ስልክ ቁጥር:@Html.DisplayFor(model => model.PhoneNumber)<label>.</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-1">
+                                        <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                            Request from @Html.DisplayFor(model => model.Inist.Name)  by (
+                                            @if (Model.CreatedBy != Guid.Empty && Model.CreatedBy != null)
+                                            {
+                                                <strong>Secretary &nbsp;</strong>
+                                                @Html.DisplayFor(model => model.CreatedByNavigation.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(model => model.CreatedByNavigation.MidleName)<label>.</label>
+                                            }
+                                            @if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
+                                            {
+                                                <strong> Externa User &nbsp;</strong>
+                                                @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)<label>.</label>
+
+
+                                            }
+                                            )
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example">
+                                        <div class="accordion-body pt-0">
+                                            <strong> </strong> @Html.Raw(Model.RequestDetail) on <code>@Html.DisplayFor(model => model.CreatedDate )</code>with the priority of @Html.DisplayFor(model => model.Priority.PriorityName) .It's Case type is <strong>@Html.DisplayFor(model => model.ServiceType.ServiceTypeName)<label>.</label></strong>
+                                            @if (Model.ServiceType.ServiceTypeName == "Contract Negotiation/drafting/review")
+                                            {
+                                                <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "International cases")
+                                            {
+                                                <label>Specialization: @Html.DisplayFor(model => model.Specialization)</label>
+                                                <label>Country: @Html.DisplayFor(model => model.Country)</label>
+                                                <label>Court Center: @Html.DisplayFor(model => model.CourtCenter)</label>
+                                                <label>Clainmant: @Html.DisplayFor(model => model.Claimant)</label>
+                                                <label>Respondent: @Html.DisplayFor(model => model.Respondent)</label>
+                                                <label>Date of Adjournment: @Html.DisplayFor(model => model.DateOfAdjournment)</label>
+                                                <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "ADR activities")
+                                            {
+                                                <label>ADR Type: @Html.DisplayFor(model => model.Adrtype)</label>
+                                                <label>Acting as: @Html.DisplayFor(model => model.ActingAs)</label>
+                                                <label>Claimant: @Html.DisplayFor(model => model.Claimant)</label>
+                                                <label>Respondent: @Html.DisplayFor(model => model.Respondent)</label>
+                                                <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "Litigation")
+                                            {
+                                                <label>Litigation Type: @Html.DisplayFor(model => model.LitigationType)</label>
+                                                <label>Jurisdiction: @Html.DisplayFor(model => model.Jursidiction)</label>
+                                                <label>Benchi: @Html.DisplayFor(model => model.Bench)</label>
+                                                <label>Plaintif: @Html.DisplayFor(model => model.Plaintiful)</label>
+                                                <label>Defendant: @Html.DisplayFor(model => model.Defendent)</label>
+                                                <label>Date of Judgement: @Html.DisplayFor(model => model.DateofJudgement)</label>
+                                                <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            else if (Model.ServiceType.ServiceTypeName == "Legal Advice")
+                                            {
+                                                <label>Ammount involved: @Html.DisplayFor(model => model.MoneyAmount) @Html.DisplayFor(model => model.MoneyCurrency) </label>
+                                            }
+                                            @{
+                                                if (assignees != null)
+                                                {
+                                                    <p>
+                                                        <strong>Experts/Handled by </strong>
+                                                        @foreach (var item in assignees)
+                                                        {
+                                                            <label>@item.FirstName @item.MidleName</label>
+                                                        }
+                                                    </p>
+                                                }
+
+                                                if (Model.ExternalRequestStatusId != null)
+                                                {
+                                                    <label>
+                                                        Currently the status of request this request is at
+                                                        <strong>
+
+                                                            @Html.DisplayFor(model => model.ExternalRequestStatus.StatusName)
+                                                        </strong>
+                                                    </label>
+                                                }
+                                             
+                                            }
+                                            @if (Model.RequestedBy != Guid.Empty && Model.RequestedBy != null)
+                                            {
+                                                <br />
+                                                <div style="background-color:azure">
+
+                                                    <strong style="text-decoration:underline">For additional information contact</strong>
+                                                    <br />
+                                                    &nbsp; Name: @Html.DisplayFor(model => model.FullName)<label>&nbsp;</label>
+                                                    <br />
+                                                    &nbsp; Email: @Html.DisplayFor(model => model.EmailAddress)<label>.</label>
+                                                    <br />
+                                                    &nbsp; Phone number:@Html.DisplayFor(model => model.PhoneNumber)<label>.</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>

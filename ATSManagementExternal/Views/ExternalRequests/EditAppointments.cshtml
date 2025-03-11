@@ -1,11 +1,14 @@
 ﻿@model ATSManagementExternal.ViewModels.AppointmentModel
+@using ATSManagementExternal.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
+@inject AtsdbContext ats;
 @{
-    ViewData["Title"] = "Edit";
 }
 <br />
 
 <div class="page-wrapper">
-   
+
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
@@ -13,7 +16,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h2 class="page-title">
-                                Edit Appointments
+                                @_localization.Getkey("edit")
                             </h2>
                         </div>
                         <form asp-action="EditAppointments" method="post" enctype="multipart/form-data">
@@ -25,16 +28,16 @@
                                         <input asp-for="AppointmentId" type="hidden" class="form-control" />
                                         <input asp-for="IntId" type="hidden" class="form-control" />
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="AppointmentDetail" class=" col-3 col-form-label">Appointment Detail</label>
+                                            <label asp-for="AppointmentDetail" class=" col-3 col-form-label"> @_localization.Getkey("appoitnment_reason")</label>
                                             <div class="col">
                                                 <input asp-for="AppointmentDetail" class="form-control" />
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="AppointmentDate" class=" col-3 col-form-label">Expected Appointment Date</label>
+                                            <label asp-for="AppointmentDate" class=" col-3 col-form-label"> @_localization.Getkey("appointment_date")</label>
                                             <div class="col">
-                                                <input asp-for="AppointmentDate" class="form-control" />
+                                                <input asp-for="AppointmentDate" type="date" class="form-control" />
                                                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -43,30 +46,12 @@
                             </div>
                             <div class="card-footer text-end">
                                 <div class="d-flex">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scrollable">
-                                        Update
-                                    </a>
-                                    <a asp-action="Appointments">Back to List</a>
+                                    <button type="submit" value="Save" class="btn btn-primary">
+                                        @_localization.Getkey("save")
+                                    </button>
+                                    <a asp-action="Appointments">  @_localization.Getkey("backlist")</a>
                                 </div>
                             </div>
-                            <div class="modal modal-blur fade" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Terms and Conditions</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            @ViewBag.PrivacyPolicy
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" value="Save" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </form>
                     </div>
                 </div>

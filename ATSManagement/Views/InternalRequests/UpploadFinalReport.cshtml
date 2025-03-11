@@ -1,0 +1,99 @@
+﻿@model ATSManagement.ViewModels.InternalRequestModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("Add_final_report");
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Add_final_report");
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <a style="color:darkblue" asp-action="@ViewBag.action" asp-controller="@ViewBag.controller" asp-route-id="@ViewBag.id">
+                    <i class="bi bi-backspace-fill"></i>
+                    @_localization.Getkey("backlist")
+                </a>
+            </div>
+            <form asp-action="UpploadFinalReport" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="RequestId" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    @Html.Raw(Model.RequestDetail)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="FinalReportSummary" class=" col-3 col-form-label">@_localization.Getkey("report_summary")</label>
+                                <div class="col">
+                                    <input asp-for="FinalReportSummary" class="form-control" />
+                                    <span asp-validation-for="FinalReportSummary" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
+                                <div class="col">
+                                    <input asp-for="finalReport" type="file" class="form-file-button" />
+                                    <span asp-validation-for="finalReport" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+     document.addEventListener("DOMContentLoaded", function () {
+         let options = {
+             selector: '#FinalReportSummary',
+             height: 300,
+             menubar: true,
+             statusbar: false,
+             plugins: [
+                 'advlist autolink lists link image charmap print preview anchor',
+                 'searchreplace visualblocks code fullscreen',
+                 'insertdatetime media table paste code help wordcount',
+                 'lists'
+             ],
+             toolbar: 'undo redo | formatselect | ' +
+                 'bold italic backcolor | alignleft aligncenter ' +
+                 'alignright alignjustify | bullist numlist outdent indent | ' +
+                 'removeformat',
+             content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+         }
+         if (localStorage.getItem("tablerTheme") === 'dark') {
+             options.skin = 'oxide-dark';
+             options.content_css = 'dark';
+         }
+         tinyMCE.init(options);
+     })
+    </script>
+}
+
+

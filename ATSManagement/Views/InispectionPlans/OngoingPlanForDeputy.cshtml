@@ -1,0 +1,268 @@
+﻿@model IEnumerable<ATSManagement.Models.TblAssignedYearlyPlan>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
+@{
+    ViewData["Title"] = _localization.Getkey("ongoing_plans");
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("ongoing_plans")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-borderless datatable" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                </th>
+                                <th>
+                                    @_localization.Getkey("title")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Detail")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("assignmentDate")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("dueDate")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Evaluation_criteria")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Engagement_letter")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("tor_attachment")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("task_status")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("targeted_institutions")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Assigned_to")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("report_history")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("diaries")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var instr = (from ints in ats.TblPlanInistitutions
+                                             join related in ats.TblInistitutions on ints.InistId equals related.InistId
+                                             where ints.SpecificPlanId == item.SpecificPlanId
+                                             select new
+                                             {
+                                                 Name = related.Name
+                                             }).ToList();
+                                var users = (from items in ats.TblAssignedYearlyPlans
+                                             join plans in ats.TblSpecificPlans on items.SpecificPlanId equals plans.SpecificPlanId
+                                             join assignee in ats.TblInternalUsers on items.AssignedTo equals assignee.UserId
+                                             where items.SpecificPlanId == item.SpecificPlanId
+                                             select assignee).ToList();
+                                var assingmentInformation = ats.TblAssignedYearlyPlans.Where(s => s.SpecificPlanId == item.SpecificPlanId).FirstOrDefault();
+                                var status = (from items in ats.TblSpecificPlans
+                                              join pros in ats.TblInspectionStatuses on items.ProId equals pros.ProId
+                                              where items.SpecificPlanId == item.SpecificPlanId
+                                              select new
+                                              {
+                                                  statusWithColor = pros.StatusWithColor,
+                                                  order = pros.ProgressOrder
+                                              }).FirstOrDefault();
+                                var reportfiles = ats.TblInspectionReportFiles.Where(s => s.SpecificPlanId == item.SpecificPlanId).ToList();
+                                var progressOrder = (from items in ats.TblSpecificPlans
+                                                     join order in ats.TblInspectionStatuses on items.ProId equals order.ProId
+                                                     where items.SpecificPlanId == item.SpecificPlanId
+                                                     select new { o = order.ProgressOrder }).FirstOrDefault();
+                                <tr>
+                                    <td>
+                                        <a asp-action="RequestChats" asp-route-id="@item.SpecificPlanId" asp-route-actionMethod="OngoingPlanForDeputy" asp-route-controller="InispectionPlans">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SpecificPlan.Title)
+                                    </td>
+                                    <td>
+                                        @if (item.SpecificPlan != null)
+                                         {
+                                            @Html.Raw(item.SpecificPlan.Description)
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (assingmentInformation != null && assingmentInformation.AssignedDate != null)
+                                         {
+                                            @Html.Raw(assingmentInformation.AssignedDate)
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (assingmentInformation != null && assingmentInformation.DueDate != null)
+                                         {
+                                            @Html.Raw(assingmentInformation.DueDate)
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (assingmentInformation != null && assingmentInformation.EvaluationCheckLists != null)
+                                         {                                             
+                                                <a class="btn-primary time-right" asp-controller="InispectionPlans" asp-action="ViewEvaluation" asp-route-id="@item.Id" asp-route-actionMethod="OnGoingPlanForDeputy">
+                                                    <ion-icon name="folder-open"></ion-icon>
+                                                    @_localization.Getkey("read")
+                                                </a> 
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (assingmentInformation != null && assingmentInformation.EngagementLetter != null)
+                                         {
+                                            <a class="btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@assingmentInformation.EngagementLetter">
+
+                                                @_localization.Getkey("view_file")
+                                            </a>
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (assingmentInformation != null && assingmentInformation.Torattachment != null)
+                                         {
+                                            <a class="btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@assingmentInformation.Torattachment">
+
+                                                @_localization.Getkey("view_file")
+                                            </a>
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (item.SpecificPlan != null)
+                                         {
+                                            var statusWithcolor = ats.TblInspectionStatuses.Where(s => s.ProId == item.SpecificPlan.ProId).FirstOrDefault();
+                                            @Html.Raw(statusWithcolor.StatusWithColor)
+                                         }
+                                    </td>
+                                    <td>
+                                        @foreach (var items in instr)
+                                         {
+                                            @Html.DisplayFor(modelItem => items.Name) <br />
+                                         }
+                                    </td>
+                                    <td>
+                                        @if (users.Count != 0)
+                                        {
+                                            foreach (var collectiontem in users)
+                                            {
+                                                @Html.DisplayFor(modelItem => collectiontem.FirstName)<label>&nbsp;</label>
+                                                @Html.DisplayFor(modelItem => collectiontem.MidleName)
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (reportfiles != null)
+                                         {
+                                            <a class="btn-primary" asp-action="DocumentHistory" asp-controller="InispectionPlans" asp-route-id="@item.SpecificPlanId" asp-route-action="OngoingPlan">
+                                                <label> @reportfiles.Count &nbsp; Files</label>
+                                            </a>
+                                         }
+                                    </td>
+                                    <td>
+                                        <a class="dropdown-item" asp-action="DailyActivities" asp-route-id="@item.SpecificPlanId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M13 5h8"></path>
+                                                <path d="M13 9h5"></path>
+                                                <path d="M13 15h8"></path>
+                                                <path d="M13 19h5"></path>
+                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                            </svg> &nbsp;
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="btn-list flex-nowrap">
+                                            <div class="dropdown">
+                                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                                    ...
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" asp-action="DetailsOngoing" asp-route-id="@item.SpecificPlanId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M13 5h8"></path>
+                                                            <path d="M13 9h5"></path>
+                                                            <path d="M13 15h8"></path>
+                                                            <path d="M13 19h5"></path>
+                                                            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                        </svg> &nbsp;  @_localization.Getkey("Detail")
+                                                    </a>
+                                                    @if (status.order >= 11)
+                                                    {
+                                                        <a class="dropdown-item" asp-action="ReplyResponseWithStateMinister" asp-route-id="@item.Id">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-fill" viewBox="0 0 16 16">
+                                                                <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
+                                                            </svg>&nbsp;
+                                                            @_localization.Getkey("Internal_Chat")
+                                                        </a>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#role').DataTable({
+                order: [[3, 'desc']],
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+    </script>
+}

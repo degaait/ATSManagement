@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="DueDate" class=" col-3 col-form-label">@_localization.Getkey("duedate")</label>
+                                <label asp-for="DueDate" class=" col-3 col-form-label">@_localization.Getkey("dueDate")</label>
                                 <div class="col">
                                     <input asp-for="DueDate" class="form-control" />
                                     <span asp-validation-for="DueDate" class="text-danger"></span>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <div class="mb-4 row" id="divTeams" style="display:none">
-                                <label asp-for="TeamId" class="col-3 col-form-label">@_localization.Getkey("Team")</label>
+                                <label asp-for="TeamId" class="col-3 col-form-label">@_localization.Getkey("team_name")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.TeamId, new SelectList(Model.Teams, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="TeamId" class="text-danger"></span>
@@ -78,19 +78,20 @@
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="DocId" class="col-3 col-form-label">@_localization.Getkey("doctype")</label>
-                                <div class="col">
-                                    @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
-                                    <span asp-validation-for="DocId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-4 row">
-                                <label asp-for="ServiceTypeID" class="col-3 col-form-label">@_localization.Getkey("serviceType")</label>
+                                <label asp-for="ServiceTypeID" class="col-3 col-form-label">@_localization.Getkey("service_types")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="mb-4 row">
+                                <label asp-for="DocId" class="col-3 col-form-label">@_localization.Getkey("document_type")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
+                                    <span asp-validation-for="DocId" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <div class="mb-4 row">
                                 <label asp-for="Priorities" class="col-3 col-form-label">@_localization.Getkey("priority")</label>
                                 <div class="col">

@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<ATSManagement.Models.TblActivity>
 @using ATSManagement.Services;
 @inject LanguageService _localization
+@inject AtsdbContext ats;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = _localization.Getkey("Progress_Activities") + ":-Index";
+    ViewData["Title"] = _localization.Getkey("Progress_Activities");
+    int no = 0;
 }
 
 <style type="text/css">
@@ -26,25 +28,36 @@
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
+                <a style="color:darkblue" asp-action="PendingRequests" asp-controller="LegalStudiesDrafting">
+                    <i class="bi bi-backspace-fill"></i>
+                    @_localization.Getkey("backlist")
+                </a>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-striped" id="role">
+                    <table class="table table-borderless datatable" id="role">
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("Detail")
-
+                                    @_localization.Getkey("No.")
                                 </th>
                                 <th>
                                     @_localization.Getkey("datetime")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("created_by")
+                                    @_localization.Getkey("action_performed")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("time_taken")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("remark_given")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("user")
                                 </th>
                                 <th>
                                     @_localization.Getkey("requests")
@@ -54,21 +67,35 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User).ToList();
+                                no = no + 1;
                                 <tr>
+
                                     <td>
-                                        @Html.Raw(item.ActivityDetail)
+                                        @no
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.AddedDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                        @Html.Raw(item.ActivityDetail)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimeTakenTocomplete)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Remark)
+                                    </td>
+                                    <td>
+                                        @foreach (var assi in assigneess)
+                                        {
+                                            @Html.DisplayFor(model=>assi.FirstName) <label>&nbsp;</label>
+                                            @Html.DisplayFor(modelItem => assi.MidleName)
+                                        }
                                     </td>
                                     <td>
                                         @Html.Raw(item.Request.RequestDetail)
                                     </td>
-
                                 </tr>
                             }
                         </tbody>
@@ -83,12 +110,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#role').DataTable({
-                dom: 'Bfrtip',
-                deferRender: true,
-                scrollCollapse: true,
-                scroller: true,
-                buttons: [
-                    'excel', 'print'
+                    order: [[1, 'desc']],
+                    dom: 'Bfrtip',
+                    deferRender: true,
+                    scrollCollapse: true,
+                    scroller: true,
+                    buttons: [
+                        'excel', 'print',
                 ]
             });
         });

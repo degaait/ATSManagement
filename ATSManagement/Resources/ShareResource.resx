@@ -1,0 +1,1165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActingAs" xml:space="preserve">
+    <value />
+  </data>
+  <data name="action_performed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="additional_Question" xml:space="preserve">
+    <value />
+  </data>
+  <data name="add_appointment_result" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_final_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_meeting_letter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="add_participants" xml:space="preserve">
+    <value />
+  </data>
+  <data name="adjournment" xml:space="preserve">
+    <value>የፍ/ቤት ቀጠሮዎች</value>
+  </data>
+  <data name="adjournment_date" xml:space="preserve">
+    <value>የፍ/ቤት ቀጠሮ ቀን</value>
+  </data>
+  <data name="adjournment_reason" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Adrtype" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AllRequests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="amharic_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="annual_plan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="annual_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="appointment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Appointments" xml:space="preserve">
+    <value />
+  </data>
+  <data name="appointment_Added_date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="appointment_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="appointment_detail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="appoitnment_reason" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Archived_Requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Archives" xml:space="preserve">
+    <value />
+  </data>
+  <data name="are_you_sure_todelete" xml:space="preserve">
+    <value />
+  </data>
+  <data name="assign" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AssignedPlans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AssignedRequests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Assigned_by" xml:space="preserve">
+    <value>የመደበው ሀላፊ</value>
+  </data>
+  <data name="Assigned_Requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Assigned_Specific_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Assigned_to" xml:space="preserve">
+    <value />
+  </data>
+  <data name="assignmentDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Assignment_Type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Assign_Inispection_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="assign_todepartment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="assingment_remark" xml:space="preserve">
+    <value>የሥራ መመሪያ</value>
+  </data>
+  <data name="attachment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="backlist" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Bench" xml:space="preserve">
+    <value />
+  </data>
+  <data name="by" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cannot_open_file" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CaseType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="case_court" xml:space="preserve">
+    <value>ጉዳዩ የሚታይበት ፍ/ቤት</value>
+  </data>
+  <data name="chat_reply" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CJADG" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Claimant" xml:space="preserve">
+    <value />
+  </data>
+  <data name="commented_file" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CompletedPlans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CompletedRequests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="completed_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="completed_Requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Configurations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="confirm_password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="country" xml:space="preserve">
+    <value>ከየት ሀገር</value>
+  </data>
+  <data name="CourtCenter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="created_by" xml:space="preserve">
+    <value>የተፈጠረው በ</value>
+  </data>
+  <data name="created_Date" xml:space="preserve">
+    <value>የገባበት ቀን</value>
+  </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>አዲስ ጨምር</value>
+  </data>
+  <data name="currencyType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DateOfAdjournment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DateofJudgement" xml:space="preserve">
+    <value />
+  </data>
+  <data name="datetime" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Defendent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="defendent_plantiful" xml:space="preserve">
+    <value>ከሳሽ/ይግባኝ ባይ/አመልካች</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value />
+  </data>
+  <data name="department" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Departments" xml:space="preserve">
+    <value />
+  </data>
+  <data name="departmentTransfer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="department_approval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="department_upproval_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="deputy" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Deputy_aproval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="deputy_upproval_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="dep_head" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="desicion_Remark" xml:space="preserve">
+    <value>የውሳኔ ማስታወሻ</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="diaries" xml:space="preserve">
+    <value />
+  </data>
+  <data name="document" xml:space="preserve">
+    <value />
+  </data>
+  <data name="documentation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="document_History" xml:space="preserve">
+    <value />
+  </data>
+  <data name="document_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="doc_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DoesHaveSpecificPlan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="download" xml:space="preserve">
+    <value />
+  </data>
+  <data name="dueDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="duty_department" xml:space="preserve">
+    <value />
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="email_address" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Engagement_letter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="english_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="evaluationYear" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Evaluation_criteria" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Evidence_File" xml:space="preserve">
+    <value />
+  </data>
+  <data name="evidence_types" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Evidence_Videos" xml:space="preserve">
+    <value>Evidence_Videos</value>
+  </data>
+  <data name="Expected_response_date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="expert" xml:space="preserve">
+    <value />
+  </data>
+  <data name="expert_handling" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ExternalUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ExternalUsers" xml:space="preserve">
+    <value />
+  </data>
+  <data name="External_Requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="external_User" xml:space="preserve">
+    <value />
+  </data>
+  <data name="external_users" xml:space="preserve">
+    <value />
+  </data>
+  <data name="externl_users" xml:space="preserve">
+    <value />
+  </data>
+  <data name="feedback" xml:space="preserve">
+    <value />
+  </data>
+  <data name="files" xml:space="preserve">
+    <value />
+  </data>
+  <data name="File_Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="file_not_finde" xml:space="preserve">
+    <value />
+  </data>
+  <data name="final_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="final_result" xml:space="preserve">
+    <value>ግኝት</value>
+  </data>
+  <data name="final_status" xml:space="preserve">
+    <value>ሥራው ያለበት ደረጃ</value>
+  </data>
+  <data name="first_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FLIM" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FocalPerson" xml:space="preserve">
+    <value />
+  </data>
+  <data name="followups" xml:space="preserve">
+    <value />
+  </data>
+  <data name="full_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="general_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="help" xml:space="preserve">
+    <value />
+  </data>
+  <data name="high_priority_request" xml:space="preserve">
+    <value />
+  </data>
+  <data name="home" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Home/Dashboard" xml:space="preserve">
+    <value />
+  </data>
+  <data name="inispecting_Instituttion" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Inistitutions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InspectionLaws" xml:space="preserve">
+    <value>InspectionLaws</value>
+  </data>
+  <data name="inspection_laws" xml:space="preserve">
+    <value>የምርመራ ህጎች</value>
+  </data>
+  <data name="Inspection_Report" xml:space="preserve">
+    <value>የክትትል ሪፖርት</value>
+  </data>
+  <data name="inspection_year" xml:space="preserve">
+    <value>ክትትል የተደረገበት ዓመት</value>
+  </data>
+  <data name="institution" xml:space="preserve">
+    <value>institution</value>
+  </data>
+  <data name="institution_based_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="institution_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InternalUsers" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Internal_Chat" xml:space="preserve">
+    <value />
+  </data>
+  <data name="internal_users" xml:space="preserve">
+    <value />
+  </data>
+  <data name="in_progress" xml:space="preserve">
+    <value>በመሰራት ለይ ነው</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>ስራ ለይ ያለ ነው?</value>
+  </data>
+  <data name="isDefaultUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="isDeleted" xml:space="preserve">
+    <value />
+  </data>
+  <data name="isDepartment" xml:space="preserve">
+    <value>የስራ ክፍል ኃላፊ</value>
+  </data>
+  <data name="isDeputy" xml:space="preserve">
+    <value />
+  </data>
+  <data name="isSuperadmin" xml:space="preserve">
+    <value>ሲስቴም አዲሚን</value>
+  </data>
+  <data name="isTeam" xml:space="preserve">
+    <value />
+  </data>
+  <data name="its_case_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="key_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="last_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Laws_Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Letter_of_Upproval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="litigations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LitigationType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LSDC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main_menu" xml:space="preserve">
+    <value />
+  </data>
+  <data name="meeting_outcome" xml:space="preserve">
+    <value>Meeting Outcome</value>
+  </data>
+  <data name="menus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="message" xml:space="preserve">
+    <value />
+  </data>
+  <data name="middle_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="modificationDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MoneyAmmount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="name_amharic" xml:space="preserve">
+    <value />
+  </data>
+  <data name="new_password" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="new_request" xml:space="preserve">
+    <value>New Request</value>
+  </data>
+  <data name="next_adjournment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="next_adjournments" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No." xml:space="preserve">
+    <value />
+  </data>
+  <data name="not_sent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="no_need_deputy_approval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Official_Letter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="on" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OngoingRequest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ongoing_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="other" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OtherRequests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="other_Requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pending_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="phone_number" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Phone_Number1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Plaintiful" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="priority" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Progress_Activities" xml:space="preserve">
+    <value />
+  </data>
+  <data name="progress_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="read" xml:space="preserve">
+    <value />
+  </data>
+  <data name="read_more" xml:space="preserve">
+    <value />
+  </data>
+  <data name="reassign" xml:space="preserve">
+    <value />
+  </data>
+  <data name="recent_activitiies" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Recomendations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="recomendation_laws" xml:space="preserve">
+    <value />
+  </data>
+  <data name="recomendation_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Recommendation_file" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Refence_Articles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="remark" xml:space="preserve">
+    <value>ማስታወሻ </value>
+  </data>
+  <data name="remark_given" xml:space="preserve">
+    <value>የተሰጠው አስተያየት</value>
+  </data>
+  <data name="replied_by" xml:space="preserve">
+    <value>Replied by</value>
+  </data>
+  <data name="replies" xml:space="preserve">
+    <value>Replies</value>
+  </data>
+  <data name="reply" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value />
+  </data>
+  <data name="report_history" xml:space="preserve">
+    <value />
+  </data>
+  <data name="report_summary" xml:space="preserve">
+    <value />
+  </data>
+  <data name="request" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RequestDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RequestedDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RequestedIntitution" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RequestedUser" xml:space="preserve">
+    <value>ላኪው ግለሰብ</value>
+  </data>
+  <data name="RequestRound" xml:space="preserve">
+    <value />
+  </data>
+  <data name="requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Requests_sent_back_to_Inistitutions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="request_accepting_intit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="request_from" xml:space="preserve">
+    <value />
+  </data>
+  <data name="request_Status_Report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="reset" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Responded_by" xml:space="preserve">
+    <value>Responded Body</value>
+  </data>
+  <data name="Responded_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Respondent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="response" xml:space="preserve">
+    <value />
+  </data>
+  <data name="re_assign" xml:space="preserve">
+    <value />
+  </data>
+  <data name="round" xml:space="preserve">
+    <value />
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="secretary" xml:space="preserve">
+    <value />
+  </data>
+  <data name="select_here" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="send" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sending_Remark" xml:space="preserve">
+    <value>የመለክያ አስተያየት </value>
+  </data>
+  <data name="send_back" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Send_Evaluations_to_Institutions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="send_for_expert" xml:space="preserve">
+    <value />
+  </data>
+  <data name="send_for_State_Minister" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Send_to_Institutions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SentRequests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sent_by" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sent_date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sent_reccomendation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="service_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="service_types" xml:space="preserve">
+    <value>የተጠየቀዉ የአገልግሎት ዓይነት</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="show_all_notification" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Specialization" xml:space="preserve">
+    <value>Specialization</value>
+  </data>
+  <data name="special_roles" xml:space="preserve">
+    <value>Special Roles</value>
+  </data>
+  <data name="specific_plans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="state_minister" xml:space="preserve">
+    <value />
+  </data>
+  <data name="status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sub-Menus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="submenus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SubmittedInspections" xml:space="preserve">
+    <value>የተላኩ ምርመራዎች</value>
+  </data>
+  <data name="targeted_institutions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="task_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TeamAssignedPlans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TeamRequests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="teams" xml:space="preserve">
+    <value>Teams</value>
+  </data>
+  <data name="team_leader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="team_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="team_name_amharic" xml:space="preserve">
+    <value>ስም (አማርኛ)</value>
+  </data>
+  <data name="team_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="team_upproval_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Team_Uproval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="time_taken" xml:space="preserve">
+    <value />
+  </data>
+  <data name="title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="title_amharic" xml:space="preserve">
+    <value>ርዕስ (አማርኛ)</value>
+  </data>
+  <data name="tor_attachment" xml:space="preserve">
+    <value>TOR አባሪ</value>
+  </data>
+  <data name="total_inistitution" xml:space="preserve">
+    <value>እነዚህ በዚህ ሥርዓት ውስጥ መለያ ያላቸው ተቋማት ጠቅላላ ቁጥር ናቸው።</value>
+  </data>
+  <data name="total_inspections" xml:space="preserve">
+    <value>ጠቅላላ የክትትል ሪፖርቶች</value>
+  </data>
+  <data name="total_inspections_from_CJAD" xml:space="preserve">
+    <value>ለCJAD ስራ ክፍል አጠቃላይ ጉዳዮች </value>
+  </data>
+  <data name="total_institutions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="total_new_question" xml:space="preserve">
+    <value />
+  </data>
+  <data name="total_requests_from_LSDC" xml:space="preserve">
+    <value>አጠቃላይ የኤልኤስዲሲ ስራ ክፍል ጉዳዮች </value>
+  </data>
+  <data name="total_urgent_question" xml:space="preserve">
+    <value />
+  </data>
+  <data name="unassigned_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uppdate_progress_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uppdate_Upproval_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uppload_final_report" xml:space="preserve">
+    <value />
+  </data>
+  <data name="uproved_appointment_date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="user" xml:space="preserve">
+    <value />
+  </data>
+  <data name="users" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="user_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="user_not_found" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="User_Uproval" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="video" xml:space="preserve">
+    <value />
+  </data>
+  <data name="view_all" xml:space="preserve">
+    <value />
+  </data>
+  <data name="view_file" xml:space="preserve">
+    <value />
+  </data>
+  <data name="what_is_done" xml:space="preserve">
+    <value />
+  </data>
+  <data name="why_to_transfer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="with_priority" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Witnesses_and_Evidences" xml:space="preserve">
+    <value>ምስክሮች እና ማስረጃዎች</value>
+  </data>
+  <data name="witnessName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="year" xml:space="preserve">
+    <value />
+  </data>
+  <data name="you" xml:space="preserve">
+    <value />
+  </data>
+  <data name="you_have_notification" xml:space="preserve">
+    <value>ማሳወቂያዎች አሉህ</value>
+  </data>
+  <data name="you_want_tosend_inst" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Get_Started" xml:space="preserve">
+    <value>Get_Started</value>
+  </data>
+  <data name="minister_message" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value />
+  </data>
+  <data name="mission_detail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="paragraph_five" xml:space="preserve">
+    <value />
+  </data>
+  <data name="paragraph_four" xml:space="preserve">
+    <value />
+  </data>
+  <data name="paragraph_one" xml:space="preserve">
+    <value />
+  </data>
+  <data name="paragraph_three" xml:space="preserve">
+    <value>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</value>
+  </data>
+  <data name="paragraph_two" xml:space="preserve">
+    <value />
+  </data>
+  <data name="temoty_message" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value />
+  </data>
+  <data name="values_detail" xml:space="preserve">
+    <value> Human dignity
+ The rule of law
+ Loyalty
+ Accountability and transparency
+ Professionalism
+ Cooperation and partnership
+ Justice</value>
+  </data>
+  <data name="values_vision_mission" xml:space="preserve">
+    <value>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</value>
+  </data>
+  <data name="vision" xml:space="preserve">
+    <value />
+  </data>
+  <data name="vision_detail" xml:space="preserve">
+    <value>ራዕይ ማብራሪያ</value>
+  </data>
+  <data name="welcome_one" xml:space="preserve">
+    <value>Welcome to Ministry of Justice</value>
+  </data>
+  <data name="welcome_two" xml:space="preserve">
+    <value>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
+In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</value>
+  </data>
+  <data name="Exit_Confirence" xml:space="preserve">
+    <value>Exit Confirence</value>
+    <comment>Exit Confirence</comment>
+  </data>
+  <data name="department_review" xml:space="preserve">
+    <value>Department Review</value>
+    <comment>Department Review</comment>
+  </data>
+  <data name="recomendation_reports" xml:space="preserve">
+    <value>Recommendations and Reports</value>
+    <comment>Recomendations/Reports</comment>
+  </data>
+  <data name="monitoring_report" xml:space="preserve">
+    <value>Monitoring Report</value>
+    <comment>Monitoring Report</comment>
+  </data>
+  <data name="inistitution" xml:space="preserve">
+    <value>ተቋም</value>
+    <comment>ተቋም</comment>
+  </data>
+  <data name="dephead_desicion" xml:space="preserve">
+    <value>የሀላፍ ውሳኔ</value>
+    <comment>የሀላፍ ውሳኔ</comment>
+  </data>
+  <data name="expert_status" xml:space="preserve">
+    <value>የባለሙያ ደረጃ</value>
+    <comment>የባለሙያ ሁኔታ</comment>
+  </data>
+  <data name="Inspection_Reports" xml:space="preserve">
+    <value>የክትትል ሪፖርቶች</value>
+  </data>
+  <data name="witness_address" xml:space="preserve">
+    <value />
+  </data>
+  <data name="team" xml:space="preserve">
+    <value>Team</value>
+    <comment>Team</comment>
+  </data>
+  <data name="civil_justice_legal_advice" xml:space="preserve">
+    <value>Civil Justice Legal Advice</value>
+  </data>
+  <data name="conpleted_work" xml:space="preserve">
+    <value>Completed Work</value>
+    <comment>Completed Work</comment>
+  </data>
+  <data name="defendent_info" xml:space="preserve">
+    <value>ተከሳሽ/መልስ ሰጪ/ተጠሪ</value>
+    <comment>ተከሳሽ/መልሥ ሰጪ/ተጠሪ</comment>
+  </data>
+  <data name="court_case_number" xml:space="preserve">
+    <value>Court Case Number</value>
+    <comment>Court Case Number</comment>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Add</value>
+    <comment>Add</comment>
+  </data>
+  <data name="IsBranchOfficeUser" xml:space="preserve">
+    <value>Branch office expert</value>
+    <comment>Branch office expert</comment>
+  </data>
+  <data name="IsSecretary" xml:space="preserve">
+    <value>Secretary</value>
+    <comment>Secretary</comment>
+  </data>
+  <data name="IsInternalRequestUser" xml:space="preserve">
+    <value>Is Internal Request user</value>
+  </data>
+  <data name="send_for_dephead" xml:space="preserve">
+    <value>Send for Department</value>
+    <comment>Send for Department</comment>
+  </data>
+  <data name="branchoffice" xml:space="preserve">
+    <value>Branch Office</value>
+    <comment>Branch Office</comment>
+  </data>
+  <data name="inspected_Institution" xml:space="preserve">
+    <value>Inspected Institution</value>
+    <comment>Inispected Inistitution</comment>
+  </data>
+  <data name="inspected_laws" xml:space="preserve">
+    <value>Inspected Laws</value>
+    <comment>Inspected Laws</comment>
+  </data>
+  <data name="Jursidiction" xml:space="preserve">
+    <value>Jursidiction</value>
+    <comment>Jursidiction</comment>
+  </data>
+  <data name="cased_handlingDepartment" xml:space="preserve">
+    <value>Case Handling Department</value>
+    <comment>Case Handling Department</comment>
+  </data>
+  <data name="secretaryTpes" xml:space="preserve">
+    <value>Secretaty Types</value>
+    <comment>Secretaty Types</comment>
+  </data>
+  <data name="midib" xml:space="preserve">
+    <value>midib</value>
+    <comment>midib</comment>
+  </data>
+  <data name="result" xml:space="preserve">
+    <value>result</value>
+    <comment>result</comment>
+  </data>
+</root>

@@ -1,11 +1,11 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagement.Filters;
+using ATSManagement.Models;
 using ATSManagement.Security;
 using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagement.Controllers
 {
@@ -13,10 +13,10 @@ namespace ATSManagement.Controllers
     public class ExternalUsersController : Controller
     {
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public ExternalUsersController(AtsdbContext context, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        public ExternalUsersController(AtsdbContext context, INotyfService notyfService)
         {
-            _toastNotification = toastNotification;
+            _notifyService = notyfService;
             _context = context;
         }
 
@@ -76,15 +76,18 @@ namespace ATSManagement.Controllers
                 tblExternalUser.Email = model.EmailAddress;
                 tblExternalUser.PhoneNumber = model.PhoneNumber;
                 tblExternalUser.IsActive = model.IsActive;
+                tblExternalUser.AcceptedTerms = false;
                 tblExternalUser.Password = PawwordEncryption.EncryptPasswordBase64Strig(model.Password);
                 _context.Add(tblExternalUser);
                 int saved = await _context.SaveChangesAsync();
                 if (saved > 0)
                 {
+                    _notifyService.Success("Password created successfully!.");
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
+                    _notifyService.Error("Password isn't created successfully. Please try again");
                     model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
                     {
                         Text = t.Name,
@@ -93,8 +96,10 @@ namespace ATSManagement.Controllers
                     return View(model);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _notifyService.Error(ex.Message + " happened. Password isn't created successfully. Please try again");
+
                 model.Inistitutions = _context.TblInistitutions.Select(t => new SelectListItem
                 {
                     Text = t.Name,
@@ -235,6 +240,54 @@ namespace ATSManagement.Controllers
         private bool TblExternalUserExists(Guid id)
         {
             return (_context.TblExternalUsers?.Any(e => e.ExterUserId == id)).GetValueOrDefault();
+        }
+
+
+        public async Task<IActionResult> ResetPassword(Guid? id)
+        {
+            ExternalUser userModel = new ExternalUser();
+            var users = _context.TblExternalUsers.Where(s => s.ExterUserId == id).FirstOrDefault();
+            if (users == null)
+            {
+                return RedirectToAction(nameof(DataNotFound));
+            }
+            else
+            {
+                userModel.ExterUserId = users.ExterUserId;
+                userModel.UserName = users.UserName;
+                return View(userModel);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ExternalUser userModel)
+        {
+            var users = _context.TblExternalUsers.Where(s => s.ExterUserId == userModel.ExterUserId).FirstOrDefault();
+            if (users == null)
+            {
+                return RedirectToAction(nameof(DataNotFound));
+            }
+            else
+            {
+                userModel.ExterUserId = users.ExterUserId;
+                userModel.UserName = users.UserName;
+                users.Password = PawwordEncryption.EncryptPasswordBase64Strig(userModel.Password);
+                int updated = await _context.SaveChangesAsync();
+                if (updated > 0)
+                {
+                    _notifyService.Success("Password reseted successfully!.");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notifyService.Error("Password reset isn't successful. Please try again");
+                    return View(userModel);
+                }
+            }
+        }
+        public async Task<ActionResult> DataNotFound()
+        {
+            return View();
         }
     }
 }

@@ -3,8 +3,18 @@
 @inject LanguageService _localization
 @inject IHttpContextAccessor _context;
 @{
-    ViewData["Title"] = _localization.Getkey("contact_us");
 }
+<style>
+    @@media only screen and (max-width : 960px){
+        .mb-3row  {
+            display: flow !important;
+        }
+        .mb-3rowlabel {
+            width:100% !important;
+
+        }
+    }
+</style>
 <br />
 <div class="page-wrapper">
     <!-- Page header -->
@@ -22,49 +32,50 @@
                         <form asp-action="ContactUs" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-10">
-                                        <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="FullName" class=" col-2 col-form-label">@_localization.Getkey("full_Name") </label>
+                                    <div class="col-md-6">
+                                        <div class="mb-3 row mb-3row" id="divAppointmentDetail">
+                                            <label asp-for="FullName" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("full_Name") </label>
                                             <div class="col">
                                                 <input asp-for="FullName" required class="form-control" />
                                                 <span asp-validation-for="FullName" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="ContactPhoneNumber" class=" col-2 col-form-label">@_localization.Getkey("Phone_Number") </label>
+                                        <div class="mb-3 row mb-3row" id="divAppointmentDetail">
+                                            <label asp-for="ContactPhoneNumber" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("Phone_Number") </label>
                                             <div class="col">
                                                 <input asp-for="ContactPhoneNumber" required class="form-control" />
                                                 <span asp-validation-for="ContactPhoneNumber" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="ContactEmail" class=" col-2 col-form-label">@_localization.Getkey("Email_Address") </label>
+                                        <div class="mb-3 row mb-3row" id="divAppointmentDetail">
+                                            <label asp-for="ContactEmail" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("Email_Address") </label>
                                             <div class="col">
                                                 <input asp-for="ContactEmail" required class="form-control" />
                                                 <span asp-validation-for="ContactEmail" class="text-danger"></span>
                                             </div>
                                         </div>
-
-                                        <div class="mb-3 row" id="divCountry">
-                                            <label asp-for="ContactCountry" class=" col-2 col-form-label"> @_localization.Getkey("Country") </label>
+                                        <div class="mb-3 row mb-3row" id="divCountry">
+                                            <label asp-for="ContactCountry" class="mb-3rowlabel col-3 col-form-label"> @_localization.Getkey("Country") </label>
                                             <div class="col">
                                                 <input asp-for="ContactCountry" required class="form-control" />
                                                 <span asp-validation-for="ContactCountry" class="text-danger"></span>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="ContactDetaiMessage" class="col-2 col-form-label">@_localization.Getkey("message")  </label>
+                                        <div class="mb-3 row mb-3row" id="divAppointmentDetail">
+                                            <label asp-for="formFile" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("files") </label>
+                                            <div class="col">
+                                                <input asp-for="formFile" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">                                       
+                                        <div class="mb-3 row mb-3row" id="divAppointmentDetail">
+                                            <label asp-for="ContactDetaiMessage" class="mb-3rowlabel col-2 col-form-label">@_localization.Getkey("message")  </label>
                                             <div class="col">
                                                 <input asp-for="ContactDetaiMessage" required class="form-control" />
                                                 <span asp-validation-for="ContactDetaiMessage" class="text-danger"></span>
                                             </div>
-                                        </div>
-                                        <div class="mb-3 row" id="divAppointmentDetail">
-                                            <label asp-for="formFile" class=" col-2 col-form-label">@_localization.Getkey("files") </label>
-                                            <div class="col">
-                                                <input asp-for="formFile"  class="form-control" />
-                                            </div>
-                                        </div>
+                                        </div>    
                                     </div>
                                 </div>
                             </div>

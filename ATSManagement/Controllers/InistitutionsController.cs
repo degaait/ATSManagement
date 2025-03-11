@@ -3,6 +3,7 @@ using ATSManagement.Models;
 using ATSManagement.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -10,10 +11,10 @@ namespace ATSManagement.Controllers
     public class InistitutionsController : Controller
     {
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public InistitutionsController(AtsdbContext context, IToastNotification toastNotification)
+        private readonly INotyfService _notifyService;
+        public InistitutionsController(AtsdbContext context, INotyfService toastNotification)
         {
-            _toastNotification = toastNotification;
+            _notifyService = toastNotification;
             _context = context;
         }
 
@@ -49,21 +50,44 @@ namespace ATSManagement.Controllers
             return View();
         }
 
-        // POST: Inistitutions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InistId,Name,Description,NameAmharic")] TblInistitution tblInistitution)
         {
-            if (ModelState.IsValid)
+            var isexist=_context.TblInistitutions.Where(s=>s.Name==tblInistitution.Name).FirstOrDefault();
+            if (isexist != null)
             {
-                tblInistitution.InistId = Guid.NewGuid();
-                _context.Add(tblInistitution);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _notifyService.Warning(tblInistitution.Name + " already exists. Please try again");
             }
-            return View(tblInistitution);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    tblInistitution.InistId = Guid.NewGuid();
+                    _context.Add(tblInistitution);
+                    int saved = await _context.SaveChangesAsync();
+                    if (saved > 0)
+                    {
+                        _notifyService.Success("Successfully Added");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _notifyService.Error("Not added. Please try again");
+                        return View(tblInistitution);
+                    }
+                }
+                else
+                {
+                    _notifyService.Error("Please try again latter");
+                    return View(tblInistitution);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error(ex.Message+". Not added. Please try again");
+                return View(tblInistitution);
+            }
         }
 
         // GET: Inistitutions/Edit/5
@@ -93,28 +117,42 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var isexist = _context.TblInistitutions.Where(s => s.Name == tblInistitution.Name).FirstOrDefault();
+            if (isexist != null)
             {
+                _notifyService.Warning(tblInistitution.Name + " already exists. Please try again");
+                return View(tblInistitution);
+            }
                 try
                 {
                     _context.Update(tblInistitution);
-                    await _context.SaveChangesAsync();
+                   int updated= await _context.SaveChangesAsync();
+                if (updated>0)
+                {
+                    _notifyService.Success("Successfully updated");
+                    return RedirectToAction("Index");
+
                 }
-                catch (DbUpdateConcurrencyException)
+                else
+                {
+                    _notifyService.Error("Not updated successfully. Please try again");
+                    return View(tblInistitution);
+                }
+                }
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!TblInistitutionExists(tblInistitution.InistId))
                     {
-                        return NotFound();
-                    }
+                    _notifyService.Error(ex.Message+". Not updated successfully. Please try again");
+                    return View(tblInistitution);
+                }
                     else
                     {
-                        throw;
-                    }
+                    _notifyService.Error(ex.Message + ". Not updated successfully. Please try again");
+                    return View(tblInistitution);
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tblInistitution);
+                }
+            
         }
 
         // GET: Inistitutions/Delete/5
@@ -150,8 +188,18 @@ namespace ATSManagement.Controllers
                 _context.TblInistitutions.Remove(tblInistitution);
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+           int deleted= await _context.SaveChangesAsync();
+            if (deleted > 0)
+            {
+                _notifyService.Success("Successfully Deleted.");
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _notifyService.Error("Not successfull. Please try again");
+                return RedirectToAction(nameof(Index));
+            }
+           
         }
 
         private bool TblInistitutionExists(Guid id)

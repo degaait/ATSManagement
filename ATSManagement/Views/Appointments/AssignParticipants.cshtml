@@ -33,7 +33,7 @@
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="AppointmentID" />
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">@_localization.Getkey("Details")</label>
+                                            <label asp-for="AppointmentDetail" class=" col-2 col-form-label">@_localization.Getkey("Detail")</label>
                                             <div class="col">
                                                 @Html.Raw(Model.AppointmentDetail)
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>

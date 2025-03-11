@@ -64,6 +64,24 @@
                                     @_localization.Getkey("isTeam")
                                 </th>
                                 <th>
+                                    @_localization.Getkey("isDepartment")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("isDeputy")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("isSuperadmin")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("IsBranchOfficeUser")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("IsSecretary")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("IsInternalRequestUser")
+                                </th>
+                                <th>
                                     @_localization.Getkey("user_name")
                                 </th>
                                 <th>
@@ -95,10 +113,42 @@
                                         @Html.DisplayFor(modelItem => item.IsTeamLeader)
                                     </td>
                                     <td>
+                                        @Html.DisplayFor(modelItem => item.IsDepartmentHead)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsDeputy)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsSuperAdmin)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsBranchOfficeUser)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsSecretary)
+                                        @if (item.IsDeputySecretary == true)
+                                        {
+                                            <label>Deputy Secretary</label>
+                                        }
+                                        else if (item.IsCivilJusticeSecretay == true)
+                                        {
+                                            <label>Civil Justice Secretary</label>
+                                        }
+                                        else if (item.IsLegalStudySecretary==true)
+                                        {
+                                            <label>Legal Studies Secretary</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsInternalRequestUser)
+                                    </td>
+                                    <td>
                                         @Html.DisplayFor(modelItem => item.UserName)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Dep.DepName)
+                                        <br />
+                                        @Html.DisplayFor(modelItem => item.Branch.Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Team.TeamName)
@@ -107,9 +157,18 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" asp-action="ResetPassword" asp-route-id="@item.UserId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                                                            <path d="M13.5 6.5l4 4"></path>
+                                                            <path d="M16 19h6"></path>
+                                                            <path d="M19 16v6"></path>
+                                                        </svg>&nbsp;@_localization.Getkey("reset")
+                                                    </a>
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.UserId">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

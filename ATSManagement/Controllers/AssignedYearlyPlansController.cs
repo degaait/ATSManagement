@@ -25,9 +25,8 @@ namespace ATSManagement.Controllers
             _contextAccessor = contextAccessor;
             _mail = mail;
         }
-        public async Task<IActionResult> Index(Guid? id)
+        public async Task<IActionResult> Index()
         {
-
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var user = _context.TblInternalUsers.Find(userId);
             if (user.IsSuperAdmin == true || user.IsDeputy == true || user.IsDepartmentHead == true)
@@ -204,10 +203,10 @@ namespace ATSManagement.Controllers
         {
             InspectionAssignModel model = new InspectionAssignModel();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
-            var yearlyPlan = _context.TblInspectionPlans.Find(assignedTasks.PlanId);
+            var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlan);
             model.Id = assignedTasks.Id;
             model.AssignedBy = assignedTasks.AssignedBy;
-            model.PlanTitle = yearlyPlan.PlanTitle;
+            model.PlanTitle = yearlyPlan.Title;
             return View(model);
         }
         [HttpPost]
@@ -234,7 +233,7 @@ namespace ATSManagement.Controllers
                 {
                     model.EngagementLetter.CopyTo(stream);
                 }
-                string dbPath = "/Files/" + fileName;
+                string dbPath = "/admin/Files/" + fileName;
                 assignedTasks.Remark = model.Remark;
                 assignedTasks.EngagementLetter = dbPath;
                 int updated = _context.SaveChanges();
@@ -258,7 +257,6 @@ namespace ATSManagement.Controllers
             }
 
         }
-
         public IActionResult AddTORAttachement(Guid? id)
         {
             InspectionAssignModel model = new InspectionAssignModel();
@@ -290,7 +288,7 @@ namespace ATSManagement.Controllers
             {
                 model.TORAttachment.CopyTo(stream);
             }
-            string dbPath = "/Files/" + fileName;
+            string dbPath = "/admin/Files/" + fileName;
             assignedTasks.Remark = model.Remark;
             assignedTasks.Torattachment = dbPath;
             int updated = _context.SaveChanges();
@@ -305,7 +303,6 @@ namespace ATSManagement.Controllers
         }
         public IActionResult UpdateProgressStatus(Guid? id)
         {
-
             InspectionAssignModel model = new InspectionAssignModel();
             TblAssignedYearlyPlan assignedTasks = _context.TblAssignedYearlyPlans.Find(id);
             var yearlyPlan = _context.TblSpecificPlans.Find(assignedTasks.SpecificPlanId);
@@ -314,14 +311,12 @@ namespace ATSManagement.Controllers
             model.PlanTitle = yearlyPlan.Title;
             model.Remark = assignedTasks.Remark;
             model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
-            model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
+            model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
             {
                 Value = p.ProId.ToString(),
                 Text = p.ProstatusTitle,
-
             }).ToList();
-            ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", assignedTasks.StatusId);
-
+            ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", assignedTasks.StatusId);
             return View(model);
         }
         [HttpPost]
@@ -343,14 +338,12 @@ namespace ATSManagement.Controllers
                     model.Id = assignedTasks.Id;
                     model.PlanTitle = yearlyPlan.Title;
                     model.EvaluationCheckLists = assignedTasks.EvaluationCheckLists;
-                    model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
+                    model.status = _context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").Select(p => new SelectListItem
                     {
                         Value = p.ProId.ToString(),
                         Text = p.ProstatusTitle,
-
                     }).ToList();
-                    ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
-
+                    ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
                     return View(model);
                 }
                 else if (model.StatusID == Guid.Parse("117c080d-bbb7-41f5-82c6-35f5d65b0cd9") && assignedTasks.FinalReport != null)
@@ -371,8 +364,7 @@ namespace ATSManagement.Controllers
                     }
                     else
                     {
-                        ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
-
+                        ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
                         _notifyService.Error("Progress isn't successfully uppdated. Please try again");
                         return View(model);
                     }
@@ -390,18 +382,15 @@ namespace ATSManagement.Controllers
                     }
                     else
                     {
-                        ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
-
+                        ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
                         _notifyService.Error("Progress isn't successfully uppdated. Please try again");
                         return View(model);
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to user" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
-
+                ViewBag.StatusId = new SelectList(_context.TblInspectionStatuses.Where(a => a.ProstatusTitle != "New" && a.ProstatusTitle != "Assigned to expert" && a.ProstatusTitle != "Assigned to Team").ToList(), "ProId", "ProstatusTitle", model.StatusID);
                 _notifyService.Error($"Error:{ex.Message} happened. Progress isn't successfully uppdated. Please try again");
                 return View(model);
             }
@@ -438,7 +427,7 @@ namespace ATSManagement.Controllers
                 var emails = _context.TblInternalUsers.Where(s => s.UserId == model.AssignedBy).Select(s => s.EmailAddress).ToList();
                 if (assignedTasks.EngagementLetter == null || assignedTasks.EvaluationCheckLists == null)
                 {
-                    _notifyService.Error("Before Upploading final report you should add evaluation criteria and Engagement letter");
+                    _notifyService.Error("Before Upploading first draft report you should add evaluation criteria and Engagement letter");
                     return View(model);
                 }
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
@@ -455,7 +444,7 @@ namespace ATSManagement.Controllers
                 {
                     model.FinalReport.CopyTo(stream);
                 }
-                string dbPath = "/Files/" + fileName;
+                string dbPath = "/admin/Files/" + fileName;
                 assignedTasks.FinalReport = dbPath;
                 yearlyPlan.FinalReport = dbPath;
                 int updated = _context.SaveChanges();
@@ -513,7 +502,6 @@ namespace ATSManagement.Controllers
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
-
 
     }
 }

@@ -1,11 +1,7 @@
 ﻿@model IEnumerable<ATSManagementExternal.Models.TblRequest>
 @inject AtsdbContext _context;
 @{
-    ViewData["Title"] = "Create";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
-}
-@{
-    ViewData["Title"] = "Requests";
 }
 
 <style type="text/css">

@@ -1,10 +1,10 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using Microsoft.AspNetCore.Mvc;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.Filters;
 using ATSManagementExternal.IModels;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ATSManagementExternal.ViewModels;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {

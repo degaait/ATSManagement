@@ -1,12 +1,12 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using ATSManagement.Models;
 using ATSManagement.Filters;
 using ATSManagement.IModels;
-using ATSManagement.Models;
 using ATSManagement.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -15,15 +15,16 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         //private readonly IToastNotification _toastNotification;
-        private readonly ILogger _logger;
+        // private readonly ILogger _logger;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly INotyfService _notifyService;
         private readonly IMailService _mail;
-        public AppointmentsController(AtsdbContext context, INotyfService notyfService, IMailService mail)
+        public AppointmentsController(AtsdbContext context, INotyfService notyfService, IMailService mail, IHttpContextAccessor contextAccessor)
         {
-
             _notifyService = notyfService;
             _context = context;
             _mail = mail;
+            _contextAccessor = contextAccessor;
         }
 
         // GET: Appointments
@@ -286,6 +287,8 @@ namespace ATSManagement.Controllers
             app.CreatedDate = tblAppointment.CreatedDate;
             app.AppointmentID = tblAppointment.AppointmentId;
             app.AppointmentDate = tblAppointment?.AppointmentDate;
+            app.AllowedAppointDate=DateTime.Now.AddDays(2);
+            app.Remark=tblAppointment?.Remark;
             return View(app);
         }
         [HttpPost]
@@ -293,10 +296,18 @@ namespace ATSManagement.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ReplyBack(AppointmentModel model)
         {
+
+            if (model.AllowedAppointDate<DateTime.Now)
+            {
+                _notifyService.Error("Approved appointment date shouldn't be past date");
+                return View(model);
+            }
+
             TblAppointment tblAppointment = await _context.TblAppointments.FindAsync(model.AppointmentID);
             var externalUser = _context.TblExternalUsers.Include(x => x.Inist).Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Email).ToList();
             var instname = _context.TblInistitutions.Where(x => x.InistId == tblAppointment.InistId).Select(x => x.Name).FirstOrDefault();
             tblAppointment.Remark = model.Remark;
+            tblAppointment.AllowedAppointDate=model.AllowedAppointDate;
             int saved = await _context.SaveChangesAsync();
             if (saved > 0)
             {
@@ -311,6 +322,121 @@ namespace ATSManagement.Controllers
                 return View(model);
             }
 
+        }
+
+        public async Task<IActionResult> Adjournments()
+        {
+            ViewData["Adjornies"] = _context.TblAdjornments.Include(X => X.Request).ToList();
+            return View();
+        }
+
+        public async Task<IActionResult> AppointmentChats(Guid? id, string actionMethod, string controller)
+        {
+            AppointmentChatModel model = new AppointmentChatModel();
+            var appointment=_context.TblAppointments.Find(id);
+            model.AppointmentId = id;
+            model.RequestedBy = appointment.RequestedBy;
+            ViewBag.ActionMethod = actionMethod;
+            ViewBag.Controller = controller;
+            _contextAccessor.HttpContext.Session.SetString("actionMethod", actionMethod);
+            _contextAccessor.HttpContext.Session.SetString("controller", controller);
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AppointmentChats(AppointmentChatModel chatModel)
+        {
+            try
+            {
+                string actionMethod = _contextAccessor.HttpContext.Session.GetString("actionMethod");
+                string controller = _contextAccessor.HttpContext.Session.GetString("controller");
+
+                Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+                TblAppointmentChat chat = new TblAppointmentChat();
+                chat.AppointmentId = chatModel.AppointmentId;
+                chat.ChatContent = chatModel.ChatContent;
+                chat.Datetime=DateTime.Now;
+                chat.UserId = userId;
+                chat.ExterUserId=chatModel.RequestedBy;
+                chat.IsInternal = true;
+                chat.IsEnternal = false;
+                _context.TblAppointmentChats.Add(chat);
+                int saved=await _context.SaveChangesAsync();
+                if (saved>0)
+                {
+                    _notifyService.Success("Sent");
+                    return RedirectToAction(nameof(AppointmentChats), new {id=chatModel.AppointmentId, actionMethod = actionMethod, controller = controller });
+                }
+                else
+                {
+                    _notifyService.Error("Not sent. Please try again");
+                    return View(chatModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error(ex.Message+" happened. Please try again");
+                return View(chatModel);
+            }
+        }
+
+        public async Task<IActionResult> AdjournementChats(Guid AdjoryId, string actionMethod, string controller)
+        {
+            AdjornmentChatModel model = new AdjornmentChatModel();
+            var appointment = _context.TblAdjornments.Find(AdjoryId);
+            model.AdjoryId = AdjoryId;  
+            ViewBag.ActionMethod = actionMethod;
+            ViewBag.Controller = controller;
+            _contextAccessor.HttpContext.Session.SetString("actionMethod", actionMethod);
+            _contextAccessor.HttpContext.Session.SetString("controller", controller);
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdjournementChats(AdjornmentChatModel chatModel)
+        {
+            try
+            {
+               string actionMethod=  _contextAccessor.HttpContext.Session.GetString("actionMethod");
+               string controller= _contextAccessor.HttpContext.Session.GetString("controller");
+                Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+               var user=_context.TblInternalUsers.Find(userId);
+                TblAdjournmentChat chat = new TblAdjournmentChat();
+                chat.AdjoryId = chatModel.AdjoryId;
+                chat.ChatContent = chatModel.ChatContent;
+                chat.Datetime = DateTime.Now;
+                chat.UserId = userId;
+                if (user.IsDepartmentHead==true)
+                {
+                    chat.IsDephead = true;
+                    chat.IsExpert = false;
+                }
+                else
+                {
+                    chat.IsDephead = false;
+                    chat.IsExpert = true;
+                }
+                chat.UserId = userId;
+                _context.TblAdjournmentChats.Add(chat);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Sent");
+                    return RedirectToAction(nameof(AdjournementChats), new { AdjoryId = chatModel.AdjoryId, actionMethod= actionMethod,controller=controller });
+                }
+                else
+                {
+                    _notifyService.Error("Not sent. Please try again");
+                    return View(chatModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error(ex.Message + " happened. Please try again");
+                return View(chatModel);
+            }
         }
     }
 }

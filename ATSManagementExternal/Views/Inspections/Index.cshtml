@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<ATSManagementExternal.Models.TblSentInspection>
+@using ATSManagementExternal.Services;
+@inject LanguageService _localization
 @inject AtsdbContext ats;
 @inject IHttpContextAccessor httpsSession;
-@{
-    ViewData["Title"] = "Yearly Plans";
+@{                                       
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 
@@ -22,7 +23,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Yearly Inispection Reports
+                    @_localization.Getkey("Yearly_Inispection_Reports")
                 </h2>
             </div>
 
@@ -44,28 +45,27 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            Message description
+                                            @_localization.Getkey("Description")
                                         </th>
                                         <th>
-                                            Sent Date
+                                            @_localization.Getkey("Sent_Date")
+                                            
                                         </th>
                                         <th>
-                                            Sent by
+                                            @_localization.Getkey("institution")
                                         </th>
                                         <th>
-                                            Responded by
+                                            @_localization.Getkey("Inspection_report")
                                         </th>
                                         <th>
-                                            Recommendation file
+                                            @_localization.Getkey("Official_letter")
+
                                         </th>
                                         <th>
-                                            Attached official letter
+                                            @_localization.Getkey("Responded_Date")
                                         </th>
                                         <th>
-                                            Responded Date
-                                        </th>
-                                        <th>
-                                            Expected response date
+                                            @_localization.Getkey("Expected_response_date")
                                         </th>
                                         <th></th>
                                     </tr>
@@ -81,23 +81,23 @@
                                                 @Html.DisplayFor(modelItem => item.SentDate)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.SentByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.SentByNavigation.MidleName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RepliedByNavigation.FirstName)
-                                                @Html.DisplayFor(modelItem => item.RepliedByNavigation.MiddleName)
+                                                @Html.DisplayFor(model => item.Inst.Name)
+                                                <strong>
+                                                    (@Html.DisplayFor(modelItem => item.RepliedByNavigation.FirstName)
+                                                    @Html.DisplayFor(modelItem => item.RepliedByNavigation.MiddleName)  )
+                                                </strong>
+
                                             </td>
                                             <td>
                                                 @if (item.SentReport != null)
                                                 {
-                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.SentReport">View file</a>
+                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.SentReport" asp-route-method="Index" asp-route-methodController="Inspections">@_localization.Getkey("view_file")</a>
                                                 }
                                             </td>
                                             <td>
                                                 @if (item.OfficialLetter != null)
                                                 {
-                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.OfficialLetter">View file</a>
+                                                    <a class="btn btn-primary time-left" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.OfficialLetter" asp-route-method="Index" asp-route-methodController="Inspections">@_localization.Getkey("view_file")</a>
                                                 }
                                             </td>
                                             <td>
@@ -110,13 +110,17 @@
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">
                                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                            Actions
+                                                            ...
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" asp-action="Reply" asp-route-RecId="@item.RecId">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
-                                                                Reply
-                                                            </a>
+                                                            
+                                                            @if (item.IsChatCloset != false || item.IsChatCloset == null)
+                                                            {
+                                                             <a class="dropdown-item" asp-action="Reply" asp-route-RecId="@item.RecId">
+                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
+                                                                 @_localization.Getkey("reply")
+                                                             </a>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>

@@ -4,8 +4,9 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AtsdbContext _context;
 @{
-    ViewData["Title"] = "Updated task progress status";
+    ViewData["Title"] = _localization.Getkey("adjournment_date");
     IEnumerable<TblAdjornment> activities = ViewData["Adjornies"] as IEnumerable<TblAdjornment>;
+   
 }
 <style type="text/css">
     .table thead th {
@@ -22,37 +23,70 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-
-                        Uppload final report
+                        @_localization.Getkey("adjournment_date")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Uppload</h4>
             </div>
             <form asp-action="AddAdjornyDates" method="post">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="RequestId" />
+
                             <div class="mb-3 row">
-                                <label class="col-3 col-form-label">Adjorny Date</label>
+                                <label class="col-3 col-form-label">@_localization.Getkey("expert_handling")</label>
                                 <div class="col">
-                                    <input asp-for="AdjorneyDate" class="form-control" />
-                                    <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
+                                    <input asp-for="ExpertHanlingCase" class="form-control" />
+                                    <span asp-validation-for="ExpertHanlingCase" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label class="col-3 col-form-label">What is done</label>
+                                <label class="col-3 col-form-label">@_localization.Getkey("defendent_plantiful")</label>
                                 <div class="col">
-                                    <input asp-for="WhatIsDone" class="form-control" />
-                                    <span asp-validation-for="WhatIsDone" class="text-danger"></span>
+                                    <input asp-for="Plaintiff_Defendant" class="form-control" />
+                                    <span asp-validation-for="Plaintiff_Defendant" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("defendent_info")</label>
+                                <div class="col">
+                                    <input asp-for="Defendant_info" class="form-control" />
+                                    <span asp-validation-for="Defendant_info" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("case_court")</label>
+                                <div class="col">
+                                    <input asp-for="TheCourtCaseHanled" class="form-control" />
+                                    <span asp-validation-for="TheCourtCaseHanled" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("court_case_number")</label>
+                                <div class="col">
+                                    <input asp-for="CaseNumber" class="form-control" />
+                                    <span asp-validation-for="CaseNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("adjournment_reason")</label>
+                                <div class="col">
+                                    <input asp-for="AppointmentReason" class="form-control" />
+                                    <span asp-validation-for="AppointmentReason" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label"> @_localization.Getkey("adjournment_date")</label>
+                                <div class="col">
+                                    <input asp-for="AdjorneyDate" class="form-control" />
+                                    <span asp-validation-for="AdjorneyDate" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -60,46 +94,86 @@
                 </div>
                 <div class="card-footer text-end">
                     <div class="d-flex">
-                        <input type="submit" value="Update" class="btn btn-primary" />|
-                        <a asp-action="AssignedRequests">Back to List</a>
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>
         </div>
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Activities List</h4>
+                <h4 class="card-title">@_localization.Getkey("adjournment")</h4>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-bordered" id="role">
+                    <table class="table table-borderless datatable" id="role">
                         <thead>
                             <tr>
                                 <th>
-                                    Activities Done
-                                </th>
-                                <th>
-                                    Adjornment Date
 
                                 </th>
-                                <th></th>
+                                <th>
+                                    @_localization.Getkey("expert_handling")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("defendent_plantiful")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("defendent_info")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("case_court")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("court_case_number")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("adjournment_reason")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("next_adjournments")
+                                </th>
+                                <th>
+
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in activities)
                             {
-
+                               
                                 <tr>
-
                                     <td>
-                                        @Html.Raw(item.WhatIsDone)
+                                        <a asp-action="AdjournementChats" asp-controller="Appointments" asp-route-AdjoryId="@item.AdjoryId" asp-route-actionMethod="AdjournyDates" asp-route-controller="Appointments">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ExpertHanlingCase)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PlaintiffDefendant)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DefendantInfo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TheCourtCaseHanled)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CaseNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AppointmentReason)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.AdjorneyDate)
                                     </td>
                                     <td>
-
-                                        <a asp-action="DeleteAdjorny" asp-route-id="@item.AdjoryId">Delete</a>
+                                        <a asp-action="DeleteAdjorny" asp-route-id="@item.AdjoryId"><i class="bi bi-file-earmark-x-fill"></i></a>
+                                        <a asp-action="EditAdjornyDate" asp-route-AdjoryId="@item.AdjoryId"> <i class="bi bi-pencil-square"></i></a>
                                     </td>
                                 </tr>
                             }
@@ -119,10 +193,11 @@
 
         $(document).ready(function () {
             $('#role').DataTable({
-                dom: 'Bfrtip',
+                order: [[0, 'desc']],
                 deferRender: true,
                 scrollCollapse: true,
                 scroller: true,
+                dom: 'Bfrtip',
                 buttons: [
                     'excel', 'print'
                 ]

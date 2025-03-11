@@ -1,0 +1,189 @@
+﻿@model ATSManagement.ViewModels.ReplyResponseModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor     _contextAccessor;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@inject AtsdbContext _context;
+@{
+    ViewData["Title"] = _localization.Getkey("Progress_Activities");
+    var activities = _context.TblInspectionReportFiles
+            .Include(x => x.SpecificPlan)
+            .Include(x => x.CreatedByNavigation).Where(s => s.ForDeputy == true).OrderByDescending(s => s.RepId).ToList();
+    Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
+    var user = _context.TblInternalUsers.Find(userId);
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("chat_reply")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form asp-action="ReplyResponseWithStateMinister" method="post" enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input asp-for="Id" type="hidden" class="form-control" />
+                                            <input asp-for="SpecificPlanId" type="hidden" class="form-control" />
+                                            <input asp-for="CreatedBy" type="hidden" class="form-control" />
+                                            <div class="mb-3 row">
+                                                <label asp-for="Feedback" class=" col-3 col-form-label">@_localization.Getkey("feedback")</label>
+                                                <div class="col">
+                                                    <input asp-for="Feedback" class="form-control" />
+                                                    <span asp-validation-for="Feedback" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label asp-for="CreatedDate" class=" col-3 col-form-label">@_localization.Getkey("created_Date")</label>
+                                                <div class="col">
+                                                    <input asp-for="CreatedDate" readonly class="form-control" />
+                                                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label asp-for="ReportFiles" class=" col-3 col-form-label">@_localization.Getkey("commented_file")</label>
+                                                <div class="col">
+                                                    <input asp-for="ReportFiles" type="file" accept=".pdf, .docx" class="form-control" />
+                                                    <span asp-validation-for="ReportFiles" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            @if (user.IsDepartmentHead == true)
+                                            {
+                                                <div class="mb-3 row">
+                                                    <div class="col">
+                                                        <input asp-for="ForDeputy" type="checkbox" class="form-check-input m-0" /> <label>For State Minister</label> &nbsp;
+                                                        <input asp-for="ForExpert" type="checkbox" class="form-check-input m-0" />   <label>For Expert</label>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end">
+                                    <div class="d-flex">
+                                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                                        <a asp-action="OngoingPlanForDeputy">@_localization.Getkey("backlist")</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        @foreach (var item in activities)
+                                        {
+                                            var requestName = _context.TblSpecificPlans.Where(a => a.SpecificPlanId == item.SpecificPlanId).FirstOrDefault();
+                                            <a asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-action="InispectionPlans" asp-route-controller="ReplyResponseWithStateMinister" asp-route-id="@Model.SpecificPlanId" asp-route-path="@item.ReportFiles" class="list-group-item list-group-item-action" aria-current="true">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-1">@Html.Raw(item.Feedback)</h5>
+                                                    <small>@TimeAgoClass.TimeAgo(item.CreatedDate)</small>
+                                                </div>
+                                                <p class="mb-1">
+                                                    @if (requestName != null)
+                                                    {
+                                                        @Html.Raw(requestName.Description)
+                                                    }
+                                                </p>
+                                                <small>
+                                                    @item.CreatedByNavigation.FirstName &nbsp; @item.CreatedByNavigation.MidleName
+                                                    @if (item.CreatedByNavigation.IsDeputy == true)
+                                                    {
+                                                        <small style="color: #0254ef; font-size: 13px ">
+                                                            @_localization.Getkey("state_minister")
+                                                        </small>
+                                                    }
+                                                    else if (item.CreatedByNavigation.IsDepartmentHead == true)
+                                                    {
+                                                        <small style="color: #0254ef; font-size: 13px ">
+                                                            @_localization.Getkey("dep_head")
+                                                        </small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <small style="color: #0254ef; font-size:13px">
+                                                            @_localization.Getkey("expert")
+                                                        </small>
+                                                    }
+                                                </small>
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.col -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#Feedback',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

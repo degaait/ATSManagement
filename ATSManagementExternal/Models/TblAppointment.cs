@@ -21,9 +21,13 @@ public partial class TblAppointment
 
     public string? Remark { get; set; }
 
+    public DateTime? AllowedAppointDate { get; set; }
+
     public virtual TblInistitution? Inist { get; set; }
 
     public virtual TblExternalUser? RequestedByNavigation { get; set; }
+
+    public virtual ICollection<TblAppointmentChat> TblAppointmentChats { get; set; } = new List<TblAppointmentChat>();
 
     public virtual ICollection<TblAppointmentParticipant> TblAppointmentParticipants { get; set; } = new List<TblAppointmentParticipant>();
 }

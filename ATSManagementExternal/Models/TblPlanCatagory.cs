@@ -13,6 +13,10 @@ public partial class TblPlanCatagory
 
     public Guid? InspectionPlanId { get; set; }
 
+    public bool DoesHaveSpecificPlan { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
     public virtual TblInspectionPlan? InspectionPlan { get; set; }
 
     public virtual ICollection<TblSpecificPlan> TblSpecificPlans { get; set; } = new List<TblSpecificPlan>();

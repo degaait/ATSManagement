@@ -29,21 +29,28 @@
                         <form asp-action="ReplyBack">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-10">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <input type="hidden" asp-for="AppointmentID" />
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDetail" class=" col-3 col-form-label">@_localization.Getkey("Details")</label>
+                                            <label asp-for="AppointmentDetail" class=" col-3 col-form-label">@_localization.Getkey("Detail")</label>
                                             <div class="col">
                                                 @Html.Raw(Model.AppointmentDetail)
                                                 <span asp-validation-for="AppointmentDetail" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label asp-for="AppointmentDate" class=" col-3 col-form-label">@_localization.Getkey("appointment_Date")</label>
+                                            <label asp-for="AppointmentDate" class=" col-3 col-form-label">@_localization.Getkey("uproved_appointment_date")</label>
                                             <div class="col">
-                                                <input asp-for="AppointmentDate" class="form-control" readonly />
+                                                <input asp-for="AppointmentDate" type="date" readonly class="form-control" />
                                                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="AllowedAppointDate" class=" col-3 col-form-label">@_localization.Getkey("uproved_appointment_date")</label>
+                                            <div class="col">
+                                                <input asp-for="AllowedAppointDate" type="date" class="form-control" />
+                                                <span asp-validation-for="AllowedAppointDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">

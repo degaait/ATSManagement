@@ -5,6 +5,7 @@
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
     ViewData["Title"] = _localization.Getkey("pending_requests");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
@@ -30,7 +31,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -40,6 +40,9 @@
                     <table class="table table-striped" id="role">
                         <thead>
                             <tr>
+                                <th>
+
+                                </th>
                                 <th>
                                     @_localization.Getkey("created_Date")
                                 </th>
@@ -59,10 +62,19 @@
                                     @_localization.Getkey("priority")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("status")
+                                    @_localization.Getkey("expert_status")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("dephead_desicion")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("final_report")
                                 </th>
                                 <th>
                                     @_localization.Getkey("assingment_remark")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("Assigned_by")
                                 </th>
                                 <th>
                                     @_localization.Getkey("diaries")
@@ -80,52 +92,118 @@
 
                                 <tr>
                                     <td>
+
+                                        <a asp-action="RequestChats" asp-route-id="@item.RequestId" asp-route-actionMethod="PendingRequests" asp-route-controller="LegalStudiesDrafting">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>
                                         @Html.DisplayFor(modelItem => item.CreatedDate)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Inist.Name) <p>
                                             <label>
                                                 by  <strong>
-                                                    (
-                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                    @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                                    )
-                                                </strong>
+    (
+    @Html.DisplayFor(modelItem => item.SecretaryFullName)<label>&nbsp;</label>
+    )
+</strong>
                                             </label>
                                         </p>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        @if (cultur == "am")
+                                        {
+                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeNameAmharic)
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        }
                                     </td>
                                     <td>
                                         @Html.Raw(item.RequestDetail)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
-                                        <br />
                                         @if (documents != null)
                                         {
                                             foreach (var paths in documents)
                                             {
-                                                <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
-
-                                                    View
+                                                <a class="btn btn-primary" style="padding:0rem !important" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath" asp-route-method="PendingRequests" asp-route-methodController="LegalStudiesDrafting">
+                                                    @paths.ExactFileName
+                                                    @*@if (item.DocType != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.DocType.DocName)
+                        }
+                        else
+                        {
+                            @_localization.Getkey("view_file")
+                        }*@
                                                 </a>
                                             }
                                         }
                                     </td>
                                     <td>
-                                        @if (item.PriorityId != null)
+                                        @if (cultur == "am")
                                         {
-                                            @Html.Raw(item.Priority.PriorityNameWithColor)
+                                            @if (item.PriorityId != null)
+                                            {
+                                                @Html.Raw(item.Priority.PriorityNameWithColorAmharic)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (item.PriorityId != null)
+                                            {
+                                                @Html.Raw(item.Priority.PriorityNameWithColor)
+                                            }
                                         }
                                     </td>
                                     <td>
-                                        <div class="p-3 mb-2 bg-warning text-center" style="color: white;">In Progress</div>
+                                        @if (cultur == "am")
+                                        {
+                                            @Html.Raw(item.ExternalRequestStatus.StatusWithColorAmharic)
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                        }
                                     </td>
                                     <td>
-                                        <strong>Deputy: </strong>@Html.DisplayFor(modelItem => item.AssingmentRemark)  <br />
-                                        <strong>Department: </strong>  @Html.DisplayFor(modelItem => item.DeputyRemark)
+                                        @if (item.DepartmentUpprovalStatus != null)
+                                        {
+                                            var desicion = ats.TblDecisionStatuses.Where(s => s.DesStatusId == item.DepartmentUpprovalStatus).FirstOrDefault();
+                                            @if (cultur == "am")
+                                            {
+                                                @Html.Raw(desicion.StatusWithColorAmharic)
+                                                @Html.Raw(item.DepartmentDesicionRemark)
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(desicion.StatusWithColor)
+                                                @Html.Raw(item.DepartmentDesicionRemark)
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.FinalReport != null)
+                                        {
+                                            var pathName = item.FinalReport.Substring(49);
+                                            <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.FinalReport">
+                                                @pathName
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        <strong>Deputy: </strong>@Html.DisplayFor(modelItem => item.DeputyRemark)  <br />
+                                        <strong>Department: </strong>  @Html.DisplayFor(modelItem => item.AssingmentRemark)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssignedByNavigation.FirstName)
+                                        @Html.DisplayFor(modelItem => item.AssignedByNavigation.MidleName)
+                                        <span>( @Html.DisplayFor(modelItem => item.AssignedByNavigation.PhoneNumber) )</span>
                                     </td>
                                     <td>
                                         <a class="dropdown-item" asp-action="RequestActivities" asp-route-id="@item.RequestId">
@@ -150,6 +228,17 @@
 
                                                     @if (user.IsDeputy == true || user.IsSuperAdmin == true || user.IsDepartmentHead == true || user.IsTeamLeader == true)
                                                     {
+                                                        <a class="dropdown-item" asp-action="DetailsPendingRequest" asp-route-id="@item.RequestId">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M13 5h8"></path>
+                                                                <path d="M13 9h5"></path>
+                                                                <path d="M13 15h8"></path>
+                                                                <path d="M13 19h5"></path>
+                                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                                            </svg> &nbsp;@_localization.Getkey("Detail")
+                                                        </a>
                                                         <a class="dropdown-item" asp-action="Replies" asp-route-id="@item.RequestId">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16l-6-6 6-6" /><path d="M20 21v-7a4 4 0 0 0-4-4H5" /></svg>&nbsp;
                                                             @_localization.Getkey("replies")
@@ -161,17 +250,12 @@
                                                             </svg>&nbsp;
                                                             @_localization.Getkey("Uppdate_progress_status")
                                                         </a>
-
-                                                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestId">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <a class="dropdown-item" asp-action="ReAssignToUser" asp-route-id="@item.RequestId">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M13 5h8"></path>
-                                                                <path d="M13 9h5"></path>
-                                                                <path d="M13 15h8"></path>
-                                                                <path d="M13 19h5"></path>
-                                                                <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                                <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                            </svg> &nbsp;@_localization.Getkey("Detail")
+                                                                <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
+                                                            </svg>&nbsp;
+                                                            @_localization.Getkey("reassign")
                                                         </a>
                                                     }
 
@@ -192,9 +276,9 @@
 
 @section scripts{
     <script type="text/javascript">
-
         $(document).ready(function () {
             $('#role').DataTable({
+                order: [[1, 'desc']],
                 dom: 'Bfrtip',
                 deferRender: true,
                 scrollCollapse: true,
@@ -204,7 +288,5 @@
                 ]
             });
         });
-
     </script>
-
 }

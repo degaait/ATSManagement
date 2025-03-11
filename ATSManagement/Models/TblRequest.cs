@@ -1,4 +1,7 @@
-﻿namespace ATSManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ATSManagement.Models;
 
 public partial class TblRequest
 {
@@ -57,7 +60,6 @@ public partial class TblRequest
     public bool? IsArchived { get; set; }
 
     public string? FullName { get; set; }
-    public string? DeputyRemark { get; set; }
 
     public string? EmailAddress { get; set; }
 
@@ -119,6 +121,46 @@ public partial class TblRequest
 
     public DateTime? DateofJudgement { get; set; }
 
+    public string? DeputyRemark { get; set; }
+
+    public string? StatusDescription { get; set; }
+
+    public string? TeamDesicionRemark { get; set; }
+
+    public string? DepartmentDesicionRemark { get; set; }
+
+    public string? DeputyDesicionRemark { get; set; }
+
+    public string? FinalReportSummary { get; set; }
+
+    public string? ContractNeServiceType { get; set; }
+
+    public string? ContractNeStatus { get; set; }
+
+    public string? ContractNeResult { get; set; }
+
+    public string? LegalAdviceStatus { get; set; }
+
+    public string? LegalAdviceResult { get; set; }
+
+    public string? InternationalCaseStatus { get; set; }
+
+    public string? InternationalCaseResult { get; set; }
+
+    public string? AdrStatus { get; set; }
+
+    public string? AdrResult { get; set; }
+    public string? SecretaryFullName { get; set; } 
+    public string? ListigationStatus { get; set; }
+
+    public string? ListigationResult { get; set; }
+
+    public int OrderId { get; set; }
+
+    public string? OtherServiceType { get; set; }
+
+    public string? OtherDocumentType { get; set; }
+
     public virtual TblInternalUser? AssignedByNavigation { get; set; }
 
     public virtual TblCivilJusticeCaseType? CaseTypeNavigation { get; set; }
@@ -147,9 +189,15 @@ public partial class TblRequest
 
     public virtual ICollection<TblAdjornment> TblAdjornments { get; set; } = new List<TblAdjornment>();
 
+    public virtual ICollection<TblCivilJusticeChat> TblCivilJusticeChats { get; set; } = new List<TblCivilJusticeChat>();
+
+    public virtual ICollection<TblDesicionRemark> TblDesicionRemarks { get; set; } = new List<TblDesicionRemark>();
+
     public virtual ICollection<TblDocumentHistory> TblDocumentHistories { get; set; } = new List<TblDocumentHistory>();
 
     public virtual ICollection<TblFollowup> TblFollowups { get; set; } = new List<TblFollowup>();
+
+    public virtual ICollection<TblLegalStudiesChat> TblLegalStudiesChats { get; set; } = new List<TblLegalStudiesChat>();
 
     public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
 

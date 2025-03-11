@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ATSManagement.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ATSManagement.Controllers
 {
@@ -63,9 +65,38 @@ namespace ATSManagement.Controllers
                 return View();
             }
         }
-        public ActionResult DocumentViewer(string path)
+        public ActionResult DocumentViewer(string path, string? methodController, string? method)
         {
+
             ViewBag.path = path;
+            ViewBag.controller = methodController;
+            ViewBag.action = method;
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> DownloadEvidenceFile(string path, string? methodController, string? method)
+        {
+            string filename = path.Substring(13);
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Files", filename);
+
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filepath, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+            if (!System.IO.File.Exists(filepath))
+            {
+                return RedirectToAction(nameof(FileNotFound), new { path = filepath, methodController = methodController, method = method });
+            }
+            var bytes = await System.IO.File.ReadAllBytesAsync(filepath);
+            return File(bytes, contenttype, Path.GetFileName(filepath));
+
+        }
+
+        public async Task<IActionResult>? FileNotFound(string path, string? methodController, string? method)
+        {
+            ViewBag.controller = methodController;
+            ViewBag.action = method;
             return View();
         }
     }

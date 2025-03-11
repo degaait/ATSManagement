@@ -61,6 +61,8 @@ public partial class TblInspectionPlan
 
     public string? Attachement { get; set; }
 
+    public string? ExactFileName { get; set; }
+
     public virtual TblAssignementType? AssigneeType { get; set; }
 
     public virtual TblDecisionStatus? IsUpprovedbyDepartmentNavigation { get; set; }

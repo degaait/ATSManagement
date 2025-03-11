@@ -15,6 +15,8 @@ public partial class TblExternalRequestStatus
 
     public string? StatusWithColorAmharic { get; set; }
 
+    public int? OrderId { get; set; }
+
     public virtual ICollection<TblCivilJustice> TblCivilJustices { get; set; } = new List<TblCivilJustice>();
 
     public virtual ICollection<TblExternalRequest> TblExternalRequests { get; set; } = new List<TblExternalRequest>();

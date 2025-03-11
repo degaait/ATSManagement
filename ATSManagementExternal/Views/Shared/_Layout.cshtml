@@ -9,10 +9,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ATSManagement</title>
-
-    <link href="~/assets/img/favicon.png" rel="icon">
-    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <title>@ViewData["Title"] - Online services</title>
+    <link href="~/assets/img/logo_one.jpg" rel="icon" type="image/x-icon">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Online services">
+    <meta property="og:url" content="http://onlineservice.moj.gov.et/">
+    <meta property="og:image" content="~/assets/img/logo.jpg">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Online services">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
     <link href="~/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
     <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
@@ -28,13 +34,14 @@
     <section id="topbar" class="d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@eag.gov.et</a>
+                <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com" target="_blank">info@moj.gov.et</a>
+                <i class="bi bi-envelope-fill"></i><a href="#" target="_blank">P.O.Box,1370</a>
                 <i class="bi bi-phone-fill phone-icon"></i> 011 551 5099
             </div>
             <div class="social-links d-none d-md-block">
-                <a href="https://x.com/MOJEthiopia?s=20" class="twitter"><i class="bi bi-twitter"></i></a>
-                <a href="https://www.facebook.com/MOJEthiopia" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="https://www.facebook.com/MOJEthiopia" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="https://x.com/MOJEthiopia?s=20" class="twitter" target="_blank"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.facebook.com/MOJEthiopia" class="facebook" target="_blank"><i class="bi bi-facebook"></i></a>
+                <a href="https://web.telegram.org/a/#-1001266094357" target="_blank"><i class="bi bi-telegram"></i></a>
             </div>
         </div>
     </section>
@@ -44,8 +51,13 @@
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="cta-btn" asp-controller="Home" asp-action="Index"> @_localization.Getkey("home")</a></li>
-                    <li><a class="cta-btn" asp-controller="Home" asp-action="ContactUs">@_localization.Getkey("contact_us_guest") </a></li>
-                    <li><a class="cta-btn" asp-controller="Recomendations" asp-action="Index">@_localization.Getkey("recomendations")</a></li>
+                    <li class="dropdown">
+                        <a href="#"><span>@_localization.Getkey("recomendation_reports")</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a asp-controller="Recomendations" asp-action="Index">@_localization.Getkey("recomendations")</a></li>
+                            <li><a asp-controller="Recomendations" asp-action="MonitoringReport">@_localization.Getkey("monitoring_report")</a></li>
+                       </ul>
+                    </li>
                     @if (_context.HttpContext.Session.GetString("UserFullname") != null)
                     {
                         <li><a class="cta-btn" asp-controller="Inspections" asp-action="Index">@_localization.Getkey("Inspection_Reports")</a></li>
@@ -57,6 +69,10 @@
                                 <li><a class="cta-btn" asp-controller="ExternalRequests" asp-action="Appointments">@_localization.Getkey("appointments")</a></li>
                             </ul>
                         </li>
+                    }
+                    else
+                    {
+                        <li><a class="cta-btn" asp-controller="Home" asp-action="ContactUs">@_localization.Getkey("contact_us_guest") </a></li>
                     }
                     <li class="dropdown">
                         <a href="#"><i class="bi bi-globe"></i></a>
@@ -85,14 +101,15 @@
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-12 footer-links">
+                    <div class="col-lg-6 col-md-12 footer-links">
                         <div class="footer-info">
                             <h3>@_localization.Getkey("justice_Minister") </h3>
                             <p>
                                 Bambis, Jomo Kenyatta Avenue, <br>
                                 Addis Ababa, Ethiopia<br><br>
                                 <strong>Phone:</strong> 011 551 5099<br>
-                                <strong>Email:</strong> info@eag.gov.et<br>
+                                <strong>Email:</strong> info@moj.gov.et<br>
+                                <strong>P.O.Box:</strong> 1370<br>
                             </p>
                             <div class="social-links mt-3">
                                 <a href="https://x.com/MOJEthiopia?s=20" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -101,24 +118,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-2 col-md-12 footer-links">
+                    </div>
                     <div class="col-lg-4 col-md-12 footer-links">
                         <h4> @_localization.Getkey("useful_Links") </h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#header"> @_localization.Getkey("home")</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#hero"> @_localization.Getkey("about_us")</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#services">@_localization.Getkey("services")  </a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-action="Index" asp-controller="Home" > @_localization.Getkey("home")</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a  asp-controller="Home" asp-action="ContactUs"> @_localization.Getkey("contact_us")</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="http://onlineservice.moj.gov.et/Home/HomeAgain#services">@_localization.Getkey("services")  </a></li>
                             <li><i class="bx bx-chevron-right"></i> <a asp-action="Index" asp-controller="Recomendations">@_localization.Getkey("recomendations") </a></li>
 
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-12 footer-links">
-                        <h4>@_localization.Getkey("services") </h4>
-                        <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">@_localization.Getkey("litigations") </a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">@_localization.Getkey("Inspection_Followup") </a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">@_localization.Getkey("Contract_Negotation") </a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">@_localization.Getkey("registration") </a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">@_localization.Getkey("International_Cases") </a></li>
                         </ul>
                     </div>
                 </div>
@@ -126,11 +135,9 @@
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; @_localization.Getkey("Copyright") <strong><span>@_localization.Getkey("justice_Minister") </span></strong>. @_localization.Getkey("Copyright") &copy; @{ DateTime.Now.Year.ToString();}
+                &copy; @_localization.Getkey("Copyright") <strong><span>@_localization.Getkey("justice_Minister") </span></strong>. @{ DateTime.Now.Year.ToString();}
             </div>
-            <div class="credits">
-                @_localization.Getkey("developed_by") <a href="https://bootstrapmade.com/">MG-Solutions</a>
-            </div>
+           
         </div>
     </footer><!-- End Footer -->
 
@@ -141,7 +148,7 @@
     <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
     <!-- Vendor JS Files -->
-    <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    @*<script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>*@
     <script src="~/assets/vendor/aos/aos.js"></script>
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>

@@ -1,12 +1,15 @@
 ﻿@model ATSManagementExternal.Models.TblAppointment
+@using ATSManagementExternal.Services;
+@inject AtsdbContext ats;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
 @inject AtsdbContext ats;
 @{
-    ViewData["Title"] = "Appointment Detail";
 }
 <br />
 
 <div class="page-wrapper">
-    
+
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
@@ -14,7 +17,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h2 class="page-title">
-                                Appointment Detail
+                                @_localization.Getkey("Appointment_Reason")
                             </h2>
                         </div>
                         @{
@@ -31,43 +34,36 @@
                         <div class="card-body">
                             <dl class="row">
                                 <dt class="col-sm-3">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">Appointment detail</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label-m"> @_localization.Getkey("appoitnment_reason") </label>
 
                                 </dt>
                                 <dd class="col-sm-9">
                                     @Html.Raw(Model.AppointmentDetail)
                                 </dd>
                                 <dt class="col-sm-3">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">Final Outcome</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("appointment_Result") </label>
 
                                 </dt>
                                 <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.DescusionFinalComeup)
                                 </dd>
                                 <dt class="col-sm-3">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">Created Date</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label-m"> @_localization.Getkey("appointment_Added_date")</label>
                                 </dt>
                                 <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.CreatedDate)
                                 </dd>
                                 <dt class="col-sm-3">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">Appointment Date</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("appointment_date")</label>
                                 </dt>
                                 <dd class="col-sm-9">
                                     @Html.DisplayFor(model => model.AppointmentDate)
                                 </dd>
                                 <dt class="col-sm-3">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">Inistitution</label>
+                                    <label asp-for="AppointmentDetail" class="col-form-label-m">@_localization.Getkey("uproved_appointment_date")</label>
                                 </dt>
                                 <dd class="col-sm-9">
-                                    @Html.DisplayFor(model => model.Inist.Name)
-                                </dd>
-                                <dt class="col-sm-3">
-                                    <label asp-for="AppointmentDetail" class="col-form-label-m">Requested User</label>
-                                </dt>
-                                <dd class="col-sm-9">
-                                    @Html.DisplayFor(model => model.RequestedByNavigation.FirstName)
-                                    @Html.DisplayFor(model => model.RequestedByNavigation.MiddleName)
+                                    @Html.DisplayFor(model => model.AllowedAppointDate)
                                 </dd>
                                 <dt class="col-sm-3">
                                     <label asp-for="AppointmentDetail" class="col-form-label-m">Appointment Participants</label>
@@ -84,8 +80,8 @@
                         </div>
                         <div class="card-footer text-end">
                             <div class="d-flex">
-                                <a asp-action="EditAppointments" asp-route-id="@Model?.AppointmentId">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
+                                <a asp-action="EditAppointments" asp-route-id="@Model?.AppointmentId">@_localization.Getkey("edit")</a> |
+                                <a asp-action="Appointments">@_localization.Getkey("backlist")</a>
                             </div>
                         </div>
                     </div>

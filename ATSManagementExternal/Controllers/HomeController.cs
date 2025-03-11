@@ -1,11 +1,11 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ATSManagementExternal.IModels;
-using ATSManagementExternal.Models;
-using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Localization;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using ATSManagementExternal.Models;
+using ATSManagementExternal.IModels;
+using ATSManagementExternal.ViewModels;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -24,27 +24,28 @@ namespace ATSManagementExternal.Controllers
             _logger = logger;
             _contextAccessor = httpContext;
         }
-
         public async Task<IActionResult> Index()
         {
-            String culture;
+            string culture;
             if (_contextAccessor.HttpContext.Session.GetString("culture") != null)
             {
                 culture = _contextAccessor.HttpContext.Session.GetString("culture");
                 _contextAccessor.HttpContext.Session.SetString("culture", culture);
+                Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                 new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+                return RedirectToAction(nameof(HomeAgain));
             }
             else
             {
                 culture = "am";
                 _contextAccessor.HttpContext.Session.SetString("culture", "am");
             }
-
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                  CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                  new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
             return View();
         }
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -95,12 +96,11 @@ namespace ATSManagementExternal.Controllers
                 return View(model);
             }
         }
-        public IActionResult IndexLocalIzation(String? Culture)
+        public IActionResult IndexLocalIzation(string? Culture)
         {
             _contextAccessor.HttpContext.Session.SetString("culture", Culture);
             return RedirectToAction("Index");
         }
-
         public IActionResult AboutUs()
         {
             return View();
@@ -122,7 +122,7 @@ namespace ATSManagementExternal.Controllers
             {
                 ContactModel coModel = new ContactModel();
                 TblContactInformation tblContact = new TblContactInformation();
-                var userEmails = _context.TblInternalUsers.Where(x => x.IsDeputy == true || x.IsDepartmentHead == true).Select(s => s.EmailAddress).ToList();
+                var userEmails = _context.TblInternalUsers.Where(x => x.IsDepartmentHead == true && x.Dep.DepCode == "").Select(s => s.EmailAddress).ToList();
                 tblContact.ContactPhoneNumber = model.ContactPhoneNumber;
                 tblContact.ContactEmail = model.ContactEmail;
                 tblContact.ContactDetaiMessage = model.ContactDetaiMessage;
@@ -161,26 +161,40 @@ namespace ATSManagementExternal.Controllers
                 _notifyService.Error("Your message isn't submitted successfully because of " + ex.Message + ". Please try again");
                 return View(model);
             }
-
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
         private async Task SendMail(List<string> to, string subject, string body)
         {
             var companyEmail = _context.TblCompanyEmails.Where(x => x.IsActive == true).FirstOrDefault();
             MailData data = new MailData(to, subject, body, companyEmail.EmailAdress);
             bool sentResult = await _mail.SendAsync(data, new CancellationToken());
         }
-
         public IActionResult ReadMore()
         {
             return View();
         }
+        public IActionResult HomeAgain()
+        {
 
+            string culture;
+            if (_contextAccessor.HttpContext.Session.GetString("culture") != null)
+            {
+                culture = _contextAccessor.HttpContext.Session.GetString("culture");
+                _contextAccessor.HttpContext.Session.SetString("culture", culture);
+            }
+            else
+            {
+                culture = "am";
+                _contextAccessor.HttpContext.Session.SetString("culture", "am");
+            }
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                 new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+            return View();
+        }
     }
 }

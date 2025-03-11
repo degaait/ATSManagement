@@ -12,6 +12,7 @@
         public string? DepName { get; set; }
         public string? DepNameAmharic { get; set; }
         public int? DisplayOrder { get; set; }
+         public int? SortOrder { get; set; }
         public string? Class_SVC { get; set; }
     }
 }

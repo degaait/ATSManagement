@@ -4,6 +4,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = _localization.Getkey("adjournment") + ":-Index";
+    int no = 0;
 }
 <style type="text/css">
     .table thead th {
@@ -35,46 +36,55 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-bordered" id="role">
+                    <table class="table table-borderless datatable">
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("adjournment_date")
+                                    @_localization.Getkey("No.")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("what_is_done")
+                                    @_localization.Getkey("expert_handling")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("CreatedDate")
+                                    @_localization.Getkey("defendent_plantiful")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("created_by")
+                                    @_localization.Getkey("case_court")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("requests")
+                                    @_localization.Getkey("adjournment_reason")
                                 </th>
+                                <th>
+                                    @_localization.Getkey("next_adjournments")
+                                </th>
+                               
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                no = no + 1;
                                 <tr>
+                                    <td>
+                                        @no
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ExpertHanlingCase)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PlaintiffDefendant)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TheCourtCaseHanled)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AppointmentReason)
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.AdjorneyDate)
                                     </td>
-                                    <td>
-                                        @Html.Raw(item.WhatIsDone)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
-                                        @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
-                                    </td>
-                                    <td>
-                                        @Html.Raw(item.Request.RequestDetail)
-                                    </td>
+                                 
+                             
                                 </tr>
                             }
                         </tbody>

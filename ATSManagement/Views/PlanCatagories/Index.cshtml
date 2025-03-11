@@ -30,6 +30,11 @@
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
+                    <a asp-action="Index" asp-controller="InispectionPlans" class="btn btn-primary d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                            <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8z" />
+                        </svg>
+                    </a>
                     <a asp-action="Create" asp-controller="PlanCatagories" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" class="btn btn-primary d-none d-sm-inline-block">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -61,6 +66,9 @@
                     <thead>
                         <tr>
                             <th>
+                                @_localization.Getkey("created_Date")
+                            </th>
+                            <th>
                                 @_localization.Getkey("title")
                             </th>
                             <th>
@@ -77,6 +85,9 @@
                         {
                             <tr>
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.CatTitle)
                                 </td>
                                 <td>
@@ -92,10 +103,38 @@
                                                 ...
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" asp-action="Index" asp-controller="SpecificPlans" asp-route-PlanCatId="@item.PlanCatId">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>&nbsp;
-                                                    Specific plans
-                                                </a>
+
+                                                @if (item.DoesHaveSpecificPlan == false)
+                                                {
+                                                    var specificPlanss = ats.TblSpecificPlans.Where(s => s.PlanCatId == item.PlanCatId).FirstOrDefault();
+
+                                                    @if (user.IsDepartmentHead == true || user.IsTeamLeader == true)
+                                                    {
+                                                        if ((specificPlanss.IsAssignedToUser == false || specificPlanss.IsAssignedToUser == null) && (specificPlanss.IsAssignedToTeam == false || specificPlanss.IsAssignedToTeam == null))
+                                                        {
+                                                            <a class="dropdown-item" asp-action="Assign" asp-route-id="@specificPlanss.SpecificPlanId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-check-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M14 3.072a8 8 0 0 1 2.617 11.424l4.944 4.943a1.5 1.5 0 0 1 -2.008 2.225l-.114 -.103l-4.943 -4.944a8 8 0 0 1 -12.49 -6.332l-.006 -.285l.005 -.285a8 8 0 0 1 11.995 -6.643zm-.293 4.22a1 1 0 0 0 -1.414 0l-3.293 3.294l-1.293 -1.293l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" stroke-width="0" fill="currentColor"></path>
+                                                                </svg>&nbsp;
+                                                                @_localization.Getkey("assign")
+                                                            </a>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a class="dropdown-item" asp-controller="SpecificPlans" asp-action="Index" asp-route-PlanCatId="@item.PlanCatId" asp-route-InspectionPlanId="@item.InspectionPlanId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M12 5l0 14" />
+                                                            <path d="M5 12l14 0" />
+                                                        </svg>&nbsp;
+                                                        @_localization.Getkey("specific_plans")
+                                                    </a>
+                                                }
+
+
                                                 <a class="dropdown-item" asp-action="Edit" asp-route-PlanCatId="@item.PlanCatId">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -114,14 +153,14 @@
                                                         <path d="M13 19h5"></path>
                                                         <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                         <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                    </svg> &nbsp; @_localization.Getkey("Details")
+                                                    </svg> &nbsp; @_localization.Getkey("Detail")
                                                 </a>
                                                 <a class="dropdown-item" asp-action="Delete" asp-route-PlanCatId="@item.PlanCatId">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
                                                         <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor"></path>
-                                                    </svg>&nbsp; @_localization.Getkey("Delete")
+                                                    </svg>&nbsp; @_localization.Getkey("delete")
                                                 </a>
                                             </div>
                                         </div>
@@ -143,6 +182,7 @@
 
         $(document).ready(function () {
             $('#role').DataTable({
+                order: [[0, 'desc']],
                 dom: 'Bfrtip',
                 deferRender: true,
                 scrollCollapse: true,

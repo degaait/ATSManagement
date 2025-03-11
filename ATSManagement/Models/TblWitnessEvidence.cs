@@ -19,6 +19,8 @@ public partial class TblWitnessEvidence
 
     public DateTime? CreatedDate { get; set; }
 
+    public string? Address { get; set; }
+
     public virtual TblInternalUser? CreatedByNavigation { get; set; }
 
     public virtual TblRequest? Request { get; set; }

@@ -1,10 +1,11 @@
-﻿@model IEnumerable<ATSManagement.Models.TblRequest>
+﻿@model List<ATSManagement.Models.NewRequestViewModel>
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
     ViewData["Title"] = @_localization.Getkey("requests");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
@@ -35,20 +36,20 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <table class="table table-striped" id="role">
+                    <table class="table table-borderless datatable" id="role">
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("CreatedDate")
+                                    @_localization.Getkey("created_Date")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("serviceType")
+                                    @_localization.Getkey("service_types")
                                 </th>
                                 <th>
                                     @_localization.Getkey("Detail")
                                 </th>
                                 <th>
-                                    @_localization.Getkey("doctype")
+                                    @_localization.Getkey("document_type")
                                 </th>
                                 <th>
                                     @_localization.Getkey("priority")
@@ -63,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.OrderByDescending(s => s.CreatedDate))
                             {
                                 var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
                                 <tr>
@@ -71,51 +72,78 @@
                                         @Html.DisplayFor(modelItem => item.CreatedDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+                                        @if (cultur == "am")
+                                        {
+                                            if (item.ServiceTypeName == "Other...")
+                                            {
+                                                @Html.DisplayFor(modelItem => item.ServiceTypeNameAmharic)
+                                                <label>( @Html.DisplayFor(modelItem => item.OtherServiceType))</label>
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.ServiceTypeNameAmharic)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.ServiceTypeName == "Other...")
+                                            {
+                                                @Html.DisplayFor(modelItem => item.ServiceTypeName)
+                                                <label>( @Html.DisplayFor(modelItem => item.OtherServiceType))</label>
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.ServiceTypeName)
+                                            }
+                                        }
                                     </td>
                                     <td>
                                         @Html.Raw(item.RequestDetail)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DocType.DocName)
-                                        <br />
                                         @if (documents != null)
                                         {
                                             foreach (var paths in documents)
                                             {
-                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                        <path d="M12 17v-6"></path>
-                                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                    </svg>
-                                                    View file
+                                                <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath" asp-route-method="Index" asp-route-methodController="Requests">
+                                                    @paths.ExactFileName
+                                                 
                                                 </a>
                                             }
-
                                         }
                                     </td>
                                     <td>
                                         @if (item.PriorityId != null)
                                         {
-                                            @Html.Raw(item.Priority.PriorityNameWithColor)
+                                            if (cultur == "am")
+                                            {
+                                                @Html.Raw(item.PriorityNameWithColorAmharic)
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(item.PriorityNameWithColor)
+
+                                            }
+
                                         }
-
                                     </td>
                                     <td>
-                                        @Html.Raw(item.ExternalRequestStatus.StatusWithColor)
+                                        @if (cultur == "am")
+                                        {
+
+                                            @Html.Raw(item.StatusNameAmharic)
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(item.StatusName)
+                                        }
                                     </td>
-
-
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Inist.Name)
-                                        <br /> by <strong>
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)
-                                            @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
+
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                        by <strong>
+                                            @Html.DisplayFor(modelItem => item.SecretaryFullName)
                                         </strong>
-
                                     </td>
 
                                     <td>
@@ -163,16 +191,5 @@
 @section scripts{
 
 
-    <script>
-
-        $(document).ready(function () {
-            $('#role').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'excel', 'print'
-                ]
-            });
-        });
-
-    </script>
+   
 }

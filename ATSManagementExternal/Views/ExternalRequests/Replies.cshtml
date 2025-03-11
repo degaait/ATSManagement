@@ -2,9 +2,10 @@
 @using ATSManagementExternal.Services;
 @inject LanguageService _localization
 @inject IHttpContextAccessor _context;
+@inject AtsdbContext context;
 @{
-    ViewData["Title"] = "Create";
     IEnumerable<TblReplay> replyes = ViewData["Replies"] as IEnumerable<TblReplay>;
+    var cultur = _context.HttpContext.Session.GetString("culture").ToString();
 }
 
 <style type="text/css">
@@ -148,16 +149,15 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="container_chat">
-                                                        <h3 class="time-right" style="color:dodgerblue">(You)</h3>
+                                                        <h5 class="time-right" style="color:dodgerblue">(You)</h5>
                                                         <br />
                                                         <p class="time-right">
                                                             @Html.Raw(@item.ReplayDetail)
 
                                                             @if (item.Attachment != null)
                                                             {
-                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment" asp-route-method="Replies" asp-route-methodController="ExternalRequests">@_localization.Getkey("view_file") </a>
                                                             }
-
                                                             <a class="dropdown-item time-right" asp-action="EditReplies" asp-route-ReplyId="@item.ReplyId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -165,7 +165,7 @@
                                                                     <path d="M13.5 6.5l4 4"></path>
                                                                     <path d="M16 19h6"></path>
                                                                     <path d="M19 16v6"></path>
-                                                                </svg>&nbsp;  Edit
+                                                                </svg>&nbsp;  @_localization.Getkey("edit")
                                                             </a>
                                                             <span class="time-right">@item.ReplyDate</span>
                                                             <br />
@@ -177,11 +177,42 @@
                                     }
                                     if (item.IsInternal == true)
                                     {
+                                        var department = (from itesm in context.TblInternalUsers
+                                                          join deps in context.TblDepartments on itesm.DepId equals deps.DepId
+                                                          where itesm.UserId == item.InternalReplayedBy
+                                                          select new
+                                                          {
+                                                              DepAmharic = deps.DepNameAmharic,
+                                                              DepEnglish = deps.DepName
+                                                          }).FirstOrDefault();
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="container_chat">
-                                                        <h3 class="time-left" style="color:dodgerblue">(@item.InternalReplayedByNavigation.FirstName)</h3>
+                                                        @if (cultur == "am")
+                                                        {
+                                                            <h5 class="time-left" style="color:dodgerblue">
+                                                                @department.DepAmharic
+                                                                (
+                                                                @item.InternalReplayedByNavigation.FirstName &nbsp; @item.InternalReplayedByNavigation.MidleName
+
+                                                                )
+
+                                                            </h5>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h5 class="time-left" style="color:dodgerblue">
+
+                                                                @department.DepEnglish (
+
+                                                                @item.InternalReplayedByNavigation.FirstName &nbsp; @item.InternalReplayedByNavigation.MidleName
+
+                                                                )
+
+                                                            </h5>
+                                                        }
+
                                                         <br />
                                                         <div class="time-left">
                                                             @Html.Raw(@item.ReplayDetail)
@@ -189,7 +220,7 @@
                                                             <span class="time-left">@item.ReplyDate</span>
                                                             @if (item.Attachment != null)
                                                             {
-                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">View file</a>
+                                                                <a class="btn btn-primary time-right" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.Attachment">@_localization.Getkey("view_file")</a>
 
                                                             }
                                                         </div>

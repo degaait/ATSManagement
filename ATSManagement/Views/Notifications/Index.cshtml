@@ -1,0 +1,114 @@
+﻿@model IEnumerable<ATSManagement.Models.TblNotification>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IHttpContextAccessor httpsSession;
+@inject AtsdbContext ats;
+@{
+    ViewData["Title"] = @_localization.Getkey("requests");
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<!-- Page header -->
+
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("requests")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-striped" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @_localization.Getkey("Description")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("created_by")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("created_Date")
+                                </th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NotificationDetail)
+                                    </td>
+                                    <td>
+                                        @if (item.FromExternal == false || item.FromExternal == null)
+                                        {
+                                            @Html.DisplayFor(modelItem => item.CreatedByNavigation.FirstName)
+                                            @Html.DisplayFor(modelItem => item.CreatedByNavigation.MidleName)
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.ExterUser.FirstName)
+                                            @Html.DisplayFor(modelItem => item.ExterUser.MiddleName)
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.NotificationDate)
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Notifications" asp-action="MarkAsRead" asp-route-id="@item.NotificationId">
+                                            Mark as read
+                                        </a>
+                                       
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script type="text/javascript">
+        var dp = $("#Date").datepicker({
+            format: "dd/mm/yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true
+        });
+        dp.on('changeDate', function (e) {
+            $(this).datepicker("setDate", new Date(e.date.getFullYear() + 1, e.date.getMonth(), 0))
+        });
+    </script>
+}

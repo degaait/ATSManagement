@@ -1,0 +1,69 @@
+﻿@model ATSManagement.ViewModels.InspectionAssignModel
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Upploading meeting letter";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Add_meeting_letter")
+                    </h2>
+                </div>   
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <form asp-action="AddMeetingLetter" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("title")</label>
+                                <div class="col">
+                                    @Html.DisplayFor(model => model.PlanTitle)
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-3 col-form-label">@_localization.Getkey("attachment")</label>
+                                <div class="col">
+                                    <input asp-for="MeetingLetter" type="file" accept=".pdf,.docx,.png,.jpg" class="form-file-button" />
+                                    <span asp-validation-for="MeetingLetter" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label asp-for="StatusID" class="col-3 col-form-label">  @_localization.Getkey("status")</label>
+                                <div class="col">
+                                    @Html.DropDownListFor(model => model.StatusID, new SelectList(Model.status, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                                    <span asp-validation-for="StatusID" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
+                        <a asp-action="AssignedRequests">@_localization.Getkey("backlist")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

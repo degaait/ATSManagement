@@ -15,5 +15,7 @@ public partial class TblRecomendationStatus
 
     public string? StatusColourAmharic { get; set; }
 
+    public virtual ICollection<TblInspectionReport> TblInspectionReports { get; set; } = new List<TblInspectionReport>();
+
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
 }

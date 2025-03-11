@@ -1,9 +1,10 @@
-﻿using NToastNotify;
-using ATSManagement.Models;
+﻿using ATSManagement.Models;
 using ATSManagement.Filters;
+using ATSManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ATSManagement.Controllers
 {
@@ -11,11 +12,13 @@ namespace ATSManagement.Controllers
     public class SubmenusController : Controller
     {
         private readonly AtsdbContext _context;
-        private readonly IToastNotification _toastNotification;
-        public SubmenusController(AtsdbContext context, IToastNotification toastNotification)
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly INotyfService _notifyService;
+        public SubmenusController(AtsdbContext context, IHttpContextAccessor httpContext, INotyfService notyfService)
         {
-            _toastNotification = toastNotification;
             _context = context;
+            _contextAccessor = httpContext;
+            _notifyService = notyfService;
         }
 
         // GET: Submenus
@@ -49,10 +52,37 @@ namespace ATSManagement.Controllers
         // GET: Submenus/Create
         public IActionResult Create()
         {
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName");
-            ViewData["MenuId"] = new SelectList(_context.TblMainMenus, "MenuId", "MenuName");
-            ViewData["RoleId"] = new SelectList(_context.TblRoles, "RoleId", "RoleId");
-            return View();
+            var cultur = _contextAccessor.HttpContext.Session.GetString("culture").ToString();
+            SubmenuModel model = new SubmenuModel();
+            if (cultur == "am")
+            {
+                model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                {
+                    Text = s.DepNameAmharic,
+                    Value = s.DepId.ToString()
+
+                }).ToList();
+                model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                {
+                    Value = s.MenuId.ToString(),
+                    Text = s.MenuNameAmharic
+                }).ToList();
+            }
+            else
+            {
+                model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                {
+                    Text = s.DepName,
+                    Value = s.DepId.ToString()
+                }).ToList();
+                model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                {
+                    Value = s.MenuId.ToString(),
+                    Text = s.MenuName
+                }).ToList();
+            }
+
+            return View(model);
         }
 
         // POST: Submenus/Create
@@ -60,24 +90,53 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Submenu,Controller,Action,RoleId,MenuId,IsActive,IsDeleted,DepId,SubmenuAmharic")] TblSubmenu tblSubmenu)
+        public async Task<IActionResult> Create(SubmenuModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                tblSubmenu.Id = Guid.NewGuid();
-                _context.Add(tblSubmenu);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TblSubmenu tblSubmenu = new TblSubmenu();
+                tblSubmenu.Submenu = model.SubMenuName;
+                tblSubmenu.MenuId = model.MainMenuId;
+                tblSubmenu.Controller = model.ControllerName;
+                tblSubmenu.DepId = model.DepId;
+                tblSubmenu.SubmenuAmharic = model.SubmenuAmharic;
+                tblSubmenu.Action = model.ActionName;
+                tblSubmenu.ForSuperAdmin = model.forSuperAdmin;
+                tblSubmenu.ForDefaulUser = model.forDefaulUser;
+                tblSubmenu.ForTeamLeader = model.forTeamLeader;
+                tblSubmenu.ForDeputy = model.forDeputy;
+                tblSubmenu.ForDepHead = model.forDepHead;
+                tblSubmenu.ForSecretary=model.forSecretary;
+                tblSubmenu.ForBranchOfficer = model.forBranchOfficer;
+                tblSubmenu.ForInternalUser = model.forInternalUser;
+                tblSubmenu.IsActive=true;
+                _context.TblSubmenus.Add(tblSubmenu);
+                int saved = await _context.SaveChangesAsync();
+                if (saved > 0)
+                {
+                    _notifyService.Success("Data successfully added");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    _notifyService.Error("Operation isn't successfully added. Please try again");
+                    return View(model);
+                }
             }
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", tblSubmenu.DepId);
-            ViewData["MenuId"] = new SelectList(_context.TblMainMenus, "MenuId", "MenuName", tblSubmenu.MenuId);
-            ViewData["RoleId"] = new SelectList(_context.TblRoles, "RoleId", "RoleId", tblSubmenu.RoleId);
-            return View(tblSubmenu);
+            catch (Exception ex)
+            {
+                _notifyService.Error(ex.Message + " happened. Please try again");
+                return View(model);
+            }
+
         }
 
         // GET: Submenus/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            SubmenuModel model = new SubmenuModel();
+            var cultur = _contextAccessor.HttpContext.Session.GetString("culture").ToString();
+
             if (id == null || _context.TblSubmenus == null)
             {
                 return NotFound();
@@ -88,10 +147,51 @@ namespace ATSManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", tblSubmenu.DepId);
-            ViewData["MenuId"] = new SelectList(_context.TblMainMenus, "MenuId", "MenuName", tblSubmenu.MenuId);
-            ViewData["RoleId"] = new SelectList(_context.TblRoles, "RoleId", "RoleId", tblSubmenu.RoleId);
-            return View(tblSubmenu);
+            model.SubMenuName = tblSubmenu.Submenu;
+            model.MainMenuId = tblSubmenu.MenuId;
+            model.ControllerName = tblSubmenu.Controller;
+            model.DepId = tblSubmenu.DepId;
+            model.SubmenuAmharic = tblSubmenu.SubmenuAmharic;
+            model.ActionName = tblSubmenu.Action;
+            model.forSuperAdmin = tblSubmenu.ForSuperAdmin ?? false;
+            model.forDefaulUser = tblSubmenu.ForDefaulUser ?? false;
+            model.forTeamLeader = tblSubmenu.ForTeamLeader ?? false;
+            model.forDeputy = tblSubmenu.ForDeputy ?? false;
+            model.forDepHead = tblSubmenu.ForDepHead ?? false;
+            model.forBranchOfficer=tblSubmenu.ForBranchOfficer ?? false;
+            model.forSecretary=tblSubmenu.ForSecretary ?? false;
+            model.forInternalUser = tblSubmenu.ForInternalUser ?? false;
+            model.DepId = tblSubmenu.DepId;
+            model.Id = tblSubmenu.Id;
+            if (cultur == "am")
+            {
+                model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                {
+                    Text = s.DepNameAmharic,
+                    Value = s.DepId.ToString()
+
+                }).ToList();
+                model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                {
+                    Value = s.MenuId.ToString(),
+                    Text = s.MenuNameAmharic
+                }).ToList();
+            }
+            else
+            {
+                model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                {
+                    Text = s.DepName,
+                    Value = s.DepId.ToString()
+                }).ToList();
+                model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                {
+                    Value = s.MenuId.ToString(),
+                    Text = s.MenuName
+                }).ToList();
+            }
+
+            return View(model);
         }
 
         // POST: Submenus/Edit/5
@@ -99,37 +199,104 @@ namespace ATSManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Submenu,Controller,Action,RoleId,MenuId,IsActive,IsDeleted,DepId,SubmenuAmharic")] TblSubmenu tblSubmenu)
+        public async Task<IActionResult> Edit(SubmenuModel model)
         {
-            if (id != tblSubmenu.Id)
+            try
             {
-                return NotFound();
-            }
+                TblSubmenu tblSubmenu = _context.TblSubmenus.Find(model.Id);
+                var cultur = _contextAccessor.HttpContext.Session.GetString("culture").ToString();
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (tblSubmenu == null)
                 {
-                    _context.Update(tblSubmenu);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                tblSubmenu.Submenu = model.SubMenuName;
+                tblSubmenu.MenuId = model.MainMenuId;
+                tblSubmenu.Controller = model.ControllerName;
+                tblSubmenu.DepId = model.DepId;
+                tblSubmenu.SubmenuAmharic = model.SubmenuAmharic;
+                tblSubmenu.Action = model.ActionName;
+                tblSubmenu.ForSuperAdmin = model.forSuperAdmin;
+                tblSubmenu.ForDefaulUser = model.forDefaulUser;
+                tblSubmenu.ForTeamLeader = model.forTeamLeader;
+                tblSubmenu.ForDeputy = model.forDeputy;
+                tblSubmenu.ForDepHead = model.forDepHead;
+                tblSubmenu.ForSecretary = model.forSecretary;
+                tblSubmenu.ForBranchOfficer = model.forBranchOfficer;
+                tblSubmenu.ForInternalUser = model.forInternalUser;
+                tblSubmenu.IsActive = true;
+                int updated = _context.SaveChanges();
+                if (updated > 0)
                 {
-                    if (!TblSubmenuExists(tblSubmenu.Id))
+                    _notifyService.Success("Data uppdated successfully");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    _notifyService.Error("Data isn't uppdated successfully. Please try again");
+                    if (cultur == "am")
                     {
-                        return NotFound();
+                        model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                        {
+                            Text = s.DepNameAmharic,
+                            Value = s.DepId.ToString()
+
+                        }).ToList();
+                        model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                        {
+                            Value = s.MenuId.ToString(),
+                            Text = s.MenuNameAmharic
+                        }).ToList();
                     }
                     else
                     {
-                        throw;
+                        model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                        {
+                            Text = s.DepName,
+                            Value = s.DepId.ToString()
+                        }).ToList();
+                        model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                        {
+                            Value = s.MenuId.ToString(),
+                            Text = s.MenuName
+                        }).ToList();
                     }
+                    return View(model);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["DepId"] = new SelectList(_context.TblDepartments, "DepId", "DepName", tblSubmenu.DepId);
-            ViewData["MenuId"] = new SelectList(_context.TblMainMenus, "MenuId", "MenuName", tblSubmenu.MenuId);
-            ViewData["RoleId"] = new SelectList(_context.TblRoles, "RoleId", "RoleId", tblSubmenu.RoleId);
-            return View(tblSubmenu);
+            catch (Exception ex)
+            {
+                var cultur = _contextAccessor.HttpContext.Session.GetString("culture").ToString();
+                _notifyService.Error(ex.Message + " happened. Data isn't uppdated successfully. Please try again");
+                if (cultur == "am")
+                {
+                    model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                    {
+                        Text = s.DepNameAmharic,
+                        Value = s.DepId.ToString()
+
+                    }).ToList();
+                    model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                    {
+                        Value = s.MenuId.ToString(),
+                        Text = s.MenuNameAmharic
+                    }).ToList();
+                }
+                else
+                {
+                    model.Departments = _context.TblDepartments.Select(s => new SelectListItem
+                    {
+                        Text = s.DepName,
+                        Value = s.DepId.ToString()
+                    }).ToList();
+                    model.MainMenus = _context.TblMainMenus.Select(s => new SelectListItem
+                    {
+                        Value = s.MenuId.ToString(),
+                        Text = s.MenuName
+                    }).ToList();
+                }
+                return View(model);
+            }
         }
 
         // GET: Submenus/Delete/5
@@ -168,8 +335,23 @@ namespace ATSManagement.Controllers
                 _context.TblSubmenus.Remove(tblSubmenu);
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            int deleted = await _context.SaveChangesAsync();
+            if (deleted > 0)
+            {
+                _notifyService.Error("Operation isn't successfull. Please try again");
+                var tblSubmenus = await _context.TblSubmenus
+               .Include(t => t.Dep)
+               .Include(t => t.Menu)
+               .Include(t => t.Role)
+               .FirstOrDefaultAsync(m => m.Id == id);
+                return View(tblSubmenus);
+            }
+            else
+            {
+                _notifyService.Success("Operation is successfull");
+                return RedirectToAction(nameof(Index));
+            }
+
         }
 
         private bool TblSubmenuExists(Guid id)

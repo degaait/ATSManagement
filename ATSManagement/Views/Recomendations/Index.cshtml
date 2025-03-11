@@ -87,7 +87,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.CreatinDate)
+                                     @Html.DisplayFor(modelItem => item.CreatinDate)
                                 </td>
                                 <td>
                                     @Html.Raw(item.Recomendation)
@@ -166,6 +166,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#role').DataTable({
+                order: [[0, 'desc']],
                 dom: 'Bfrtip',
                 deferRender: true,
                 scrollCollapse: true,

@@ -99,25 +99,11 @@ namespace ATSManagement.Controllers
                 tblRecomendation.RecostatusId = model.RecostatusID;
                 tblRecomendation.CreatinDate = DateTime.Now;
                 tblRecomendation.CreatedBy = userId;
-                tblRecomendation.YearId = model.YearId;
-                tblRecomendation.IsActive = model.IsActive;
+                tblRecomendation.IsActive = true;
                 tblRecomendation.InistId = model.InistId;
                 tblRecomendation.LawId = model.LawId;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
-                if (model.FinalReport != null)
-                {
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    FileInfo fileInfo = new FileInfo(model.FinalReport.FileName);
-                    string fileName = Guid.NewGuid().ToString() + model.FinalReport.FileName;
-                    string fileNameWithPath = Path.Combine(path, fileName);
-                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                    {
-                        model.FinalReport.CopyTo(stream);
-                    }
-                    string dbPath = "/admin/Files/" + fileName;
-                }
-                    _context.TblRecomendations.Add(tblRecomendation);
+                tblRecomendation.ReportPath = null;                            
+               _context.TblRecomendations.Add(tblRecomendation);
                int save= await _context.SaveChangesAsync();
                 if (save>0)
                 {
@@ -239,22 +225,7 @@ namespace ATSManagement.Controllers
                     tblRecomendation.LawId = model.LawId;
                     tblRecomendation.RecomendationTitle = model.Title;
                     tblRecomendation.IsActive = model.IsActive;
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
-                    if (model.FinalReport != null)
-                    {
-                        //create folder if not exist
-                        if (!Directory.Exists(path))
-                            Directory.CreateDirectory(path);
-                        //get file extension
-                        FileInfo fileInfo = new FileInfo(model.FinalReport.FileName);
-                        string fileName = Guid.NewGuid().ToString() + model.FinalReport.FileName;
-                        string fileNameWithPath = Path.Combine(path, fileName);
-                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                        {
-                            model.FinalReport.CopyTo(stream);
-                        }
-                        string dbPath = "/admin/Files/" + fileName;
-                    }
+                  
                     int updated = await _context.SaveChangesAsync();
                     if (updated > 0)
                     {

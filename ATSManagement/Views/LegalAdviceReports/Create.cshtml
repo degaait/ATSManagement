@@ -30,49 +30,181 @@
             <form asp-action="Create">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <table class="table table-striped table-bordered row-border cell-border hover" id="role">
 
-                            <div class="mb-2 row">
-                                <label asp-for="Id" class="col-3 col-form-label"> ተገልጋዮች</label>
-                                <div class="col">
-                                    <select asp-for="Id" class="form-select" asp-items="ViewBag.ServantTypes"></select>
-                                    <span asp-validation-for="Id" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-2 row">
-                                <label asp-for="Amount" class="col-3 col-form-label">መጠን</label>
-                                <div class="col">
-                                    <input asp-for="Amount" type="number" class="form-control" />
-                                    <span asp-validation-for="Amount" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-2 row">
-                                <label asp-for="Investigation" class="col-3 col-form-label">ምርመራ</label>
-                                <div class="col">
-                                    <input asp-for="Investigation" type="number" class="form-control" />
-                                    <span asp-validation-for="Investigation" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="mb-2 row">
-                                <label asp-for="Month" class="col-3 col-form-label">ወር</label>
-                                <div class="col">
-                                    <select asp-for="Month" class="form-select" asp-items="ViewBag.Month"></select>
-                                </div>
-                            </div>
-                            <div class="mb-2 row">
-                                <label asp-for="Year" class="col-3 col-form-label">ዓመት</label>
-                                <div class="col">
-                                    <select asp-for="Year" class="form-select" asp-items="ViewBag.Year"></select>
-                                </div>
-                            </div>
-                        </div>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        የአገልግሎት ዓይነት
+                                    </th>
+                                    <th>
+                                        ተገልጋዮች
+                                    </th>
+                                    <th>
+                                        መጠን
+                                    </th>
+                                    <th>
+                                        ምርመራ
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>     
+                                <tr>
+                                    <td rowspan="12">
+                                        <label class="col-3 col-form-label">የህግ ምክር</label>
+                                    </td>
+                                    
+                                    <td>
+                                        <label class="col-3 col-form-label">ሴቶች</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Womens" type="number" class="form-control" />
+                                        <span asp-validation-for="Womens" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="WomensInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="WomensInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">ህጻናት</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Childrens" type="number" class="form-control" />
+                                        <span asp-validation-for="Childrens" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="ChildrensInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="ChildrensInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">አረጋውያን</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Elders" type="number" class="form-control" />
+                                        <span asp-validation-for="Elders" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="EldersInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="EldersInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">አካል ጉዳተኞች</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Disablities" type="number" class="form-control" />
+                                        <span asp-validation-for="Disablities" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="DisablitiesInvestigation" type="number" class="form-control" />
+                                        <span asp-validation-for="DisablitiesInvestigation" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">HIV ፖዚቲቭ</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Hivpositive" type="number" class="form-control" />
+                                        <span asp-validation-for="Hivpositive" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="HivpositiveInvestigation" type="number" class="form-control" />
+                                        <span asp-validation-for="HivpositiveInvestigation" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">ከስደት ተመላሾች</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="PersecutionReturnies" type="number" class="form-control" />
+                                        <span asp-validation-for="PersecutionReturnies" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="PersecutionReturniesInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="PersecutionReturniesInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">ወንዶች</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Mens" type="number" class="form-control" />
+                                        <span asp-validation-for="Mens" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="MensInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="MensInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">ለመንግስት ተቋማት</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="GovernmentInstitutes" type="number" class="form-control" />
+                                        <span asp-validation-for="GovernmentInstitutes" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="GovernmentInstitutesInvestigations" type="number" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">ሌሎች</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Other" type="number" class="form-control" />
+                                        <span asp-validation-for="Other" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="OtherInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="OtherInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="col-3 col-form-label">ድምር</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Total" type="number" class="form-control" />
+                                        <span asp-validation-for="Total" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="TotalInvestigations" type="number" class="form-control" />
+                                        <span asp-validation-for="TotalInvestigations" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      
+                                    </td>
+                                    <td>
+                                        <label class="col-3 col-form-label">ወር</label>
+                                        <select asp-for="Month" class="form-select" asp-items="ViewBag.Month"></select>
+                                    </td>
+                                    <td>
+                                        <label class="col-3 col-form-label">ዓመት</label>
+                                        <select asp-for="Year" class="form-select" asp-items="ViewBag.Year"></select>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="card-footer text-end">
                     <div class="d-flex">
-                        <input type="submit" value="Create" class="btn btn-primary" />|
-                        <a asp-action="Index">Back to List</a>
+                        <input type="submit" value="@_localization.Getkey("backlist")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>

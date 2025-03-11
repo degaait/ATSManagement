@@ -23,6 +23,10 @@ public partial class TblDocumentHistory
 
     public DateTime? CreatedDate { get; set; }
 
+    public string? ExactFileName { get; set; }
+
+    public string? FileTitle { get; set; }
+
     public virtual TblExternalUser? ExternalRepliedByNavigation { get; set; }
 
     public virtual TblInternalUser? InternalReply { get; set; }

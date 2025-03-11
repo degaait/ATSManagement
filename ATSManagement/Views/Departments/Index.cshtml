@@ -3,7 +3,7 @@
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = @_localization.Getkey("department");
+    ViewData["Title"] = @_localization.Getkey("branchoffice");
 }
 <style type="text/css">
     .table thead th {
@@ -19,7 +19,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("department")
+                        @_localization.Getkey("branchoffice")
                     </h2>
                 </div>
                 <!-- Page title actions -->
@@ -74,7 +74,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.DepId">

@@ -14,6 +14,9 @@ namespace ATSManagementExternal.ViewModels
         public IEnumerable<SelectListItem>? tblYears { get; set; }
         public Guid LawId { get; set; }
         public IEnumerable<SelectListItem>? tblInspectionLaws { get; set; }
-       
+
+        public Guid RecoId { get; set; }
+        public IEnumerable<SelectListItem>? tblRecomendings { get; set; }
+
     }
 }

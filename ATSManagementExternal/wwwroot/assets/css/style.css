@@ -614,11 +614,11 @@ section {
         padding: 0;
     }
 
-.why-us .box:hover {
-  background: #cc1616;
-  padding: 30px 30px 70px 30px;
-  box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.18);
-}
+    .why-us .box:hover {
+        background: #2471A3 !important;
+        padding: 30px 30px 70px 30px;
+        box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.18);
+    }
 
 .why-us .box:hover span,
 .why-us .box:hover h4,
@@ -730,17 +730,17 @@ section {
     }
 
     .services .icon-box p {
-        font-size: 18px;
         margin-bottom: 0;
-        font-family:fantasy;
+        font-family: "Open Sans", sans-serif,ui-sans-serif;
         color: #1b469d;
+        font-size: 20px;
     }
 
-.services .icon-box:hover {
-  background: #cc1616;
-  border-color: #cc1616;
-  padding: 70px 20px 90px 20px;
-}
+    .services .icon-box:hover {
+        background: #2471A3 !important;
+        border-color: #cc1616;
+        padding: 70px 20px 90px 20px;
+    }
 
 .services .icon-box:hover .icon {
   background: #fff;

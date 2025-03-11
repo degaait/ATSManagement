@@ -26,7 +26,7 @@
             <form asp-action="SendToInstitution" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="RequestId" />
                             <div class="mb-3 row">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label class="col-3 col-form-label">@_localization.Getkey("final_report")</label>
+                                <label class="col-3 col-form-label">@_localization.Getkey("conpleted_work")</label>
                                 <div class="col">
                                     <input asp-for="FinalReport" type="file" class="form-file-button" />
                                     <span asp-validation-for="FinalReport" class="text-danger"></span>
@@ -63,4 +63,32 @@
         </div>
     </div>
 </div>
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#SendingRemark',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

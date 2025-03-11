@@ -11,5 +11,7 @@ public partial class TblInspectionLaw
 
     public string? ReferenceArticle { get; set; }
 
+    public virtual ICollection<TblInspectionReport> TblInspectionReports { get; set; } = new List<TblInspectionReport>();
+
     public virtual ICollection<TblRecomendation> TblRecomendations { get; set; } = new List<TblRecomendation>();
 }

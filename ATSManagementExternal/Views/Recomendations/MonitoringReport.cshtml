@@ -1,0 +1,163 @@
+﻿@model ATSManagementExternal.ViewModels.CollectionModel
+@using ATSManagementExternal.Services;
+@using ATSManagementExternal.ViewModels;
+@inject AtsdbContext ats;
+@inject IHttpContextAccessor httpsSession;
+@inject LanguageService _localization
+@{
+    int id = 0;
+    List<DataPoint> Institutions = ViewBag.Datas as List<DataPoint>;
+   
+}
+<script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				theme: "light2",
+				animationEnabled: true,
+				title: {
+					text: ""
+				},
+				subtitles: [
+					{ text: "" }
+				],
+				data: [{
+		           type: "doughnut",
+                     startAngle: 60,
+                     //innerRadius: 60,
+                     indexLabelFontSize: 17,
+                     indexLabel: "{label} - #percent%",
+                     toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                     dataPoints: @Html.Raw(ViewBag.DataPoints),
+	                                }]
+			});
+			chart.render();
+		};
+</script>
+<section id="about" class="about" style="background: #f6f9fd">
+    <div class="container" style="background:#fff">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card primary">
+                    <div class="card-header">
+                        <h2 class="card-title">@_localization.Getkey("Inspection_Reports")</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="col-12">
+                                        <div class="row row-cards">
+                                            <div class="col-sm-6 col-lg-6">
+                                                <div class="card card-sm" style="color: white; background: cadetblue">
+                                                    <div class="card-body">
+                                                        <div class="row align-items-center">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-auto">
+                                                                    <span class="bg-primary text-white avatar">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /><path d="M19 16h-12a2 2 0 0 0 -2 2" /><path d="M9 8h6" /></svg>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="font-weight-bold">
+                                                                        ( @ViewBag.TotalReports) @_localization.Getkey("total_reports")
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    @using (Html.BeginForm("MonitoringReport", "Recomendations", FormMethod.Post, new { @name = "Form1" }))
+                                    {
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    @Html.DropDownListFor(model => model.YearId, new SelectList(Model.tblYears, "Value", "Text"), "--All Year--", htmlAttributes: new { @class = "form-select", @id = "ddlYears" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    @Html.DropDownListFor(model => model.LawId, new SelectList(Model.tblInspectionLaws, "Value", "Text"), "--All Laws--", htmlAttributes: new { @class = "form-select", @id = "ddlInspectionLaws" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    @Html.DropDownListFor(model => model.InistId, new SelectList(Model.tblInistitutions, "Value", "Text"), "--All Inistitution--", htmlAttributes: new { @class = "form-select", @id = "ddlInistitutions" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        @foreach (var item in Institutions)
+                        {
+                            var instit = ats.TblInistitutions.Where(s => s.Name == item.Label).FirstOrDefault();
+                            List<TblInspectionReport> details;                           
+                                details = ats.TblInspectionReports.Where(s => s.InistId == instit.InistId).ToList();                            
+                            <div class="accordion-item" style="padding-bottom:2px">                              
+                                @foreach (var deta in details)
+                                {
+                                   var year = ats.TblYears.Find(deta.YearId);                                    
+                                    <div class="accordion-collapse" style="padding-left: 30px; padding-right: 20px; background-color: #f3f3f3; border-style: outset;">
+                                        <a style=" text-decoration: underline; color: #0d51f0; margin-bottom:5px" asp-action="DocumentViewer"
+                                           asp-route-path="@deta.ReportPath" asp-route-method="Index"
+                                           asp-route-methodController="ExternalRequests">
+                                            @Html.Raw(deta.ReportTitle)
+                                        </a>                                        
+                                        <div class="accordion-body pt-0" style="display: flex; margin-right: 10px; ">                                          
+                                            <p> ( @year.Year) <span style="color: #f54004"> @instit.Name</span>                                                              
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<script type="text/javascript">
+    $("body").on("change", "#ddlStatus", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlYears", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlInistitutions", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlInspectionLaws", function () {
+        document.forms["Form1"].submit();
+    });
+    $("body").on("change", "#ddlRecomendings", function () {
+        document.forms["Form1"].submit();
+    })
+</script>

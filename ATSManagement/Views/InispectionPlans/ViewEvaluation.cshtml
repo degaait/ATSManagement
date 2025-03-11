@@ -1,0 +1,58 @@
+﻿@model ATSManagement.Models.TblAssignedYearlyPlan
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = @_localization.Getkey("Evaluation_criteria");
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("Evaluation_criteria")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    <a asp-action="@ViewBag.actionMethod">@_localization.Getkey("backlist")</a>
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-10">
+
+                        <div class="mb-3 row">
+                            <label class="col-3 col-form-label">@_localization.Getkey("Evaluation_criteria")</label>
+                            <div class="col">
+                                @Html.Raw(Model.EvaluationCheckLists)
+                                @if (Model.EvaluationCheckListsAttachmet != null)
+                                {
+                                    <a class="btn-primary time-right" asp-route-id="@Model.Id" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@Model.EvaluationCheckListsAttachmet"
+                                       asp-route-method="ViewEvaluation" asp-route-methodController="InispectionPlans">
+                                        <ion-icon name="folder-open"></ion-icon>
+                                        @_localization.Getkey("view_file")
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

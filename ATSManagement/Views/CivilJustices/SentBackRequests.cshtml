@@ -5,6 +5,7 @@
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
     ViewData["Title"] = _localization.Getkey("Requests_sent_back_to_Inistitutions");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
@@ -32,7 +33,7 @@
             </div>
         </div>
     </div>
-</section>                                      So
+</section>                                      
 <section class="content">
     <div class="col-12">
         <div class="card">
@@ -41,7 +42,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <table class="table table-striped" id="role">
+                        <table class="table table-borderless datatable" id="role">
                             <thead>
                                 <tr>
                                     <th>
@@ -54,10 +55,16 @@
                                         @_localization.Getkey("Detail")
                                     </th>
                                     <th>
+                                        @_localization.Getkey("document_type")
+                                    </th>
+                                    <th>
                                         @_localization.Getkey("priority")
                                     </th>
                                     <th>
-                                        @_localization.Getkey("Sending_Remark")
+                                        @_localization.Getkey("conpleted_work")
+                                    </th>
+                                    <th>
+                                        @_localization.Getkey("remark")
                                     </th>
                                     <th>
                                         @_localization.Getkey("institution")
@@ -73,25 +80,66 @@
                                 {
                                     // var isRequest = (from items in ats.TblRequests where items.RequestId == item.RequestId select items).FirstOrDefault();
                                     var assigneess = (from users in ats.TblRequestAssignees where users.RequestId == item.RequestId select users.User);
+                                    var documents = (from docHistories in ats.TblDocumentHistories where docHistories.RequestId == item.RequestId select docHistories).ToList();
 
                                     <tr>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.CreatedDate)
                                         </td>
                                         <td>
-                                            @Html.Raw(item.RequestDetail)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
-                                        </td>
-                                        <td>
-                                            @if (item.PriorityId != null)
+                                            @if (cultur == "am")
                                             {
-                                                @Html.Raw(item.Priority.PriorityNameWithColor)
+                                                @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeNameAmharic)
+
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.ServiceType.ServiceTypeName)
+
                                             }
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.SendingRemark)
+                                            @Html.Raw(item.RequestDetail)
+                                        </td>
+                                        <td>
+                                            @if (documents != null)
+                                            {
+                                                foreach (var paths in documents)
+                                                {
+                                                    <a class="btn btn-primary" asp-controller="DocumentViewer" style="padding:0rem !important" asp-action="DocumentViewer" title="Open" asp-route-path="@paths.DocPath" asp-route-method="CompletedRequests" asp-route-methodController="CivilJustices">
+                                                        @paths.ExactFileName
+                                                    </a>
+                                                }
+                                            }
+                                        </td>
+
+                                        <td>
+                                            @if (item.PriorityId != null)
+                                            {
+                                                @if (cultur == "am")
+                                                {
+                                                    @Html.Raw(item.Priority.PriorityNameWithColorAmharic)
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw(item.Priority.PriorityNameWithColor)
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.SentReport" asp-route-method="SentBackRequests" asp-route-methodController="CivilJustices">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                    <path d="M12 17v-6"></path>
+                                                    <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                </svg>
+                                                @_localization.Getkey("view_file")
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.Raw(item.SendingRemark)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Inist.Name)
@@ -101,11 +149,20 @@
                                             </strong>
                                         </td>
                                         <td>
-                                            @Html.Raw(item.TopStatus.StatusName)
+                                            @if (item.TopStatus != null)
+                                            {
+                                                @if (cultur == "am")
+                                                {
+                                                    @Html.Raw(item.TopStatus.StatusNameAmharic) }
+                                                else
+                                                {
+                                                    @Html.Raw(item.TopStatus.StatusName)
+                                                }
+
+
+
+                                            }
                                         </td>
-
-
-
                                         <td>
                                             <div class="btn-list flex-nowrap">
                                                 <div class="dropdown">
@@ -115,7 +172,6 @@
                                                     <div class="dropdown-menu dropdown-menu-end">
                                                         @if (user.IsDeputy == true || user.IsDepartmentHead == true)
                                                         {
-
                                                             <a class="dropdown-item" asp-controller="Followups" asp-action="Index" asp-route-RequestId="@item.RequestId">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -127,6 +183,29 @@
                                                                     <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                                 </svg> &nbsp; @_localization.Getkey("followups")
                                                             </a>
+
+                                                        }
+                                                        @if (item.ServiceTypeId != Guid.Parse("8ed63154-80c4-4595-98d1-8381402c62ab") && item.ServiceTypeId != Guid.Parse("40231461-38ac-45c6-b98c-08d88bb26c69") && item.ServiceTypeId != Guid.Parse("8ed63154-80c4-4595-98d1-8381402c62ab"))
+                                                        {
+                                                            <a class="dropdown-item" asp-action="WitnessesandEvidences" asp-route-id="@item.RequestId">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+                                                                </svg>&nbsp;
+                                                                @_localization.Getkey("Witnesses_and_Evidences")
+                                                            </a>
+                                                            @if (item.ServiceType.ServiceTypeName == "Litigation")
+                                                            {
+                                                                <a class="dropdown-item" asp-action="RequestAdjornies" asp-route-id="@item.RequestId">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                        <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+                                                                    </svg>&nbsp;
+                                                                    @_localization.Getkey("adjournment")
+                                                                </a>
+
+                                                            }
+
                                                         }
                                                     </div>
                                                 </div>
@@ -144,20 +223,6 @@
     </section>
     @section scripts{
 
-        <script type="text/javascript">
-
-            $(document).ready(function () {
-                $('#role').DataTable({
-                    dom: 'Bfrtip',
-                    deferRender: true,
-                    scrollCollapse: true,
-                    scroller: true,
-                    buttons: [
-                        'excel', 'print'
-                    ]
-                });
-            });
-
-        </script>
+     
 
     }

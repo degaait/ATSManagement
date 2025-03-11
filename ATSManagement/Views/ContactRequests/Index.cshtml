@@ -46,7 +46,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @_localization.Getkey("Details")
+                                    @_localization.Getkey("Detail")
                                 </th>
                                 <th>
                                     @_localization.Getkey("email_address")
@@ -82,7 +82,7 @@
                                     <td>
                                         @if (item.FileUplaod != null)
                                         {
-                                            <a class="btn btn-primary" asp-action="DocumentViewer" asp-controller="DocumentViewer" asp-route-path="@item.FileUplaod">
+                                            <a class="btn btn-primary" asp-action="DocumentViewer" asp-controller="DocumentViewer" asp-route-path="@item.FileUplaod" asp-route-method="Index" asp-route-methodController="ContactRequests" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                     <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -98,7 +98,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="Details" asp-route-id="@item.ContactId">

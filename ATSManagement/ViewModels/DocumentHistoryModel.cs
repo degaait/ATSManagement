@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ATSManagement.ViewModels
 {
@@ -17,6 +18,12 @@ namespace ATSManagement.ViewModels
             [Display(Name = "Replied")]
             public Guid? ExternalRepliedBy { get; set; }
             [Display(Name = "File Description")]
-            public string? FileDescription { get; set; }       
+            public string? FileDescription { get; set; }
+
+
+        [Required(ErrorMessage = "*")]
+        public Guid? InistId { get; set; }
+        [Display(Name = "Institutions")]
+        public List<SelectListItem>? Intitutions { get; set; }
     }
 }

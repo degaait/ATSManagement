@@ -2,10 +2,13 @@
 @using ATSManagement.Services;
 @inject LanguageService _localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IHttpContextAccessor httpsSession;
+@inject AtsdbContext ats;
 @{
     ViewData["Title"] = "የረቂቅ ውል ምርመራ/ዝግጅት አፈፃፀም ሪፖርት";
+    Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
+    var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
 }
-
 <style type="text/css">
     .table thead th {
         text-transform: capitalize !important;
@@ -26,15 +29,19 @@
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a asp-action="Create" asp-controller="DraftContractExaminationReports" class="btn btn-primary d-none d-sm-inline-block">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                            Create new
-                        </a>
-                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        </a>
+                        @if (user.IsBranchOfficeUser == true)
+                        {
+                            <a asp-action="Create" asp-controller="DraftContractExaminationReports" class="btn btn-primary d-none d-sm-inline-block">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                @_localization.Getkey("CreateNew")
+                            </a>
+                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                            </a>
+                        }
+
                     </div>
                 </div>
             </div>
@@ -51,7 +58,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    ጥያቄ ያቀረበው አካል
+                                    ጉዳይ  ያቀረበው አካል
                                 </th>
                                 <th>
                                     የጉዳዩ ዓይነት
@@ -77,6 +84,13 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                var reporter = (from items in ats.TblInternalUsers
+                                                join bra in ats.TblBranchOffices on items.BranchId equals bra.BranchId
+                                                where items.UserId == item.SubmittedBy
+                                                select new
+                                                {
+                                                    Nam = bra.Name
+                                                }).FirstOrDefault();
                                 <tr>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.QuestionSubmitter)
@@ -93,6 +107,11 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.SubmittedByNavigation.FirstName)
                                         @Html.DisplayFor(modelItem => item.SubmittedByNavigation.MidleName)
+                                        <br />
+                                        @if (reporter != null)
+                                        {
+                                            <label style="color:cornflowerblue">@reporter.Nam</label>
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Month.MonthName)
@@ -104,7 +123,7 @@
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                    Actions
+                                                    ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">
@@ -114,7 +133,7 @@
                                                             <path d="M13.5 6.5l4 4"></path>
                                                             <path d="M16 19h6"></path>
                                                             <path d="M19 16v6"></path>
-                                                        </svg>&nbsp; Edit
+                                                        </svg>&nbsp; 
                                                     </a>
                                                     <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -125,15 +144,14 @@
                                                             <path d="M13 19h5"></path>
                                                             <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
                                                             <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                                                        </svg> &nbsp; Detail
+                                                        </svg> &nbsp; 
                                                     </a>
                                                     <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
                                                             <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor"></path>
-                                                        </svg>&nbsp;
-                                                        Delete
+                                                        </svg>&nbsp;                                                       
                                                     </a>
                                                 </div>
                                             </div>
@@ -151,7 +169,6 @@
 
 @section scripts{
     <script type="text/javascript">
-
         $(document).ready(function () {
             $('#role').DataTable({
                 dom: 'Bfrtip',
@@ -163,7 +180,5 @@
                 ]
             });
         });
-
     </script>
-   
 }

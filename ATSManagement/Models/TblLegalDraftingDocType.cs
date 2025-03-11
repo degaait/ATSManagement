@@ -11,6 +11,10 @@ public partial class TblLegalDraftingDocType
 
     public string? DocDesciption { get; set; }
 
+    public string? DocNameAmharic { get; set; }
+
+    public int DocmentOrder { get; set; }
+
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblRequest> TblRequests { get; set; } = new List<TblRequest>();

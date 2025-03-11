@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActingAs" xml:space="preserve">
+    <value>Acting As</value>
+    <comment>Acting As</comment>
+  </data>
+  <data name="action_performed" xml:space="preserve">
+    <value>Action Performed</value>
+    <comment>Action Performed</comment>
+  </data>
+  <data name="additional_Question" xml:space="preserve">
+    <value>Additional Questions</value>
+    <comment>Additional Questions</comment>
+  </data>
   <data name="add_appointment_result" xml:space="preserve">
     <value>Add Appointment reasult</value>
     <comment>Add Appointment reasult</comment>
@@ -124,6 +136,10 @@
   <data name="Add_final_report" xml:space="preserve">
     <value>Add final report</value>
     <comment>Add final report</comment>
+  </data>
+  <data name="Add_meeting_letter" xml:space="preserve">
+    <value>Add meeting letter</value>
+    <comment>Add meeting letter</comment>
   </data>
   <data name="add_participants" xml:space="preserve">
     <value>Add Parcipants</value>
@@ -136,6 +152,22 @@
   <data name="adjournment_date" xml:space="preserve">
     <value>Adjournement Date</value>
     <comment>Adjournement Date</comment>
+  </data>
+  <data name="adjournment_reason" xml:space="preserve">
+    <value>Reason for Appointment</value>
+    <comment>Reason for Appointment</comment>
+  </data>
+  <data name="Adrtype" xml:space="preserve">
+    <value>ADR Type</value>
+    <comment>ADR Type</comment>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+    <comment>All</comment>
+  </data>
+  <data name="AllRequests" xml:space="preserve">
+    <value>All Requests</value>
+    <comment>All Requests</comment>
   </data>
   <data name="amharic_name" xml:space="preserve">
     <value>Name (አማርኛ)</value>
@@ -153,9 +185,25 @@
     <value>Appointments</value>
     <comment>Appointments</comment>
   </data>
+  <data name="Appointments" xml:space="preserve">
+    <value>Appointments</value>
+    <comment>Appointments</comment>
+  </data>
+  <data name="appointment_Added_date" xml:space="preserve">
+    <value>Asked Date</value>
+    <comment>Asked Date</comment>
+  </data>
   <data name="appointment_Date" xml:space="preserve">
     <value>Appointment Date</value>
     <comment>Appointment Date</comment>
+  </data>
+  <data name="appointment_detail" xml:space="preserve">
+    <value>Appointment reason</value>
+    <comment>Appointment Reason</comment>
+  </data>
+  <data name="appoitnment_reason" xml:space="preserve">
+    <value>Appointment Reason</value>
+    <comment>Appointment Reason</comment>
   </data>
   <data name="Archive" xml:space="preserve">
     <value>Archive</value>
@@ -165,6 +213,10 @@
     <value>Archived Requests</value>
     <comment>Archived Requests</comment>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>Archives</value>
+    <comment>Archives</comment>
+  </data>
   <data name="are_you_sure_todelete" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
     <comment>Are you sure you want to delete this?</comment>
@@ -173,6 +225,14 @@
     <value>Assign</value>
     <comment>Assign</comment>
   </data>
+  <data name="AssignedPlans" xml:space="preserve">
+    <value>Assigned Plans</value>
+    <comment>Assigned Plans</comment>
+  </data>
+  <data name="AssignedRequests" xml:space="preserve">
+    <value>Assigned Requests</value>
+    <comment>Assigned Requests</comment>
+  </data>
   <data name="Assigned_by" xml:space="preserve">
     <value>Assigned by</value>
     <comment>Assigned by</comment>
@@ -180,6 +240,10 @@
   <data name="Assigned_Requests" xml:space="preserve">
     <value>Assigned Requests</value>
     <comment>Assigned Requests</comment>
+  </data>
+  <data name="Assigned_Specific_plans" xml:space="preserve">
+    <value>Assigned Specific Plans</value>
+    <comment>Assigned Specific Plans</comment>
   </data>
   <data name="Assigned_to" xml:space="preserve">
     <value>Assigned to</value>
@@ -213,9 +277,61 @@
     <value>Back to List</value>
     <comment>Back to List</comment>
   </data>
+  <data name="Bench" xml:space="preserve">
+    <value>Bench</value>
+    <comment>Bench</comment>
+  </data>
+  <data name="by" xml:space="preserve">
+    <value>by</value>
+    <comment>by</comment>
+  </data>
+  <data name="cannot_open_file" xml:space="preserve">
+    <value> We could not find this file.</value>
+    <comment>Oops! Document not found.</comment>
+  </data>
+  <data name="CaseType" xml:space="preserve">
+    <value>Case Type</value>
+    <comment>Case Type</comment>
+  </data>
+  <data name="case_court" xml:space="preserve">
+    <value>The court where the case will be heard</value>
+    <comment>The court where the case will be heard and the court no</comment>
+  </data>
+  <data name="chat_reply" xml:space="preserve">
+    <value>Internal Chats</value>
+    <comment>Internal Chats</comment>
+  </data>
+  <data name="CJADG" xml:space="preserve">
+    <value>CJADG</value>
+    <comment>CJADG</comment>
+  </data>
+  <data name="Claimant" xml:space="preserve">
+    <value>Claimant</value>
+    <comment>Claimant</comment>
+  </data>
+  <data name="commented_file" xml:space="preserve">
+    <value>Commented File</value>
+    <comment>Commented File</comment>
+  </data>
+  <data name="CompletedPlans" xml:space="preserve">
+    <value>Completed Plans</value>
+    <comment>Completed Plans</comment>
+  </data>
+  <data name="CompletedRequests" xml:space="preserve">
+    <value>Completed Requests</value>
+    <comment>Completed Requests</comment>
+  </data>
+  <data name="completed_plans" xml:space="preserve">
+    <value>Completed plans</value>
+    <comment>Completed plans</comment>
+  </data>
   <data name="completed_Requests" xml:space="preserve">
     <value>Completed Requests</value>
     <comment>Completed Requests</comment>
+  </data>
+  <data name="Configurations" xml:space="preserve">
+    <value>Configurations</value>
+    <comment>Configurations</comment>
   </data>
   <data name="confirm_password" xml:space="preserve">
     <value>Confirm Password</value>
@@ -224,6 +340,10 @@
   <data name="country" xml:space="preserve">
     <value>Country</value>
     <comment>Country</comment>
+  </data>
+  <data name="CourtCenter" xml:space="preserve">
+    <value>Court Center</value>
+    <comment>Court Center</comment>
   </data>
   <data name="created_by" xml:space="preserve">
     <value>Created By</value>
@@ -237,13 +357,33 @@
     <value>Create New</value>
     <comment>Create New</comment>
   </data>
+  <data name="currencyType" xml:space="preserve">
+    <value>Currency</value>
+    <comment>Currency</comment>
+  </data>
   <data name="date" xml:space="preserve">
     <value>Datetime</value>
     <comment>Datetime</comment>
   </data>
+  <data name="DateOfAdjournment" xml:space="preserve">
+    <value>Date Of Adjournment</value>
+    <comment>Date Of Adjournment</comment>
+  </data>
+  <data name="DateofJudgement" xml:space="preserve">
+    <value>Date of Judgement</value>
+    <comment>Date of Judgement</comment>
+  </data>
   <data name="datetime" xml:space="preserve">
     <value>Date time</value>
     <comment>Date time</comment>
+  </data>
+  <data name="Defendent" xml:space="preserve">
+    <value>Defendent</value>
+    <comment>Defendent</comment>
+  </data>
+  <data name="defendent_plantiful" xml:space="preserve">
+    <value>Plaintiff/Appellant/Applicant</value>
+    <comment>Plaintiff/Defendant; Appellant/Applicant/Respondent</comment>
   </data>
   <data name="delete" xml:space="preserve">
     <value>Delete</value>
@@ -253,6 +393,14 @@
     <value>Department</value>
     <comment>Department</comment>
   </data>
+  <data name="Departments" xml:space="preserve">
+    <value>Departments</value>
+    <comment>Departments</comment>
+  </data>
+  <data name="departmentTransfer" xml:space="preserve">
+    <value>Transfer to other department</value>
+    <comment>Transfer to other department</comment>
+  </data>
   <data name="department_approval" xml:space="preserve">
     <value>Department approval</value>
     <comment>Department approval</comment>
@@ -260,6 +408,10 @@
   <data name="department_upproval_status" xml:space="preserve">
     <value>Department Upproval status</value>
     <comment>Department Upproval status</comment>
+  </data>
+  <data name="deputy" xml:space="preserve">
+    <value>Deputy Minister</value>
+    <comment>Deputy Minister</comment>
   </data>
   <data name="Deputy_aproval" xml:space="preserve">
     <value>Deputy approval</value>
@@ -269,9 +421,17 @@
     <value>Deputy Upproval status</value>
     <comment>Deputy Upproval status</comment>
   </data>
+  <data name="dep_head" xml:space="preserve">
+    <value>Department Head</value>
+    <comment>Department Head</comment>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
     <comment>Description</comment>
+  </data>
+  <data name="desicion_Remark" xml:space="preserve">
+    <value>Desicion Remark</value>
+    <comment>Desicion Remark</comment>
   </data>
   <data name="Detail" xml:space="preserve">
     <value>Case Description</value>
@@ -281,21 +441,48 @@
     <value>Diaries</value>
     <comment>Diaries</comment>
   </data>
+  <data name="document" xml:space="preserve">
+    <value>Document</value>
+    <comment>Document</comment>
+  </data>
   <data name="documentation" xml:space="preserve">
     <value>Documentation</value>
     <comment>Documentation</comment>
+  </data>
+  <data name="document_History" xml:space="preserve">
+    <value>Document History</value>
+    <comment>Document History</comment>
   </data>
   <data name="document_type" xml:space="preserve">
     <value>Document type</value>
     <comment>Document type</comment>
   </data>
+  <data name="doc_type" xml:space="preserve">
+    <value>Document Type</value>
+    <comment>Document Type</comment>
+  </data>
+  <data name="DoesHaveSpecificPlan" xml:space="preserve">
+    <value>Does it have a specific plan?</value>
+    <comment>Does it have a specific plan?</comment>
+  </data>
+  <data name="download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Download</comment>
+  </data>
   <data name="dueDate" xml:space="preserve">
     <value>Anticipated date of Delivery </value>
     <comment>Due Date</comment>
   </data>
+  <data name="duty_department" xml:space="preserve">
+    <value>Responsible Department</value>
+    <comment>Responsible Department</comment>
+  </data>
   <data name="edit" xml:space="preserve">
     <value>Edit</value>
     <comment>Edit</comment>
+  </data>
+  <data name="email_address" xml:space="preserve">
+    <value>Email Adress</value>
   </data>
   <data name="Engagement_letter" xml:space="preserve">
     <value>Engagement letter</value>
@@ -317,9 +504,35 @@
     <value>Evidence File</value>
     <comment>Evidence File</comment>
   </data>
-  <data name="Expected response date" xml:space="preserve">
+  <data name="evidence_types" xml:space="preserve">
+    <value>Evidence Types</value>
+    <comment>Evidence Types</comment>
+  </data>
+  <data name="Evidence_Videos" xml:space="preserve">
+    <value>Evidence_Videos</value>
+  </data>
+  <data name="Expected_response_date" xml:space="preserve">
     <value>Expected response date</value>
-    <comment>Expected response date</comment>
+  </data>
+  <data name="expert" xml:space="preserve">
+    <value>Expert</value>
+    <comment>Expert</comment>
+  </data>
+  <data name="expert_handling" xml:space="preserve">
+    <value>The name of the expert handling the case</value>
+    <comment>The name of the expert handling the case</comment>
+  </data>
+  <data name="ExternalUser" xml:space="preserve">
+    <value>External User</value>
+    <comment>External User</comment>
+  </data>
+  <data name="ExternalUsers" xml:space="preserve">
+    <value>External Users</value>
+    <comment>External Users</comment>
+  </data>
+  <data name="External_Requests" xml:space="preserve">
+    <value>External Requests</value>
+    <comment>External Requests</comment>
   </data>
   <data name="external_User" xml:space="preserve">
     <value>External User</value>
@@ -333,25 +546,41 @@
     <value>External Users</value>
     <comment>External Users</comment>
   </data>
+  <data name="feedback" xml:space="preserve">
+    <value>Feedback</value>
+    <comment>Feedback</comment>
+  </data>
   <data name="files" xml:space="preserve">
     <value>Files</value>
     <comment>Files</comment>
+  </data>
+  <data name="File_Description" xml:space="preserve">
+    <value>File Description</value>
+    <comment>File Description</comment>
+  </data>
+  <data name="file_not_finde" xml:space="preserve">
+    <value>Oops! Document not found.</value>
+    <comment>We could not find this file.</comment>
   </data>
   <data name="final_report" xml:space="preserve">
     <value>Final Report</value>
     <comment>Final Report</comment>
   </data>
   <data name="final_result" xml:space="preserve">
-    <value>Final Result</value>
+    <value>Finding</value>
     <comment>Final Result</comment>
   </data>
   <data name="final_status" xml:space="preserve">
-    <value>Result</value>
+    <value>Final status</value>
     <comment>Result</comment>
   </data>
   <data name="first_name" xml:space="preserve">
     <value>First Name</value>
     <comment>First Name</comment>
+  </data>
+  <data name="FLIM" xml:space="preserve">
+    <value>FLIM</value>
+    <comment>FLIM</comment>
   </data>
   <data name="FocalPerson" xml:space="preserve">
     <value>Focal Person</value>
@@ -361,9 +590,13 @@
     <value>Follow Ups</value>
     <comment>Follow Ups</comment>
   </data>
-  <data name="Get_Started" xml:space="preserve">
-    <value>Get Started</value>
-    <comment>Get Started</comment>
+  <data name="full_Name" xml:space="preserve">
+    <value>Full Name</value>
+    <comment>Full Name</comment>
+  </data>
+  <data name="general_report" xml:space="preserve">
+    <value>General Report (From Institutions)</value>
+    <comment>General Report (From Institutions)</comment>
   </data>
   <data name="help" xml:space="preserve">
     <value>Help</value>
@@ -377,25 +610,60 @@
     <value>Home</value>
     <comment>Home</comment>
   </data>
+  <data name="Home/Dashboard" xml:space="preserve">
+    <value>Home</value>
+    <comment>Home</comment>
+  </data>
+  <data name="inispecting_Instituttion" xml:space="preserve">
+    <value>Inpecting Institution</value>
+    <comment>Inpecting Institution</comment>
+  </data>
+  <data name="Inistitutions" xml:space="preserve">
+    <value>Inistitutions</value>
+    <comment>Inistitutions</comment>
+  </data>
+  <data name="InspectionLaws" xml:space="preserve">
+    <value>Monitoring Laws</value>
+    <comment>Inspection Laws</comment>
+  </data>
   <data name="inspection_laws" xml:space="preserve">
     <value>Inspection Laws</value>
     <comment>Inspection Laws</comment>
   </data>
+  <data name="Inspection_Report" xml:space="preserve">
+    <value>Monitoring reports</value>
+  </data>
   <data name="inspection_year" xml:space="preserve">
-    <value>Inspection Year</value>
+    <value>Monitoring Year</value>
     <comment>Inspection Year</comment>
   </data>
   <data name="institution" xml:space="preserve">
     <value>Inistitution</value>
     <comment>Inistitution</comment>
   </data>
+  <data name="institution_based_report" xml:space="preserve">
+    <value>General Institution based report</value>
+    <comment>General Institution based report</comment>
+  </data>
   <data name="institution_report" xml:space="preserve">
     <value>Institution wise report</value>
     <comment>Institution wise report</comment>
   </data>
+  <data name="InternalUsers" xml:space="preserve">
+    <value>Internal Users</value>
+    <comment>Internal Users</comment>
+  </data>
+  <data name="Internal_Chat" xml:space="preserve">
+    <value>Internal Chat</value>
+    <comment>Internal Chat</comment>
+  </data>
   <data name="internal_users" xml:space="preserve">
     <value>Internal Users</value>
     <comment>Internal Users</comment>
+  </data>
+  <data name="in_progress" xml:space="preserve">
+    <value>In Progress</value>
+    <comment>In Progress</comment>
   </data>
   <data name="IsActive" xml:space="preserve">
     <value>IsActive?</value>
@@ -414,16 +682,20 @@
     <comment>Is Department head?</comment>
   </data>
   <data name="isDeputy" xml:space="preserve">
-    <value>isDeputy?</value>
-    <comment>isDeputy?</comment>
+    <value>Is State Minister?</value>
+    <comment>Is State Minister?</comment>
   </data>
   <data name="isSuperadmin" xml:space="preserve">
-    <value>Is Superadmin?</value>
+    <value>Is superadmin?</value>
     <comment>Is Superadmin?</comment>
   </data>
   <data name="isTeam" xml:space="preserve">
     <value>Team Leader?</value>
     <comment>Is Team Leader?</comment>
+  </data>
+  <data name="its_case_type" xml:space="preserve">
+    <value>.It's Case type is</value>
+    <comment>.It's Case type is</comment>
   </data>
   <data name="key_plans" xml:space="preserve">
     <value>Key Plans (Catagory)</value>
@@ -440,6 +712,22 @@
   <data name="Letter_of_Upproval" xml:space="preserve">
     <value>Letter of Upproval</value>
     <comment>Letter of Upproval</comment>
+  </data>
+  <data name="litigations" xml:space="preserve">
+    <value>Litigation and Representation</value>
+    <comment>Litigation and Representation</comment>
+  </data>
+  <data name="LitigationType" xml:space="preserve">
+    <value>Litigation Type</value>
+    <comment>Litigation Type</comment>
+  </data>
+  <data name="LSDC" xml:space="preserve">
+    <value>LSDC</value>
+    <comment>LSDC</comment>
+  </data>
+  <data name="MainMenus" xml:space="preserve">
+    <value>Main Menus</value>
+    <comment>Main Menus</comment>
   </data>
   <data name="main_menu" xml:space="preserve">
     <value>Main Menu</value>
@@ -461,21 +749,13 @@
     <value>Middle Name</value>
     <comment>Middle Name</comment>
   </data>
-  <data name="minister_message" xml:space="preserve">
-    <value>The message of the Ministry of Justice</value>
-    <comment>The message of the Ministry of Justice</comment>
-  </data>
-  <data name="Mission" xml:space="preserve">
-    <value>Mission</value>
-    <comment>Mission</comment>
-  </data>
-  <data name="mission_detail" xml:space="preserve">
-    <value>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</value>
-    <comment>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</comment>
-  </data>
   <data name="modificationDate" xml:space="preserve">
     <value>Modification date</value>
     <comment>Modification date</comment>
+  </data>
+  <data name="MoneyAmmount" xml:space="preserve">
+    <value>Money Ammount</value>
+    <comment>Money Ammount</comment>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>
@@ -493,6 +773,22 @@
     <value>New Request</value>
     <comment>New Request</comment>
   </data>
+  <data name="next_adjournment" xml:space="preserve">
+    <value>Next adjornment</value>
+    <comment>Next adjornment</comment>
+  </data>
+  <data name="next_adjournments" xml:space="preserve">
+    <value>Next appointment</value>
+    <comment>Next appointment</comment>
+  </data>
+  <data name="No." xml:space="preserve">
+    <value>No.</value>
+    <comment>No.</comment>
+  </data>
+  <data name="not_sent" xml:space="preserve">
+    <value>Not Sent</value>
+    <comment>Not Sent</comment>
+  </data>
   <data name="no_need_deputy_approval" xml:space="preserve">
     <value>Isn't Depute upproval needed?</value>
     <comment>Isn't Depute upproval needed?</comment>
@@ -505,31 +801,29 @@
     <value>Old Password</value>
     <comment>Old Password</comment>
   </data>
+  <data name="on" xml:space="preserve">
+    <value>on</value>
+    <comment>on</comment>
+  </data>
+  <data name="OngoingRequest" xml:space="preserve">
+    <value>Ongoing Request</value>
+    <comment>Ongoing Request</comment>
+  </data>
+  <data name="ongoing_plans" xml:space="preserve">
+    <value>Ongoing plans</value>
+    <comment>Ongoing plans</comment>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>Other...</value>
+    <comment>Other..</comment>
+  </data>
+  <data name="OtherRequests" xml:space="preserve">
+    <value>Other Requests</value>
+    <comment>Other Requests</comment>
+  </data>
   <data name="other_Requests" xml:space="preserve">
     <value>Other request</value>
     <comment>Other request</comment>
-  </data>
-  <data name="paragraph_five" xml:space="preserve">
-    <value>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</value>
-    <comment>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</comment>
-  </data>
-  <data name="paragraph_four" xml:space="preserve">
-    <value>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</value>
-    <comment>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</comment>
-  </data>
-  <data name="paragraph_one" xml:space="preserve">
-    <value>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
- It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</value>
-    <comment>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
- It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</comment>
-  </data>
-  <data name="paragraph_three" xml:space="preserve">
-    <value>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</value>
-    <comment>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</comment>
-  </data>
-  <data name="paragraph_two" xml:space="preserve">
-    <value>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</value>
-    <comment>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</comment>
   </data>
   <data name="password" xml:space="preserve">
     <value>Password</value>
@@ -543,6 +837,18 @@
     <value>Phone Number</value>
     <comment>Phone Number</comment>
   </data>
+  <data name="Phone_Number1" xml:space="preserve">
+    <value>Phone Number</value>
+    <comment>Phone Number</comment>
+  </data>
+  <data name="Plaintiful" xml:space="preserve">
+    <value>Plaintiful</value>
+    <comment>Plaintiful</comment>
+  </data>
+  <data name="Plans" xml:space="preserve">
+    <value>Plans</value>
+    <comment>Plans</comment>
+  </data>
   <data name="priority" xml:space="preserve">
     <value>Priority</value>
     <comment>Priority</comment>
@@ -554,6 +860,16 @@
   <data name="progress_status" xml:space="preserve">
     <value>Progress status</value>
     <comment>Progress status</comment>
+  </data>
+  <data name="read" xml:space="preserve">
+    <value>Read</value>
+    <comment>Read</comment>
+  </data>
+  <data name="read_more" xml:space="preserve">
+    <value>Read More</value>
+  </data>
+  <data name="reassign" xml:space="preserve">
+    <value>Reassign</value>
   </data>
   <data name="recent_activitiies" xml:space="preserve">
     <value>Recent Activity</value>
@@ -580,8 +896,16 @@
     <comment>Refence Articles</comment>
   </data>
   <data name="remark" xml:space="preserve">
-    <value>Remarks</value>
+    <value>ማስታወሻ </value>
     <comment>Remarks</comment>
+  </data>
+  <data name="remark_given" xml:space="preserve">
+    <value>Remark given</value>
+    <comment>Remark given</comment>
+  </data>
+  <data name="replied_by" xml:space="preserve">
+    <value>Replied by</value>
+    <comment>Replied by</comment>
   </data>
   <data name="replies" xml:space="preserve">
     <value>Replies</value>
@@ -590,6 +914,22 @@
   <data name="reply" xml:space="preserve">
     <value>Reply</value>
     <comment>Reply</comment>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Reports</value>
+    <comment>Reports</comment>
+  </data>
+  <data name="report_history" xml:space="preserve">
+    <value>Report history</value>
+    <comment>Report history</comment>
+  </data>
+  <data name="report_summary" xml:space="preserve">
+    <value>Report Summary</value>
+    <comment>Report Summary</comment>
+  </data>
+  <data name="request" xml:space="preserve">
+    <value>Request</value>
+    <comment>Request</comment>
   </data>
   <data name="RequestDetail" xml:space="preserve">
     <value>Request Detail</value>
@@ -607,6 +947,10 @@
     <value>Requested User</value>
     <comment>Requested User</comment>
   </data>
+  <data name="RequestRound" xml:space="preserve">
+    <value>Request Round</value>
+    <comment>Request Round</comment>
+  </data>
   <data name="requests" xml:space="preserve">
     <value>Requests</value>
     <comment>Requests</comment>
@@ -615,9 +959,32 @@
     <value>Requests sent back to Inistitutions</value>
     <comment>Requests sent back to Inistitutions</comment>
   </data>
+  <data name="request_accepting_intit" xml:space="preserve">
+    <value>Institution</value>
+    <comment>Institution</comment>
+  </data>
+  <data name="request_from" xml:space="preserve">
+    <value>Request from</value>
+    <comment>Request from</comment>
+  </data>
+  <data name="request_Status_Report" xml:space="preserve">
+    <value>General request status report</value>
+    <comment>General request status report</comment>
+  </data>
+  <data name="reset" xml:space="preserve">
+    <value>Reset Password</value>
+    <comment>Reset Password</comment>
+  </data>
+  <data name="Responded_by" xml:space="preserve">
+    <value>Responded Body</value>
+  </data>
   <data name="Responded_Date" xml:space="preserve">
     <value>Responded Date</value>
     <comment>Responded Date</comment>
+  </data>
+  <data name="Respondent" xml:space="preserve">
+    <value>Respondent</value>
+    <comment>Respondent</comment>
   </data>
   <data name="response" xml:space="preserve">
     <value>Response</value>
@@ -627,6 +994,10 @@
     <value>Re-Assign</value>
     <comment>Re-Assign</comment>
   </data>
+  <data name="round" xml:space="preserve">
+    <value>Round</value>
+    <comment>Round</comment>
+  </data>
   <data name="save" xml:space="preserve">
     <value>Save</value>
     <comment>Save</comment>
@@ -634,6 +1005,14 @@
   <data name="secretary" xml:space="preserve">
     <value>Secretary</value>
     <comment>Secretary</comment>
+  </data>
+  <data name="select_here" xml:space="preserve">
+    <value>Select here</value>
+    <comment>Select here</comment>
+  </data>
+  <data name="Select_requests" xml:space="preserve">
+    <value>Select requests</value>
+    <comment>Select requests</comment>
   </data>
   <data name="send" xml:space="preserve">
     <value>Send</value>
@@ -651,9 +1030,21 @@
     <value>Send Evaluations to Institutions</value>
     <comment>Send Evaluations to Institutions</comment>
   </data>
+  <data name="send_for_expert" xml:space="preserve">
+    <value>Send for Expert</value>
+    <comment>Send for Expert</comment>
+  </data>
+  <data name="send_for_State_Minister" xml:space="preserve">
+    <value>Send for State Ministry</value>
+    <comment>Send for State Ministry</comment>
+  </data>
   <data name="Send_to_Institutions" xml:space="preserve">
     <value>Send to Institutions</value>
     <comment>Send to Institutions</comment>
+  </data>
+  <data name="SentRequests" xml:space="preserve">
+    <value>Sent Requests</value>
+    <comment>Sent Requests</comment>
   </data>
   <data name="sent_by" xml:space="preserve">
     <value>Sent By</value>
@@ -667,9 +1058,25 @@
     <value>Sent Recomendation</value>
     <comment>Sent Recomendation</comment>
   </data>
+  <data name="service_type" xml:space="preserve">
+    <value>Service Type</value>
+    <comment>Service Type</comment>
+  </data>
   <data name="service_types" xml:space="preserve">
     <value>Service types</value>
     <comment>Service type</comment>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Settings</comment>
+  </data>
+  <data name="show_all_notification" xml:space="preserve">
+    <value>Show all notifications</value>
+    <comment>Show all notifications</comment>
+  </data>
+  <data name="Specialization" xml:space="preserve">
+    <value>Specialization</value>
+    <comment>Specialization</comment>
   </data>
   <data name="special_roles" xml:space="preserve">
     <value>Special Roles</value>
@@ -679,13 +1086,25 @@
     <value>Specific Plans</value>
     <comment>Specific Plans</comment>
   </data>
+  <data name="state_minister" xml:space="preserve">
+    <value>State Minster</value>
+    <comment>State Minster</comment>
+  </data>
   <data name="status" xml:space="preserve">
     <value>Status</value>
     <comment>Status</comment>
   </data>
+  <data name="Sub-Menus" xml:space="preserve">
+    <value>Sub-Menus</value>
+    <comment>Sub-Menus</comment>
+  </data>
   <data name="submenus" xml:space="preserve">
     <value>Sub-Menus</value>
     <comment>Sub-Menus</comment>
+  </data>
+  <data name="SubmittedInspections" xml:space="preserve">
+    <value>Submitted Inspections</value>
+    <comment>Submitted Inspections</comment>
   </data>
   <data name="targeted_institutions" xml:space="preserve">
     <value>Targeted Inistitutions</value>
@@ -694,6 +1113,14 @@
   <data name="task_status" xml:space="preserve">
     <value>Task Status</value>
     <comment>Task Status</comment>
+  </data>
+  <data name="TeamAssignedPlans" xml:space="preserve">
+    <value>Team Assigned Plans</value>
+    <comment>Team Assigned Plans</comment>
+  </data>
+  <data name="TeamRequests" xml:space="preserve">
+    <value>Team Requests</value>
+    <comment>Team Requests</comment>
   </data>
   <data name="teams" xml:space="preserve">
     <value>Teams</value>
@@ -723,9 +1150,9 @@
     <value>Team approval</value>
     <comment>Team aproval</comment>
   </data>
-  <data name="temoty_message" xml:space="preserve">
-    <value>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</value>
-    <comment>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</comment>
+  <data name="time_taken" xml:space="preserve">
+    <value>Time taken to perform</value>
+    <comment>Time taken to perform</comment>
   </data>
   <data name="title" xml:space="preserve">
     <value>Title</value>
@@ -735,6 +1162,10 @@
     <value>Title (Amharic)</value>
     <comment>Title (Amharic)</comment>
   </data>
+  <data name="tor_attachment" xml:space="preserve">
+    <value>TOR (term of reference) Attachment)</value>
+    <comment>TOR (term of reference) Attachment)</comment>
+  </data>
   <data name="total_inistitution" xml:space="preserve">
     <value>These are total number of Inistitutions those have accounts in this system.</value>
     <comment>These are total number of Inistitutions those have accounts in this system.</comment>
@@ -743,6 +1174,9 @@
     <value>Total Inspections</value>
     <comment>Total Inspections</comment>
   </data>
+  <data name="total_inspections_from_CJAD" xml:space="preserve">
+    <value>ለCJAD ስራ ክፍል አጠቃላይ ጉዳዮች </value>
+  </data>
   <data name="total_institutions" xml:space="preserve">
     <value>Total Institutions</value>
     <comment>Total Institutions</comment>
@@ -750,10 +1184,6 @@
   <data name="total_new_question" xml:space="preserve">
     <value>These are total number of requests that aren't not assigned to responsible department</value>
     <comment>These are total number of requests that aren't not assigned to responsible department</comment>
-  </data>
-  <data name="total_requests_from_CJAD" xml:space="preserve">
-    <value>Total Requests for CJAD Department</value>
-    <comment>Total Requests for CJAD Department</comment>
   </data>
   <data name="total_requests_from_LSDC" xml:space="preserve">
     <value>Total Requests for LSDC Department</value>
@@ -779,6 +1209,14 @@
     <value>Uppdate approval Status</value>
     <comment>Uppdate approval Status</comment>
   </data>
+  <data name="Uppload_final_report" xml:space="preserve">
+    <value>Uppload final report</value>
+    <comment>Uppload final report</comment>
+  </data>
+  <data name="uproved_appointment_date" xml:space="preserve">
+    <value>Approved appoinment date</value>
+    <comment>Approved appoinment date</comment>
+  </data>
   <data name="user" xml:space="preserve">
     <value>Expert</value>
     <comment>Expert</comment>
@@ -798,6 +1236,96 @@
   <data name="User_Uproval" xml:space="preserve">
     <value>User aproval</value>
     <comment>User aproval</comment>
+  </data>
+  <data name="video" xml:space="preserve">
+    <value>Videos</value>
+    <comment>Videos</comment>
+  </data>
+  <data name="view_all" xml:space="preserve">
+    <value>View All</value>
+    <comment>View All</comment>
+  </data>
+  <data name="view_file" xml:space="preserve">
+    <value>View file</value>
+    <comment>View file</comment>
+  </data>
+  <data name="what_is_done" xml:space="preserve">
+    <value>What is Done?</value>
+    <comment>What is Done?</comment>
+  </data>
+  <data name="why_to_transfer" xml:space="preserve">
+    <value>Why do you want to transfer?</value>
+    <comment>Why do you want to transfer?</comment>
+  </data>
+  <data name="with_priority" xml:space="preserve">
+    <value>with the priority of</value>
+    <comment>with the priority of</comment>
+  </data>
+  <data name="Witnesses_and_Evidences" xml:space="preserve">
+    <value>Witnesses and Evidences</value>
+    <comment>Witnesses and Evidences</comment>
+  </data>
+  <data name="witnessName" xml:space="preserve">
+    <value>Witneses Full Name</value>
+    <comment>Witneses Name</comment>
+  </data>
+  <data name="year" xml:space="preserve">
+    <value>Year</value>
+    <comment>Year</comment>
+  </data>
+  <data name="you" xml:space="preserve">
+    <value>(You)</value>
+    <comment>(You)</comment>
+  </data>
+  <data name="you_have_notification" xml:space="preserve">
+    <value>Total Notification</value>
+    <comment>Total Notification</comment>
+  </data>
+  <data name="you_want_tosend_inst" xml:space="preserve">
+    <value>You want to send to institutions?</value>
+    <comment>You want to send to institutions?</comment>
+  </data>
+  <data name="Get_Started" xml:space="preserve">
+    <value>Get Started</value>
+    <comment>Get Started</comment>
+  </data>
+  <data name="minister_message" xml:space="preserve">
+    <value>Message from the Honorable Minister</value>
+    <comment>Message from the Honorable Minister</comment>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+    <comment>Mission</comment>
+  </data>
+  <data name="mission_detail" xml:space="preserve">
+    <value>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</value>
+    <comment>Respecting and upholding the rule of law and human rights; By preventing crime, ensuring peace and security and protecting the interests of the government and the people; Providing accessible, efficient, fair and effective justice services that have won public disapproval.</comment>
+  </data>
+  <data name="paragraph_five" xml:space="preserve">
+    <value>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</value>
+    <comment>Justice is a reflection of rationality and truth, and by respecting and enforcing the rule of law, I convey my message to you to be the executor and main actor of the change by taking an active part in the work we do to ensure the rule of law and ensure the rule of law.</comment>
+  </data>
+  <data name="paragraph_four" xml:space="preserve">
+    <value>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</value>
+    <comment>By ensuring the participation of the public, the institution has become an institution that has gained the trust of the public and the government, which has been started by making the peace of our country safe and sustainable. It is required. Justice is not a matter of choice but a basis of existence.</comment>
+  </data>
+  <data name="paragraph_one" xml:space="preserve">
+    <value>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
+ It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</value>
+    <comment>Ministry of Justice: Our country's democracy and justice, rapid and continuous development, and the people's greater benefit cannot be ensured without the rule of law and the practical activities of the justice sector.
+ It will be remembered that the history of our country's justice sector has been plagued by deep-rooted problems of law and procedure as well as attitudes and was a captive of bullies.</comment>
+  </data>
+  <data name="paragraph_three" xml:space="preserve">
+    <value>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</value>
+    <comment>The Ministry of Justice is carrying out its national mission at a higher level than ever before by creating a favorable environment for wide and universal cooperation to bring about the national journey of change, respecting and enforcing the judicial and constitutional system, ensuring the rule of law, ensuring justice, and ensuring the human and democratic rights of citizens. .</comment>
+  </data>
+  <data name="paragraph_two" xml:space="preserve">
+    <value>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</value>
+    <comment>In the new phase of change that has started, our institution has carried out, and is still carrying out, many basic reform activities by carrying out law and justice reform and improving operational problems, by adjusting the treatment of legal prisoners in terms of human rights, ensuring efficient, fair and effective access to justice in institutional services.</comment>
+  </data>
+  <data name="temoty_message" xml:space="preserve">
+    <value>The message of the Honorable Minister of Justice, Hanna Arayaselassie Zemichael</value>
+    <comment>The message of the Honorable Minister of Justice, Dr. Gideon Timothy</comment>
   </data>
   <data name="Values" xml:space="preserve">
     <value>Values</value>
@@ -823,14 +1351,6 @@
     <value>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</value>
     <comment>The vision, mission and values ​​of the Ministry of Justice of the Federal Democratic Repablic of Ethiopia</comment>
   </data>
-  <data name="video" xml:space="preserve">
-    <value>Videos</value>
-    <comment>Videos</comment>
-  </data>
-  <data name="view_file" xml:space="preserve">
-    <value>View file</value>
-    <comment>View file</comment>
-  </data>
   <data name="vision" xml:space="preserve">
     <value>Vision</value>
     <comment>Vision</comment>
@@ -849,28 +1369,85 @@ In 2024/25, to see the establishment of the Ministry of Justice, which will ensu
     <comment>To see the Ministry of Justice Institution that ensures respect of rule of law and wins
 In 2024/25, to see the establishment of the Ministry of Justice, which will ensure the rule of law and win the trust of the people and the government through public participation.</comment>
   </data>
-  <data name="what_is_done" xml:space="preserve">
-    <value>What is Done?</value>
-    <comment>What is Done?</comment>
+  <data name="Exit_Confirence" xml:space="preserve">
+    <value>Exit Confirence</value>
   </data>
-  <data name="Witnesses_and_Evidences" xml:space="preserve">
-    <value>Witnesses and Evidences</value>
-    <comment>Witnesses and Evidences</comment>
+  <data name="department_review" xml:space="preserve">
+    <value>Department Review</value>
   </data>
-  <data name="witnessName" xml:space="preserve">
-    <value>Witneses Name</value>
-    <comment>Witneses Name</comment>
+  <data name="recomendation_reports" xml:space="preserve">
+    <value>Recommendations and Reports</value>
   </data>
-  <data name="year" xml:space="preserve">
-    <value>Year</value>
-    <comment>Year</comment>
+  <data name="monitoring_report" xml:space="preserve">
+    <value>Monitoring Report</value>
   </data>
-  <data name="you" xml:space="preserve">
-    <value>(You)</value>
-    <comment>(You)</comment>
+  <data name="inistitution" xml:space="preserve">
+    <value>Institution</value>
   </data>
-  <data name="you_want_tosend_inst" xml:space="preserve">
-    <value>You want to send to institutions?</value>
-    <comment>You want to send to institutions?</comment>
+  <data name="dephead_desicion" xml:space="preserve">
+    <value>Department head desicion</value>
+  </data>
+  <data name="expert_status" xml:space="preserve">
+    <value>Expert Status</value>
+  </data>
+  <data name="Inspection_Reports" xml:space="preserve">
+    <value>Monitoring Reports</value>
+  </data>
+  <data name="witness_address" xml:space="preserve">
+    <value>Witness Address</value>
+  </data>
+  <data name="team" xml:space="preserve">
+    <value>Team</value>
+  </data>
+  <data name="civil_justice_legal_advice" xml:space="preserve">
+    <value>Civil Justice Legal Advice</value>
+  </data>
+  <data name="conpleted_work" xml:space="preserve">
+    <value>Completed Work</value>
+  </data>
+  <data name="defendent_info" xml:space="preserve">
+    <value>Defendent/Respondent</value>
+  </data>
+  <data name="court_case_number" xml:space="preserve">
+    <value>መ/ቁጥር</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="IsBranchOfficeUser" xml:space="preserve">
+    <value>Is branch office expert?</value>
+  </data>
+  <data name="IsSecretary" xml:space="preserve">
+    <value>Is Secretary Expert?</value>
+  </data>
+  <data name="IsInternalRequestUser" xml:space="preserve">
+    <value>Is internal request user?</value>
+  </data>
+  <data name="send_for_dephead" xml:space="preserve">
+    <value>Send for Department</value>
+  </data>
+  <data name="branchoffice" xml:space="preserve">
+    <value>Branch Office</value>
+  </data>
+  <data name="inspected_Institution" xml:space="preserve">
+    <value>Inspected Institution</value>
+  </data>
+  <data name="inspected_laws" xml:space="preserve">
+    <value>Inspection Laws</value>
+  </data>
+  <data name="Jursidiction" xml:space="preserve">
+    <value>Jursidiction</value>
+  </data>
+  <data name="cased_handlingDepartment" xml:space="preserve">
+    <value>Case Handling Department</value>
+  </data>
+  <data name="secretaryTpes" xml:space="preserve">
+    <value>Whose secretary is?</value>
+  </data>
+  <data name="midib" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="result" xml:space="preserve">
+    <value>Result</value>
   </data>
 </root>

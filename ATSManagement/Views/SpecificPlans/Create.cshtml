@@ -30,6 +30,7 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input asp-for="CreatedBy" type="hidden" class="form-control" />
                             <input asp-for="PlanCatId" type="hidden" class="form-control" />
+                            <input asp-for="InspectionPlanId" type="hidden" />
                             <div class="mb-3 row">
                                 <label class="col-3 col-form-label-sm">@_localization.Getkey("title")</label>
                                 <div class="col">
@@ -44,11 +45,12 @@
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <label class="col-3 col-form-label-sm">@_localization.Getkey("targeted_institutions")</label>
+                            <div class="mb-3 row" >
+                                <label  class="col-3 col-form-label-sm">@_localization.Getkey("inispecting_Instituttion")</label>
                                 <div class="col">
-                                    @Html.ListBoxFor(model => model.InistId, new MultiSelectList(Model.Inistitutions, "Value", "Text"), new { @class = "form-select", @placeholder = "--Select here--", multiple = "multiple", id = "Subjects_dropdown" })
-                                   
+                                    <input type="hidden" id="selectedmemebers" placeholder="@_localization.Getkey("select_here")" value="@Model.Inistitutions" />
+                                    @Html.DropDownListFor(x => x.InistId, Model.Inistitutions, htmlAttributes: new { @id = "Members", @class = "select2 form-control", @placeholder = "--Select here--", multiple = "multiple", })
+                                    <span asp-validation-for="InistId" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +59,7 @@
                 <div class="card-footer text-end">
                     <div class="d-flex">
                         <input type="submit" value="@_localization.Getkey("save")" class="btn btn-primary" />|
-                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId">@_localization.Getkey("backlist")</a>
+                        <a asp-action="Index" asp-controller="SpecificPlans" asp-route-InspectionPlanId="@ViewBag.InspectionPlanId" asp-route-PlanCatId="@ViewBag.PlanCatId">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>
@@ -117,5 +119,16 @@
             }
             tinyMCE.init(options);
         })
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            //get the selectedmember from the hidden field.
+            var selectedmembers = $("#selectedmemebers").val().split(",");
+            //set the value in the dropdownlist.
+            $("#Members").select2({
+                multiple: true,
+            });
+            $('#Members').val(selectedmembers).trigger('change');
+        });
     </script>
 }

@@ -17,7 +17,7 @@ public partial class TblSentInspection
 
     public DateTime? SentDate { get; set; }
 
-    public DateTime? ExpectedReplyDate { get; set; }
+    public DateOnly? ExpectedReplyDate { get; set; }
 
     public string? ResponseDetail { get; set; }
 
@@ -29,6 +29,10 @@ public partial class TblSentInspection
 
     public Guid? InspectionPlanId { get; set; }
 
+    public bool? IsChatCloset { get; set; }
+
+    public Guid? SpecificPlanId { get; set; }
+
     public virtual TblInspectionPlan? InspectionPlan { get; set; }
 
     public virtual TblInistitution? Inst { get; set; }
@@ -36,6 +40,8 @@ public partial class TblSentInspection
     public virtual TblExternalUser? RepliedByNavigation { get; set; }
 
     public virtual TblInternalUser? SentByNavigation { get; set; }
+
+    public virtual TblSpecificPlan? SpecificPlan { get; set; }
 
     public virtual ICollection<TblInspectionReplye> TblInspectionReplyes { get; set; } = new List<TblInspectionReplye>();
 }

@@ -33,7 +33,7 @@
                         <div class="col-md-6">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="mb-2 row">
-                                <label asp-for="QuestionSubmitter" class="col-3 col-form-label">ጥያቄ ያቀረበው አካል</label>
+                                <label asp-for="QuestionSubmitter" class="col-3 col-form-label">ጉዳይ  ያቀረበው አካል</label>
                                 <div class="col">
                                     <input asp-for="QuestionSubmitter" required class="form-control" />
                                     <span asp-validation-for="QuestionSubmitter" class="text-danger"></span>
@@ -80,8 +80,8 @@
                 </div>
                 <div class="card-footer text-end">
                     <div class="d-flex">
-                        <input type="submit" value="Create" class="btn btn-primary" />|
-                        <a asp-action="Index">Back to List</a>
+                        <input type="submit" value="@_localization.Getkey("backlist")" class="btn btn-primary" />|
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>

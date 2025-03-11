@@ -1,17 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using ATSManagementExternal.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ATSManagementExternal.Filters;
 using ATSManagementExternal.IModels;
-using Microsoft.AspNetCore.StaticFiles;
+using ATSManagementExternal.Models;
 using ATSManagementExternal.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATSManagementExternal.Controllers
 {
@@ -22,7 +18,7 @@ namespace ATSManagementExternal.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMailService _mail;
         private readonly INotyfService _notifyService;
-        public InspectionsController(AtsdbContext context,IHttpContextAccessor httpContext,INotyfService notyfService, IMailService mailService)
+        public InspectionsController(AtsdbContext context, IHttpContextAccessor httpContext, INotyfService notyfService, IMailService mailService)
         {
             _contextAccessor = httpContext;
             _notifyService = notyfService;
@@ -33,7 +29,13 @@ namespace ATSManagementExternal.Controllers
         {
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
             var users = _context.TblExternalUsers.Where(s => s.ExterUserId == userId).FirstOrDefault();
-            var atsdbContext = _context.TblSentInspections.Include(t => t.SentByNavigation).Include(T => T.RepliedByNavigation).Include(s => s.Inst).Where(s => s.InstId == users.InistId);
+
+            var atsdbContext = _context.TblSentInspections
+                  .Include(s => s.SpecificPlan)
+                  .Include(t => t.SentByNavigation)
+                  .Include(T => T.RepliedByNavigation)
+                  .Include(s => s.Inst).Where(s => s.InstId == users.InistId && s.SpecificPlan.Pro.ProgressOrder >= 14);
+
             return View(await atsdbContext.ToListAsync());
         }
         public async Task<IActionResult> Details(Guid? id)
@@ -65,7 +67,7 @@ namespace ATSManagementExternal.Controllers
             ViewData["UserId"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId");
             ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "YearId");
             return View();
-        }    
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InspectionPlanId,PlanTitle,PlanDescription,CreationDate,ModificationDate,UserId,YearId,ProId,AssigningRemark,TeamId,AssigneeTypeId,IsAssignedToUser,IsUprovedByDeputy,IsUpprovedbyTeam,IsUpprovedbyDepartment,FinalReport,FinalStatus,SendingRemark,ReturningRemark,IsSenttoInst,IsReturned,SentReport,IsAssignedTeam,ReturnDate,SentDate")] TblInspectionPlan tblInspectionPlan)
@@ -102,7 +104,7 @@ namespace ATSManagementExternal.Controllers
             ViewData["UserId"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblInspectionPlan.UserId);
             ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "YearId", tblInspectionPlan.YearId);
             return View(tblInspectionPlan);
-        }      
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("InspectionPlanId,PlanTitle,PlanDescription,CreationDate,ModificationDate,UserId,YearId,ProId,AssigningRemark,TeamId,AssigneeTypeId,IsAssignedToUser,IsUprovedByDeputy,IsUpprovedbyTeam,IsUpprovedbyDepartment,FinalReport,FinalStatus,SendingRemark,ReturningRemark,IsSenttoInst,IsReturned,SentReport,IsAssignedTeam,ReturnDate,SentDate")] TblInspectionPlan tblInspectionPlan)
@@ -138,7 +140,7 @@ namespace ATSManagementExternal.Controllers
             ViewData["UserId"] = new SelectList(_context.TblInternalUsers, "UserId", "UserId", tblInspectionPlan.UserId);
             ViewData["YearId"] = new SelectList(_context.TblYears, "YearId", "YearId", tblInspectionPlan.YearId);
             return View(tblInspectionPlan);
-        }       
+        }
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.TblInspectionPlans == null)
@@ -173,13 +175,13 @@ namespace ATSManagementExternal.Controllers
             {
                 _context.TblInspectionPlans.Remove(tblInspectionPlan);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         private bool TblInspectionPlanExists(Guid id)
         {
-          return (_context.TblInspectionPlans?.Any(e => e.InspectionPlanId == id)).GetValueOrDefault();
+            return (_context.TblInspectionPlans?.Any(e => e.InspectionPlanId == id)).GetValueOrDefault();
         }
         public async Task<IActionResult> DownloadEvidenceFile(string path)
         {
@@ -206,15 +208,15 @@ namespace ATSManagementExternal.Controllers
         public async Task<IActionResult> Reply(ReplyModel replyModel)
         {
             ReplyModel model = new ReplyModel();
-            model.RecId= replyModel.RecId;
-            TblInspectionReplye replys= new TblInspectionReplye();
+            model.RecId = replyModel.RecId;
+            TblInspectionReplye replys = new TblInspectionReplye();
             Guid userId = Guid.Parse(_contextAccessor.HttpContext.Session.GetString("userId"));
-            var deputyEmail=_context.TblInternalUsers.Where(s=> s.IsDeputy == true&&(s.IsDepartmentHead==true||s.Dep.DepCode=="")).Select(s=>s.EmailAddress).ToList();
-            replys.RecoDetail= replyModel.ResponseDetail;
-            replys.DateCreated= DateTime.Now;
-            replys.IsInternal= false;
+            var deputyEmail = _context.TblInternalUsers.Where(s => s.IsDeputy == true && (s.IsDepartmentHead == true || s.Dep.DepCode == "")).Select(s => s.EmailAddress).ToList();
+            replys.RecoDetail = replyModel.ResponseDetail;
+            replys.DateCreated = DateTime.Now;
+            replys.IsInternal = false;
             replys.IsExternal = true;
-            replys.RecId= replyModel.RecId;
+            replys.RecId = replyModel.RecId;
             replys.ExternalUser = userId;
             string? dbPath = null;
             string path = Path.Combine(Directory.GetCurrentDirectory(), "admin/Files");
@@ -234,10 +236,10 @@ namespace ATSManagementExternal.Controllers
             }
             _context.TblInspectionReplyes.Add(replys);
             int sent = _context.SaveChanges();
-            if (sent>0)
+            if (sent > 0)
             {
                 ViewData["Replies"] = _context.TblInspectionReplyes.Include(s => s.Rec).Include(s => s.InternalUserNavigation).Include(s => s.ExternalUserNavigation).Where(s => s.RecId == replyModel.RecId).OrderByDescending(s => s.ReplyId).ToList();
-                await SendMail(deputyEmail, "","");
+                await SendMail(deputyEmail, "", "");
                 _notifyService.Success("Recomendation response is successfully replied");
                 return View(model);
             }
@@ -305,8 +307,8 @@ namespace ATSManagementExternal.Controllers
                 _notifyService.Error($"Error:{ex.Message} happened. Reply isn't updated successfully. Please try again");
                 return View(model);
             }
-          
+
         }
-   
+
     }
 }

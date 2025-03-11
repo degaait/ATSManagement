@@ -27,7 +27,13 @@ namespace ATSManagement.Controllers
         // GET: Followups
         public async Task<IActionResult> Index(Guid? RequestId)
         {
+            var intstName=(from requests in _context.TblRequests join insts in _context.TblInistitutions on requests.InistId equals insts.InistId where requests.RequestId== RequestId select new
+            {
+                name=insts.Name,
+            }).FirstOrDefault();
+
             ViewBag.id = RequestId;
+            ViewBag.intstName = intstName;
             var atsdbContext = _context.TblFollowups.Include(t => t.ExternalUser).Include(t => t.Inist).Include(t => t.Request).Include(t => t.User).Where(s => s.RequestId == RequestId).OrderByDescending(s => s.FollowUpId);
             return View(await atsdbContext.ToListAsync());
         }

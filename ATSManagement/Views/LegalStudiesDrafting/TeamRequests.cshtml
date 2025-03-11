@@ -5,6 +5,7 @@
 @inject IHttpContextAccessor httpsSession;
 @inject AtsdbContext ats;
 @{
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
     ViewData["Title"] = _localization.Getkey("team_requests");
     Guid userId = Guid.Parse(httpsSession.HttpContext.Session.GetString("userId"));
     var user = (from item in ats.TblInternalUsers where item.UserId == userId select item).FirstOrDefault();
@@ -93,11 +94,10 @@
                                     @Html.DisplayFor(modelItem => item.Inist.Name) <p>
                                         <label>
                                             by  <strong>
-                                                (
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.FirstName)<label>&nbsp;</label>
-                                                @Html.DisplayFor(modelItem => item.RequestedByNavigation.MiddleName)
-                                                )
-                                            </strong>
+    (
+    @Html.DisplayFor(modelItem => item.SecretaryFullName)<label>&nbsp;</label>
+    )
+</strong>
                                         </label>
                                     </p>
                                 </td>
@@ -108,15 +108,21 @@
                                     @Html.Raw(item.RequestDetail)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DocType.DocName)
-                                    <br />
+                                    
                                     @if (documents != null)
                                     {
                                         foreach (var paths in documents)
                                         {
-                                            <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath">
-
-                                                View
+                                            <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@paths.DocPath" asp-route-method="TeamRequests" asp-route-methodController="LegalStudiesDrafting">
+                                                @paths.ExactFileName
+                                                @*@if (item.DocType != null)
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.DocType.DocName)
+                                                }
+                                                else
+                                                {
+                                                    @_localization.Getkey("view_file")
+                                                }*@
                                             </a>
                                         }
                                     }
@@ -139,7 +145,7 @@
                                     <div class="btn-list flex-nowrap">
                                         <div class="dropdown">
                                             <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                Actions
+                                               ...
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 @if (assigneess.Count == 0)
@@ -206,6 +212,7 @@
 
         $(document).ready(function () {
             $('#role').DataTable({
+                order: [[0, 'desc']],
                 dom: 'Bfrtip',
                 deferRender: true,
                 scrollCollapse: true,

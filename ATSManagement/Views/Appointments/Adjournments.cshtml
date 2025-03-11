@@ -1,0 +1,146 @@
+﻿@model IEnumerable<ATSManagement.Models.TblAdjornment>
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor httpsSession;
+@inject AtsdbContext ats;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = _localization.Getkey("adjournment") + ":-Index";
+    IEnumerable<TblAdjornment> activities = ViewData["Adjornies"] as IEnumerable<TblAdjornment>;
+    int no = 0;
+    var cultur = httpsSession.HttpContext.Session.GetString("culture").ToString();
+
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("adjournment")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-borderless datatable" id="role">
+                        <thead>
+                            <tr>
+                                <th>
+
+                                </th>
+
+                                <th>
+                                    @_localization.Getkey("expert_handling")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("service_type")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("defendent_plantiful")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("case_court")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("adjournment_reason")
+                                </th>
+                                <th>
+                                    @_localization.Getkey("next_adjournments")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in activities)
+                            {
+                                no = no + 1;
+                                var service = (from items in ats.TblRequests
+                                               join serviceType in ats.TblServiceTypes on items.ServiceTypeId equals serviceType.ServiceTypeId
+                                               where items.RequestId == item.RequestId
+                                               select new
+                                               {
+                                                   nameamharic = serviceType.ServiceTypeNameAmharic,
+                                                   nameEnglish = serviceType.ServiceTypeName
+
+                                               }).FirstOrDefault();
+                                <tr>
+                                    <td>
+
+                                        <a asp-action="AdjournementChats" asp-controller="Appointments" asp-route-AdjoryId="@item.AdjoryId" asp-route-actionMethod="Adjournments" asp-route-controller="Appointments">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
+                                            </svg>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ExpertHanlingCase)
+                                    </td>
+                                    <td>
+                                        @if (cultur == "am")
+                                        {
+
+                                            <span>@service.nameamharic</span>
+                                        }
+                                        else
+                                        {
+
+                                            <span>@service.nameEnglish</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PlaintiffDefendant)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TheCourtCaseHanled)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AppointmentReason)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AdjorneyDate)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                order: [[6, 'desc']],
+                dom: 'Bfrtip',
+                deferRender: true,
+                scrollCollapse: true,
+                scroller: true,
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
+        });
+
+    </script>
+
+}

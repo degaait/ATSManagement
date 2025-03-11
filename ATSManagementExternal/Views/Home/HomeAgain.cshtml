@@ -1,0 +1,897 @@
+﻿@using Newtonsoft.Json;
+@using ATSManagementExternal.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@using ATSManagementExternal.Services;
+@model ATSManagementExternal.ViewModels.ContactModel;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
+@{
+    var cultur = _context.HttpContext.Session.GetString("culture").ToString();
+}
+<style>
+    .btnmore {
+        border: none;
+        font-size: small;
+        color: brown;
+    }
+
+    #more1 {
+        display: none;
+    }
+
+    #more2 {
+        display: none;
+    }
+
+    #more3 {
+        display: none;
+    }
+
+    #more4 {
+        display: none;
+    }
+
+    #more5 {
+        display: none;
+    }
+
+    #more6 {
+        display: none;
+    }
+
+    #more7 {
+        display: none;
+    }
+
+    #more8 {
+        display: none;
+    }
+
+    #more9 {
+        display: none;
+    }
+
+    #more10 {
+        display: none;
+    }
+
+    #more11 {
+        display: none;
+    }
+
+    #more12 {
+        display: none;
+    }
+
+    #more13 {
+        display: none;
+    }
+
+    #more14 {
+        display: none;
+    }
+
+    #more15 {
+        display: none;
+    }
+
+    #more16 {
+        display: none;
+    }
+
+    #more17 {
+        display: none;
+    }
+
+    #more18 {
+        display: none;
+    }
+
+    #more19 {
+        display: none;
+    }
+
+    #more20 {
+        display: none;
+    }
+    #more21 {
+        display: none;
+    }
+    #more22 {
+        display: none;
+    }
+
+    .icon-box {
+        height: max-content !important;
+    }
+</style>
+
+<section id="hero" class="d-flex align-items-center">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="500">
+        <h1>@_localization.Getkey("welcome_one")</h1>
+        <h2>@_localization.Getkey("justice_law_order")</h2>
+        <a href="#about" class="btn-get-started scrollto">@_localization.Getkey("Get_Started")</a>
+    </div>
+</section>
+<section id="about" class="about" style="background: #f6f9fd">
+    <div class="container" style="background:#fff">
+
+        <div class="row">
+            <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left">
+                <img src="~/assets/img/Temoty.jpeg" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right">
+                <h3>@_localization.Getkey("minister_message")  </h3>
+                <p class="fst-italic">
+                    @_localization.Getkey("temoty_message")
+                </p>
+                <ul>
+                    <li>
+                        <i class="bi bi-check-circle"></i>
+                        @_localization.Getkey("paragraph_one")
+                    </li>
+                    <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_two")</li>
+                    <li><i class="bi bi-check-circle"></i> @_localization.Getkey("paragraph_three")</li>
+                </ul>
+                <a asp-action="ReadMore" asp-controller="Home" class="btn-get-started scrollto">@_localization.Getkey("read_more")</a>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="why-us" class="why-us" style="background: #f6f9fd">
+    <div class="container" style="background:#fff">
+        <div class="section-title">
+            <h2>@_localization.Getkey("values_vision_mission")</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-4" data-aos="fade-up">
+                <div class="box text-center">
+                    <span>@_localization.Getkey("vision")</span>
+                    <p>@_localization.Getkey("vision_detail")</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="150">
+                <div class="box text-center">
+                    <span>@_localization.Getkey("Mission")</span>
+                    <p>@_localization.Getkey("mission_detail")</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+                <div class="box text-center">
+                    <span>@_localization.Getkey("Values")</span>
+                    <p>
+                        @_localization.Getkey("values_detail")
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<section id="services" class="services" style="background: #f6f9fd">
+    <div class="container" style="background:#fff">
+
+        <div class="section-title">
+            <span>@_localization.Getkey("our_services")</span>
+            <h2>@_localization.Getkey("our_services")</h2>
+        </div>
+        <div class="row">
+
+            @if (cultur == "am")
+            {
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="150">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-file"></i></div>
+                        <h4><a href="">@_localization.Getkey("Contract_Negotation")</a></h4>
+                        <p>
+                            ግዙፍ የመንግስት ፕሮጀክቶችን ጨምሮ እንደ ግንባታ፣ የእቃ ወይም ምክርን ጨምሮ የአገልግሎት ግዥ ወይም ሌሎች ውሎችን <span id="dots1">...</span><span id="more1">
+                                በተመለከተ የተዘጋጁ ረቂቆች እንዲመረመሩ ለማድረግ ወይም ለአንድ ግዢ ለሚከናወንበት ጉዳይ
+
+                                ወይም በግዢ ህጉ መሰረት ለሚሰጥ ስራ ረቂቅ ስምምነት እንዲዘጋጅ ለሚቀርብ ጉዳይ  የሚሰጥ አገልግሎት ሲሆን ከውሉ መፈረም አስቀድሞ በሚደረግ የውል ድርድር ተሳትፎ ለማድረግ የሚጠየቅ አገልግሎትን ይጨምራል፡፡
+                            </span>
+                            <button onclick="myFunction1()" class="btnmore" id="myBtn1">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("Legal_Advices")</a></h4>
+                        <p>
+                            ፍትህ ሚኒስቴር በሕግ ጉዳዮች የፌዴራል መንግስትን የማማከር ኃላፊነት በህግ ተሰጥቶታል። ይህን መነሻ በማድረግ ለመንግስት ተቋማት የህግ ምክር አገልግሎት <span id="dots7">...</span><span id="more7">
+                                በመስጠት ላይ የሚገኝ ሲሆን በረቂቅ ህግ ዝግጅት፣ በስራ ሂደት የሚያጋጥሙ ህግ ነክ ችግሮች እና በመሳሰሉት ጉዳዮች ላይ ምክር/አስተያየት የሚሰጥበት ሂደት ነው።
+                                የህግ ምክር አገልግሎት ለማግኘት ምክር የሚፈለግበት ጉዳይ ዝርዝር እና የጉዳዩ አመጣጥ በአግባቡ ተብራርቶ፣ በተቋሙ የስራ ኃላፊ ተፈርሞ እና የተቋሙ ማህተም የተደረገበት ደብዳቤ መቅረብ አስፈላጊ ነው።
+                            </span>
+                            <button onclick="myFunction7()" class="btnmore" id="myBtn7">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("civil_justice_legal_advice")</a></h4>
+                        <p>
+                            ከውል ስምምነት ወይም ከውል ውጪ ኃላፊነት ወይም አማራጭ አለመግባባት መፍቻ ዘዴዎችን በተመለከተ ወይም በዳኝነት አካላት  <span id="dots22">...</span><span id="more22">
+                                በቀረቡ ወይም ሌሎች ህግ ነክ የፍትሐብሄር ጉዳዮችን በተመለከተ በፌዴራል መንግስት መስሪያ ቤቶች፣ የልማት ድርጅቶች ወይም የገንዘብ አቅም በሌላቸው የህብረተሰብ ክፍሎች የሚጠየቅ የህግ አስተያየት ወይም የጉዳይ አመራር አቅጣጫ ነው፡፡
+                            </span>
+                            <button onclick="myFunction22()" class="btnmore" id="myBtn22">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("legal_drafting")</a></h4>
+                        <p>
+                            ለፍትህ ሚኒስቴር በህግ ከተሰጡት ኃላፊነቶች መካከል የሕግ ማርቀቅ ወይም የህግ ረቂቅ ማዘጋጀት አገልግሎት አንዱ ሲሆን በሕግ ጥናት፣ ማርቀቅ እና ማጠቃለል <span id="dots8">...</span><span id="more8">
+                                ዳሬክቶሬት ጄኔራል የሥራ ክፍል የሚከናወን ነው። የሚረቀቀውም ፖሊሲ፣ ስትራቴጂ፣ ህግ (አዋጅ፣ ደንብ ወይም መመሪያ) ሊሆን ይችላል።
+                                በፍትሕ ሚኒስቴር ሕግ እንዲረቀቅላቸው የሚፈልጉ የመንግስት ተቋማት አገልግሎቱን ለማግኘት የሕግ ይረቀቅልኝ ጉዳይ  ማቅረብ፣ በጉዳዩ ላይ የተዘጋጀ ፖሊሲ ሰነድ ካለ፣ በጉዳዩ ላይ የተደረገ የጥናት ሰነድ እንዲሁም ማሻሻያ ረቂቅ ህግ የሚዘጋጅ ከሆነ የሚሻሻለው ሕግ ቁጥር ወይም የሚረቀቀው ሕግ ደንብ ወይም መመሪያ ከሆነ እናት ሕጉ (ደንብ ወይም መመሪያውን እንዲወጣ ሥልጣን የሚሰጠው አዋጅ ቁጥር) ጠቅሶ ማሳወቅ እንደ ቅድመ ሁኔታ ተቀምጠዋል።
+                            </span>
+                            <button onclick="myFunction8()" class="btnmore" id="myBtn8">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("desicion")</a></h4>
+                        <p>
+                            የፌዴራል መንግስት መስሪያ ቤቶች እርስ በርሳቸው ባልተግባቡበት የፍትሐብሔር ጉዳይ ላይ በአዋጅ ቁጥር 1263/2021 አንቀጽ 40(2)(ሀ) <span id="dots3">...</span><span id="more3"> መሰረት ውሳኔ እንዲሰጥ የሚቀርብ ጉዳይ  ነው፡፡ </span>
+                            <button onclick="myFunction3()" class="btnmore" id="myBtn3">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("commenting")</a></h4>
+                        <p>
+                            የህግ ማረም አገልግሎት በመንግስት ተቋማት የተዘጋጀውን ረቂቅ ፖሊሲ፣ ስትራቴጂ፣ ህግ (አዋጅ፣ ደንብ፣ መመሪያ) ከህገ መንግስቱ፣ ሀገራችን ከተቀበለቻቸው <span id="dots5">...</span><span id="more5">
+                                ዓለም አቀፍ ስምምነቶች፣ ሌሎች ብሔራዊ ህጎች ጋር ተጣጥሞ የተዘጋጀ መሆኑን እና የህግ ማርቀቅ መርሆችን የተከተለ መሆኑን ለማረጋገጥ በፍትህ ሚኒስቴር የህግ ጥናት፣ ማርቀቅና ማጠቃለል ዳይሬክቶሬት ጄኔራል ስራ ክፍል የሚከናወን የረቂቅ ምርመራ እና አስተያየት ዝግጅት ስራ ነው።
+                                የህግ እርማት ጉዳይ  ሲቀርብ በጉዳዩ ላይ የተዘጋጀ ፖሊሲ፣ በጉዳዩ ላይ የተደረገ መነሻ ጥናት፣ የረቂቅ ሕጉ የአማርኛ እና የእንግሊዝኛ ቅጂ እንዲሁም የረቂቅ ህጉ ማብራሪያ በዎርድ ፎርማት በሶፍት ኮፒ እና በሃርድ ኮፒ ማቅረብ ከአገልግሎት ጠያቂው የመንግስት ተቋም ይጠበቃል።
+                            </span>
+                            <button onclick="myFunction5()" class="btnmore" id="myBtn5">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="450">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-world"></i></div>
+                        <h4><a href="">@_localization.Getkey("International_Cases")</a></h4>
+                        <p>
+                            የፌዴራል መንግሥት ወይም ተቋማት በውጭ ሀገር የገጠማቸውን ክስ ወይም ንግድ ነክ አለመግባባት አስመልክቶ ምላሽ እንዲሰጥ ወይም ድርድር <span id="dots4">...</span><span id="more4"> ላይ ተሳትፎ እንዲደረግ ወይም በዳኝነት አካላት ክርክር እንዲደረግ ወይም ማናቸውም ከአለም አቀፍ ፍትሐብሄር ጉዳይ ጋር በተያያዘ በተቋማት የሚቀርብ የድጋፍ ጉዳይ  ነው፡፡</span>
+                            <button onclick="myFunction4()" class="btnmore" id="myBtn4">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("registration")</a></h4>
+                        <p>
+                            መመሪያ ሕግ አውጪው አካል በሚሰጠው የውክልና ስልጣን መሰረት በአስተዳደር ተቋም የሚወጣና የተቋሙን ስራ ለማቀላጠፍ የሚያስችል የሕግ ሰነድ ነው። <span id="dots6">...</span><span id="more6">
+                                የሚዘጋጀው መመሪያ አዲስ፣ በስራ ላይ ያለ መመሪያን የሚያሻሻል ወይም የሚሽር ሊሆን ይችላል። በአስተዳደር ሥነ ሥርዓት አዋጅ ቁጥር 1183/2012 መሰረት ፍትህ ሚኒስቴር በመንግስት ተቋማት የሚዘጋጁ መመሪያዎችን መዝግቦ ቁጥር በመስጠት ለተደራሽነት በመስሪያ ቤቱ ድረ ገፅ ላይ የመጫን ኃላፊነት ተሰጥቶታል።
+                                በተቋማት የሚዘጋጁ መመሪያዎች ከመጽደቃቸው በፊት ከሕዝብ እና ባለድርሻ አካላት ጋር ውይይት ማድረግ፣ ረቂቅ መመሪያውን ለፍትህ ሚኒስቴር አቅርቦ አስተያየት እንዲሰጥበት ማድረግ ይጠበቃል። ይህን ሂደት አልፎ ለምዝገባ የሚላክ መመሪያ በተደረጉት ውይይቶች እና በተሰጡት አስተያየቶች መሰረት ማስተካከያ የተደረገበት እና የአርትኦት ስራ የተሰራበት፣ መመሪያው በአማርኛ እና በኢንግሊዝኛ ቅጂ የተዘጋጀ፣ የመመሪያው ማብራሪያ፣ መመሪያው በአዘጋጅ ተቋሙ በሚመለከተው አካል (ስራ አመራር) የፀደቀ መሆኑን የሚያሳይ ደብዳቤ ተያይዞ መቅረብ አለበት። እነዚህ ሰነዶች በሀርድ ኮፒ እና በሶፍት ኮፒ (በሲዲ) መላክ አለባቸው።
+                            </span>
+                            <button onclick="myFunction6()" class="btnmore" id="myBtn6">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                        <h4><a href="">@_localization.Getkey("litigations")</a></h4>
+                        <p>
+                            የፌዴራል የመንግስት ተቋማት ወይም የገንዘብ አቅም የሌላቸው ዜጎች የገጠማቸውን የፍትሐብሔር ወይም ንግድ ነክ የመብትና ጥቅም ጉዳይ  በተለይ ለፌዴራል <span id="dots9">...</span><span id="more9">
+                                ፍርድ ቤት ወይም ለሌላ የዳኝነት አካል ክስ አቤቱታ እንዲቀርብ፣ ለአቤቱታዎች ምላሽ እንዲሰጥ፣ ወይም እግድና ይግባኝ እንዲቀርብ እንደ አግባብነቱ በጋራ ወይም በተናጠል ክርክር ለማድረግ የሚጠየቅ አገልግሎት ነው፡፡
+                            </span>
+                            <button onclick="myFunction9()" class="btnmore" id="myBtn9">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-tachometer"></i></div>
+                        <h4><a href="">@_localization.Getkey("Inspection_Followup")</a></h4>
+                        <p>
+                            ሁሉም የመንግስት ተቋማት የሚገቡትን ውል እና የፍትሐ ብሔር ጉዳዮች ተፈጥሮ ምንም ይሁን ምን መረጃ እንዲሰጡ በሕግ ይገደዳሉ። ስለዚህ ጉዳያቸው ምን ያህል <span id="dots10">...</span><span id="more10">
+                                እንደሆነ ለማወቅና የህዝብን ጥቅም በሚያስጠብቅ መልኩ በተቋማቱ በአግባቡ እየተስተናገዱ መሆኑን ለመፈተሽ ሲኢአድጂ የመንግስት ተቋማትን በአካል ይጎበኛል። በግኝቶቹ መሰረት፣ CJADG ምክሮችን ይሰጣል እና የውሳኔ ሃሳቦቹን አፈፃፀም ይከታተላል። የመረጣቸውን ጉዳዮች በቀጥታ በማስተናገድ ላይም ይሠራል።
+                            </span>
+                            <button onclick="myFunction10()" class="btnmore" id="myBtn10">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("alternativ_disputes")</a></h4>
+                        <p>
+                            የመንግሥት ተቋማት እርስ በርስ ወይም የመንግሥት ተቋማት ከግለሰቦች ወይም የግል ድርጅቶች የሚኖራቸውን ንግድ ነክና ፍትሐብሔር <span id="dots2">...</span><span id="more2">
+                                አለመግባባት በድርድር፣ በስምምነት፣ በዕርቅ ወይም በሌላ ከፍርድ ቤት ውጭ ባለ አማራጭ እንዲፈታ ለማድረግ ወይም አቅመ ደካማ የሆኑ ዜጎች አለመግባባታቸውን ከፍርድ ቤት ውጭ ባለ አማራጭ እንዲፈታላቸው የሚቀርብ አገልግሎት ሲሆን በድርድር፣ የግልግል ዳኝነትና የፍርድ ቤት ወይም ከፊል የዳኝነት አካል በተጀመረ ሂደት ላይ እገዛ እንዲደረግ የሚቀርብ ጉዳይ ን ያካትታል፡፡
+                            </span>
+                            <button onclick="myFunction2()" class="btnmore" id="myBtn2">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="750">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-arch"></i></div>
+                        <h4><a asp-controller="Recomendations" asp-action="Index">@Html.Raw(@_localization.Getkey("recomendations"))</a></h4>
+                        <p>
+                            መመሪያ ሕግ አውጪው አካል በሚሰጠው የውክልና ስልጣን መሰረት በአስተዳደር ተቋም የሚወጣና የተቋሙን ስራ ለማቀላጠፍ የሚያስችል የሕግ ሰነድ ነው። የሚዘጋጀው <span id="dots11">...</span><span id="more11">
+                                መመሪያ አዲስ፣ በስራ ላይ ያለ መመሪያን የሚያሻሻል ወይም የሚሽር ሊሆን ይችላል። በአስተዳደር ሥነ ሥርዓት አዋጅ ቁጥር 1183/2012 መሰረት ፍትህ ሚኒስቴር በመንግስት ተቋማት የሚዘጋጁ መመሪያዎችን መዝግቦ ቁጥር በመስጠት ለተደራሽነት በመስሪያ ቤቱ ድረ ገፅ ላይ የመጫን ኃላፊነት ተሰጥቶታል።
+                                በተቋማት የሚዘጋጁ መመሪያዎች ከመጽደቃቸው በፊት ከሕዝብ እና ባለድርሻ አካላት ጋር ውይይት ማድረግ፣ ረቂቅ መመሪያውን ለፍትህ ሚኒስቴር አቅርቦ አስተያየት እንዲሰጥበት ማድረግ ይጠበቃል። ይህን ሂደት አልፎ ለምዝገባ የሚላክ መመሪያ በተደረጉት ውይይቶች እና በተሰጡት አስተያየቶች መሰረት ማስተካከያ የተደረገበት እና የአርትኦት ስራ የተሰራበት፣ መመሪያው በአማርኛ እና በኢንግሊዝኛ ቅጂ የተዘጋጀ፣ የመመሪያው ማብራሪያ፣ መመሪያው በአዘጋጅ ተቋሙ በሚመለከተው አካል (ስራ አመራር) የፀደቀ መሆኑን የሚያሳይ ደብዳቤ ተያይዞ መቅረብ አለበት። እነዚህ ሰነዶች በሀርድ ኮፒ እና በሶፍት ኮፒ (በሲዲ) መላክ አለባቸው።
+                            </span>
+                            <button onclick="myFunction11()" class="btnmore" id="myBtn11">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="150">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-file"></i></div>
+                        <h4><a href="">@_localization.Getkey("Contract_Negotation")</a></h4>
+                        <p>
+                            A service that is requested for seeking an opinion on draft contracts such as construction, goods, services, and other agreements <span id="dots12">...</span><span id="more12">
+                                for large-scale projects, or preparing contract agreements for purchases made in compliance with procurement laws that include Negotiating contract terms.
+                            </span>
+                            <button onclick="myFunction12()" class="btnmore" id="myBtn12">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("Legal_Advices")</a></h4>
+                        <p>
+                            The CJDG takes the principal advisory role in civil, commercial and investment related legal matters given to the Ministry of Justice. Accordingly, <span id="dots17">...</span><span id="more17">
+                                it provides legal advice to the federal, Addis Ababa and Dire Dawa government institutions including public enterprises pursuant to Proclamation No. 943/2016. Legal advice is also among the services the CJADG gives to those people including, children, women, elderly, victims of a crime, etc, who does not have sufficient finance to institute suites before federal courts.
+                            </span>
+                            <button onclick="myFunction17()" class="btnmore" id="myBtn17">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("civil_justice_legal_advice")</a></h4>
+                        <p>
+                            A service that is requested for legal opinion or guidance regarding contract and extra   <span id="dots21">...</span><span id="more21">
+                                contractual legal matters, or ADR or matters that are brought before judicial bodies or other civil justice legal matters, by federal government offices, public enterprises, or indigent citizens
+                            </span>
+                            <button onclick="myFunction21()" class="btnmore" id="myBtn21">@_localization.Getkey("read_more")</button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("legal_drafting")</a></h4>
+                        <p>
+                            One of the responsibilities assigned to the Ministry of Justice is the drafting of laws or drafting of laws, which is carried out by the Directorate General of Legal Research,<span id="dots18">...</span><span id="more18">
+                                Drafting and Compilation. It can be a policy, strategy, law (decree, regulation or directive).
+                                In order to get the services of the Ministry of Justice, government institutions that want to draft a law for them, submit a request for a law draft to get the service, if there is a policy document prepared on the issue, a study document on the issue, and if a draft law is being prepared, the number of the law to be amended or the rule or directive of the draft law, the mother law (authority to issue the rule or directive Proclamation No.) are mentioned and notified as a condition.
+                            </span>
+                            <button onclick="myFunction18()" class="btnmore" id="myBtn18">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("desicion")</a></h4>
+                        <p>
+                            A service that is requested for decisions on civil disputes arising between Federal Government Offices in accordance with Article 40(2)(a) <span id="dots14">...</span><span id="more14">
+                                of Proclamation No. 1263/2021)
+                            </span>
+                            <button onclick="myFunction14()" class="btnmore" id="myBtn14">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("commenting")</a></h4>
+                        <p>
+                            The Law Editing Service is prepared by the Ministry of Justice to ensure that the draft policies, strategies, laws (proclamations, regulations, <span id="dots16">...</span><span id="more16">
+                                guidelines) are prepared in accordance with the Constitution, international agreements accepted by our country, other national laws and follow the principles of law drafting. General work is the work of drafting examination and preparation of comments carried out by the department.
+                                When a request for legal correction is submitted, it is expected from the requesting government institution to provide a policy prepared on the issue, a preliminary study on the issue, a copy of the draft law in Amharic and English, and an explanation of the draft law in Word format in soft copy and hard copy.
+                            </span>
+                            <button onclick="myFunction16()" class="btnmore" id="myBtn16">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="450">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-world"></i></div>
+                        <h4><a href="">@_localization.Getkey("International_Cases")</a></h4>
+                        <p>
+                            (Regarding International Civil Cases:- a service that is requested to respond to matters pertaining to international commerce and civil cases <span id="dots15">...</span><span id="more15">
+                                that involve FDRE and its instrumentalities; requests to negotiate; requests to defend international commerce and civil lawsuits by providing legal representation; or other requested responses relating to international suits.)
+                            </span>
+                            <button onclick="myFunction15()" class="btnmore" id="myBtn15">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("registration")</a></h4>
+                        <p>
+                            Registering different document stypes like Proclamations, Policy and so on
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                        <h4><a href="">@_localization.Getkey("litigations")</a></h4>
+                        <p>
+                            A service that is requested for legal representation by a government institution or indigents relating to civil and commercial suits or on claims of rights and interests, <span id="dots19">...</span><span id="more19">
+                                in particular for legal services relating to instituting petitions, responding to pleadings, applying restraint orders, or lodging an appeal before courts or judicial bodies on behalf of or jointly with the federal government office and indigent citizens.
+                            </span>
+                            <button onclick="myFunction19()" class="btnmore" id="myBtn19">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-tachometer"></i></div>
+                        <h4><a href="">@_localization.Getkey("Inspection_Followup")</a></h4>
+                        <p>
+                            All government institutions are required by law to give information on the contracts they enter and all civil cases they might have whatsoever its nature is. So as to know the number of cases <span id="dots20">...</span><span id="more20">
+                                they have and also to inspect whether these cases are being properly handled by the institutions in a manner that maintains the public interest, the CJADG visits government institutions in person. Based on the findings, CJADG gives recommendations and follow up the execution of the recommendations.
+                                It also directly engages in handling the cases that it selects.
+                            </span>
+                            <button onclick="myFunction20()" class="btnmore" id="myBtn20">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-slideshow"></i></div>
+                        <h4><a href="">@_localization.Getkey("alternativ_disputes")</a></h4>
+                        <p>
+                            A service that is requested for resolving civil and commercial disputes through arbitration, negotiation, mediation, conciliation,<span id="dots13">...</span><span id="more13">
+                                or other ADR mechanism other than court, requested by the government or by indigent citizens, and such requests include a request to take part in an ADR process
+                            </span>
+                            <button onclick="myFunction13()" class="btnmore" id="myBtn13">Read more..</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="750">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-arch"></i></div>
+                        <h4><a asp-controller="Recomendations" asp-action="Index">@Html.Raw(@_localization.Getkey("recomendations"))</a></h4>
+                        <p>
+                            Registering different document stypes like Proclamations, Policy and so on
+                        </p>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+</section>
+<section id="cta" class="cta">
+    <div class="container" data-aos="zoom-in">
+        <div class="text-center" style="color: #f90202">
+            <h3>@_localization.Getkey("justice_law_order")</h3>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="contact" style="background: #f6f9fd">
+    <div class="container" style="background:#fff">
+        <div class="section-title">
+            <span>@_localization.Getkey("contact_us")</span>
+            <h2>@_localization.Getkey("contact_us")</h2>
+        </div>
+        <div class="row" data-aos="fade-up">
+            <div class="col-lg-6">
+                <div class="info-box mb-4">
+                    <i class="bx bx-map"></i>
+                    <h3>@_localization.Getkey("our_address") </h3>
+                    <p>
+                        Bambis, Jomo Kenyatta Avenue,Addis Ababa, Ethiopia
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="info-box  mb-4">
+                    <i class="bx bx-envelope"></i>
+                    <h3>@_localization.Getkey("email_us")</h3>
+                    <p>info@mog.gov.et</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="info-box  mb-4">
+                    <i class="bx bx-phone-call"></i>
+                    <h3>@_localization.Getkey("call_us")</h3>
+                    <p>011 551 5099</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" data-aos="fade-up">
+            <div class="col-lg-6 ">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9779.61472386125!2d38.77354496253109!3d9.01080342749606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85a38740d5d5%3A0x92367e5d57439f85!2sMinistry%20of%20JUSTICE!5e1!3m2!1sen!2set!4v1706343251395!5m2!1sen!2set" style="border:0; width: 100%; height: 384px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="col-lg-6">
+                <form asp-action="Index" method="post" role="form" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input type="text" class="form-control" asp-for="ContactPhoneNumber" id="subject" placeholder="@_localization.Getkey("Phone_Number")" required>
+                        </div>
+                        <div class="col-md-6 form-group mt-3 mt-md-0">
+                            <input type="email" class="form-control" asp-for="ContactEmail" id="email" placeholder="@_localization.Getkey("Email_Address")" required>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" asp-for="ContactCountry" class="form-control" id="name" placeholder="@_localization.Getkey("Country")" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <textarea class="form-control" asp-for="ContactDetaiMessage" rows="5" placeholder="@_localization.Getkey("message")" required></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input asp-for="formFile" class="form-control" />
+                    </div>
+                    <div class="form-group mt-3"><input type="submit" class="btn btn-secondary" value="@_localization.Getkey("send")" /></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section><!-- End Contact Section -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function myFunction1() {
+            var dots = document.getElementById("dots1");
+            var moreText = document.getElementById("more1");
+            var btnText = document.getElementById("myBtn1");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction2() {
+            var dots = document.getElementById("dots2");
+            var moreText = document.getElementById("more2");
+            var btnText = document.getElementById("myBtn2");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction3() {
+            var dots = document.getElementById("dots3");
+            var moreText = document.getElementById("more3");
+            var btnText = document.getElementById("myBtn3");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction4() {
+            var dots = document.getElementById("dots4");
+            var moreText = document.getElementById("more4");
+            var btnText = document.getElementById("myBtn4");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction5() {
+            var dots = document.getElementById("dots5");
+            var moreText = document.getElementById("more5");
+            var btnText = document.getElementById("myBtn5");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction6() {
+            var dots = document.getElementById("dots6");
+            var moreText = document.getElementById("more6");
+            var btnText = document.getElementById("myBtn6");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction7() {
+            var dots = document.getElementById("dots7");
+            var moreText = document.getElementById("more7");
+            var btnText = document.getElementById("myBtn7");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction8() {
+            var dots = document.getElementById("dots8");
+            var moreText = document.getElementById("more8");
+            var btnText = document.getElementById("myBtn8");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction9() {
+            var dots = document.getElementById("dots9");
+            var moreText = document.getElementById("more9");
+            var btnText = document.getElementById("myBtn9");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction10() {
+            var dots = document.getElementById("dots10");
+            var moreText = document.getElementById("more10");
+            var btnText = document.getElementById("myBtn10");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "ተጨማሪ ያንብቡ...";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "ይመለሱ...";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction11() {
+            var dots = document.getElementById("dots11");
+            var moreText = document.getElementById("more11");
+            var btnText = document.getElementById("myBtn11");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction12() {
+            var dots = document.getElementById("dots12");
+            var moreText = document.getElementById("more12");
+            var btnText = document.getElementById("myBtn12");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction13() {
+            var dots = document.getElementById("dots13");
+            var moreText = document.getElementById("more13");
+            var btnText = document.getElementById("myBtn13");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction14() {
+            var dots = document.getElementById("dots14");
+            var moreText = document.getElementById("more14");
+            var btnText = document.getElementById("myBtn14");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction15() {
+            var dots = document.getElementById("dots15");
+            var moreText = document.getElementById("more15");
+            var btnText = document.getElementById("myBtn15");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction16() {
+            var dots = document.getElementById("dots16");
+            var moreText = document.getElementById("more16");
+            var btnText = document.getElementById("myBtn16");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction17() {
+            var dots = document.getElementById("dots17");
+            var moreText = document.getElementById("more17");
+            var btnText = document.getElementById("myBtn17");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction18() {
+            var dots = document.getElementById("dots18");
+            var moreText = document.getElementById("more18");
+            var btnText = document.getElementById("myBtn18");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction19() {
+            var dots = document.getElementById("dots19");
+            var moreText = document.getElementById("more19");
+            var btnText = document.getElementById("myBtn19");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction21() {
+            var dots = document.getElementById("dots21");
+            var moreText = document.getElementById("more21");
+            var btnText = document.getElementById("myBtn21");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction22() {
+            var dots = document.getElementById("dots22");
+            var moreText = document.getElementById("more22");
+            var btnText = document.getElementById("myBtn22");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+        function myFunction20() {
+            var dots = document.getElementById("dots20");
+            var moreText = document.getElementById("more20");
+            var btnText = document.getElementById("myBtn20");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+    </script>
+}

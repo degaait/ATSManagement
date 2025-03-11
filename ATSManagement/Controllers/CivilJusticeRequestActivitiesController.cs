@@ -1,6 +1,7 @@
 ﻿using NToastNotify;
 using ATSManagement.Models;
 using ATSManagement.Filters;
+using ATSManagement.IModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ namespace ATSManagement.Controllers
     {
         private readonly AtsdbContext _context;
         private readonly IToastNotification _toastNotification;
+        private readonly INotificationService _notificationService;
         public CivilJusticeRequestActivitiesController(AtsdbContext context, IToastNotification toastNotification)
         {
             _toastNotification = toastNotification;

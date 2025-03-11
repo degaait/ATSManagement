@@ -7,19 +7,17 @@
     ViewData["Title"] = _localization.Getkey("assign") + ":Edit";
 }
 <div class="page-wrapper">
-    <!-- Page header -->
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        @_localization.Getkey("Re Assign")
+                        @_localization.Getkey("reassign")
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -50,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="DueDate" class=" col-3 col-form-label">@_localization.Getkey("duedate")</label>
+                                <label asp-for="DueDate" class=" col-3 col-form-label">@_localization.Getkey("dueDate")</label>
                                 <div class="col">
                                     <input asp-for="DueDate" class="form-control" />
                                     <span asp-validation-for="DueDate" class="text-danger"></span>
@@ -64,7 +62,7 @@
                                 </div>
                             </div>
                             <div class="mb-4 row" id="divTeams" style="display:none">
-                                <label asp-for="TeamId" class="col-3 col-form-label">@_localization.Getkey("Team")</label>
+                                <label asp-for="TeamId" class="col-3 col-form-label">@_localization.Getkey("teams")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.TeamId, new SelectList(Model.Teams, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="TeamId" class="text-danger"></span>
@@ -78,14 +76,14 @@
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="DocId" class="col-3 col-form-label">@_localization.Getkey("doctype")</label>
+                                <label asp-for="DocId" class="col-3 col-form-label">@_localization.Getkey("doc_type")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.DocId, new SelectList(Model.LegalStadiesDocumenttypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="DocId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-4 row">
-                                <label asp-for="ServiceTypeID" class="col-3 col-form-label">@_localization.Getkey("serviceType")</label>
+                                <label asp-for="ServiceTypeID" class="col-3 col-form-label">@_localization.Getkey("service_types")</label>
                                 <div class="col">
                                     @Html.DropDownListFor(model => model.ServiceTypeID, new SelectList(Model.ServiceTypes, "Value", "Text"), "--Select here--", htmlAttributes: new { @class = "form-select" })
                                     <span asp-validation-for="ServiceTypeID" class="text-danger"></span>
@@ -112,7 +110,7 @@
                 <div class="card-footer text-end">
                     <div class="d-flex">
                         <input type="submit" value="@_localization.Getkey("assign")" class="btn btn-primary" />|
-                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                        <a asp-action="PendingRequests">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>

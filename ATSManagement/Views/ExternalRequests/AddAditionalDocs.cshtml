@@ -1,0 +1,171 @@
+﻿@model ATSManagement.ViewModels.AddionalDocument
+@using ATSManagement.Services;
+@inject LanguageService _localization
+@inject IHttpContextAccessor _context;
+@{
+
+}
+<style type="text/css">
+    .table thead th {
+        text-transform: capitalize !important;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: .825rem !important;
+        font-weight: bolder;
+    }
+</style>
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        @_localization.Getkey("documetations")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">@_localization.Getkey("Create")</h4>
+                        </div>
+                        <form asp-action="AddAditionalDocs" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input asp-for="RequestID" type="hidden" class="form-control" />
+                                        <div class="mb-3 row mb-3row" id="divInstitutions">
+                                            <label asp-for="InistId" class="mb-3rowlabel col-3 col-form-label">@_localization.Getkey("institution")</label>
+                                            <div class="col">
+                                                @Html.DropDownListFor(model => model.InistId, new SelectList(Model.Intitutions, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                                <span asp-validation-for="InistId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="formFile" class=" col-2 col-form-label">@_localization.Getkey("document")</label>
+                                            <div class="col">
+                                                <input asp-for="formFile" class="form-control" />
+                                                <span asp-validation-for="formFile" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label asp-for="Title" class=" col-2 col-form-label">@_localization.Getkey("Description")</label>
+                                            <div class="col">
+                                                <input asp-for="Title" class="form-control" />
+                                                <span asp-validation-for="Title" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <div class="d-flex">
+                                    <input type="submit" value="@_localization.Getkey("send")" class="btn btn-primary" />|
+                                    <a asp-action="Index">@_localization.Getkey("backlist")</a>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">@_localization.Getkey("documetations")</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <table class="table table-bordered" id="role">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @_localization.Getkey("Description")
+                                            </th>
+                                            <th>
+                                                @_localization.Getkey("Description")
+                                            </th>
+                                            <th>
+
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.tblDocuments)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ExactFileName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.FileTitle)
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-primary" asp-controller="DocumentViewer" asp-action="DocumentViewer" asp-route-path="@item.DocPath" asp-route-method="AddAditionalDocs" asp-route-methodController="ExternalRequests">
+                                                        @item.FileTitle
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a asp-action="DeleteDocument" asp-route-HistoryId="@item.HistoryId" asp-route-RequestID="@item.RequestId">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                        </svg>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+    <script type="text/javascript">
+        new DataTable('#role', {
+            deferRender: true,
+            scrollCollapse: true,
+            scroller: true,
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let options = {
+                selector: '#ReplayDetail',
+                height: 300,
+                menubar: true,
+                statusbar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'lists'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            }
+            if (localStorage.getItem("tablerTheme") === 'dark') {
+                options.skin = 'oxide-dark';
+                options.content_css = 'dark';
+            }
+            tinyMCE.init(options);
+        })
+    </script>
+}

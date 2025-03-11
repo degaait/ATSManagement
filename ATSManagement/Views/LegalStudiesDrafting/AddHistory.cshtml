@@ -22,7 +22,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Document Histories
+                        @_localization.Getkey("document_History")
                     </h2>
                 </div>
             </div>
@@ -40,28 +40,28 @@
                             <input asp-for="ExternalRepliedBy" type="hidden" class="form-control" />
                             <input asp-for="RequestId" type="hidden" class="form-control" />
                             <div class="mb-3 row">
-                                <label asp-for="Description" class=" col-3 col-form-label">Description</label>
+                                <label asp-for="Description" class=" col-3 col-form-label">@_localization.Getkey("Detail")</label>
                                 <div class="col">
                                     <input asp-for="Description" class="form-control" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="DocPath" class=" col-3 col-form-label">Document</label>
+                                <label asp-for="DocPath" class=" col-3 col-form-label">@_localization.Getkey("document")</label>
                                 <div class="col">
                                     <input asp-for="DocPath" type="file" required class="form-file-button" />
                                     <span asp-validation-for="DocPath" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="FileDescription" class=" col-3 col-form-label">File Description</label>
+                                <label asp-for="FileDescription" class=" col-3 col-form-label">@_localization.Getkey("File_Description")</label>
                                 <div class="col">
                                     <input asp-for="FileDescription" class="form-control" />
                                     <span asp-validation-for="FileDescription" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label asp-for="Round" class=" col-3 col-form-label">Round</label>
+                                <label asp-for="Round" class=" col-3 col-form-label">@_localization.Getkey("round")</label>
                                 <div class="col">
                                     <input asp-for="Round" readonly class="form-control" />
                                     <span asp-validation-for="Round" class="text-danger"></span>
@@ -73,7 +73,7 @@
                 <div class="card-footer text-end">
                     <div class="d-flex">
                         <input type="submit" value="Send" class="btn btn-primary" />|
-                        <a asp-action="Index">Back to List</a>
+                        <a asp-action="Index">@_localization.Getkey("backlist")</a>
                     </div>
                 </div>
             </form>
@@ -81,7 +81,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Replies</h4>
+                <h4 class="card-title">@_localization.Getkey("replies")</h4>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -89,22 +89,22 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Request
+                                    @_localization.Getkey("request")
                                 </th>
                                 <th>
-                                    Description
+                                    @_localization.Getkey("Detail")
                                 </th>
                                 <th>
-                                    Replied by
+                                    @_localization.Getkey("replied_by")
                                 </th>
                                 <th>
-                                    Sent by
+                                    @_localization.Getkey("sent_by")
                                 </th>
                                 <th>
-                                    Document
+                                    @_localization.Getkey("document")
                                 </th>
                                 <th>
-                                    Round
+                                    @_localization.Getkey("round")
                                 </th>
                             </tr>
                         </thead>
@@ -145,8 +145,8 @@
                                         }
                                     </td>
                                     <td>
-                                        <a class="btn btn-primary" asp-action="DownloadEvidenceFile" asp-controller="ExternalRequests" asp-route-path="@item.DocPath">
-
+                                        <a asp-controller="DocumentViewer" asp-action="DocumentViewer" target="_blank" asp-route-path="@item.DocPath" asp-route-method="AddHistory"
+                                           asp-route-methodController="LegalStudiesDrafting" >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -154,11 +154,19 @@
                                                 <path d="M12 17v-6"></path>
                                                 <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
                                             </svg>
-                                            Download
+                                            @_localization.Getkey("view_file")
                                         </a>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Round)
+                                        @if (item.Round != null)
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Round)
+
+                                        }
+                                        else
+                                        {
+                                            <span>1</span>
+                                        }
                                     </td>
                                 </tr>
                             }

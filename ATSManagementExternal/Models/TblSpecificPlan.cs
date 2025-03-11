@@ -69,7 +69,19 @@ public partial class TblSpecificPlan
 
     public virtual ICollection<TblAssignedYearlyPlan> TblAssignedYearlyPlans { get; set; } = new List<TblAssignedYearlyPlan>();
 
+    public virtual ICollection<TblInpectionActivite> TblInpectionActivites { get; set; } = new List<TblInpectionActivite>();
+
+    public virtual ICollection<TblInspectionChat> TblInspectionChats { get; set; } = new List<TblInspectionChat>();
+
+    public virtual ICollection<TblInspectionReportFile> TblInspectionReportFiles { get; set; } = new List<TblInspectionReportFile>();
+
     public virtual ICollection<TblPlanInistitution> TblPlanInistitutions { get; set; } = new List<TblPlanInistitution>();
+
+    public virtual ICollection<TblReplyResponseWithExpert> TblReplyResponseWithExperts { get; set; } = new List<TblReplyResponseWithExpert>();
+
+    public virtual ICollection<TblReplyResponseWithStateMinster> TblReplyResponseWithStateMinsters { get; set; } = new List<TblReplyResponseWithStateMinster>();
+
+    public virtual ICollection<TblSentInspection> TblSentInspections { get; set; } = new List<TblSentInspection>();
 
     public virtual TblTeam? Team { get; set; }
 }

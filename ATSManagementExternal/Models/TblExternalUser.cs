@@ -25,7 +25,11 @@ public partial class TblExternalUser
 
     public bool? IsActive { get; set; }
 
+    public bool? AcceptedTerms { get; set; }
+
     public virtual TblInistitution? Inist { get; set; }
+
+    public virtual ICollection<TblAppointmentChat> TblAppointmentChats { get; set; } = new List<TblAppointmentChat>();
 
     public virtual ICollection<TblAppointment> TblAppointments { get; set; } = new List<TblAppointment>();
 
@@ -46,6 +50,8 @@ public partial class TblExternalUser
     public virtual ICollection<TblLegalStudiesDrafting> TblLegalStudiesDraftings { get; set; } = new List<TblLegalStudiesDrafting>();
 
     public virtual ICollection<TblLegalStudiesReplay> TblLegalStudiesReplays { get; set; } = new List<TblLegalStudiesReplay>();
+
+    public virtual ICollection<TblNotification> TblNotifications { get; set; } = new List<TblNotification>();
 
     public virtual ICollection<TblReplay> TblReplays { get; set; } = new List<TblReplay>();
 
